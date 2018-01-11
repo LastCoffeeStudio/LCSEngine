@@ -1,0 +1,64 @@
+All project is written on English!!
+
+//First letter on methods all in kamelcase
+void thisIsAFunction();
+
+//Brackets on function
+void foo()
+{
+  //Funct
+}
+
+//Brackets on if (ALLWAYS)
+if() 
+{
+  //code
+}
+else
+{
+  //code
+}
+
+//Identation
+TAB de 4 espacios
+
+//switchcase
+switch ()
+{
+  case X:
+    //code
+    break;
+  default:
+    //code
+    break;
+}
+
+//Magic numbers
+forbiden use of numbers inside the conditions (use defines!)
+
+//Class sample (functions on cpp are order like their position on the header)
+class A
+{
+  public:
+    void foo();
+  public:
+    int a;
+    
+  private:
+    void fuu();
+  private:
+    int b;
+}
+
+//Between two functions endline;
+void foo() {}
+
+void fuu() {}
+
+//Variable definition
+int a, b, c;
+bool res;
+
+//Have fun!
+
+
