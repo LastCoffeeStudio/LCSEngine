@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include <SDL.h>
 
 using namespace std;
 
