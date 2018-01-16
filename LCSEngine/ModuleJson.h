@@ -12,7 +12,7 @@ public:
 	ModuleJson();
 	~ModuleJson();
 
-	string readPathImage(string path);
+	string readPathImage(const string path) const;
 };
 
 #endif // __MODULEJSON_H__

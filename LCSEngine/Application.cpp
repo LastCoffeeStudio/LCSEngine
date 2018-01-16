@@ -6,6 +6,7 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
+#include "ModuleIntroLogo.h"
 
 using namespace std;
 
@@ -20,7 +21,9 @@ Application::Application()
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
+	modules.push_back(fade = new ModuleFadeToBlack());
 
+	modules.push_back(intro = new ModuleIntroLogo());
 }
 
 Application::~Application()
@@ -43,7 +46,8 @@ bool Application::Init()
 	}
 
 	// Start the first scene --
-	//fade->FadeToBlack(scene_ken, nullptr, 3.0f);
+	fade->FadeToBlack(intro, nullptr, 3.0f);
+
 
 	return ret;
 }

@@ -11,6 +11,7 @@ class ModuleJson;
 class ModuleTextures;
 class ModuleInput;
 class ModuleAudio;
+class ModuleIntroLogo;
 class ModuleFadeToBlack;
 
 class Application
@@ -32,6 +33,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleFadeToBlack* fade;
+	ModuleIntroLogo* intro;
 
 private:
 

@@ -10,9 +10,9 @@ ModuleJson::ModuleJson() {}
 
 ModuleJson::~ModuleJson() {}
 
-string ModuleJson::readPathImage(string path)
+string ModuleJson::readPathImage(const string path) const
 {
-	ifstream i("file.json");
+	ifstream i(path);
 	json j;
 	i >> j;
 

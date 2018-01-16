@@ -28,6 +28,9 @@
     <Filter Include="MathGeoLib\Algorithm\Random">
       <UniqueIdentifier>{fd287128-ecb1-49b9-b642-235f32b9dcdd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Engine Modules">
+      <UniqueIdentifier>{58df3ae5-f22d-464b-af7e-1a7618517947}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -240,6 +243,9 @@
     <ClInclude Include="ModuleJson.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleIntroLogo.h">
+      <Filter>Engine Modules</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -361,6 +367,9 @@
     </ClCompile>
     <ClCompile Include="ModuleJson.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleIntroLogo.cpp">
+      <Filter>Engine Modules</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
