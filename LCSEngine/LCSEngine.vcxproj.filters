@@ -237,6 +237,9 @@
     <ClInclude Include="MathGeoLib\src\Algorithm\Random\LCG.h">
       <Filter>MathGeoLib\Algorithm\Random</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleJson.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -355,6 +358,9 @@
     </ClCompile>
     <ClCompile Include="MathGeoLib\src\Algorithm\Random\LCG.cpp">
       <Filter>MathGeoLib\Algorithm\Random</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleJson.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
