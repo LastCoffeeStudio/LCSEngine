@@ -21,8 +21,6 @@ public:
 	bool CleanUp();
 
 	bool Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed = 1.0f);
-	bool BlitWithPivotDownCenter(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed = 1.0f);
-	bool BlitWithPivotUpRight(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed = 1.0f);
 
 public:
 	SDL_Renderer* renderer = nullptr;

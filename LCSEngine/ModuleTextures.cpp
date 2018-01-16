@@ -9,9 +9,7 @@
 
 using namespace std;
 
-ModuleTextures::ModuleTextures()
-{
-}
+ModuleTextures::ModuleTextures() {}
 
 // Destructor
 ModuleTextures::~ModuleTextures()

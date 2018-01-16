@@ -5,11 +5,9 @@
 #include "ModuleRender.h"
 #include "SDL/include/SDL.h"
 
-ModuleFadeToBlack::ModuleFadeToBlack(bool start_enabled) : Module(start_enabled)
-{}
+ModuleFadeToBlack::ModuleFadeToBlack(bool start_enabled) : Module(start_enabled) {}
 
-ModuleFadeToBlack::~ModuleFadeToBlack()
-{}
+ModuleFadeToBlack::~ModuleFadeToBlack() {}
 
 // Load assets
 bool ModuleFadeToBlack::Start()
@@ -28,10 +26,14 @@ update_status ModuleFadeToBlack::Update(const float deltaTime)
 		float normalized = (float)now / (float)total_time;
 
 		if (normalized > 1.0f)
+		{
 			normalized = 1.0f;
+		}
 
 		if (fading_in == false)
+		{
 			normalized = 1.0f - normalized;
+		}
 
 		// Draw a screen-size balck rectangle with alpha
 		SDL_SetRenderDrawColor(App->renderer->renderer, 0, 0, 0, (Uint8)(normalized * 255.0f));
@@ -48,7 +50,9 @@ update_status ModuleFadeToBlack::Update(const float deltaTime)
 			if (fading_in == true)
 			{
 				if (module_off != nullptr)
+				{
 					module_off->Disable();
+				}
 				module_on->Enable();
 
 				total_time += total_time;

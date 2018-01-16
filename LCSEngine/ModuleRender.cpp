@@ -13,8 +13,7 @@ ModuleRender::ModuleRender()
 }
 
 // Destructor
-ModuleRender::~ModuleRender()
-{}
+ModuleRender::~ModuleRender() {}
 
 // Called before render is available
 bool ModuleRender::Init()
@@ -101,13 +100,4 @@ bool ModuleRender::Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, f
 	}
 
 	return ret;
-}
-
-//Blit with pivot
-bool ModuleRender::BlitWithPivotDownCenter(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed) {
-	return Blit(texture, x - section->w / 2, y - section->h, section, speed);
-}
-
-bool ModuleRender::BlitWithPivotUpRight(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed) {
-	return Blit(texture, x - section->w, y, section, speed);
 }

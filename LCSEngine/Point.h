@@ -12,10 +12,8 @@ public:
 
 	TYPE x, y;
 
-	Point()
-	{}
-	Point(TYPE x, TYPE y) : x(x), y(y)
-	{}
+	Point() {}
+	Point(TYPE x, TYPE y) : x(x), y(y) {}
 
 	// Operators ------------------------------------------------
 	Point operator -(const Point &v) const

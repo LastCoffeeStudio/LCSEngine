@@ -7,11 +7,9 @@ class Module
 {
 public:
 
-	Module(bool active = true) : active(active)
-	{}
+	Module(bool active = true) : active(active) {}
 
-	~Module()
-	{}
+	~Module() {}
 
 	bool IsEnabled() const
 	{
@@ -21,7 +19,9 @@ public:
 	bool Enable()
 	{
 		if (active == false)
+		{
 			return active = Start();
+		}
 
 		return true;
 	}
@@ -29,7 +29,9 @@ public:
 	bool Disable()
 	{
 		if (active == true)
+		{
 			return active = !CleanUp();
+		}
 
 		return true;
 	}

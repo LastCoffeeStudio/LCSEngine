@@ -8,12 +8,10 @@
 
 using namespace std;
 
-ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled)
-{}
+ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled) {}
 
 // Destructor
-ModuleAudio::~ModuleAudio()
-{}
+ModuleAudio::~ModuleAudio() {}
 
 // Called before render is available
 bool ModuleAudio::Init()
@@ -59,7 +57,9 @@ bool ModuleAudio::CleanUp()
 	}
 
 	for (vector<Mix_Chunk*>::iterator it = fx.begin(); it != fx.end(); ++it)
+	{
 		Mix_FreeChunk(*it);
+	}
 
 	fx.clear();
 	Mix_CloseAudio();

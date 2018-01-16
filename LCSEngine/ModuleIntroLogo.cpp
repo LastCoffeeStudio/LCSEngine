@@ -5,18 +5,13 @@
 #include "ModuleRender.h"
 #include "ModuleJson.h"
 
-
 #include <iostream>
 using namespace std;
 
-ModuleIntroLogo::ModuleIntroLogo()
-{
-}
+ModuleIntroLogo::ModuleIntroLogo() {}
 
 
-ModuleIntroLogo::~ModuleIntroLogo()
-{
-}
+ModuleIntroLogo::~ModuleIntroLogo() {}
 
 bool ModuleIntroLogo::Start()
 {
