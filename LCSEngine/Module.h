@@ -9,7 +9,7 @@ public:
 
 	Module(bool active = true) : active(active)
 	{}
-
+	
 	~Module()
 	{}
 
@@ -21,8 +21,9 @@ public:
 	bool Enable()
 	{
 		if (active == false)
+		{
 			return active = Start();
-
+		}
 		return true;
 	}
 
