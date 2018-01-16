@@ -44,17 +44,17 @@ public:
 		return true;
 	}
 
-	virtual update_status PreUpdate()
+	virtual update_status PreUpdate(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status Update()
+	virtual update_status Update(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status PostUpdate()
+	virtual update_status PostUpdate(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}

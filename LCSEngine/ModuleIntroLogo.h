@@ -12,7 +12,7 @@ public:
 	~ModuleIntroLogo();
 
 	bool Start() override;
-	update_status Update() override;
+	update_status Update(const float deltaTime) override;
 
 public:
 	SDL_Texture * background = nullptr;

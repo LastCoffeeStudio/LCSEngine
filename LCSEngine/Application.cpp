@@ -66,15 +66,15 @@ update_status Application::Update()
 		timer = now;
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 			if ((*it)->IsEnabled() == true)
-				ret = (*it)->PreUpdate();
+				ret = (*it)->PreUpdate(deltaTime);
 
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 			if ((*it)->IsEnabled() == true)
-				ret = (*it)->Update();
+				ret = (*it)->Update(deltaTime);
 
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 			if ((*it)->IsEnabled() == true)
-				ret = (*it)->PostUpdate();
+				ret = (*it)->PostUpdate(deltaTime);
 	}
 	return ret;
 }

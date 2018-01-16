@@ -34,6 +34,12 @@ enum update_status
 		 }\
 	 }
 
+#ifdef _DEBUG 
+	#define DEBUG true
+#else 
+	#define DEBUG false
+#endif
+
 // Configuration -----------
 #define SCREEN_WIDTH 400
 #define SCREEN_HEIGHT 400

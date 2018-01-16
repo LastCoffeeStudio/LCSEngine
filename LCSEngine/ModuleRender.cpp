@@ -39,7 +39,7 @@ bool ModuleRender::Init()
 	return ret;
 }
 
-update_status ModuleRender::PreUpdate()
+update_status ModuleRender::PreUpdate(const float deltaTime)
 {
 	SDL_SetRenderDrawColor(renderer, 0, 0, 0, SDL_ALPHA_OPAQUE);
 	SDL_RenderClear(renderer);
@@ -47,13 +47,13 @@ update_status ModuleRender::PreUpdate()
 }
 
 // Called every draw update
-update_status ModuleRender::Update()
+update_status ModuleRender::Update(const float deltaTime)
 {
 
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRender::PostUpdate()
+update_status ModuleRender::PostUpdate(const float deltaTime)
 {
 	SDL_RenderPresent(renderer);
 	return UPDATE_CONTINUE;
