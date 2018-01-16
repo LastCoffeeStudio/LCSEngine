@@ -41,5 +41,6 @@ enum update_status
 #define FULLSCREEN false
 #define VSYNC true
 #define TITLE "LCSEngine"
+#define FPS 60
 
 #endif //__GLOBALS_H__

@@ -7,6 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
 #include "ModuleIntroLogo.h"
+#include "Globals.h"
 
 using namespace std;
 
@@ -24,6 +25,9 @@ Application::Application()
 	modules.push_back(fade = new ModuleFadeToBlack());
 
 	modules.push_back(intro = new ModuleIntroLogo());
+
+	timer = 0;
+	deltaTime = 0;
 }
 
 Application::~Application()
@@ -56,18 +60,22 @@ update_status Application::Update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PreUpdate();
+	clock_t now = clock();
+	deltaTime += float(now - timer) / CLOCKS_PER_SEC;
+	if (deltaTime > 1 / FPS) {
+		timer = now;
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PreUpdate();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->Update();
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->Update();
 
-	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
-		if ((*it)->IsEnabled() == true)
-			ret = (*it)->PostUpdate();
-
+		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
+			if ((*it)->IsEnabled() == true)
+				ret = (*it)->PostUpdate();
+	}
 	return ret;
 }
 

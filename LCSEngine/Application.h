@@ -4,6 +4,7 @@
 #include <list>
 #include "Globals.h"
 #include "Module.h"
+#include <time.h>
 
 class ModuleRender;
 class ModuleWindow;
@@ -17,7 +18,6 @@ class ModuleFadeToBlack;
 class Application
 {
 public:
-
 	Application();
 	~Application();
 
@@ -36,9 +36,9 @@ public:
 	ModuleIntroLogo* intro;
 
 private:
-
 	std::list<Module*> modules;
-
+	clock_t timer;
+	float deltaTime;
 };
 
 extern Application* App;
