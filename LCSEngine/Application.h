@@ -1,4 +1,4 @@
-#ifndef __APPLICATION_CPP__
+   #ifndef __APPLICATION_CPP__
 #define __APPLICATION_CPP__
 
 #include <list>
@@ -14,6 +14,7 @@ class ModuleInput;
 class ModuleAudio;
 class ModuleIntroLogo;
 class ModuleFadeToBlack;
+
 
 class Application
 {
