@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include "Module.h"
 #include <time.h>
+#include "ModuleIntro.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -12,7 +13,6 @@ class ModuleJson;
 class ModuleTextures;
 class ModuleInput;
 class ModuleAudio;
-class ModuleIntroLogo;
 class ModuleFadeToBlack;
 
 class Application
@@ -33,7 +33,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleFadeToBlack* fade;
-	ModuleIntroLogo* intro;
+	ModuleIntro* intro;
 
 private:
 	std::list<Module*> modules;

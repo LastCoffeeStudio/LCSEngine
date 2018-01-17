@@ -20,11 +20,8 @@ public:
 	update_status PostUpdate(const float deltaTime);
 	bool CleanUp();
 
-	bool Blit(SDL_Texture* texture, int x, int y, SDL_Rect* section, float speed = 1.0f);
-
 public:
 	SDL_Renderer* renderer = nullptr;
-	SDL_Rect camera;
 };
 
 #endif // __MODULERENDER_H__

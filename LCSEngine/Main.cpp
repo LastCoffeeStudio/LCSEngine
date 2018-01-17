@@ -6,6 +6,13 @@
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
 
+#include "Glew/include/GL/glew.h"
+#include "SDL/include/SDL_opengl.h"
+#include <gl/GL.h>
+#include <gl/GLU.h>
+#pragma comment( lib, "Glew/lib/Release/Win32/glew32.lib" )
+
+
 enum main_states
 {
 	MAIN_CREATION,

@@ -243,7 +243,7 @@
     <ClInclude Include="ModuleJson.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleIntroLogo.h">
+    <ClInclude Include="ModuleIntro.h">
       <Filter>Engine Modules</Filter>
     </ClInclude>
   </ItemGroup>
@@ -368,7 +368,7 @@
     <ClCompile Include="ModuleJson.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleIntroLogo.cpp">
+    <ClCompile Include="ModuleIntro.cpp">
       <Filter>Engine Modules</Filter>
     </ClCompile>
   </ItemGroup>

@@ -6,9 +6,8 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
-#include "ModuleIntroLogo.h"
 #include "Globals.h"
-
+#include "ModuleIntro.h"
 using namespace std;
 
 Application::Application()
@@ -24,7 +23,7 @@ Application::Application()
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(fade = new ModuleFadeToBlack());
 
-	modules.push_back(intro = new ModuleIntroLogo());
+	modules.push_back(intro = new ModuleIntro());
 
 	timer = 0;
 	deltaTime = 0;
@@ -57,7 +56,7 @@ bool Application::Init()
 
 	// Start the first scene --
 	fade->FadeToBlack(intro, nullptr, 3.0f);
-
+	renderer->Enable();
 
 	return ret;
 }
