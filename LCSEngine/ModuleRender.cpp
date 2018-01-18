@@ -28,28 +28,28 @@ bool ModuleRender::Init()
 
 	SDL_GLContext context = SDL_GL_CreateContext(App->window->window);
 	if (!context) {
-		LOG("Couldn't create context: %s\n", SDL_GetError());
+		printf("Couldn't create context: %s\n", SDL_GetError());
 		ret = false;
 	}
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
-		LOG("GLEW Error: %s\n", glewGetErrorString(err));
+		printf("GLEW Error: %s\n", glewGetErrorString(err));
 		ret = false;
 	}
 
 	//Use Vsync
 	if (SDL_GL_SetSwapInterval(1) < 0)
 	{
-		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 	}
 
-	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
-	LOG("Vendor: %s", glGetString(GL_VENDOR));
-	LOG("Renderer: %s", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	printf("Using Glew %s\n", glewGetString(GLEW_VERSION));
+	printf("Vendor: %s\n", glGetString(GL_VENDOR));
+	printf("Renderer: %s\n", glGetString(GL_RENDERER));
+	printf("OpenGL version supported %s\n", glGetString(GL_VERSION));
+	printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -63,9 +63,10 @@ bool ModuleRender::Init()
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
-	
+	glOrtho(-1,1,-1,1,0,5);
 	return ret;
 }
 
@@ -74,7 +75,6 @@ update_status ModuleRender::PreUpdate(const float deltaTime)
 	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
-	//glLoadMatrixf();
 	return UPDATE_CONTINUE;
 }
 
@@ -86,11 +86,6 @@ update_status ModuleRender::Update(const float deltaTime)
 
 update_status ModuleRender::PostUpdate(const float deltaTime)
 {
-	glBegin(GL_TRIANGLES);
-	glVertex3f(-1.0f, -0.5f, -1.0f); // lower left vertex
-	glVertex3f(1.0f, -0.5f, -1.0f); // lower right vertex
-	glVertex3f(0.0f, 0.5f, -1.0f); // upper vertex
-	glEnd();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }

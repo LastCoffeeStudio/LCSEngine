@@ -24,7 +24,7 @@ Application::Application()
 	modules.push_back(fade = new ModuleFadeToBlack());
 
 	modules.push_back(intro = new ModuleIntro());
-
+	
 	timer = 0;
 	deltaTime = 0;
 }
@@ -55,8 +55,8 @@ bool Application::Init()
 	}
 
 	// Start the first scene --
-	fade->FadeToBlack(intro, nullptr, 3.0f);
-	renderer->Enable();
+	//fade->FadeToBlack(intro, nullptr, 3.0f);
+	intro->Enable();
 
 	return ret;
 }
