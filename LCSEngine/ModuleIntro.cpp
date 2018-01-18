@@ -4,7 +4,7 @@
 #include "ModuleTextures.h"
 #include "ModuleRender.h"
 #include "ModuleJson.h"
-#include "Glew/include/GL/glew.h"
+#include "Glew/include/glew.h"
 #include <iostream>
 using namespace std;
 

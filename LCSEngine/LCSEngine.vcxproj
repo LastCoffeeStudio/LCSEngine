@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)Glew\include\GL;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -88,7 +88,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalLibraryDirectories>$(ProjectDir)Glew\lib\Release\Win32;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
       <AdditionalDependencies>glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Console</SubSystem>
     </Link>
