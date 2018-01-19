@@ -7,7 +7,7 @@
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
 #include "Globals.h"
-#include "ModuleIntro.h"
+#include "ModuleSceneMain.h"
 using namespace std;
 
 Application::Application()
@@ -23,7 +23,7 @@ Application::Application()
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(fade = new ModuleFadeToBlack());
 
-	modules.push_back(intro = new ModuleIntro());
+	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	
 	timer = 0;
 	deltaTime = 0;
@@ -37,31 +37,31 @@ Application::~Application()
 	}
 }
 
-bool Application::Init()
+bool Application::init()
 {
 	bool ret = true;
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 	{
-		ret = (*it)->Init(); // we init everything, even if not enabled
+		ret = (*it)->init(); // we init everything, even if not enabled
 	}
 
 	for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret; ++it)
 	{
-		if ((*it)->IsEnabled() == true)
+		if ((*it)->isEnabled() == true)
 		{
-			ret = (*it)->Start();
+			ret = (*it)->start();
 		}
 	}
 
 	// Start the first scene --
 	//fade->FadeToBlack(intro, nullptr, 3.0f);
-	intro->Enable();
+	sceneMain->enable();
 
 	return ret;
 }
 
-update_status Application::Update()
+update_status Application::update()
 {
 	update_status ret = UPDATE_CONTINUE;
 
@@ -71,40 +71,42 @@ update_status Application::Update()
 		timer = now;
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		{
-			if ((*it)->IsEnabled() == true)
+			if ((*it)->isEnabled() == true)
 			{
-				ret = (*it)->PreUpdate(deltaTime);
+				ret = (*it)->preUpdate(deltaTime);
 			}
 		}
 
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		{
-			if ((*it)->IsEnabled() == true)
+			if ((*it)->isEnabled() == true)
 			{
-				ret = (*it)->Update(deltaTime);
+				ret = (*it)->update(deltaTime);
 			}
 		}
 
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		{
-			if ((*it)->IsEnabled() == true)
+			if ((*it)->isEnabled() == true)
 			{
-				ret = (*it)->PostUpdate(deltaTime);
+				ret = (*it)->postUpdate(deltaTime);
 			}
-		}	
+		}
+
+		deltaTime = 0.f;
 	}
 	return ret;
 }
 
-bool Application::CleanUp()
+bool Application::cleanUp()
 {
 	bool ret = true;
 
 	for (list<Module*>::reverse_iterator it = modules.rbegin(); it != modules.rend() && ret; ++it)
 	{
-		if ((*it)->IsEnabled() == true)
+		if ((*it)->isEnabled() == true)
 		{
-			ret = (*it)->CleanUp();
+			ret = (*it)->cleanUp();
 		}
 	}
 

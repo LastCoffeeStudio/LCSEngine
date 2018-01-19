@@ -5,7 +5,6 @@
 #include "Globals.h"
 #include "Module.h"
 #include <time.h>
-#include "ModuleIntro.h"
 
 class ModuleRender;
 class ModuleWindow;
@@ -14,6 +13,7 @@ class ModuleTextures;
 class ModuleInput;
 class ModuleAudio;
 class ModuleFadeToBlack;
+class ModuleSceneMain;
 
 class Application
 {
@@ -21,9 +21,9 @@ public:
 	Application();
 	~Application();
 
-	bool Init();
-	update_status Update();
-	bool CleanUp();
+	bool init();
+	update_status update();
+	bool cleanUp();
 
 public:
 	ModuleRender* renderer;
@@ -33,7 +33,7 @@ public:
 	ModuleInput* input;
 	ModuleAudio* audio;
 	ModuleFadeToBlack* fade;
-	ModuleIntro* intro;
+	ModuleSceneMain* sceneMain;
 
 private:
 	std::list<Module*> modules;

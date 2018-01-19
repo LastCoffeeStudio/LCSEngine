@@ -3,6 +3,8 @@
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
 
+#include <string>
+
 #define MAX_KEYS 300
 
 ModuleInput::ModuleInput() : Module(), mouse({ 0, 0 }), mouse_motion({ 0,0 })
@@ -19,7 +21,7 @@ ModuleInput::~ModuleInput()
 }
 
 // Called before render is available
-bool ModuleInput::Init()
+bool ModuleInput::init()
 {
 	LOG("Init SDL input event system");
 	bool ret = true;
@@ -35,13 +37,13 @@ bool ModuleInput::Init()
 }
 
 // Called before the first frame
-bool ModuleInput::Start()
+bool ModuleInput::start()
 {
 	return true;
 }
 
 // Called each loop iteration
-update_status ModuleInput::PreUpdate(const float deltaTime)
+update_status ModuleInput::preUpdate(const float deltaTime)
 {
 	static SDL_Event event;
 
@@ -134,7 +136,7 @@ update_status ModuleInput::PreUpdate(const float deltaTime)
 		}
 	}
 
-	if (GetWindowEvent(EventWindow::WE_QUIT) == true || GetKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
+	if (getWindowEvent(EventWindow::WE_QUIT) == true || getKey(SDL_SCANCODE_ESCAPE) == KEY_DOWN)
 	{
 		return UPDATE_STOP;
 	}
@@ -143,7 +145,7 @@ update_status ModuleInput::PreUpdate(const float deltaTime)
 }
 
 // Called before quitting
-bool ModuleInput::CleanUp()
+bool ModuleInput::cleanUp()
 {
 	LOG("Quitting SDL event subsystem");
 	SDL_QuitSubSystem(SDL_INIT_EVENTS);
@@ -151,17 +153,17 @@ bool ModuleInput::CleanUp()
 }
 
 // ---------
-bool ModuleInput::GetWindowEvent(EventWindow ev) const
+bool ModuleInput::getWindowEvent(EventWindow ev) const
 {
 	return windowEvents[ev];
 }
 
-const iPoint& ModuleInput::GetMousePosition() const
+const iPoint& ModuleInput::getMousePosition() const
 {
 	return mouse;
 }
 
-const iPoint& ModuleInput::GetMouseMotion() const
+const iPoint& ModuleInput::getMouseMotion() const
 {
 	return mouse_motion;
 }

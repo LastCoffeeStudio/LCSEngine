@@ -243,8 +243,11 @@
     <ClInclude Include="ModuleJson.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ModuleIntro.h">
+    <ClInclude Include="ModuleSceneMain.h">
       <Filter>Engine Modules</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -368,8 +371,11 @@
     <ClCompile Include="ModuleJson.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ModuleIntro.cpp">
+    <ClCompile Include="ModuleSceneMain.cpp">
       <Filter>Engine Modules</Filter>
+    </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

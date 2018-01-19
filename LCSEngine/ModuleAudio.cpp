@@ -14,7 +14,7 @@ ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled) {}
 ModuleAudio::~ModuleAudio() {}
 
 // Called before render is available
-bool ModuleAudio::Init()
+bool ModuleAudio::init()
 {
 	LOG("Loading Audio Mixer");
 	bool ret = true;
@@ -47,7 +47,7 @@ bool ModuleAudio::Init()
 }
 
 // Called before quitting
-bool ModuleAudio::CleanUp()
+bool ModuleAudio::cleanUp()
 {
 	LOG("Freeing sound FX, closing Mixer and Audio subsystem");
 
@@ -69,7 +69,7 @@ bool ModuleAudio::CleanUp()
 }
 
 // Play a music file
-bool ModuleAudio::PlayMusic(const char* path, float fade_time)
+bool ModuleAudio::playMusic(const char* path, float fade_time)
 {
 	bool ret = true;
 
@@ -120,7 +120,7 @@ bool ModuleAudio::PlayMusic(const char* path, float fade_time)
 }
 
 // Load WAV
-unsigned int ModuleAudio::LoadFx(const char* path)
+unsigned int ModuleAudio::loadFx(const char* path)
 {
 	unsigned int ret = 0;
 	Mix_Chunk* chunk = Mix_LoadWAV(path);
@@ -139,7 +139,7 @@ unsigned int ModuleAudio::LoadFx(const char* path)
 }
 
 // Play WAV
-bool ModuleAudio::PlayFx(unsigned int id, int repeat)
+bool ModuleAudio::playFx(unsigned int id, int repeat)
 {
 	bool ret = false;
 

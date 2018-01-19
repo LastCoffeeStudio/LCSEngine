@@ -140,6 +140,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="MathGeoLib\src\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\src\Geometry\AABB.h" />
@@ -203,7 +204,7 @@
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleFadeToBlack.h" />
     <ClInclude Include="ModuleInput.h" />
-    <ClInclude Include="ModuleIntro.h" />
+    <ClInclude Include="ModuleSceneMain.h" />
     <ClInclude Include="ModuleJson.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
@@ -212,6 +213,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MathGeoLib\src\Algorithm\Random\LCG.cpp" />
@@ -247,7 +249,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
-    <ClCompile Include="ModuleIntro.cpp" />
+    <ClCompile Include="ModuleSceneMain.cpp" />
     <ClCompile Include="ModuleJson.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />

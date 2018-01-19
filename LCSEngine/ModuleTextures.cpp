@@ -18,7 +18,7 @@ ModuleTextures::~ModuleTextures()
 }
 
 // Called before render is available
-bool ModuleTextures::Init()
+bool ModuleTextures::init()
 {
 	LOG("Init Image library");
 	bool ret = true;
@@ -37,7 +37,7 @@ bool ModuleTextures::Init()
 }
 
 // Called before quitting
-bool ModuleTextures::CleanUp()
+bool ModuleTextures::cleanUp()
 {
 	LOG("Freeing textures and Image library");
 
@@ -49,7 +49,7 @@ bool ModuleTextures::CleanUp()
 }
 
 // Load new texture from file path
-SDL_Texture* const ModuleTextures::Load(const char* path)
+SDL_Texture* const ModuleTextures::load(const char* path)
 {
 	SDL_Texture* texture = nullptr;
 	SDL_Surface* surface = IMG_Load(path);
@@ -78,7 +78,7 @@ SDL_Texture* const ModuleTextures::Load(const char* path)
 }
 
 // Free texture from memory
-void ModuleTextures::Unload(SDL_Texture* texture)
+void ModuleTextures::unload(SDL_Texture* texture)
 {
 	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); ++it)
 	{

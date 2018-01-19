@@ -14,11 +14,11 @@ public:
 	ModuleRender();
 	~ModuleRender();
 
-	bool Init();
-	update_status PreUpdate(const float deltaTime);
-	update_status Update(const float deltaTime);
-	update_status PostUpdate(const float deltaTime);
-	bool CleanUp();
+	bool init();
+	update_status preUpdate(const float deltaTime);
+	update_status update(const float deltaTime);
+	update_status postUpdate(const float deltaTime);
+	bool cleanUp();
 
 public:
 	SDL_Renderer* renderer = nullptr;

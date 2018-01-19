@@ -10,7 +10,7 @@ ModuleFadeToBlack::ModuleFadeToBlack(bool start_enabled) : Module(start_enabled)
 ModuleFadeToBlack::~ModuleFadeToBlack() {}
 
 // Load assets
-bool ModuleFadeToBlack::Start()
+bool ModuleFadeToBlack::start()
 {
 	LOG("Preparing Fade Screen");
 	SDL_SetRenderDrawBlendMode(App->renderer->renderer, SDL_BLENDMODE_BLEND);
@@ -18,7 +18,7 @@ bool ModuleFadeToBlack::Start()
 }
 
 // Update: draw background
-update_status ModuleFadeToBlack::Update(const float deltaTime)
+update_status ModuleFadeToBlack::update(const float deltaTime)
 {
 	if (start_time > 0)
 	{
@@ -41,7 +41,7 @@ update_status ModuleFadeToBlack::Update(const float deltaTime)
 
 		if (module_off == nullptr && module_on != nullptr)
 		{
-			module_on->Enable();
+			module_on->enable();
 			module_on = nullptr;
 		}
 
@@ -51,9 +51,9 @@ update_status ModuleFadeToBlack::Update(const float deltaTime)
 			{
 				if (module_off != nullptr)
 				{
-					module_off->Disable();
+					module_off->disable();
 				}
-				module_on->Enable();
+				module_on->enable();
 
 				total_time += total_time;
 				start_time = SDL_GetTicks();
@@ -70,7 +70,7 @@ update_status ModuleFadeToBlack::Update(const float deltaTime)
 }
 
 // Fade to black. At mid point deactivate one module, then activate the other
-void ModuleFadeToBlack::FadeToBlack(Module* module_on, Module* module_off, float time)
+void ModuleFadeToBlack::fadeToBlack(Module* module_on, Module* module_off, float time)
 {
 	fading_in = (module_off != nullptr) ? true : false;
 	start_time = SDL_GetTicks();

@@ -13,11 +13,11 @@ public:
 	ModuleTextures();
 	~ModuleTextures();
 
-	bool Init();
-	bool CleanUp();
+	bool init();
+	bool cleanUp();
 
-	SDL_Texture* const Load(const char* path);
-	void Unload(SDL_Texture* texture);
+	SDL_Texture* const load(const char* path);
+	void unload(SDL_Texture* texture);
 
 private:
 	std::list<SDL_Texture*> textures;

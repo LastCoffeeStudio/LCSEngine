@@ -10,9 +10,9 @@ public:
 	ModuleFadeToBlack(bool start_enabled = true);
 	~ModuleFadeToBlack();
 
-	bool Start();
-	update_status Update(const float deltaTime);
-	void FadeToBlack(Module* module_on, Module* module_off = nullptr, float time = 1.0f);
+	bool start();
+	update_status update(const float deltaTime);
+	void fadeToBlack(Module* module_on, Module* module_off = nullptr, float time = 1.0f);
 	bool isFading() const;
 
 private:

@@ -16,7 +16,7 @@ private:
 public:
 	Animation() : frames(), speed(1.0f), current_frame(0.0f) {}
 
-	SDL_Rect& GetCurrentFrame()
+	SDL_Rect& getCurrentFrame()
 	{
 		current_frame += speed;
 		if (current_frame >= frames.size())

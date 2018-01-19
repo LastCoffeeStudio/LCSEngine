@@ -11,57 +11,57 @@ public:
 
 	~Module() {}
 
-	bool IsEnabled() const
+	bool isEnabled() const
 	{
 		return active;
 	}
 
-	bool Enable()
+	bool enable()
 	{
 		if (active == false)
 		{
-			return active = Start();
+			return active = start();
 		}
 
 		return true;
 	}
 
-	bool Disable()
+	bool disable()
 	{
 		if (active == true)
 		{
-			return active = !CleanUp();
+			return active = !cleanUp();
 		}
 
 		return true;
 	}
 
-	virtual bool Init()
+	virtual bool init()
 	{
 		return true;
 	}
 
-	virtual bool Start()
+	virtual bool start()
 	{
 		return true;
 	}
 
-	virtual update_status PreUpdate(const float deltaTime)
+	virtual update_status preUpdate(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status Update(const float deltaTime)
+	virtual update_status update(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual update_status PostUpdate(const float deltaTime)
+	virtual update_status postUpdate(const float deltaTime)
 	{
 		return UPDATE_CONTINUE;
 	}
 
-	virtual bool CleanUp()
+	virtual bool cleanUp()
 	{
 		return true;
 	}

@@ -35,34 +35,34 @@ public:
 	virtual ~ModuleInput();
 
 	// Called before render is available
-	bool Init();
+	bool init();
 
 	// Called before the first frame
-	bool Start();
+	bool start();
 
 	// Called each loop iteration
-	update_status PreUpdate(const float deltaTime);
+	update_status preUpdate(const float deltaTime);
 
 	// Called before quitting
-	bool CleanUp();
+	bool cleanUp();
 
 	// Check key states (includes mouse and joy buttons)
-	KeyState GetKey(int id) const
+	KeyState getKey(int id) const
 	{
 		return keyboard[id];
 	}
 
-	KeyState GetMouseButtonDown(int id) const
+	KeyState getMouseButtonDown(int id) const
 	{
 		return mouse_buttons[id - 1];
 	}
 
 	// Check for window events last frame
-	bool GetWindowEvent(EventWindow code) const;
+	bool getWindowEvent(EventWindow code) const;
 
 	// Get mouse / axis position
-	const iPoint& GetMouseMotion() const;
-	const iPoint& GetMousePosition() const;
+	const iPoint& getMouseMotion() const;
+	const iPoint& getMousePosition() const;
 
 private:
 	bool		windowEvents[WE_COUNT];
