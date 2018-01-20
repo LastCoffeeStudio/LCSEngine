@@ -3,7 +3,8 @@
 
 #include "Module.h"
 
-class Cube;
+class CubeShape;
+class SphereShape;
 
 enum Polygon
 {
@@ -26,6 +27,7 @@ public:
 
 private:
 	Polygon actualPolygon;
-	Cube* cube1;
+	CubeShape* cube1;
+	SphereShape* sphere1;
 };
 #endif //__MODULESCENEMAIN_H__

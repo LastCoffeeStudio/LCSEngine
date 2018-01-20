@@ -1,5 +1,5 @@
-#ifndef __CUBE_H__
-#define __CUBE_H__
+#ifndef __PRIMITIVE_H__
+#define __PRIMITIVE_H__
 
 #include "Glew/include/glew.h"
 #include <vector>
@@ -12,28 +12,26 @@ enum RenderMode
 	VERTEXARRAY
 };
 
-class Cube
+class Primitive
 {
 public:
-	Cube();
-	Cube(float lengthX, float lengthY, float lengthZ);
-	~Cube();
+	Primitive();
+	~Primitive();
 
 	void draw();
 	void changeRenderMode(bool left);
-	void initializeValues();
-	bool cleanUp();
+	virtual void initializeValues();
+	virtual bool cleanUp();
 
 public:
-	float lengthX, lengthY, lengthZ;
 	RenderMode renderMode;
 
 private:
-	void drawDirectMode();
-	void drawVBO();
-	void drawVertexArray();
+	virtual void drawDirectMode();
+	virtual void drawVBO();
+	virtual void drawVertexArray();
 
-private:
+protected:
 	GLuint idVertVBO, idColVBO, idVertVA, idIndVA, idColVA;
 	vector<float> verticesVBO;
 	vector<float> colorsVBO;
@@ -42,4 +40,4 @@ private:
 	vector<float> colorsVA;
 };
 
-#endif //__CUBE_H__
+#endif //__PRIMITIVE_H__

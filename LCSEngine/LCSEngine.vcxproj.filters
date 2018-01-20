@@ -246,7 +246,13 @@
     <ClInclude Include="ModuleSceneMain.h">
       <Filter>Engine Modules</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
+    <ClInclude Include="CubeShape.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="SphereShape.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Primitive.h">
       <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
@@ -374,7 +380,13 @@
     <ClCompile Include="ModuleSceneMain.cpp">
       <Filter>Engine Modules</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
+    <ClCompile Include="CubeShape.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="SphereShape.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Primitive.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>

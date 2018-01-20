@@ -2,7 +2,8 @@
 #include "Application.h"
 #include "ModuleSceneMain.h"
 #include "ModuleInput.h"
-#include "Cube.h"
+#include "CubeShape.h"
+#include "SphereShape.h"
 #include "Glew/include/glew.h"
 #include "SDL_mouse.h"
 
@@ -11,7 +12,8 @@ using namespace std;
 
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
-	cube1 = new Cube();
+	cube1 = new CubeShape();
+	sphere1 = new SphereShape();
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
@@ -19,6 +21,7 @@ ModuleSceneMain::~ModuleSceneMain() {}
 bool ModuleSceneMain::init()
 {
 	cube1->initializeValues();
+	sphere1->initializeValues();
 	return true;
 }
 
@@ -31,7 +34,7 @@ bool ModuleSceneMain::start()
 update_status ModuleSceneMain::update(const float deltaTime)
 {
 	//To check polygon rotation
-	glRotatef(0.3f, 1.f, 1.f, 0.f);
+	glRotatef(0.3f, 0.1f, 1.f, 0.f);
 
 	/*if (App->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 	{
@@ -58,7 +61,6 @@ update_status ModuleSceneMain::update(const float deltaTime)
 		actualPolygon = SPHERE;
 	}
 
-	//TODO: Rethink the problem with a class Polygon, and subclasses Cube and Sphere
 	if (App->input->getKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
 	{
 		if (actualPolygon == CUBE)
@@ -67,7 +69,7 @@ update_status ModuleSceneMain::update(const float deltaTime)
 		}
 		if (actualPolygon == SPHERE)
 		{
-			//sphere code
+			sphere1->changeRenderMode(true);
 		}
 	}
 	if (App->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
@@ -78,17 +80,8 @@ update_status ModuleSceneMain::update(const float deltaTime)
 		}
 		if (actualPolygon == SPHERE)
 		{
-			//sphere code
+			sphere1->changeRenderMode(false);
 		}
-	}
-	
-	switch (actualPolygon)
-	{
-	case CUBE:
-		
-		break;
-	case SPHERE:
-		break;
 	}
 
 	return UPDATE_CONTINUE;
@@ -97,6 +90,7 @@ update_status ModuleSceneMain::update(const float deltaTime)
 bool ModuleSceneMain::cleanUp()
 {
 	cube1->cleanUp();
+	sphere1->cleanUp();
 
 	return true;
 }
@@ -128,6 +122,7 @@ void ModuleSceneMain::draw()
 			break;
 
 		case SPHERE:
+			sphere1->draw();
 			break;
 	}
 }
