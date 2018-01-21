@@ -24,6 +24,7 @@ SphereShape::~SphereShape() {}
 void SphereShape::initializeValues()
 {
 	/*This is divided by parts to understand what we're doing (Just done once, so we don't care about optimization here)*/
+
 	int nRowsQuads = (nSeg - 4) / 2;		//nº rows with quads on the sphere
 	int vertRQ = nSeg * 18;					//2 triangles/quad * 3 vertices/triangle * 3 coords/vertex
 	int vertSide = nSeg * 9;				//3 vertices/triangle * 3 coords/vertex
@@ -31,54 +32,162 @@ void SphereShape::initializeValues()
 
 	verticesVBO.reserve(totalCoordsVBO);
 	colorsVBO.reserve(totalCoordsVBO);
-	//verticesVA.reserve(24);
-	//indicesVA.reserve(36);
-	//colorsVA.reserve(24);
+	verticesVA.reserve((nRowsQuads+1) * nSeg + 2);
+	indicesVA.reserve(nRowsQuads*nSeg*2*3 + nSeg*3*2);
+	colorsVA.reserve((nRowsQuads + 1) * nSeg + 2);
 
-
-
-	/*float r, g, b;
-	r = (rand() / (float)RAND_MAX);
-	g = (rand() / (float)RAND_MAX);
-	b = (rand() / (float)RAND_MAX);
-	for (unsigned int i = 0; i < 36; ++i)
+	float difa = 360.f / (float)nSeg;
+	float r, g, b;
+	r = g = b = 0.2f;
+	int idNextV = 0;
+	int firstV, secondV, thirdV, fourthV;
+	firstV = secondV = thirdV = fourthV = 0;
+	for (int i = 0; i < nSeg / 2; ++i)
 	{
-		if (i != 0 && i % 6 == 0)
+		for (int j = 0; j < nSeg; ++j)
 		{
-			r = (rand() / (float)RAND_MAX);
-			g = (rand() / (float)RAND_MAX);
-			b = (rand() / (float)RAND_MAX);
+			float sini = sin(i*difa*(float)M_PI / 180.f);
+			float sinj = sin(j*difa*(float)M_PI / 180.f);
+			float cosi = cos(i*difa*(float)M_PI / 180.f);
+			float cosj = cos(j*difa*(float)M_PI / 180.f);
+			float sinii = sin((i + 1)*difa*(float)M_PI / 180.f);
+			float sinjj = sin((j + 1)*difa*(float)M_PI / 180.f);
+			float cosii = cos((i + 1)*difa*(float)M_PI / 180.f);
+			float cosjj = cos((j + 1)*difa*(float)M_PI / 180.f);
+			if (i == 0)
+			{
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				verticesVBO.push_back(sinj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosj*sini*radius);
+				verticesVBO.push_back(sinj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosj*sinii*radius);
+				verticesVBO.push_back(sinjj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosjj*sinii*radius);
+
+				if (j == 0)
+				{
+					colorsVA.push_back(r);
+					colorsVA.push_back(g);
+					colorsVA.push_back(b);
+					verticesVA.push_back(sinj*sini*radius);
+					verticesVA.push_back(cosi*radius);
+					verticesVA.push_back(cosj*sini*radius);
+					firstV = idNextV;
+					secondV = idNextV + 1;
+					thirdV = idNextV + 1;
+					idNextV += 2;
+				}
+				colorsVA.push_back(r);
+				colorsVA.push_back(g);
+				colorsVA.push_back(b);
+				verticesVA.push_back(sinj*sinii*radius);
+				verticesVA.push_back(cosii*radius);
+				verticesVA.push_back(cosj*sinii*radius);
+
+				indicesVA.push_back(firstV);
+				indicesVA.push_back(thirdV);
+				if (j < nSeg - 1)
+				{
+					indicesVA.push_back(idNextV);
+				}
+				else
+				{
+					indicesVA.push_back(secondV);
+				}
+				thirdV = idNextV;
+				++idNextV;
+
+				g += 0.01f;
+			}
+			else if (i == (nSeg / 2) - 1)
+			{
+				g = b = 0.f;
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				verticesVBO.push_back(sinjj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosjj*sini*radius);
+				verticesVBO.push_back(sinj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosj*sini*radius);
+				verticesVBO.push_back(sinj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosj*sinii*radius);
+				r += 0.01f;
+			}
+			else
+			{
+				g = 0.f;
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				verticesVBO.push_back(sinj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosj*sini*radius);
+				verticesVBO.push_back(sinj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosj*sinii*radius);
+				verticesVBO.push_back(sinjj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosjj*sinii*radius);
+
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				verticesVBO.push_back(sinj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosj*sini*radius);
+				verticesVBO.push_back(sinjj*sinii*radius);
+				verticesVBO.push_back(cosii*radius);
+				verticesVBO.push_back(cosjj*sinii*radius);
+				verticesVBO.push_back(sinjj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosjj*sini*radius);
+				
+				if (j == 0)
+				{
+					/*firstV = ;
+					secondV = ;
+					thirdV = ;
+					fourthV = ;*/
+				}
+				
+				b += 0.01f;
+			}
 		}
-		colorsVBO.push_back(r);
-		colorsVBO.push_back(g);
-		colorsVBO.push_back(b);
 	}
 
-	verticesVA = { -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f,
-		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
-		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f,
-		lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f };
-
-	indicesVA = { 1, 3, 2, 1, 0, 3,
-		0, 7, 3, 0, 4, 7,
-		5, 2, 6, 5, 1, 2,
-		5, 0, 1, 5, 4, 0,
-		2, 7, 6, 2, 3, 7,
-		4, 6, 7, 4, 5, 6 };*/
-
-	/** NOTE: If we want each face of one colour instead of assigning each vertex a colour, we must create 24 vertices
-	(4 for each face, so the array would be of size 72) instead of 8. That way we can assign a single colour for 4 vertices
-	of the same face, and the others as well **/
-	/*colorsVA = { 1.f, 0.f, 0.f,
-		0.f, 1.f, 0.f,
-		0.f, 1.f, 1.f,
-		0.f, 0.f, 1.f,
-		0.f, 1.f, 1.f,
-		0.f, 0.f, 1.f,
-		1.f, 0.f, 0.f,
-		0.f, 1.f, 0.f };*/
-
-	/*idVertVBO = 0;	//Assign initial value in case GenBuffers fails
+	idVertVBO = 0;	//Assign initial value in case GenBuffers fails
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size(), &verticesVBO[0], GL_STATIC_DRAW);
@@ -101,16 +210,16 @@ void SphereShape::initializeValues()
 	idColVA = 4;
 	glGenBuffers(1, (GLuint*) &(idColVA));
 	glBindBuffer(GL_ARRAY_BUFFER, idColVA);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVA.size(), &colorsVA[0], GL_STATIC_DRAW);*/
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVA.size(), &colorsVA[0], GL_STATIC_DRAW);
 }
 
 bool SphereShape::cleanUp()
 {
-	/*glDeleteBuffers(1, &(idVertVBO));
+	glDeleteBuffers(1, &(idVertVBO));
 	glDeleteBuffers(1, &(idColVBO));
 	glDeleteBuffers(1, &(idVertVA));
 	glDeleteBuffers(1, &(idIndVA));
-	glDeleteBuffers(1, &(idColVA));*/
+	glDeleteBuffers(1, &(idColVA));
 
 	return true;
 }
@@ -123,7 +232,7 @@ void SphereShape::drawDirectMode()
 
 	float difa = 360.f / (float)nSeg;
 	float r, g, b;
-	r = g = b = 0.3f;
+	r = g = b = 0.2f;
 	for (int i = 0; i < nSeg / 2; ++i)
 	{
 		for (int j = 0; j < nSeg; ++j)
@@ -142,7 +251,7 @@ void SphereShape::drawDirectMode()
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
-				r += 0.04f;
+				r += 0.01f;
 			}
 			else if (i == (nSeg / 2) - 1)
 			{
@@ -151,7 +260,7 @@ void SphereShape::drawDirectMode()
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
-				b += 0.04f;
+				b += 0.01f;
 			}
 			else
 			{
@@ -165,68 +274,10 @@ void SphereShape::drawDirectMode()
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
 				
-				g += 0.04f;
+				g += 0.01f;
 			}
 		}
 	}
 
 	glEnd();
-
-	/*glBegin(GL_TRIANGLES);
-
-	//Front Face
-	glColor3f(1.f, 0.f, 0.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-
-	//Left Face
-	glColor3f(1.f, 1.f, 0.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-
-	//Right Face
-	glColor3f(0.f, 1.f, 0.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-
-	//Top Face
-	glColor3f(0.f, 1.f, 1.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
-
-	//Bottom Face
-	glColor3f(0.f, 0.f, 1.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-
-	//Back Face
-	glColor3f(1.f, 0.f, 1.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
-	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
-
-	glEnd();*/
 }

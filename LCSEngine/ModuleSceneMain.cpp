@@ -13,7 +13,7 @@ using namespace std;
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
 	cube1 = new CubeShape();
-	sphere1 = new SphereShape();
+	sphere1 = new SphereShape(1.f, 8);
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
