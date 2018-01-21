@@ -26,6 +26,7 @@ public:
 	void draw();
 
 private:
+	bool manualRotation;
 	Polygon actualPolygon;
 	CubeShape* cube1;
 	SphereShape* sphere1;

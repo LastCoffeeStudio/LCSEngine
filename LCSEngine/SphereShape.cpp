@@ -54,6 +54,14 @@ void SphereShape::initializeValues()
 			float sinjj = sin((j + 1)*difa*(float)M_PI / 180.f);
 			float cosii = cos((i + 1)*difa*(float)M_PI / 180.f);
 			float cosjj = cos((j + 1)*difa*(float)M_PI / 180.f);
+
+			//Adjust last vertex if nSeg odd
+			if (i == (nSeg / 2) - 1 && nSeg % 2 != 0)
+			{
+				sinii = 0;
+				cosii = -1;
+			}
+
 			if (i == 0)
 			{
 				colorsVBO.push_back(r);
@@ -100,15 +108,15 @@ void SphereShape::initializeValues()
 				if (j < nSeg - 1)
 				{
 					indicesVA.push_back(idNextV);
+					thirdV = idNextV;
+					++idNextV;
 				}
 				else
 				{
 					indicesVA.push_back(secondV);
 				}
-				thirdV = idNextV;
-				++idNextV;
 
-				g += 0.01f;
+				g += 0.001f;
 			}
 			else if (i == (nSeg / 2) - 1)
 			{
@@ -122,16 +130,41 @@ void SphereShape::initializeValues()
 				colorsVBO.push_back(r);
 				colorsVBO.push_back(g);
 				colorsVBO.push_back(b);
-				verticesVBO.push_back(sinjj*sini*radius);
-				verticesVBO.push_back(cosi*radius);
-				verticesVBO.push_back(cosjj*sini*radius);
 				verticesVBO.push_back(sinj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosj*sini*radius);
 				verticesVBO.push_back(sinj*sinii*radius);
 				verticesVBO.push_back(cosii*radius);
 				verticesVBO.push_back(cosj*sinii*radius);
-				r += 0.01f;
+				verticesVBO.push_back(sinjj*sini*radius);
+				verticesVBO.push_back(cosi*radius);
+				verticesVBO.push_back(cosjj*sini*radius);
+
+				if (j == 0)
+				{
+					firstV = idNextV - nSeg;
+					secondV = idNextV;
+					thirdV = idNextV - nSeg;
+					verticesVA.push_back(sinj*sinii*radius);
+					verticesVA.push_back(cosii*radius);
+					verticesVA.push_back(cosj*sinii*radius);
+				}
+
+				if (j < nSeg - 1)
+				{
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(secondV);
+					indicesVA.push_back(thirdV+1);
+					++thirdV;
+				}
+				else
+				{
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(secondV);
+					indicesVA.push_back(firstV);
+				}
+
+				r += 0.001f;
 			}
 			else
 			{
@@ -176,13 +209,42 @@ void SphereShape::initializeValues()
 				
 				if (j == 0)
 				{
-					/*firstV = ;
-					secondV = ;
-					thirdV = ;
-					fourthV = ;*/
+					firstV = idNextV - nSeg;
+					secondV = idNextV;
+					thirdV = idNextV - nSeg;
+					fourthV = idNextV;
 				}
-				
-				b += 0.01f;
+
+				colorsVA.push_back(r);
+				colorsVA.push_back(g);
+				colorsVA.push_back(b);
+				verticesVA.push_back(sinj*sinii*radius);
+				verticesVA.push_back(cosii*radius);
+				verticesVA.push_back(cosj*sinii*radius);
+
+				if (j < nSeg - 1)
+				{
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(fourthV);
+					indicesVA.push_back(fourthV+1);
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(fourthV+1);
+					indicesVA.push_back(thirdV+1);
+					++thirdV;
+					++fourthV;
+				}
+				else
+				{
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(fourthV);
+					indicesVA.push_back(secondV);
+					indicesVA.push_back(thirdV);
+					indicesVA.push_back(secondV);
+					indicesVA.push_back(firstV);
+				}
+				++idNextV;
+
+				b += 0.001f;
 			}
 		}
 	}
@@ -245,13 +307,21 @@ void SphereShape::drawDirectMode()
 			float sinjj = sin((j + 1)*difa*(float)M_PI / 180.f);
 			float cosii = cos((i + 1)*difa*(float)M_PI / 180.f);
 			float cosjj = cos((j + 1)*difa*(float)M_PI / 180.f);
+
+			//Adjust last vertex if nSeg odd
+			if (i == (nSeg / 2) - 1 && nSeg % 2 != 0)
+			{
+				sinii = 0;
+				cosii = -1;
+			}
+
 			if (i == 0)
 			{
 				glColor3f(r, g, b);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
-				r += 0.01f;
+				r += 0.001f;
 			}
 			else if (i == (nSeg / 2) - 1)
 			{
@@ -260,7 +330,7 @@ void SphereShape::drawDirectMode()
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
-				b += 0.01f;
+				b += 0.001f;
 			}
 			else
 			{
@@ -274,7 +344,7 @@ void SphereShape::drawDirectMode()
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
 				
-				g += 0.01f;
+				g += 0.001f;
 			}
 		}
 	}

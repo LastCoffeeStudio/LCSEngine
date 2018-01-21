@@ -7,19 +7,17 @@
 #include "Glew/include/glew.h"
 #include "SDL_mouse.h"
 
-#include <iostream>
-using namespace std;
-
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
 	cube1 = new CubeShape();
-	sphere1 = new SphereShape(1.f, 8);
+	sphere1 = new SphereShape(1.f, 16);
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
 
 bool ModuleSceneMain::init()
 {
+	manualRotation = false;
 	cube1->initializeValues();
 	sphere1->initializeValues();
 	return true;
@@ -34,19 +32,30 @@ bool ModuleSceneMain::start()
 update_status ModuleSceneMain::update(const float deltaTime)
 {
 	//To check polygon rotation
-	glRotatef(0.3f, 0.1f, 1.f, 0.f);
 
-	/*if (App->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
+	if (App->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
 	{
-		int x = App->input->getMouseMotion().x;
-		int y = App->input->getMouseMotion().y;
-		if (MAX(abs(x), abs(y)) != 0)
+		manualRotation = !manualRotation;
+	}
+
+	switch (manualRotation)
+	{
+	case true:
+		if (App->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
 		{
-			float magnitude = sqrt((float)pow(x, 2) + (float)pow(y, 2));
-			glRotatef(magnitude, (float)(x / MAX(abs(x), abs(y))), (float)(y / MAX(abs(x), abs(y))), 0.f);
-			cout << magnitude << " " << x << " " << y << endl;
+			int x = App->input->getMouseMotion().x;
+			int y = App->input->getMouseMotion().y;
+			if (MAX(abs(x), abs(y)) != 0)
+			{
+				float magnitude = sqrt((float)pow(x, 2) + (float)pow(y, 2));
+				glRotatef(magnitude, (float)(x / MAX(abs(x), abs(y))), (float)(y / MAX(abs(x), abs(y))), 0.f);
+			}
 		}
-	}*/
+		break;
+	case false:
+		glRotatef(0.4f, 0.1f, 1.f, 0.f);
+		break;
+	}
 
 	if (App->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
 	{
