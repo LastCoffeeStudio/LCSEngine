@@ -21,6 +21,8 @@ public:
 	// Called before quitting
 	bool CleanUp();
 
+	update_status Update(const float deltaTime);
+
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;
