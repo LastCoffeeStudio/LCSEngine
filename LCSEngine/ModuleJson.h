@@ -13,6 +13,7 @@ public:
 	~ModuleJson();
 
 	string readPathImage(const string path) const;
+
 };
 
 #endif // __MODULEJSON_H__

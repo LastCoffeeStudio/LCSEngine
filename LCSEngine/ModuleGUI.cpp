@@ -4,6 +4,8 @@
 #include "ModuleWindow.h"
 #include "imgui-1.53/imgui_impl_sdl_gl3.h"
 #include "imgui-1.53/gl3w/GL/gl3w.h"
+#include <string>
+#include <shellapi.h>
 
 
 ModuleGUI::ModuleGUI() {}
@@ -65,12 +67,25 @@ bool ModuleGUI::cleanUp()
 
 void ModuleGUI::showAboutWindow()
 {
+	ImVec4 linkColor = ImVec4(0.f, 0.f, 0.f, 1.00f);
+
 	ImGui::SetNextWindowSize(ImVec2(500, 1000), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin("About", &show_engine_about);
 	ImGui::Text("LCSEngine v1.0.45");
-	ImGui::NewLine();
 	ImGui::TextWrapped("3D Engine made for a project using OpenGL");
-	ImGui::TextWrapped("Made by Carlos Alamo, Ferran Coma, Dani Mateu, Adrian Meizoso and Daniel Romero");
+	ImGui::NewLine();
+
+	ImGui::Text("Made by:");
+	ImGui::Text("Carlos Alamo");	
+	putHyperlink("https://github.com/carlos2380");
+	ImGui::Text("Ferran Coma");
+	putHyperlink("https://github.com/vandalo");
+	ImGui::Text("Dani Mateu");
+	putHyperlink("https://github.com/Nyghor");
+	ImGui::Text("Adrian Meizoso");
+	putHyperlink("https://github.com/AdrianMeizoso");
+	ImGui::Text("Daniel Romero");
+	putHyperlink("https://github.com/lordmizel");
 	ImGui::NewLine();
 
 	ImGui::Text("3rd party libraries used:");
@@ -85,8 +100,7 @@ void ModuleGUI::showAboutWindow()
 	ImGui::Text("License:");
 	ImGui::Text("GNU GENERAL PUBLIC LICENSE");
 
-	ImGui::TextWrapped(
-		"Copyright(C) 2018  Carlos Alamo, Ferran Coma, Dani Mateu, Adrian Meizoso and Daniel Romero\n\n"
+	const char* s = "Copyright(C) 2018  Carlos Alamo, Ferran Coma, Dani Mateu, Adrian Meizoso and Daniel Romero\n\n"
 		"This program is free software : you can redistribute it and/or modify "
 		"it under the terms of the GNU General Public License as published by"
 		"the Free Software Foundation, either version 3 of the License, or"
@@ -96,8 +110,9 @@ void ModuleGUI::showAboutWindow()
 		"MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.See the"
 		"GNU General Public License for more details.\n\n"
 		"You should have received a copy of the GNU General Public License"
-		"along with this program.If not, see http://www.gnu.org/licenses/");
+		"along with this program.If not, see http://www.gnu.org/licenses/";
 
+	ImGui::TextWrapped(s);
 
 	ImGui::End();
 }
@@ -127,4 +142,14 @@ void ModuleGUI::showMainWindow()
 	}
 
 	ImGui::End();
+}
+
+void ModuleGUI::putHyperlink(const char * link)
+{
+	ImGui::TextColored(ImVec4(0.2f, 0.5f, 0.73f, 1.00f), link);
+	ImGui::SameLine(1);
+	if (ImGui::InvisibleButton(link, ImVec2(ImGui::CalcTextSize(link).x, ImGui::CalcTextSize(link).y)))
+	{
+		ShellExecute(NULL, TEXT("open"), TEXT(link), NULL, NULL, 0);
+	};
 }

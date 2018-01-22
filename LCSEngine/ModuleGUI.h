@@ -26,6 +26,8 @@ public:
 private:
 	void showAboutWindow();
 	void showMainWindow();
+
+	void putHyperlink(const char* link);
 };
 
 #endif // __MODULEIGUI_H__
