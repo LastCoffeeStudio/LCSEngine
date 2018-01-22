@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
+#include "ModuleGUI.h"
 #include "ModuleInput.h"
 #include "ModuleSceneMain.h"
 #include "SDL/include/SDL.h"
@@ -18,12 +19,6 @@ ModuleRender::~ModuleRender() {}
 // Called before render is available
 bool ModuleRender::init()
 {
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
 
 	bool ret = true;
 
@@ -63,7 +58,7 @@ bool ModuleRender::init()
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	//glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHTING);
 	//glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
@@ -73,9 +68,8 @@ bool ModuleRender::init()
 
 update_status ModuleRender::preUpdate(const float deltaTime)
 {
-	glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+	glClearColor(App->gui->clear_color.x, App->gui->clear_color.y, App->gui->clear_color.z, App->gui->clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glMatrixMode(GL_MODELVIEW);
 	return UPDATE_CONTINUE;
 }
 
@@ -88,7 +82,6 @@ update_status ModuleRender::update(const float deltaTime)
 update_status ModuleRender::postUpdate(const float deltaTime)
 {
 	App->sceneMain->draw();
-
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;
 }
@@ -97,9 +90,6 @@ update_status ModuleRender::postUpdate(const float deltaTime)
 bool ModuleRender::cleanUp()
 {
 	LOG("Destroying renderer");
-
-	//Destroy window
-	
 
 	return true;
 }

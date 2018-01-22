@@ -2,6 +2,8 @@
 #define __MODULEWINDOW_H__
 
 #include "Module.h"
+#include "SDL/include/SDL.h"
+#include <SDL.h>
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -21,14 +23,14 @@ public:
 	// Called before quitting
 	bool cleanUp();
 
-	update_status Update(const float deltaTime);
-
 public:
 	//The window we'll be rendering to
 	SDL_Window* window = nullptr;
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
+
+	SDL_GLContext glcontext;
 };
 
 #endif // __MODULEWINDOW_H__

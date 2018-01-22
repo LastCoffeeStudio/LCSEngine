@@ -67,7 +67,7 @@ public:
 	}
 
 private:
-	bool active = true;
+	bool active = false;
 };
 
 #endif // __MODULE_H__

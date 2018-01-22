@@ -211,6 +211,7 @@
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleFadeToBlack.h" />
+    <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleSceneMain.h" />
     <ClInclude Include="ModuleJson.h" />
@@ -263,6 +264,7 @@
     <ClCompile Include="MathGeoLib\src\Time\Clock.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />
+    <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleSceneMain.cpp" />
     <ClCompile Include="ModuleJson.cpp" />
