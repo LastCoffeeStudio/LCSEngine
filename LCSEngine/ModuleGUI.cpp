@@ -2,9 +2,8 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
-#include "imgui-1.53/imgui_impl_sdl_gl3.h"
-#include "imgui-1.53/gl3w/GL/gl3w.h"
-#include <string>
+#include "Imgui/imgui_impl_sdl_gl3.h"
+#include "windows.h"
 #include <shellapi.h>
 
 
@@ -14,34 +13,25 @@ ModuleGUI::~ModuleGUI() {}
 
 bool ModuleGUI::init()
 {
-	gl3wInit(); 
-
 	// Setup ImGui binding
 	ImGui_ImplSdlGL3_Init(App->window->window);
-
-	// Setup style
-	ImGui::StyleColorsClassic();
-
-	clear_color = ImVec4(0.f, 0.f, 0.f, 1.00f);
 
 	return true;
 }
 
 update_status ModuleGUI::preUpdate(const float deltaTime)
 {
-	glViewport(0, 0, (int)ImGui::GetIO().DisplaySize.x, (int)ImGui::GetIO().DisplaySize.y);
+	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleGUI::update(const float deltaTime)
 {
-	ImGui_ImplSdlGL3_NewFrame(App->window->window);
-
 	showMainWindow();
-
+	
 	if (show_engine_about)
 	{
-		showAboutWindow();
+	showAboutWindow();
 	}
 
 	if (show_demo_window)
@@ -49,20 +39,18 @@ update_status ModuleGUI::update(const float deltaTime)
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
 		ImGui::ShowTestWindow();
 	}
-
+	
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleGUI::postUpdate(const float deltaTime)
 {
-	ImGui::Render();
 	return UPDATE_CONTINUE;
 }
 
-bool ModuleGUI::cleanUp()
+void ModuleGUI::draw()
 {
-	ImGui_ImplSdlGL3_Shutdown();
-	return true;
+	ImGui::Render();
 }
 
 void ModuleGUI::showAboutWindow()
@@ -76,7 +64,7 @@ void ModuleGUI::showAboutWindow()
 	ImGui::NewLine();
 
 	ImGui::Text("Made by:");
-	ImGui::Text("Carlos Alamo");	
+	ImGui::Text("Carlos Alamo");
 	putHyperlink("https://github.com/carlos2380");
 	ImGui::Text("Ferran Coma");
 	putHyperlink("https://github.com/vandalo");

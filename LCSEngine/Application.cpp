@@ -2,11 +2,11 @@
 #include "ModuleWindow.h"
 #include "ModuleJson.h"
 #include "ModuleRender.h"
+#include "ModuleGUI.h"
 #include "ModuleTextures.h"
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
-#include "ModuleGUI.h"
 #include "Globals.h"
 #include "ModuleSceneMain.h"
 using namespace std;
@@ -19,11 +19,11 @@ Application::Application()
 
 	modules.push_back(json = new ModuleJson());
 
-	modules.push_back(gui = new ModuleGUI());
 	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(gui = new ModuleGUI());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
-	modules.push_back(fade = new ModuleFadeToBlack()); 
+	modules.push_back(fade = new ModuleFadeToBlack());
 
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	

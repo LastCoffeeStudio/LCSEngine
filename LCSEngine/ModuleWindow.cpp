@@ -1,6 +1,7 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
+#include "SDL/include/SDL.h"
 
 ModuleWindow::ModuleWindow() {}
 
@@ -13,26 +14,36 @@ bool ModuleWindow::init()
 	LOG("Init SDL window & surface");
 	bool ret = true;
 
-	// Setup SDL
-	if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_TIMER) != 0)
+	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
-		printf("Error: %s\n", SDL_GetError());
+		LOG("SDL_VIDEO could not initialize! SDL_Error: %s\n", SDL_GetError());
 		ret = false;
 	}
+	else
+	{
+		//Create window
+		int width = SCREEN_WIDTH * SCREEN_SIZE;
+		int height = SCREEN_HEIGHT * SCREEN_SIZE;
+		Uint32 flags = SDL_WINDOW_OPENGL;
 
-	// Setup window
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_FLAGS, SDL_GL_CONTEXT_FORWARD_COMPATIBLE_FLAG);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
-	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
-	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 2);
-	SDL_DisplayMode current;
-	SDL_GetCurrentDisplayMode(0, &current);
+		if (FULLSCREEN == true)
+		{
+			flags |= SDL_WINDOW_FULLSCREEN;
+		}
 
-	window = SDL_CreateWindow("ImGui SDL2+OpenGL3 example", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 1280, 720, SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE);
-	glcontext = SDL_GL_CreateContext(window);
+		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
+		
+		if (window == nullptr)
+		{
+			LOG("Window could not be created! SDL_Error: %s\n", SDL_GetError());
+			ret = false;
+		}
+		else
+		{
+			//Get window surface
+			screen_surface = SDL_GetWindowSurface(window);
+		}
+	}
 
 	return ret;
 }
@@ -46,7 +57,6 @@ bool ModuleWindow::cleanUp()
 	if (window != nullptr)
 	{
 		SDL_DestroyWindow(window);
-		SDL_GL_DeleteContext(glcontext);
 	}
 
 	//Quit SDL subsystems

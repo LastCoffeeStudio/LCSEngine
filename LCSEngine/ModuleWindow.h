@@ -2,8 +2,6 @@
 #define __MODULEWINDOW_H__
 
 #include "Module.h"
-#include "SDL/include/SDL.h"
-#include <SDL.h>
 
 struct SDL_Window;
 struct SDL_Surface;
@@ -29,8 +27,6 @@ public:
 
 	//The surface contained by the window
 	SDL_Surface* screen_surface = nullptr;
-
-	SDL_GLContext glcontext;
 };
 
 #endif // __MODULEWINDOW_H__
