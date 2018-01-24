@@ -17,7 +17,8 @@ public:
 	bool cleanUp();
 	float* getViewMatrix();
 	float* getProjectMatrix();
-	bool updatedWindowSize(int screenWidth, int screenHeight);
+	void updatedWindowSize(int screenWidth, int screenHeight);
+	void cameraZoom(float deltaTime);
 
 public:
 	Frustum frustum;
@@ -27,6 +28,7 @@ private:
 
 private:
 	float cameraSpeed = 2.f;
+	float zoomSpeed = 5.f;
 };
 
 #endif // __MODULECAMERA_H__

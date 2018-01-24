@@ -31,6 +31,7 @@ bool ModuleCamera::init()
 update_status ModuleCamera::update(const float deltaTime)
 {
 	moveCamera(deltaTime);
+	cameraZoom(deltaTime);
 	return UPDATE_CONTINUE;
 }
 
@@ -51,10 +52,9 @@ float* ModuleCamera::getProjectMatrix()
 
 
 
-bool ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
+void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 {
 	frustum.horizontalFov = 2.0f * atanf(tanf(frustum.verticalFov / 2.0f)*((float)screenWidth / (float)screenHeight));
-	return true;
 }
 
 
@@ -99,4 +99,21 @@ void ModuleCamera::moveCamera(const float deltaTime)
 	}
 
 	frustum.Translate(displacement*speed);
+}
+
+void ModuleCamera::cameraZoom(float deltaTime)
+{
+
+	float speed = zoomSpeed*deltaTime;
+	if (App->input->getKey(SDL_SCANCODE_X) == KEY_REPEAT)
+	{
+		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) + speed);
+	}
+
+	if (App->input->getKey(SDL_SCANCODE_Z) == KEY_REPEAT)
+	{
+		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) - speed);
+	}
+
+	updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 }
