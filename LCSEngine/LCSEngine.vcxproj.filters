@@ -32,19 +32,7 @@
       <UniqueIdentifier>{58df3ae5-f22d-464b-af7e-1a7618517947}</UniqueIdentifier>
     </Filter>
     <Filter Include="Imgui">
-      <UniqueIdentifier>{e8a9e57e-f755-4c26-b456-ad58ec13b373}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\gl3w">
-      <UniqueIdentifier>{89e193cf-252c-4b8b-9824-5dbb958fb200}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\imgui">
-      <UniqueIdentifier>{9f64b4b5-7350-4578-8756-bdc4f80b9d4c}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\sources">
-      <UniqueIdentifier>{9932721b-9dc6-4fbc-9139-92eb4583f49d}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Imgui\glfw">
-      <UniqueIdentifier>{b102302d-86c7-4b2e-a884-e28abaf54994}</UniqueIdentifier>
+      <UniqueIdentifier>{15077779-c19e-4378-b4ef-b3c41e03e980}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -261,30 +249,6 @@
     <ClInclude Include="ModuleSceneMain.h">
       <Filter>Engine Modules</Filter>
     </ClInclude>
-    <ClInclude Include="imgui-1.53\gl3w\GL\gl3w.h">
-      <Filter>Imgui\gl3w</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\gl3w\GL\glcorearb.h">
-      <Filter>Imgui\gl3w</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\imconfig.h">
-      <Filter>Imgui\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\imgui.h">
-      <Filter>Imgui\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\imgui_internal.h">
-      <Filter>Imgui\imgui</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\imgui_impl_sdl_gl3.h">
-      <Filter>Imgui\sources</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\glfw\include\GLFW\glfw3.h">
-      <Filter>Imgui\glfw</Filter>
-    </ClInclude>
-    <ClInclude Include="imgui-1.53\glfw\include\GLFW\glfw3native.h">
-      <Filter>Imgui\glfw</Filter>
-    </ClInclude>
     <ClInclude Include="CubeShape.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -293,6 +257,30 @@
     </ClInclude>
     <ClInclude Include="Primitive.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imconfig.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui_internal.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\imgui_user.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\stb_rect_pack.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\stb_textedit.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="Imgui\stb_truetype.h">
+      <Filter>Imgui</Filter>
     </ClInclude>
     <ClInclude Include="ModuleGUI.h">
       <Filter>Core</Filter>
@@ -422,21 +410,6 @@
     <ClCompile Include="ModuleSceneMain.cpp">
       <Filter>Engine Modules</Filter>
     </ClCompile>
-    <ClCompile Include="imgui-1.53\gl3w\GL\gl3w.c">
-      <Filter>Imgui\gl3w</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.53\imgui.cpp">
-      <Filter>Imgui\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.53\imgui_demo.cpp">
-      <Filter>Imgui\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.53\imgui_draw.cpp">
-      <Filter>Imgui\imgui</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui-1.53\imgui_impl_sdl_gl3.cpp">
-      <Filter>Imgui\sources</Filter>
-    </ClCompile>
     <ClCompile Include="CubeShape.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
@@ -445,6 +418,21 @@
     </ClCompile>
     <ClCompile Include="Primitive.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_demo.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_draw.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_impl_sdl_gl3.cpp">
+      <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="Imgui\imgui_user2.cpp">
+      <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleGUI.cpp">
       <Filter>Core</Filter>
