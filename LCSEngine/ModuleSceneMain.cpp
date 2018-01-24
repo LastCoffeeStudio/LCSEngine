@@ -5,6 +5,7 @@
 #include "CubeShape.h"
 #include "SphereShape.h"
 #include "Glew/include/glew.h"
+#include "Imgui/imgui.h"
 #include "SDL_mouse.h"
 
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
@@ -53,7 +54,7 @@ update_status ModuleSceneMain::update(const float deltaTime)
 		}
 		break;
 	case false:
-		glRotatef(0.4f, 0.1f, 1.f, 0.f);
+		//glRotatef(4.0f, 0.0f, 1.f, 0.f);
 		break;
 	}
 
@@ -122,7 +123,7 @@ void ModuleSceneMain::draw()
 			glVertex3f(0.f, 0.5f, 0.f); // lower left vertex
 			glVertex3f(0.5f, -0.5f, 0.f); // lower right vertex
 			glVertex3f(-0.5f, -0.5f, 0.f); // upper vertex
-
+			
 			glEnd();
 			break;
 
@@ -133,5 +134,28 @@ void ModuleSceneMain::draw()
 		case SPHERE:
 			sphere1->draw();
 			break;
+	}
+	drawGrid();
+}
+
+void ModuleSceneMain::drawGrid()
+{
+	//Draw grid
+	float size = ImGui::GetWindowSize().x;
+	if (ImGui::GetWindowSize().y > size) size = ImGui::GetWindowSize().y;
+
+	for (unsigned int i = 0; i < size; i += DIST_BTW_LINES_GRID)
+	{
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f(-100.0f, 0.0f, (float)i);
+		glVertex3f(100.0f, 0.0f, (float)i);
+		glEnd();
+		glBegin(GL_LINES);
+		glColor3f(1.0f, 0.0f, 0.0f);
+		glVertex3f((float)i, 0.0f, -100.0f);
+		glVertex3f((float)i, 0.0f, 100.0f);
+		glEnd();
+
 	}
 }

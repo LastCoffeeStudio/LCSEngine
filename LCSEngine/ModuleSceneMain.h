@@ -24,6 +24,7 @@ public:
 	update_status update(const float deltaTime) override;
 	bool cleanUp() override;
 	void draw();
+	void drawGrid();
 
 private:
 	bool manualRotation;
