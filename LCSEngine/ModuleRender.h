@@ -20,6 +20,8 @@ public:
 	update_status postUpdate(const float deltaTime);
 	bool cleanUp();
 
+	void  updatedWindowSize(int screenWidth, int screenHeight);
+
 public:
 	SDL_Renderer* renderer = nullptr;
 };

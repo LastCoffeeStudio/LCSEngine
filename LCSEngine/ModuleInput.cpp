@@ -1,7 +1,8 @@
-#include "ModuleCamera.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
+#include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "SDL/include/SDL.h"
 #include <string>
 
@@ -111,7 +112,8 @@ update_status ModuleInput::preUpdate(const float deltaTime)
 
 				//case SDL_WINDOWEVENT_ENTER:
 			case SDL_WINDOWEVENT_RESIZED:
-				App->camera->updatedWindowSize(event.window.data1, event.window.data2);
+					App->camera->updatedWindowSize(event.window.data1, event.window.data2);
+					App->renderer->updatedWindowSize(event.window.data1, event.window.data2);
 				break;
 			case SDL_WINDOWEVENT_SHOWN:
 			case SDL_WINDOWEVENT_FOCUS_GAINED:
