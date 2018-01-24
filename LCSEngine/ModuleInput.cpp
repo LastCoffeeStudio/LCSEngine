@@ -1,8 +1,8 @@
+#include "ModuleCamera.h"
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleInput.h"
 #include "SDL/include/SDL.h"
-
 #include <string>
 
 #define MAX_KEYS 300
@@ -110,6 +110,9 @@ update_status ModuleInput::preUpdate(const float deltaTime)
 				break;
 
 				//case SDL_WINDOWEVENT_ENTER:
+			case SDL_WINDOWEVENT_RESIZED:
+				App->camera->updatedWindowSize(event.window.data1, event.window.data2);
+				break;
 			case SDL_WINDOWEVENT_SHOWN:
 			case SDL_WINDOWEVENT_FOCUS_GAINED:
 			case SDL_WINDOWEVENT_MAXIMIZED:

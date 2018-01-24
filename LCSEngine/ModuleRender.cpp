@@ -103,7 +103,7 @@ update_status ModuleRender::postUpdate(const float deltaTime)
 // Called before quitting
 bool ModuleRender::cleanUp()
 {
-	//LOG("Destroying renderer");
+	LOG("Destroying renderer");
 
 	//Destroy window
 	

@@ -4,7 +4,6 @@
 
 #include "Module.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
-#include "MathGeoLib/src/Math/float3x4.h"
 
 class ModuleCamera : public Module
 {
@@ -17,6 +16,7 @@ public:
 	bool cleanUp();
 	float* getViewMatrix();
 	float* getProjectMatrix();
+	bool updatedWindowSize(int screenWidth, int screenHeight);
 
 public:
 

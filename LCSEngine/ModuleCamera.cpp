@@ -1,6 +1,6 @@
 #include "ModuleCamera.h"
 #include "MathGeoLib/src/Math/float3x4.h"
-#include <glew.h>
+#include "MathGeoLib/src/Math/MathFunc.h"
 
 
 ModuleCamera::ModuleCamera() {}
@@ -9,8 +9,8 @@ ModuleCamera::~ModuleCamera() {}
 
 bool ModuleCamera::init()
 {
-	frustum.verticalFov = 0.94248f;
-	frustum.horizontalFov = 1.41372f;
+	frustum.verticalFov = DegToRad(60.0f);
+	frustum.horizontalFov = DegToRad(90.0f);
 	frustum.nearPlaneDistance = 0.1;
 	frustum.farPlaneDistance = 100;
 	float3 position = { 0, 0, 0 };
@@ -38,6 +38,13 @@ float* ModuleCamera::getViewMatrix()
 float* ModuleCamera::getProjectMatrix()
 {
 	return frustum.ProjectionMatrix().Transposed().v[0];
+}
+
+
+bool ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
+{
+	frustum.horizontalFov = 2.0f * atan(tan((float)frustum.verticalFov / 2.0f)*(screenWidth / screenHeight));
+	return true;
 }
 
 
