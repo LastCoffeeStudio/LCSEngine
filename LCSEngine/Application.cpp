@@ -9,6 +9,7 @@
 #include "ModuleFadeToBlack.h"
 #include "Globals.h"
 #include "ModuleSceneMain.h"
+#include "ModuleCamera.h"
 using namespace std;
 
 Application::Application()
@@ -19,6 +20,7 @@ Application::Application()
 
 	modules.push_back(json = new ModuleJson());
 
+	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(gui = new ModuleGUI());
 	modules.push_back(textures = new ModuleTextures());

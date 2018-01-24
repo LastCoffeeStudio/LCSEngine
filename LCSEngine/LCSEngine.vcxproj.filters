@@ -285,6 +285,9 @@
     <ClInclude Include="ModuleGUI.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleCamera.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -435,6 +438,9 @@
       <Filter>Imgui</Filter>
     </ClCompile>
     <ClCompile Include="ModuleGUI.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleCamera.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

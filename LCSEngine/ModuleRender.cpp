@@ -8,6 +8,7 @@
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
+#include "ModuleCamera.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -78,7 +79,10 @@ update_status ModuleRender::preUpdate(const float deltaTime)
 {
 	glClearColor(App->gui->clear_color.x, App->gui->clear_color.y, App->gui->clear_color.z, App->gui->clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glLoadMatrixf(App->camera->getProjectMatrix());
 	glMatrixMode(GL_MODELVIEW);
+	glLoadMatrixf(App->camera->getViewMatrix());
 	return UPDATE_CONTINUE;
 }
 
@@ -99,7 +103,7 @@ update_status ModuleRender::postUpdate(const float deltaTime)
 // Called before quitting
 bool ModuleRender::cleanUp()
 {
-	LOG("Destroying renderer");
+	//LOG("Destroying renderer");
 
 	//Destroy window
 	

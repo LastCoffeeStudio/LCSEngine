@@ -15,6 +15,7 @@ class ModuleAudio;
 class ModuleFadeToBlack;
 class ModuleSceneMain;
 class ModuleGUI;
+class ModuleCamera;
 
 class Application
 {
@@ -36,6 +37,7 @@ public:
 	ModuleFadeToBlack* fade;
 	ModuleSceneMain* sceneMain;
 	ModuleGUI* gui;
+	ModuleCamera* camera;
 
 private:
 	std::list<Module*> modules;
