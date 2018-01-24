@@ -21,12 +21,13 @@ public:
 
 public:
 	Frustum frustum;
+	float cameraSpeed = 2.f;
 
 private:
 	void moveCamera(const float deltaTime);
 
 private:
-	float cameraSpeed = 2.f;
+	
 };
 
 #endif // __MODULECAMERA_H__
