@@ -54,19 +54,19 @@ update_status ModuleSceneMain::update(const float deltaTime)
 		}
 		break;
 	case false:
-		//glRotatef(4.0f, 0.0f, 1.f, 0.f);
+		//glRotatef(0.3f, 0.1f, 1.f, 0.f);
 		break;
 	}
 
-	if (App->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)
+	if (App->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		actualPolygon = TRIANGLE;
 	}
-	if (App->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	if (App->input->getKey(SDL_SCANCODE_N) == KEY_DOWN)
 	{
 		actualPolygon = CUBE;
 	}
-	if (App->input->getKey(SDL_SCANCODE_S) == KEY_DOWN)
+	if (App->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
 	{
 		actualPolygon = SPHERE;
 	}
