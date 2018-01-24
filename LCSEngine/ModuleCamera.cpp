@@ -9,8 +9,8 @@ ModuleCamera::~ModuleCamera() {}
 
 bool ModuleCamera::init()
 {
-	frustum.verticalFov = 6;
-	frustum.horizontalFov = 9;
+	frustum.verticalFov = 0.94248f;
+	frustum.horizontalFov = 1.41372f;
 	frustum.nearPlaneDistance = 0.1;
 	frustum.farPlaneDistance = 100;
 	float3 position = { 0, 0, 0 };
