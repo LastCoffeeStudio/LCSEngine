@@ -71,7 +71,6 @@ bool ModuleRender::init()
 	//glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
-	glOrtho(-1,1,-1,1,-5,5);
 	return ret;
 }
 

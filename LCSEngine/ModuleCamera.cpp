@@ -7,20 +7,22 @@ ModuleCamera::ModuleCamera() {}
 
 ModuleCamera::~ModuleCamera() {}
 
+
+
 bool ModuleCamera::init()
 {
+	frustum.type = PerspectiveFrustum;
 	frustum.verticalFov = DegToRad(60.0f);
-	frustum.horizontalFov = DegToRad(90.0f);
-	frustum.nearPlaneDistance = 0.1;
-	frustum.farPlaneDistance = 100;
-	float3 position = { 0, 0, 0 };
+	frustum.horizontalFov = DegToRad(36.0f);
+	frustum.nearPlaneDistance = 0.1f;
+	frustum.farPlaneDistance = 100.f;
+	float3 position = { 0.0f, 1.0f, 0.0f };
 	frustum.pos = position;
-	float3 front = { 0, 0, 1 };
+	float3 front = { 0.0f, 0.0f, -1.0f };
 	frustum.front = front;
-	float3 up = { 0, 1, 0 };
+	float3 up = { 0.0f, 1.0f, 0.0f };
 	frustum.up = up;
-	
-
+	updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return  true;
 }
 
@@ -43,7 +45,7 @@ float* ModuleCamera::getProjectMatrix()
 
 bool ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 {
-	frustum.horizontalFov = 2.0f * atan(tan((float)frustum.verticalFov / 2.0f)*(screenWidth / screenHeight));
+	frustum.horizontalFov = 2.0f * atan(tan(frustum.verticalFov / 2.0f)*(screenWidth / screenHeight));
 	return true;
 }
 
