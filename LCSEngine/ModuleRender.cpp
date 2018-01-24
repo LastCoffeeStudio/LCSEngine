@@ -79,7 +79,7 @@ update_status ModuleRender::preUpdate(const float deltaTime)
 	glClearColor(App->gui->clear_color.x, App->gui->clear_color.y, App->gui->clear_color.z, App->gui->clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_PROJECTION);
-	glLoadMatrixf(App->camera->getProjectMatrix());
+	/*if(CONDITION) */glLoadMatrixf(App->camera->getProjectMatrix());
 	glMatrixMode(GL_MODELVIEW);
 	glLoadMatrixf(App->camera->getViewMatrix());
 	return UPDATE_CONTINUE;
@@ -108,4 +108,10 @@ bool ModuleRender::cleanUp()
 	
 
 	return true;
+}
+
+
+void ModuleRender::updatedWindowSize(int screenWidth, int screenHeight)
+{
+	glViewport(0, 0, screenWidth, screenHeight);
 }
