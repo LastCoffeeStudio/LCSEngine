@@ -52,4 +52,7 @@ enum update_status
 #define TITLE "LCSEngine"
 #define FPS 60
 
+
+#define DIST_BTW_LINES_GRID 1
+
 #endif //__GLOBALS_H__
