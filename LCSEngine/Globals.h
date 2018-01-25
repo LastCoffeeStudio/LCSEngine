@@ -43,9 +43,12 @@ enum update_status
 	#define DEBUG false
 #endif
 
+#define CHECKERS_HEIGHT 128
+#define CHECKERS_WIDTH 128
+
 // Configuration -----------
-#define SCREEN_WIDTH 800
-#define SCREEN_HEIGHT 450
+#define SCREEN_WIDTH 1000
+#define SCREEN_HEIGHT 1000
 #define SCREEN_SIZE 1
 #define FULLSCREEN false
 #define VSYNC true

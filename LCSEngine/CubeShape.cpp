@@ -1,4 +1,7 @@
+#include "Globals.h"
+#include "Application.h"
 #include "CubeShape.h"
+#include "ModuleTextures.h"
 
 CubeShape::CubeShape()
 {
@@ -95,6 +98,8 @@ void CubeShape::initializeValues()
 	glGenBuffers(1, (GLuint*) &(idColVA));
 	glBindBuffer(GL_ARRAY_BUFFER, idColVA);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVA.size(), &colorsVA[0], GL_STATIC_DRAW);
+
+	App->textures->loadCheckers();
 }
 
 bool CubeShape::cleanUp()
@@ -111,62 +116,102 @@ bool CubeShape::cleanUp()
 void CubeShape::drawDirectMode()
 {
 	/** We fix a pivot on the center of the cube, i.e. we divide by 2 **/
-
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, App->textures->ImageName);
 	glBegin(GL_TRIANGLES);
 
 	//Front Face
 	glColor3f(1.f, 0.f, 0.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
 
 	//Left Face
 	glColor3f(1.f, 1.f, 0.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
 
 	//Right Face
 	glColor3f(0.f, 1.f, 0.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
 
 	//Top Face
 	glColor3f(0.f, 1.f, 1.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f);
 
 	//Bottom Face
 	glColor3f(0.f, 0.f, 1.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
 
 	//Back Face
 	glColor3f(1.f, 0.f, 1.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 0.0f);
 	glVertex3f(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(1.0f, 1.0f);
 	glVertex3f(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 1.0f);
 	glVertex3f(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f);
+	glTexCoord2f(0.0f, 0.0f);
 	glVertex3f(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f);
 
 	glEnd();
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
 }
