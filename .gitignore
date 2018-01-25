@@ -289,3 +289,4 @@ __pycache__/
 
 # Custom Files
 *\ProjectDir\imgui.ini
+LCSEngine/ProjectDir/imgui.ini

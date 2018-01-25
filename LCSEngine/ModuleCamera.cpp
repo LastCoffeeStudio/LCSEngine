@@ -5,12 +5,13 @@
 #include <SDL.h>
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "MathGeoLib/src/Math/Quat.h"
 
 
 ModuleCamera::ModuleCamera() {}
 
-ModuleCamera::~ModuleCamera() {}
 
+ModuleCamera::~ModuleCamera() {}
 
 
 bool ModuleCamera::init()
@@ -29,28 +30,32 @@ bool ModuleCamera::init()
 	return  true;
 }
 
+
 update_status ModuleCamera::update(const float deltaTime)
 {
 	moveCamera(deltaTime);
 	cameraZoom(deltaTime);
+	cameraRotation(deltaTime);
 	return UPDATE_CONTINUE;
 }
+
 
 bool ModuleCamera::cleanUp()
 {
 	return  true;
 }
 
+
 float* ModuleCamera::getViewMatrix()
 {
 	 return ((float4x4)frustum.ViewMatrix()).Transposed().v[0];
 }
 
+
 float* ModuleCamera::getProjectMatrix()
 {
 	return frustum.ProjectionMatrix().Transposed().v[0];
 }
-
 
 
 void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
@@ -102,9 +107,9 @@ void ModuleCamera::moveCamera(const float deltaTime)
 	frustum.Translate(displacement*speed);
 }
 
+
 void ModuleCamera::cameraZoom(float deltaTime)
 {
-
 	float speed = zoomSpeed*deltaTime;
 	if (App->input->getKey(SDL_SCANCODE_X) == KEY_REPEAT)
 	{
@@ -117,6 +122,31 @@ void ModuleCamera::cameraZoom(float deltaTime)
 		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) - speed);
 		updatedWindowSize(App->window->width, App->window->height);
 	}
+}
 
+void ModuleCamera::cameraRotation(float deltaTime)
+{
+	float speed = rotationSpeed*deltaTime;
+	Quat rotation = Quat::identity;
+
+	//FOR MOUSE WE SHOULD USE Quat RotateAxisAngle(const float3 &axisDirection, float angleRadians);
+	if (App->input->getKey(SDL_SCANCODE_G) == KEY_REPEAT)
+	{
+		rotation = rotation.Mul(Quat::RotateY(speed));
+	}
+	if (App->input->getKey(SDL_SCANCODE_J) == KEY_REPEAT)
+	{
+		rotation = rotation.Mul(Quat::RotateY(-speed));
+	}
+	if (App->input->getKey(SDL_SCANCODE_Y) == KEY_REPEAT && (frustum.front.y < 0.999f))
+	{
+		rotation = rotation.Mul(Quat::RotateAxisAngle(frustum.WorldRight(), speed));
+	}
+	if (App->input->getKey(SDL_SCANCODE_H) == KEY_REPEAT && (frustum.front.y > -0.999f))
+	{
+		rotation = rotation.Mul(Quat::RotateAxisAngle(frustum.WorldRight(), -speed));
+	}
+	frustum.up = rotation.Mul(frustum.up);
+	frustum.front = rotation.Mul(frustum.front);
 	
 }

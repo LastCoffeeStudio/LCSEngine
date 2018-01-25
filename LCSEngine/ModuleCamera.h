@@ -19,6 +19,7 @@ public:
 	float* getProjectMatrix();
 	void updatedWindowSize(int screenWidth, int screenHeight);
 	void cameraZoom(float deltaTime);
+	void cameraRotation(float deltaTime);
 
 public:
 	Frustum frustum;
