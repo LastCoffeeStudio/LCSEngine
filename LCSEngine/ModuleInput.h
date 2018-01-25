@@ -63,6 +63,7 @@ public:
 	// Get mouse / axis position
 	const iPoint& getMouseMotion() const;
 	const iPoint& getMousePosition() const;
+	int mouse_wheel;
 
 private:
 	bool		windowEvents[WE_COUNT];

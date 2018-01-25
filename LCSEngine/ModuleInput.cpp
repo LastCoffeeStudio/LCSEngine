@@ -91,7 +91,7 @@ update_status ModuleInput::preUpdate(const float deltaTime)
 			mouse_buttons[i] = KEY_IDLE;
 		}
 	}
-
+	mouse_wheel = 0;
 	while (SDL_PollEvent(&event) != 0)
 	{
 		switch (event.type)
@@ -138,6 +138,8 @@ update_status ModuleInput::preUpdate(const float deltaTime)
 			mouse.x = event.motion.x / SCREEN_SIZE;
 			mouse.y = event.motion.y / SCREEN_SIZE;
 			break;
+		case SDL_MOUSEWHEEL:
+			mouse_wheel = event.wheel.y;
 		}
 	}
 

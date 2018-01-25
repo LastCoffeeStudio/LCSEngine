@@ -23,9 +23,9 @@ public:
 
 public:
 	Frustum frustum;
-	float cameraSpeed = 2.f;
+	float cameraSpeed = 6.f;
 	float rotationSpeed = 2.f;
-	float zoomSpeed = 5.f;
+	float zoomSpeed = 20.f;
 	bool frustumCulling = false;
 
 private:
