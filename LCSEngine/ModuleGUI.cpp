@@ -5,6 +5,7 @@
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "ModuleCamera.h"
+#include "ModuleWindow.h"
 #include <shellapi.h>
 
 
@@ -135,7 +136,7 @@ void ModuleGUI::showMainWindow()
 		ImGui::SliderFloat("Movement Speed", &App->camera->cameraSpeed, 0.001f, 20.0f);
 		ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0.001f, 20.0f);
 		ImGui::SliderFloat("Zoom Speed", &App->camera->zoomSpeed, 0.001f, 50.0f);
-		//ImGui::SliderFloat("Aspect Ratio", &App->camera->zoomSpeed, 0.001f, 20.0f);
+		//ImGui::SliderInt("Aspect Ratio", &App->window->height, 0.001f, 20.0f);
 		ImGui::SliderFloat3("Front", (float*)&App->camera->frustum.front, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Up", (float*)&App->camera->frustum.up, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Position", (float*)&App->camera->frustum.pos, -10.0f, 10.0f);
