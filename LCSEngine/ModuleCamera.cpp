@@ -108,12 +108,14 @@ void ModuleCamera::cameraZoom(float deltaTime)
 	if (App->input->getKey(SDL_SCANCODE_X) == KEY_REPEAT)
 	{
 		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) + speed);
+		updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
 	if (App->input->getKey(SDL_SCANCODE_Z) == KEY_REPEAT)
 	{
 		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) - speed);
+		updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	}
 
-	updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
+	
 }
