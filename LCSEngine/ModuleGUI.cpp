@@ -4,6 +4,7 @@
 #include "ModuleWindow.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
+#include "ModuleCamera.h"
 #include <shellapi.h>
 
 
@@ -109,18 +110,14 @@ void ModuleGUI::showMainWindow()
 {
 	ImGui::SetNextWindowSize(ImVec2(500, 200), ImGuiSetCond_FirstUseEver);
 	ImGui::Begin("Render Window", &show_main_window, ImGuiWindowFlags_MenuBar);
-	ImGui::Text("Hello, world!");
-	ImGui::ColorEdit3("clear color", (float*)&clear_color);
-	if (ImGui::Button("Demo Window"))
-		show_demo_window ^= 1;
-	ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
 	// Menu
 	if (ImGui::BeginMenuBar())
 	{
 		if (ImGui::BeginMenu("Help"))
 		{
-			if (ImGui::MenuItem("About LCSEngine")) {
+			if (ImGui::MenuItem("About LCSEngine"))
+			{
 				show_engine_about ^= 1;
 			}
 
@@ -129,6 +126,27 @@ void ModuleGUI::showMainWindow()
 		ImGui::EndMenuBar();
 	}
 
+	if (ImGui::CollapsingHeader("Camera"))
+	{
+		ImGui::SliderFloat("FOV Horizontal", &App->camera->frustum.horizontalFov, 0.001f, 3.0f);
+		ImGui::SliderFloat("FOV Vertical", &App->camera->frustum.verticalFov, 0.001f, 3.0f);
+		ImGui::SliderFloat("Near Plane Distance", &App->camera->frustum.nearPlaneDistance, 0.001f, 100.0f);
+		ImGui::SliderFloat("Far Plane Distance", &App->camera->frustum.farPlaneDistance, 0.001f, 100.0f);
+		ImGui::SliderFloat("Movement Speed", &App->camera->cameraSpeed, 0.001f, 20.0f);
+		ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0.001f, 20.0f);
+		ImGui::SliderFloat("Zoom Speed", &App->camera->zoomSpeed, 0.001f, 50.0f);
+		//ImGui::SliderFloat("Aspect Ratio", &App->camera->zoomSpeed, 0.001f, 20.0f);
+		ImGui::SliderFloat3("Front", (float*)&App->camera->frustum.front, -10.0f, 10.0f);
+		ImGui::SliderFloat3("Up", (float*)&App->camera->frustum.up, -10.0f, 10.0f);
+		ImGui::SliderFloat3("Position", (float*)&App->camera->frustum.pos, -10.0f, 10.0f);
+		ImGui::ColorEdit3("Background Color", (float*)&clear_color);
+		ImGui::Checkbox("Frustum culling", &App->camera->frustumCulling);
+		if (ImGui::Button("Demo Window"))
+			show_demo_window ^= 1;
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+
+		
+	}
 	ImGui::End();
 }
 
