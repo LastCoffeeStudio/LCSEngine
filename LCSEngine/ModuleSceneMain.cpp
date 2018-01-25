@@ -8,6 +8,9 @@
 #include "Imgui/imgui.h"
 #include "SDL_mouse.h"
 
+#define COUNT_LINES_GRID 100.f
+#define POS_LINES_GRID COUNT_LINES_GRID / 2
+
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
 	cube1 = new CubeShape();
@@ -144,17 +147,32 @@ void ModuleSceneMain::drawGrid()
 	float size = ImGui::GetWindowSize().x;
 	if (ImGui::GetWindowSize().y > size) size = ImGui::GetWindowSize().y;
 
-	for (unsigned int i = 0; i < size; i += DIST_BTW_LINES_GRID)
+	glBegin(GL_LINES);
+	// draw line for x axis
+	glColor3f(1.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(1.0, 0.0, 0.0);
+	// draw line for y axis
+	glColor3f(0.0, 1.0, 0.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 1.0, 0.0);
+	// draw line for Z axis
+	glColor3f(0.0, 0.0, 1.0);
+	glVertex3f(0.0, 0.0, 0.0);
+	glVertex3f(0.0, 0.0, 1.0);
+	glEnd();
+
+	for (unsigned int i = 0; i < COUNT_LINES_GRID; i += DIST_BTW_LINES_GRID)
 	{
 		glBegin(GL_LINES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f(-100.0f, 0.0f, (float)i);
-		glVertex3f(100.0f, 0.0f, (float)i);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f(-100.0f, 0.0f, (float)i - POS_LINES_GRID);
+		glVertex3f(100.0f, 0.0f, (float)i - POS_LINES_GRID);
 		glEnd();
 		glBegin(GL_LINES);
-		glColor3f(1.0f, 0.0f, 0.0f);
-		glVertex3f((float)i, 0.0f, -100.0f);
-		glVertex3f((float)i, 0.0f, 100.0f);
+		glColor3f(1.0f, 1.0f, 1.0f);
+		glVertex3f((float)i - POS_LINES_GRID, 0.0f, -100.0f);
+		glVertex3f((float)i - POS_LINES_GRID, 0.0f, 100.0f);
 		glEnd();
 
 	}
