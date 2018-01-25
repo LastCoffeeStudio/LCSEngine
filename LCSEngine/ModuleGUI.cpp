@@ -133,10 +133,14 @@ void ModuleGUI::showMainWindow()
 		ImGui::SliderFloat("Near Plane Distance", &App->camera->frustum.nearPlaneDistance, 0.001f, 100.0f);
 		ImGui::SliderFloat("Far Plane Distance", &App->camera->frustum.farPlaneDistance, 0.001f, 100.0f);
 		ImGui::SliderFloat("Movement Speed", &App->camera->cameraSpeed, 0.001f, 20.0f);
-		//ImGui::SliderFloat("Rotation Speed", , 0.001f, 20.0f);
-		//ImGui::SliderFloat("Aspect Ratio", &App->camera->cameraSpeed, 0.001f, 20.0f);
-		ImGui::SliderFloat3("Front", (float*)&App->camera->frustum.front, 0.001, 10.0f);
+		ImGui::SliderFloat("Rotation Speed", &App->camera->rotationSpeed, 0.001f, 20.0f);
+		ImGui::SliderFloat("Zoom Speed", &App->camera->zoomSpeed, 0.001f, 50.0f);
+		//ImGui::SliderFloat("Aspect Ratio", &App->camera->zoomSpeed, 0.001f, 20.0f);
+		ImGui::SliderFloat3("Front", (float*)&App->camera->frustum.front, -10.0f, 10.0f);
+		ImGui::SliderFloat3("Up", (float*)&App->camera->frustum.up, -10.0f, 10.0f);
+		ImGui::SliderFloat3("Position", (float*)&App->camera->frustum.pos, -10.0f, 10.0f);
 		ImGui::ColorEdit3("Background Color", (float*)&clear_color);
+		ImGui::Checkbox("Frustum culling", &App->camera->frustumCulling);
 		if (ImGui::Button("Demo Window"))
 			show_demo_window ^= 1;
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
