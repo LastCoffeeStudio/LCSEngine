@@ -162,17 +162,17 @@ void ModuleSceneMain::drawGrid()
 	glVertex3f(0.0, 0.0, 1.0);
 	glEnd();
 
-	for (unsigned int i = 0; i < COUNT_LINES_GRID; i += DIST_BTW_LINES_GRID)
+	for (unsigned int i = 0; i <= COUNT_LINES_GRID; i += DIST_BTW_LINES_GRID)
 	{
 		glBegin(GL_LINES);
 		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f(-100.0f, 0.0f, (float)i - POS_LINES_GRID);
-		glVertex3f(100.0f, 0.0f, (float)i - POS_LINES_GRID);
+		glVertex3f(-POS_LINES_GRID, 0.0f, (float)i - POS_LINES_GRID);
+		glVertex3f(POS_LINES_GRID, 0.0f, (float)i - POS_LINES_GRID);
 		glEnd();
 		glBegin(GL_LINES);
 		glColor3f(1.0f, 1.0f, 1.0f);
-		glVertex3f((float)i - POS_LINES_GRID, 0.0f, -100.0f);
-		glVertex3f((float)i - POS_LINES_GRID, 0.0f, 100.0f);
+		glVertex3f((float)i - POS_LINES_GRID, 0.0f, -POS_LINES_GRID);
+		glVertex3f((float)i - POS_LINES_GRID, 0.0f, POS_LINES_GRID);
 		glEnd();
 
 	}
