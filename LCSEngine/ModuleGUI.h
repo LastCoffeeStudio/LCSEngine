@@ -21,14 +21,20 @@ public:
 	bool show_demo_window = false;
 	bool show_main_window = true;
 	bool show_engine_about = false;
+	bool show_inspector = true;
+	bool show_console = true;
 	bool show_gl = true;
 	ImVec4 clear_color;
 
 private:
 	void showAboutWindow();
 	void showMainWindow();
+	void showInspector();
+	void showConsole();
 
 	void putHyperlink(const char* link);
+
+private:
 };
 
 #endif // __MODULEIGUI_H__

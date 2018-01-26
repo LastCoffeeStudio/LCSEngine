@@ -42,6 +42,18 @@ update_status ModuleGUI::update(const float deltaTime)
 		ImGui::ShowTestWindow();
 	}
 	
+	if (show_inspector)
+	{
+		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), 0), ImGuiSetCond_FirstUseEver);
+		showInspector();
+	}
+
+	if (show_console)
+	{
+		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_FirstUseEver);
+		showConsole();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -148,6 +160,25 @@ void ModuleGUI::showMainWindow()
 
 		
 	}
+	ImGui::End();
+}
+
+void ModuleGUI::showInspector()
+{
+	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height), ImGuiSetCond_FirstUseEver);
+	ImGui::Begin("Inspector", &show_inspector);
+	ImGui::Text("Inspector");
+	//Set functions to print diferent menus inside the inspector
+
+	ImGui::End();
+}
+
+void ModuleGUI::showConsole()
+{
+	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS), ImGuiSetCond_FirstUseEver);
+	ImGui::Begin("Console", &show_console);
+	ImGui::Text("Console");
+
 	ImGui::End();
 }
 
