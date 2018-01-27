@@ -5,8 +5,8 @@
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "ModuleCamera.h"
-#include "ModuleWindow.h"
 #include <shellapi.h>
+#include "ModuleRender.h"
 
 
 ModuleGUI::ModuleGUI() {}
@@ -53,7 +53,6 @@ update_status ModuleGUI::update(float deltaTime)
 		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_FirstUseEver);
 		showConsole();
 	}
-
 	return UPDATE_CONTINUE;
 }
 
@@ -154,6 +153,7 @@ void ModuleGUI::showMainWindow()
 		ImGui::SliderFloat3("Position", (float*)&App->camera->frustum.pos, -10.0f, 10.0f);
 		ImGui::ColorEdit3("Background Color", (float*)&clear_color);
 		ImGui::Checkbox("Frustum culling", &App->camera->frustumCulling);
+		ImGui::Checkbox("Wireframe Mode", &App->renderer->wireframe);
 		if (ImGui::Button("Demo Window"))
 			show_demo_window ^= 1;
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

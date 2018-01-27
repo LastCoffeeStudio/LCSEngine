@@ -93,7 +93,12 @@ update_status ModuleRender::update(float deltaTime)
 
 update_status ModuleRender::postUpdate(float deltaTime)
 {
+	if (wireframe == true)
+	{
+		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	}
 	App->sceneMain->draw();
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
 	SDL_GL_SwapWindow(App->window->window);
 	return UPDATE_CONTINUE;

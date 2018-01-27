@@ -24,6 +24,7 @@ public:
 
 public:
 	SDL_Renderer* renderer = nullptr;
+	bool wireframe = false;
 };
 
 #endif // __MODULERENDER_H__
