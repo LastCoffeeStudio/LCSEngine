@@ -18,7 +18,7 @@ bool ModuleFadeToBlack::start()
 }
 
 // Update: draw background
-update_status ModuleFadeToBlack::update(const float deltaTime)
+update_status ModuleFadeToBlack::update(float deltaTime)
 {
 	if (start_time > 0)
 	{

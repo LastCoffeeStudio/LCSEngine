@@ -31,7 +31,7 @@ bool ModuleCamera::init()
 }
 
 
-update_status ModuleCamera::update(const float deltaTime)
+update_status ModuleCamera::update(float deltaTime)
 {
 	moveCamera(deltaTime);
 	cameraZoom(deltaTime);
@@ -64,7 +64,7 @@ void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 }
 
 
-void ModuleCamera::moveCamera(const float deltaTime)
+void ModuleCamera::moveCamera(float deltaTime)
 {
 	float speed = cameraSpeed*deltaTime;
 	float3 displacement = { 0.f, 0.f, 0.f };

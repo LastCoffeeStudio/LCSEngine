@@ -21,13 +21,13 @@ bool ModuleGUI::init()
 	return true;
 }
 
-update_status ModuleGUI::preUpdate(const float deltaTime)
+update_status ModuleGUI::preUpdate(float deltaTime)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::update(const float deltaTime)
+update_status ModuleGUI::update(float deltaTime)
 {
 	showMainWindow();
 	
@@ -57,7 +57,7 @@ update_status ModuleGUI::update(const float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::postUpdate(const float deltaTime)
+update_status ModuleGUI::postUpdate(float deltaTime)
 {
 	return UPDATE_CONTINUE;
 }
@@ -165,8 +165,8 @@ void ModuleGUI::showMainWindow()
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin("Inspector", &show_inspector);
+	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height));
+	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Inspector");
 	//Set functions to print diferent menus inside the inspector
 
@@ -175,8 +175,9 @@ void ModuleGUI::showInspector()
 
 void ModuleGUI::showConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin("Console", &show_console);
+	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS));
+
+	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Console");
 
 	ImGui::End();

@@ -21,7 +21,7 @@ public:
 
 	bool init() override;
 	bool start() override;
-	update_status update(const float deltaTime) override;
+	update_status update(float deltaTime) override;
 	bool cleanUp() override;
 	void draw();
 	void drawGrid();

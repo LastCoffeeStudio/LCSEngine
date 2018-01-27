@@ -33,7 +33,7 @@ bool ModuleSceneMain::start()
 	return true;
 }
 
-update_status ModuleSceneMain::update(const float deltaTime)
+update_status ModuleSceneMain::update(float deltaTime)
 {
 	//To check polygon rotation
 

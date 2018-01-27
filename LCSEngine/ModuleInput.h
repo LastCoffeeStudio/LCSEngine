@@ -41,7 +41,7 @@ public:
 	bool start();
 
 	// Called each loop iteration
-	update_status preUpdate(const float deltaTime);
+	update_status preUpdate(float deltaTime);
 
 	// Called before quitting
 	bool cleanUp();

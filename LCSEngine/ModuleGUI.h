@@ -12,9 +12,9 @@ public:
 	~ModuleGUI();
 
 	bool init() override;
-	update_status preUpdate(const float deltaTime) override;
-	update_status update(const float deltaTime) override;
-	update_status postUpdate(const float deltaTime) override;
+	update_status preUpdate(float deltaTime) override;
+	update_status update(float deltaTime) override;
+	update_status postUpdate(float deltaTime) override;
 
 	void draw();
 

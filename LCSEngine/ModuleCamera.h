@@ -13,7 +13,7 @@ public:
 	~ModuleCamera();
 
 	bool init();
-	update_status update(const float deltaTime);
+	update_status update(float deltaTime);
 	bool cleanUp();
 	float* getViewMatrix();
 	float* getProjectMatrix();
@@ -29,7 +29,7 @@ public:
 	bool frustumCulling = false;
 
 private:
-	void moveCamera(const float deltaTime);
+	void moveCamera(float deltaTime);
 
 private:
 

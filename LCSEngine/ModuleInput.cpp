@@ -44,7 +44,7 @@ bool ModuleInput::start()
 }
 
 // Called each loop iteration
-update_status ModuleInput::preUpdate(const float deltaTime)
+update_status ModuleInput::preUpdate(float deltaTime)
 {
 	static SDL_Event event;
 

@@ -74,7 +74,7 @@ bool ModuleRender::init()
 	return ret;
 }
 
-update_status ModuleRender::preUpdate(const float deltaTime)
+update_status ModuleRender::preUpdate(float deltaTime)
 {
 	glClearColor(App->gui->clear_color.x, App->gui->clear_color.y, App->gui->clear_color.z, App->gui->clear_color.w);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -86,12 +86,12 @@ update_status ModuleRender::preUpdate(const float deltaTime)
 }
 
 // Called every draw update
-update_status ModuleRender::update(const float deltaTime)
+update_status ModuleRender::update(float deltaTime)
 {
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleRender::postUpdate(const float deltaTime)
+update_status ModuleRender::postUpdate(float deltaTime)
 {
 	App->sceneMain->draw();
 	App->gui->draw();
