@@ -71,7 +71,8 @@ update_status Application::update()
 
 	clock_t now = clock();
 	deltaTime += float(now - timer) / CLOCKS_PER_SEC;
-	if (deltaTime > 1 / FPS) {
+	if (deltaTime > 1 / FPS) 
+	{
 		timer = now;
 		for (list<Module*>::iterator it = modules.begin(); it != modules.end() && ret == UPDATE_CONTINUE; ++it)
 		{
