@@ -3,7 +3,8 @@
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
 #include "SDL/include/SDL.h"
-
+#include "DevIL/include/IL/il.h"
+#include "DevIL/include/IL/ilut.h"
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -49,6 +50,7 @@ bool ModuleTextures::cleanUp()
 	return true;
 }
 
+/*
 // Load new texture from file path
 SDL_Texture* const ModuleTextures::load(const char* path)
 {
@@ -76,6 +78,63 @@ SDL_Texture* const ModuleTextures::load(const char* path)
 	}
 
 	return texture;
+}*/
+
+// Load new texture from file path
+bool const ModuleTextures::load(const char* path)
+{
+	//Texture loading success
+	bool textureLoaded = false;
+
+	//Generate and set current image ID
+	ILuint imgID;
+	ilGenImages(1, &imgID);
+	ilBindImage(imgID);
+
+	//Calculate size of image
+	ILubyte *Lump;
+	ILuint Size;
+	FILE *File;
+
+	fopen_s(&File, path, "rb");
+	fseek(File, 0, SEEK_END);
+	Size = ftell(File);
+
+	Lump = (ILubyte*)malloc(Size);
+	fseek(File, 0, SEEK_SET);
+	fread(Lump, 1, Size, File);
+	fclose(File);
+
+	//Load image
+	if (ilLoadL(IL_JPG, Lump, Size))
+	{
+		ILinfo info;
+		iluGetImageInfo(&info);
+
+			/*
+		//Convert image to RGBA
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+			if (success == IL_TRUE)
+			{
+				//Create texture from file pixels
+				//textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT));
+
+				iluGetImageInfo
+			}
+			*/
+
+		//Delete file from memory
+		ilDeleteImages(1, &imgID);
+	}
+
+	//Report error
+	if (!textureLoaded)
+	{
+		printf("Unable to load %s\n", path);
+	}
+
+	return textureLoaded;
 }
 
 void ModuleTextures::loadCheckers()
