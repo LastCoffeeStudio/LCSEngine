@@ -3,7 +3,6 @@
 #include "ModuleRender.h"
 #include "ModuleWindow.h"
 #include "ModuleGUI.h"
-#include "ModuleInput.h"
 #include "ModuleSceneMain.h"
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
@@ -11,8 +10,6 @@
 #include "ModuleCamera.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
-
-#include <string>
 
 ModuleRender::ModuleRender() {}
 
@@ -33,28 +30,28 @@ bool ModuleRender::init()
 
 	SDL_GLContext context = SDL_GL_CreateContext(App->window->window);
 	if (!context) {
-		printf("Couldn't create context: %s\n", SDL_GetError());
+		LOG("Couldn't create context: %s\n", SDL_GetError());
 		ret = false;
 	}
 
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
-		printf("GLEW Error: %s\n", glewGetErrorString(err));
+		LOG("GLEW Error: %s\n", glewGetErrorString(err));
 		ret = false;
 	}
 
 	//Use Vsync
 	if (SDL_GL_SetSwapInterval(1) < 0)
 	{
-		printf("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
 	}
 
-	printf("Using Glew %s\n", glewGetString(GLEW_VERSION));
-	printf("Vendor: %s\n", glGetString(GL_VENDOR));
-	printf("Renderer: %s\n", glGetString(GL_RENDERER));
-	printf("OpenGL version supported %s\n", glGetString(GL_VERSION));
-	printf("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	LOG("Using Glew %s\n", glewGetString(GLEW_VERSION));
+	LOG("Vendor: %s\n", glGetString(GL_VENDOR));
+	LOG("Renderer: %s\n", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s\n", glGetString(GL_VERSION));
+	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
