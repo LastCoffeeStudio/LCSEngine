@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "CubeShape.h"
 #include "SphereShape.h"
+#include "ModuleTextures.h"
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include "SDL_mouse.h"
@@ -24,6 +25,7 @@ bool ModuleSceneMain::init()
 	manualRotation = false;
 	cube1->initializeValues();
 	sphere1->initializeValues();
+	App->textures->load("Assets/Images/iceSnow.jpg");
 	return true;
 }
 

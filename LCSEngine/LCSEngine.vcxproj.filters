@@ -288,6 +288,7 @@
     <ClInclude Include="ModuleCamera.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="AssetTexture.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -443,6 +444,7 @@
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Core</Filter>
     </ClCompile>
+    <ClCompile Include="AssetTexture.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl">
