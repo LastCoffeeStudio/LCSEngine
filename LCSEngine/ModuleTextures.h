@@ -1,12 +1,13 @@
 #ifndef __MODULETEXTURES_H__
 #define __MODULETEXTURES_H__
 
-#include<list>
+#include <list>
 #include "Module.h"
 #include "Globals.h"
 #include "Glew/include/glew.h"
 
 struct SDL_Texture;
+class AssetTexture;
 
 class ModuleTextures : public Module
 {
@@ -18,7 +19,7 @@ public:
 	bool cleanUp();
 
 	//SDL_Texture* const load(const char* path);
-	bool const load(const char* path);
+	AssetTexture* const load(const char* path);
 	void loadCheckers();
 	void unload(SDL_Texture* texture);
 

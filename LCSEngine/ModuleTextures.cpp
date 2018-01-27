@@ -2,6 +2,7 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "AssetTexture.h"
 #include "SDL/include/SDL.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilut.h"
@@ -81,8 +82,10 @@ SDL_Texture* const ModuleTextures::load(const char* path)
 }*/
 
 // Load new texture from file path
-bool const ModuleTextures::load(const char* path)
+AssetTexture* const ModuleTextures::load(const char* path)
 {
+	AssetTexture assetTexture;
+
 	//Texture loading success
 	bool textureLoaded = false;
 
@@ -111,18 +114,8 @@ bool const ModuleTextures::load(const char* path)
 		ILinfo info;
 		iluGetImageInfo(&info);
 
-			/*
-		//Convert image to RGBA
-		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
-
-			if (success == IL_TRUE)
-			{
-				//Create texture from file pixels
-				//textureLoaded = loadTextureFromPixels32((GLuint*)ilGetData(), (GLuint)ilGetInteger(IL_IMAGE_WIDTH), (GLuint)ilGetInteger(IL_IMAGE_HEIGHT));
-
-				iluGetImageInfo
-			}
-			*/
+		assetTexture = AssetTexture(info);
+		LOG("width");
 
 		//Delete file from memory
 		ilDeleteImages(1, &imgID);
@@ -134,7 +127,7 @@ bool const ModuleTextures::load(const char* path)
 		printf("Unable to load %s\n", path);
 	}
 
-	return textureLoaded;
+	return &assetTexture;
 }
 
 void ModuleTextures::loadCheckers()
