@@ -289,6 +289,9 @@
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="AssetTexture.h" />
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">

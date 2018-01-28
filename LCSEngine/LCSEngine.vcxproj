@@ -225,6 +225,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="SphereShape.h" />
+    <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
