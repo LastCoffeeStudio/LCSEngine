@@ -114,6 +114,10 @@ AssetTexture* const ModuleTextures::loadCheckers()
 	AssetTexture* checkers = new AssetTexture();
 	checkers->height = CHECKERS_HEIGHT;
 	checkers->width = CHECKERS_WIDTH;
+	checkers->bpp = 1;
+	checkers->depth = 4;
+	checkers->mips = 0;
+	checkers->bytes = sizeof(GLubyte) * CHECKERS_HEIGHT * CHECKERS_WIDTH * 4;
 
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
