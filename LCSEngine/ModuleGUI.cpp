@@ -2,11 +2,14 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
+#include "ModuleTextures.h"
+#include "AssetTexture.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "ModuleCamera.h"
 #include <shellapi.h>
 #include "ModuleRender.h"
+#include <stdlib.h> 
 
 ModuleGUI::ModuleGUI() {}
 
@@ -16,7 +19,7 @@ bool ModuleGUI::init()
 {
 	// Setup ImGui binding
 	ImGui_ImplSdlGL3_Init(App->window->window);
-
+	App->textures->load("Assets/Images/iceSnow.jpg");
 	return true;
 }
 
@@ -189,6 +192,14 @@ void ModuleGUI::showInspector()
 				break;
 		}
 	}
+
+	//Show current texture
+	AssetTexture* current = App->textures->currentTexture;
+
+	ImGui::Text("Width"); ImGui::SameLine(1); ImGui::Text(itoa(current->width));
+	ImGui::Text("Height"); ImGui::SameLine(1);
+	ImGui::Text("Depth"); ImGui::SameLine(1);
+
 
 	ImGui::End();
 }

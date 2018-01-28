@@ -1,6 +1,5 @@
 #ifndef __ASSETTEXTURE_H__
 #define __ASSETTEXTURE_H__
-
 #include "Glew/include/glew.h"
 
 class ILinfo;
@@ -21,5 +20,4 @@ public:
 	ILenum format = 0;
 	GLuint ID = 0;
 };
-
 #endif //__ASSETTEXTURE_H__

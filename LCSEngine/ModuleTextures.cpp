@@ -49,10 +49,8 @@ bool ModuleTextures::cleanUp()
 }
 
 // Load new texture from file path
-AssetTexture* const ModuleTextures::load(ILenum type, const char* path)
+bool const ModuleTextures::load(ILenum type, const char* path)
 {
-	AssetTexture assetTexture;
-
 	//Texture loading success
 	bool textureLoaded = false;
 
@@ -77,10 +75,13 @@ AssetTexture* const ModuleTextures::load(ILenum type, const char* path)
 	//Load image
 	if (ilLoadL(type, Lump, Size))
 	{
+		textureLoaded = true;
+
 		ILinfo info;
 		iluGetImageInfo(&info);
-		assetTexture = AssetTexture(info);
-		assetTexture.ID = ilutGLBindTexImage();
+
+		currentTexture = new AssetTexture(info);
+		currentTexture->ID = ilutGLBindTexImage();
 
 		//Delete file from memory
 		ilDeleteImages(1, &imgID);
@@ -92,7 +93,7 @@ AssetTexture* const ModuleTextures::load(ILenum type, const char* path)
 		printf("Unable to load %s\n", path);
 	}
 
-	return &assetTexture;
+	return textureLoaded;
 }
 
 AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
