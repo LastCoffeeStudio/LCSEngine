@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class AssetTexture;
 class CubeShape;
 class SphereShape;
 
@@ -25,6 +26,13 @@ public:
 	bool cleanUp() override;
 	void draw();
 	void drawGrid();
+
+public:
+	AssetTexture * checkers = nullptr;
+	AssetTexture* lenna = nullptr;
+	AssetTexture* chocobo = nullptr;
+	AssetTexture* beer = nullptr;
+	AssetTexture* actual = nullptr;
 
 private:
 	PolygonType actualPolygon = TRIANGLE;

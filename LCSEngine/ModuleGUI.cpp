@@ -8,7 +8,6 @@
 #include <shellapi.h>
 #include "ModuleRender.h"
 
-
 ModuleGUI::ModuleGUI() {}
 
 ModuleGUI::~ModuleGUI() {}
@@ -169,6 +168,27 @@ void ModuleGUI::showInspector()
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Inspector");
 	//Set functions to print diferent menus inside the inspector
+	if (ImGui::CollapsingHeader("Textures"))
+	{
+		static int e = 0;
+		ImGui::RadioButton("radio a", &e, 0); ImGui::SameLine();
+		ImGui::RadioButton("radio b", &e, 1); ImGui::SameLine();
+		ImGui::RadioButton("radio c", &e, 2);
+
+		//Code to show data from textures depending in which one is taken
+		switch (e)
+		{
+			case 0:
+				ImGui::Text("0");
+				break;
+			case 1:
+				ImGui::Text("1");
+				break;
+			case 2:
+				ImGui::Text("2");
+				break;
+		}
+	}
 
 	ImGui::End();
 }

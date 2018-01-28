@@ -36,7 +36,8 @@ bool ModuleTextures::init()
 		ret = false;
 	}
 
-	loadCheckers();
+	LOG("Init Devil Library");
+	ilInit();
 
 	return ret;
 }
@@ -44,47 +45,11 @@ bool ModuleTextures::init()
 // Called before quitting
 bool ModuleTextures::cleanUp()
 {
-	LOG("Freeing textures and Image library");
-
-	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); ++it)
-		SDL_DestroyTexture(*it);
-
-	textures.clear();
 	return true;
 }
 
-/*
 // Load new texture from file path
-SDL_Texture* const ModuleTextures::load(const char* path)
-{
-	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = IMG_Load(path);
-
-	if (surface == nullptr)
-	{
-		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
-	}
-	else
-	{
-		texture = SDL_CreateTextureFromSurface(App->renderer->renderer, surface);
-
-		if (texture == nullptr)
-		{
-			LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
-		}
-		else
-		{
-			textures.push_back(texture);
-		}
-
-		SDL_FreeSurface(surface);
-	}
-
-	return texture;
-}*/
-
-// Load new texture from file path
-AssetTexture* const ModuleTextures::load(const char* path)
+AssetTexture* const ModuleTextures::load(ILenum type, const char* path)
 {
 	AssetTexture assetTexture;
 
@@ -95,7 +60,6 @@ AssetTexture* const ModuleTextures::load(const char* path)
 	ILuint imgID;
 	ilGenImages(1, &imgID);
 	ilBindImage(imgID);
-
 	//Calculate size of image
 	ILubyte *Lump;
 	ILuint Size;
@@ -111,13 +75,12 @@ AssetTexture* const ModuleTextures::load(const char* path)
 	fclose(File);
 
 	//Load image
-	if (ilLoadL(IL_JPG, Lump, Size))
+	if (ilLoadL(type, Lump, Size))
 	{
 		ILinfo info;
 		iluGetImageInfo(&info);
-
 		assetTexture = AssetTexture(info);
-		LOG("width");
+		assetTexture.ID = ilutGLBindTexImage();
 
 		//Delete file from memory
 		ilDeleteImages(1, &imgID);
@@ -132,8 +95,66 @@ AssetTexture* const ModuleTextures::load(const char* path)
 	return &assetTexture;
 }
 
-void ModuleTextures::loadCheckers()
+AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 {
+	AssetTexture* asset = nullptr;
+	ILuint imageID;
+	GLuint textureID;
+	ILboolean success;
+	ILenum error;
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+	success = ilLoad(type,path);
+
+	if (success)
+	{
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		if (!success)
+		{
+			error = ilGetError();
+			printf("Image conversion failed - IL reports error: %s\n", iluErrorString(error));
+			return asset;
+		}
+
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		asset = new AssetTexture(ImageInfo);
+		asset->ID = textureID;
+	}
+	else
+	{
+		error = ilGetError();
+		printf("Image load failed - IL reports error: %s\n", iluErrorString(error));
+		return asset;
+	}
+
+	ilDeleteImages(1, &imageID);
+
+	return asset;
+}
+
+AssetTexture* const ModuleTextures::loadCheckers()
+{
+	AssetTexture* checkers = new AssetTexture();
+	checkers->height = CHECKERS_HEIGHT;
+	checkers->width = CHECKERS_WIDTH;
+
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -145,8 +166,8 @@ void ModuleTextures::loadCheckers()
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &ImageName);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glGenTextures(1, &checkers->ID);
+	glBindTexture(GL_TEXTURE_2D, checkers->ID);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -154,18 +175,6 @@ void ModuleTextures::loadCheckers()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
 
-// Free texture from memory
-void ModuleTextures::unload(SDL_Texture* texture)
-{
-	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); ++it)
-	{
-		if (*it == texture)
-		{
-			SDL_DestroyTexture(*it);
-			textures.erase(it);
-			break;
-		}
-	}
+	return checkers;
 }

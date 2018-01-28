@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "SphereShape.h"
-#include "ModuleTextures.h"
+#include "ModuleSceneMain.h"
+#include "AssetTexture.h"
 
 SphereShape::SphereShape()
 {
@@ -90,11 +91,11 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(cosii*radius);
 				verticesVBO.push_back(cosjj*sinii*radius);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 				texcoordsVBO.push_back((j+1)*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 
 				if (j == 0)
 				{
@@ -153,11 +154,11 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosjj*sini*radius);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 				texcoordsVBO.push_back((j+1)*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 
 				if (j == 0)
 				{
@@ -207,11 +208,11 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(cosii*radius);
 				verticesVBO.push_back(cosjj*sinii*radius);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 				texcoordsVBO.push_back((j+1)*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 
 				colorsVBO.push_back(r);
 				colorsVBO.push_back(g);
@@ -232,11 +233,11 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosjj*sini*radius);
 				texcoordsVBO.push_back(j*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back((j+1)*texCoordXDif);
-				texcoordsVBO.push_back((i+1)*texCoordYDif);
+				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 				texcoordsVBO.push_back((j + 1)*texCoordXDif);
-				texcoordsVBO.push_back(i*texCoordYDif);
+				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 
 				if (j == 0)
 				{
@@ -327,7 +328,7 @@ void SphereShape::drawDirectMode()
 	/** We fix a pivot on the center of the cube, i.e. we divide by 2 **/
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, App->textures->ImageName);
+	glBindTexture(GL_TEXTURE_2D, App->sceneMain->actual->ID);
 	glBegin(GL_TRIANGLES);
 
 	float difa = 360.f / (float)nSeg;
@@ -360,11 +361,11 @@ void SphereShape::drawDirectMode()
 			if (i == 0)
 			{
 				glColor3f(r, g, b);
-				glTexCoord2f(j*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
-				glTexCoord2f(j*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
-				glTexCoord2f((j + 1)*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f((j + 1)*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
 				r += 0.001f;
 			}
@@ -372,11 +373,11 @@ void SphereShape::drawDirectMode()
 			{
 				r = g = 0.f;
 				glColor3f(r, g, b);
-				glTexCoord2f((j + 1)*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f((j + 1)*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
-				glTexCoord2f(j*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
-				glTexCoord2f(j*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
 				b += 0.001f;
 			}
@@ -384,18 +385,18 @@ void SphereShape::drawDirectMode()
 			{
 				r = 0.f;
 				glColor3f(r, g, b);
-				glTexCoord2f(j*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
-				glTexCoord2f(j*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinj*sinii*radius, cosii*radius, cosj*sinii*radius);
-				glTexCoord2f((j + 1)*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f((j + 1)*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
 
-				glTexCoord2f(j*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f(j*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinj*sini*radius, cosi*radius, cosj*sini*radius);
-				glTexCoord2f((j + 1)*texCoordXDif, (i + 1)*texCoordYDif);
+				glTexCoord2f((j + 1)*texCoordXDif, 1.f - (i + 1)*texCoordYDif);
 				glVertex3f(sinjj*sinii*radius, cosii*radius, cosjj*sinii*radius);
-				glTexCoord2f((j + 1)*texCoordXDif, i*texCoordYDif);
+				glTexCoord2f((j + 1)*texCoordXDif, 1.f - i*texCoordYDif);
 				glVertex3f(sinjj*sini*radius, cosi*radius, cosjj*sini*radius);
 
 				g += 0.001f;

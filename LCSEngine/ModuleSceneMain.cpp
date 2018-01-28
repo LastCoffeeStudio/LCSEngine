@@ -6,10 +6,12 @@
 #include "CubeShape.h"
 #include "SphereShape.h"
 #include "ModuleTextures.h"
+#include "AssetTexture.h"
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include "SDL_mouse.h"
 #include "Utils.h"
+#include "DevIL/include/IL/il.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -26,7 +28,11 @@ bool ModuleSceneMain::init()
 {
 	cube1->initializeValues();
 	sphere1->initializeValues();
-	App->textures->load("Assets/Images/iceSnow.jpg");
+	checkers = App->textures->loadCheckers();
+	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
+	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
+	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
+	actual = checkers;
 	return true;
 }
 

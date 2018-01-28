@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "CubeShape.h"
-#include "ModuleTextures.h"
+#include "AssetTexture.h"
+#include "ModuleSceneMain.h"
 
 CubeShape::CubeShape()
 {
@@ -128,7 +129,7 @@ void CubeShape::drawDirectMode()
 {
 	/** We fix a pivot on the center of the cube, i.e. we divide by 2 **/
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, App->textures->ImageName);
+	glBindTexture(GL_TEXTURE_2D, App->sceneMain->actual->ID);
 	glBegin(GL_TRIANGLES);
 
 	//Front Face
