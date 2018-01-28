@@ -6,7 +6,7 @@
 class CubeShape;
 class SphereShape;
 
-enum Polygon
+enum PolygonType
 {
 	TRIANGLE,
 	CUBE,
@@ -27,9 +27,8 @@ public:
 	void drawGrid();
 
 private:
-	bool manualRotation;
-	Polygon actualPolygon;
-	CubeShape* cube1;
-	SphereShape* sphere1;
+	PolygonType actualPolygon = TRIANGLE;
+	CubeShape* cube1 = nullptr;
+	SphereShape* sphere1 = nullptr;
 };
 #endif //__MODULESCENEMAIN_H__

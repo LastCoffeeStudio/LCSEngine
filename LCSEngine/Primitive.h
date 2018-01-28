@@ -24,7 +24,7 @@ public:
 	virtual bool cleanUp();
 
 public:
-	RenderMode renderMode;
+	RenderMode renderMode = DIRECTMODE;
 
 private:
 	virtual void drawDirectMode();
@@ -32,9 +32,16 @@ private:
 	virtual void drawVertexArray();
 
 protected:
-	GLuint idVertVBO, idColVBO, idVertVA, idIndVA, idColVA;
+	GLuint idVertVBO = 0;
+	GLuint idColVBO = 0;
+	GLuint idTexCoordVBO = 0;
+	GLuint idVertVA = 0;
+	GLuint idIndVA = 0;
+	GLuint idColVA = 0;
+	
 	vector<float> verticesVBO;
 	vector<float> colorsVBO;
+	vector<float> texcoordsVBO;
 	vector<float> verticesVA;
 	vector<unsigned int> indicesVA;
 	vector<float> colorsVA;

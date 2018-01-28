@@ -11,8 +11,6 @@
 #include "SDL_mouse.h"
 #include "Utils.h"
 
-#include <iostream>
-
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
 
@@ -26,7 +24,6 @@ ModuleSceneMain::~ModuleSceneMain() {}
 
 bool ModuleSceneMain::init()
 {
-	manualRotation = false;
 	cube1->initializeValues();
 	sphere1->initializeValues();
 	App->textures->load("Assets/Images/iceSnow.jpg");
@@ -41,32 +38,6 @@ bool ModuleSceneMain::start()
 
 update_status ModuleSceneMain::update(float deltaTime)
 {
-	//To check polygon rotation
-
-	if (App->input->getKey(SDL_SCANCODE_SPACE) == KEY_DOWN)
-	{
-		manualRotation = !manualRotation;
-	}
-
-	switch (manualRotation)
-	{
-	case true:
-		if (App->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_REPEAT)
-		{
-			int x = App->input->getMouseMotion().x;
-			int y = App->input->getMouseMotion().y;
-			if (MAX(abs(x), abs(y)) != 0)
-			{
-				float magnitude = sqrt((float)pow(x, 2) + (float)pow(y, 2));
-				glRotatef(magnitude, (float)(x / MAX(abs(x), abs(y))), (float)(y / MAX(abs(x), abs(y))), 0.f);
-			}
-		}
-		break;
-	case false:
-		//glRotatef(0.3f, 0.1f, 1.f, 0.f);
-		break;
-	}
-
 	if (App->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
 	{
 		actualPolygon = TRIANGLE;
@@ -80,7 +51,7 @@ update_status ModuleSceneMain::update(float deltaTime)
 		actualPolygon = SPHERE;
 	}
 
-	if (App->input->getKey(SDL_SCANCODE_LEFT) == KEY_DOWN)
+	if (App->input->getKey(SDL_SCANCODE_O) == KEY_DOWN)
 	{
 		if (actualPolygon == CUBE)
 		{
@@ -91,7 +62,7 @@ update_status ModuleSceneMain::update(float deltaTime)
 			sphere1->changeRenderMode(true);
 		}
 	}
-	if (App->input->getKey(SDL_SCANCODE_RIGHT) == KEY_DOWN)
+	if (App->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		if (actualPolygon == CUBE)
 		{
@@ -127,8 +98,7 @@ void ModuleSceneMain::draw()
 		glVertex3f(-0.5f, -0.5f, 0.f); // lower right vertex
 		glVertex3f(0.5f, -0.5f, 0.f); // upper vertex
 
-									  //Back Face
-		glColor3f(0.5f, 0.f, 0.f);
+		glColor3f(0.5f, 0.f, 0.f);	//Back Face
 		glVertex3f(0.f, 0.5f, 0.f); // lower left vertex
 		glVertex3f(0.5f, -0.5f, 0.f); // lower right vertex
 		glVertex3f(-0.5f, -0.5f, 0.f); // upper vertex

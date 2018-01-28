@@ -36,6 +36,8 @@ bool ModuleTextures::init()
 		ret = false;
 	}
 
+	loadCheckers();
+
 	return ret;
 }
 
