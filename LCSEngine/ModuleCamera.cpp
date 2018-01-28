@@ -110,22 +110,22 @@ void ModuleCamera::moveCamera(float deltaTime)
 
 void ModuleCamera::cameraZoom(float deltaTime)
 {
-	float speed = zoomSpeed*deltaTime;
+	zoomSpeed = cameraSpeed*deltaTime;
+	float3 displacement = { 0.f, 0.f, 0.f };
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
-		speed *= 2.f;
+		zoomSpeed *= 2.f;
 	}
 	if (App->input->getKey(SDL_SCANCODE_X) == KEY_REPEAT || App->input->mouse_wheel < 0)
 	{
-		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) + speed);
-		updatedWindowSize(App->window->width, App->window->height);
+		displacement += frustum.front;
 	}
 
 	if (App->input->getKey(SDL_SCANCODE_Z) == KEY_REPEAT || App->input->mouse_wheel > 0)
 	{
-		frustum.verticalFov = DegToRad(RadToDeg(frustum.verticalFov) - speed);
-		updatedWindowSize(App->window->width, App->window->height);
+		displacement -= frustum.front;
 	}
+	frustum.Translate(displacement*zoomSpeed);
 }
 
 void ModuleCamera::cameraRotation(float deltaTime)
