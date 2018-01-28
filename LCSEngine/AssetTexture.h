@@ -1,6 +1,7 @@
 #ifndef __ASSETTEXTURE_H__
 #define __ASSETTEXTURE_H__
 #include "Glew/include/glew.h"
+#include <string>
 
 class ILinfo;
 
@@ -14,6 +15,7 @@ public:
 	~AssetTexture();
 
 public:
+	std::string name;
 	unsigned int width = 0;
 	unsigned int height = 0;
 	unsigned int depth = 0;

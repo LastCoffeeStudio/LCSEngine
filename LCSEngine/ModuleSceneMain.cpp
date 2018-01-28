@@ -5,11 +5,8 @@
 #include "ModuleCamera.h"
 #include "CubeShape.h"
 #include "SphereShape.h"
-<<<<<<< Updated upstream
 #include "ModuleTextures.h"
 #include "AssetTexture.h"
-=======
->>>>>>> Stashed changes
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include "SDL_mouse.h"
@@ -31,14 +28,13 @@ bool ModuleSceneMain::init()
 {
 	cube1->initializeValues();
 	sphere1->initializeValues();
-<<<<<<< Updated upstream
+
 	checkers = App->textures->loadCheckers();
 	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
 	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
 	actual = checkers;
-=======
->>>>>>> Stashed changes
+
 	return true;
 }
 

@@ -35,7 +35,7 @@
       <UniqueIdentifier>{15077779-c19e-4378-b4ef-b3c41e03e980}</UniqueIdentifier>
     </Filter>
     <Filter Include="Assets">
-      <UniqueIdentifier>{45a26039-1d07-4d29-b7e9-aa4e83b7c9f9}</UniqueIdentifier>
+      <UniqueIdentifier>{ea015750-a8c6-4301-8196-5ea478c1bc3d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -290,6 +290,9 @@
     </ClInclude>
     <ClInclude Include="ModuleCamera.h">
       <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="AssetTexture.h">
       <Filter>Assets</Filter>

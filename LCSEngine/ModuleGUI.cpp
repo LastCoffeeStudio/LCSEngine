@@ -2,14 +2,16 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
-#include "ModuleTextures.h"
 #include "AssetTexture.h"
+#include "ModuleSceneMain.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "ModuleCamera.h"
 #include <shellapi.h>
 #include "ModuleRender.h"
-#include <stdlib.h> 
+#include <string> 
+
+using namespace std;
 
 ModuleGUI::ModuleGUI() {}
 
@@ -19,7 +21,6 @@ bool ModuleGUI::init()
 {
 	// Setup ImGui binding
 	ImGui_ImplSdlGL3_Init(App->window->window);
-	App->textures->load("Assets/Images/iceSnow.jpg");
 	return true;
 }
 
@@ -182,24 +183,24 @@ void ModuleGUI::showInspector()
 		switch (e)
 		{
 			case 0:
-				ImGui::Text("0");
+				App->sceneMain->actual = App->sceneMain->lenna;
 				break;
 			case 1:
-				ImGui::Text("1");
+				App->sceneMain->actual = App->sceneMain->beer;
 				break;
 			case 2:
-				ImGui::Text("2");
+				App->sceneMain->actual = App->sceneMain->chocobo;
 				break;
 		}
 	}
 
 	//Show current texture
-	AssetTexture* current = App->textures->currentTexture;
+	AssetTexture* current = App->sceneMain->actual;
 
-	ImGui::Text("Width"); ImGui::SameLine(1); ImGui::Text(itoa(current->width));
-	ImGui::Text("Height"); ImGui::SameLine(1);
-	ImGui::Text("Depth"); ImGui::SameLine(1);
-
+	ImGui::Text("Path"); ImGui::SameLine(0); ImGui::Text(current->name.c_str());
+	ImGui::Text("Width"); ImGui::SameLine(0); ImGui::Text(to_string(current->width).c_str());
+	ImGui::Text("Height"); ImGui::SameLine(0); ImGui::Text(to_string(current->height).c_str());
+	ImGui::Text("Depth"); ImGui::SameLine(0); ImGui::Text(to_string(current->depth).c_str());
 
 	ImGui::End();
 }

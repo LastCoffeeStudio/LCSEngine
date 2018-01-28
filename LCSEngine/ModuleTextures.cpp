@@ -6,6 +6,9 @@
 #include "SDL/include/SDL.h"
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilut.h"
+#include <stdlib.h> 
+
+#include <stdio.h> 
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -46,54 +49,6 @@ bool ModuleTextures::init()
 bool ModuleTextures::cleanUp()
 {
 	return true;
-}
-
-// Load new texture from file path
-bool const ModuleTextures::load(ILenum type, const char* path)
-{
-	//Texture loading success
-	bool textureLoaded = false;
-
-	//Generate and set current image ID
-	ILuint imgID;
-	ilGenImages(1, &imgID);
-	ilBindImage(imgID);
-	//Calculate size of image
-	ILubyte *Lump;
-	ILuint Size;
-	FILE *File;
-
-	fopen_s(&File, path, "rb");
-	fseek(File, 0, SEEK_END);
-	Size = ftell(File);
-
-	Lump = (ILubyte*)malloc(Size);
-	fseek(File, 0, SEEK_SET);
-	fread(Lump, 1, Size, File);
-	fclose(File);
-
-	//Load image
-	if (ilLoadL(type, Lump, Size))
-	{
-		textureLoaded = true;
-
-		ILinfo info;
-		iluGetImageInfo(&info);
-
-		currentTexture = new AssetTexture(info);
-		currentTexture->ID = ilutGLBindTexImage();
-
-		//Delete file from memory
-		ilDeleteImages(1, &imgID);
-	}
-
-	//Report error
-	if (!textureLoaded)
-	{
-		printf("Unable to load %s\n", path);
-	}
-
-	return textureLoaded;
 }
 
 AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
@@ -137,6 +92,10 @@ AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 
 		asset = new AssetTexture(ImageInfo);
 		asset->ID = textureID;
+		asset->name = path;
+
+		//Delete file from memory
+		ilDeleteImages(1, &imageID);
 	}
 	else
 	{
