@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Imgui/imgui.h"
+#include "Glew\include\glew.h"
 
 class ModuleGUI : public Module
 {
@@ -30,11 +31,23 @@ private:
 	void showAboutWindow();
 	void showMainWindow();
 	void showInspector();
+	void showFlagOptions();
 	void showConsole();
 
 	void putHyperlink(const char* link);
 
 private:
+	bool checkbox_depthTest;
+	bool checkbox_cullFace;
+	bool checkbox_lighting;
+	GLfloat alColor[3] = { 1.0f, 1.0f, 1.0f };
+	bool checkbox_colorMaterial;
+	bool checkbox_texture2D;
+	bool checkbox_fog;
+	GLfloat fogColor[3] = { 1.0f, 1.0f, 1.0f };
+	GLfloat fogIntensity = 1.0f;
+	bool checkbox_aliasing;
+	
 };
 
 #endif // __MODULEIGUI_H__
