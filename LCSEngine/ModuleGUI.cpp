@@ -31,7 +31,7 @@ bool ModuleGUI::init()
 	glFogfv(GL_FOG_COLOR, fogColor);
 	glFogf(GL_FOG_DENSITY, fogIntensity);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, alColor);
-	checkbox_aliasing = glIsEnabled(GL_HISTOGRAM);
+	checkbox_aliasing = glIsEnabled(GL_POLYGON_SMOOTH);
 
 	return true;
 }
@@ -267,7 +267,7 @@ void ModuleGUI::showFlagOptions()
 		}
 		if (ImGui::Checkbox("Aliasing", &checkbox_aliasing))
 		{
-			checkbox_aliasing ? glEnable(GL_HISTOGRAM) : glDisable(GL_HISTOGRAM);
+			checkbox_aliasing ? glEnable(GL_POLYGON_SMOOTH) : glDisable(GL_POLYGON_SMOOTH);
 		}
 	}
 }
