@@ -44,14 +44,14 @@ bool ModuleRender::init()
 	//Use Vsync
 	if (SDL_GL_SetSwapInterval(1) < 0)
 	{
-		LOG("Warning: Unable to set VSync! SDL Error: %s\n", SDL_GetError());
+		LOG("Warning: Unable to set VSync! SDL Error: %s", SDL_GetError());
 	}
 
-	LOG("Using Glew %s\n", glewGetString(GLEW_VERSION));
-	LOG("Vendor: %s\n", glGetString(GL_VENDOR));
-	LOG("Renderer: %s\n", glGetString(GL_RENDERER));
-	LOG("OpenGL version supported %s\n", glGetString(GL_VERSION));
-	LOG("GLSL: %s\n", glGetString(GL_SHADING_LANGUAGE_VERSION));
+	LOG("Using Glew %s", glewGetString(GLEW_VERSION));
+	LOG("Vendor: %s", glGetString(GL_VENDOR));
+	LOG("Renderer: %s", glGetString(GL_RENDERER));
+	LOG("OpenGL version supported %s", glGetString(GL_VERSION));
+	LOG("GLSL: %s", glGetString(GL_SHADING_LANGUAGE_VERSION));
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
@@ -116,4 +116,6 @@ bool ModuleRender::cleanUp()
 void ModuleRender::updatedWindowSize(int screenWidth, int screenHeight)
 {
 	glViewport(0, 0, screenWidth, screenHeight);
+	App->window->width = screenWidth;
+	App->window->height = screenHeight;
 }

@@ -36,7 +36,7 @@ update_status ModuleGUI::update(float deltaTime)
 	
 	if (show_engine_about)
 	{
-	showAboutWindow();
+		showAboutWindow();
 	}
 
 	if (show_demo_window)
@@ -47,13 +47,13 @@ update_status ModuleGUI::update(float deltaTime)
 	
 	if (show_inspector)
 	{
-		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), 0), ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), 0), ImGuiSetCond_Always);
 		showInspector();
 	}
 
 	if (show_console)
 	{
-		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_FirstUseEver);
+		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_Always);
 		showConsole();
 	}
 	return UPDATE_CONTINUE;
@@ -176,7 +176,7 @@ void ModuleGUI::showInspector()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		static int e = 0;
-		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->checkers->ID, { 20, 20 });
+		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
 		ImGui::RadioButton("Lenna", &e, 1); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
 		ImGui::RadioButton("Chocobo", &e, 2); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->chocobo->ID, { 20, 20 });
 		ImGui::RadioButton("Beer", &e, 3); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->beer->ID, { 20, 20 });
