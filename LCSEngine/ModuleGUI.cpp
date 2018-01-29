@@ -21,6 +21,18 @@ bool ModuleGUI::init()
 {
 	// Setup ImGui binding
 	ImGui_ImplSdlGL3_Init(App->window->window);
+
+	checkbox_depthTest = glIsEnabled(GL_DEPTH_TEST);
+	checkbox_cullFace = glIsEnabled(GL_CULL_FACE);
+	checkbox_lighting = glIsEnabled(GL_LIGHTING);
+	checkbox_colorMaterial = glIsEnabled(GL_COLOR_MATERIAL);
+	checkbox_texture2D = glIsEnabled(GL_TEXTURE_2D);
+	checkbox_fog = glIsEnabled(GL_FOG);
+	glFogfv(GL_FOG_COLOR, fogColor);
+	glFogf(GL_FOG_DENSITY, fogIntensity);
+	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, alColor);
+	checkbox_aliasing = glIsEnabled(GL_HISTOGRAM);
+
 	return true;
 }
 
@@ -211,7 +223,62 @@ void ModuleGUI::showInspector()
 	ImGui::Text("GPU Id:"); ImGui::SameLine(0); ImGui::Text(to_string(current->ID).c_str());
 	ImGui::Text("Size:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bytes).c_str());
 
+	showFlagOptions();					///////
+
 	ImGui::End();
+}
+
+void ModuleGUI::showFlagOptions()
+{
+	if (ImGui::CollapsingHeader("OpenGL Flags"))
+	{
+		if (ImGui::Checkbox("Depth test", &checkbox_depthTest))
+		{
+			checkbox_depthTest ? glEnable(GL_DEPTH_TEST) : glDisable(GL_DEPTH_TEST);
+		}
+		if (ImGui::Checkbox("Cull face", &checkbox_cullFace))
+		{
+			checkbox_cullFace ? glEnable(GL_CULL_FACE) : glDisable(GL_CULL_FACE);
+		}
+		if (ImGui::Checkbox("Lighting", &checkbox_lighting))
+		{
+			checkbox_lighting ? glEnable(GL_LIGHTING) : glDisable(GL_LIGHTING);
+		}
+		if (glIsEnabled(GL_LIGHTING))
+		{
+			if (ImGui::SliderFloat3("Lighting color", alColor, 0.0f, 1.0f))
+			{
+				glLightModelfv(GL_LIGHT_MODEL_AMBIENT, alColor);
+			}
+			if (ImGui::Checkbox("Color material", &checkbox_colorMaterial))
+			{
+				checkbox_colorMaterial ? glEnable(GL_COLOR_MATERIAL) : glDisable(GL_COLOR_MATERIAL);
+			}
+		}
+		if (ImGui::Checkbox("Texture 2D", &checkbox_texture2D))
+		{
+			checkbox_texture2D ? glEnable(GL_TEXTURE_2D) : glDisable(GL_TEXTURE_2D);
+		}
+		if (ImGui::Checkbox("Fog", &checkbox_fog))
+		{
+			checkbox_fog ? glEnable(GL_FOG) : glDisable(GL_FOG);
+		}
+		if (glIsEnabled(GL_FOG))
+		{
+			if (ImGui::SliderFloat3("Fog color", fogColor, 0.0f, 1.0f))
+			{
+				glFogfv(GL_FOG_COLOR, fogColor);
+			}
+			if (ImGui::SliderFloat("Fog Intensity", &fogIntensity, 0.0f, 1.0f))
+			{
+				glFogf(GL_FOG_DENSITY, fogIntensity);
+			}
+		}
+		if (ImGui::Checkbox("Aliasing", &checkbox_aliasing))
+		{
+			checkbox_aliasing ? glEnable(GL_HISTOGRAM) : glDisable(GL_HISTOGRAM);
+		}
+	}
 }
 
 void ModuleGUI::showConsole()
