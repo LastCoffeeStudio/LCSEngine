@@ -1,7 +1,8 @@
 #include "Globals.h"
 #include "Application.h"
 #include "CubeShape.h"
-#include "ModuleTextures.h"
+#include "AssetTexture.h"
+#include "ModuleSceneMain.h"
 
 CubeShape::CubeShape()
 {
@@ -16,6 +17,7 @@ void CubeShape::initializeValues()
 {
 	verticesVBO.reserve(108);	//3 coords/vertex * 6 vertices/face * 6 faces
 	colorsVBO.reserve(108);		//3 values/color * 1 color/vertex * 36 vertices
+	texcoordsVBO.reserve(72);
 	verticesVA.reserve(24);		//3 coors/vertex * 8 vertices
 	indicesVA.reserve(36);		//6 indices/face * 6 faces
 	colorsVA.reserve(24);		//3 colors/vertex * 8 vertices
@@ -32,6 +34,13 @@ void CubeShape::initializeValues()
 		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
 		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
 		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f };
+
+	texcoordsVBO = { 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f,
+					 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f,
+					 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f,
+					 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f,
+					 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f,
+					 1.f, 1.f, 0.f, 0.f, 1.f, 0.f, 1.f, 1.f, 0.f, 1.f, 0.f, 0.f, };
 
 	float r, g, b;
 	r = (rand() / (float)RAND_MAX);
@@ -84,22 +93,25 @@ void CubeShape::initializeValues()
 	glBindBuffer(GL_ARRAY_BUFFER, idColVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size(), &colorsVBO[0], GL_STATIC_DRAW);
 
-	idVertVA = 2;
+	idTexCoordVBO = 2;
+	glGenBuffers(1, (GLuint*) &(idTexCoordVBO));
+	glBindBuffer(GL_ARRAY_BUFFER, idTexCoordVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texcoordsVBO.size(), &texcoordsVBO[0], GL_STATIC_DRAW);
+
+	idVertVA = 3;
 	glGenBuffers(1, (GLuint*) &(idVertVA));
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVA);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVA.size(), &verticesVA[0], GL_STATIC_DRAW);
 
-	idIndVA = 3;
+	idIndVA = 4;
 	glGenBuffers(1, (GLuint*) &(idIndVA));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIndVA);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVA.size(), &indicesVA[0], GL_STATIC_DRAW);
 
-	idColVA = 4;
+	idColVA = 5;
 	glGenBuffers(1, (GLuint*) &(idColVA));
 	glBindBuffer(GL_ARRAY_BUFFER, idColVA);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVA.size(), &colorsVA[0], GL_STATIC_DRAW);
-
-	App->textures->loadCheckers();
 }
 
 bool CubeShape::cleanUp()
@@ -117,7 +129,7 @@ void CubeShape::drawDirectMode()
 {
 	/** We fix a pivot on the center of the cube, i.e. we divide by 2 **/
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glBindTexture(GL_TEXTURE_2D, App->textures->ImageName);
+	glBindTexture(GL_TEXTURE_2D, App->sceneMain->actual->ID);
 	glBegin(GL_TRIANGLES);
 
 	//Front Face

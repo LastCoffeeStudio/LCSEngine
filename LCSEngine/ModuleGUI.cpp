@@ -2,12 +2,16 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
+#include "AssetTexture.h"
+#include "ModuleSceneMain.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "ModuleCamera.h"
-#include "ModuleWindow.h"
 #include <shellapi.h>
+#include "ModuleRender.h"
+#include <string> 
 
+using namespace std;
 
 ModuleGUI::ModuleGUI() {}
 
@@ -28,16 +32,17 @@ bool ModuleGUI::init()
 	glFogf(GL_FOG_DENSITY, fogIntensity);
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, alColor);
 	checkbox_aliasing = glIsEnabled(GL_HISTOGRAM);
+
 	return true;
 }
 
-update_status ModuleGUI::preUpdate(const float deltaTime)
+update_status ModuleGUI::preUpdate(float deltaTime)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::update(const float deltaTime)
+update_status ModuleGUI::update(float deltaTime)
 {
 	showMainWindow();
 	
@@ -63,11 +68,10 @@ update_status ModuleGUI::update(const float deltaTime)
 		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_FirstUseEver);
 		showConsole();
 	}
-
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleGUI::postUpdate(const float deltaTime)
+update_status ModuleGUI::postUpdate(float deltaTime)
 {
 	return UPDATE_CONTINUE;
 }
@@ -163,10 +167,8 @@ void ModuleGUI::showMainWindow()
 		ImGui::SliderFloat3("Up", (float*)&App->camera->frustum.up, -10.0f, 10.0f);
 		ImGui::SliderFloat3("Position", (float*)&App->camera->frustum.pos, -10.0f, 10.0f);
 		ImGui::ColorEdit3("Background Color", (float*)&clear_color);
-		if (ImGui::Checkbox("Frustum culling", &App->camera->frustumCulling))
-		{
-			App->camera->frustumCulling ? printf("Right") : printf("Wrong");
-		}
+		ImGui::Checkbox("Frustum culling", &App->camera->frustumCulling);
+		ImGui::Checkbox("Wireframe Mode", &App->renderer->wireframe);
 		if (ImGui::Button("Demo Window"))
 			show_demo_window ^= 1;
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -178,10 +180,39 @@ void ModuleGUI::showMainWindow()
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin("Inspector", &show_inspector);
+	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height));
+	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Inspector");
 	//Set functions to print diferent menus inside the inspector
+	if (ImGui::CollapsingHeader("Textures"))
+	{
+		static int e = 0;
+		ImGui::RadioButton("radio a", &e, 0); ImGui::SameLine();
+		ImGui::RadioButton("radio b", &e, 1); ImGui::SameLine();
+		ImGui::RadioButton("radio c", &e, 2);
+
+		//Code to show data from textures depending in which one is taken
+		switch (e)
+		{
+			case 0:
+				App->sceneMain->actual = App->sceneMain->lenna;
+				break;
+			case 1:
+				App->sceneMain->actual = App->sceneMain->beer;
+				break;
+			case 2:
+				App->sceneMain->actual = App->sceneMain->chocobo;
+				break;
+		}
+	}
+
+	//Show current texture
+	AssetTexture* current = App->sceneMain->actual;
+
+	ImGui::Text("Path"); ImGui::SameLine(0); ImGui::Text(current->name.c_str());
+	ImGui::Text("Width"); ImGui::SameLine(0); ImGui::Text(to_string(current->width).c_str());
+	ImGui::Text("Height"); ImGui::SameLine(0); ImGui::Text(to_string(current->height).c_str());
+	ImGui::Text("Depth"); ImGui::SameLine(0); ImGui::Text(to_string(current->depth).c_str());
 
 	showFlagOptions();					///////
 
@@ -243,8 +274,9 @@ void ModuleGUI::showFlagOptions()
 
 void ModuleGUI::showConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS), ImGuiSetCond_FirstUseEver);
-	ImGui::Begin("Console", &show_console);
+	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS));
+
+	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Console");
 
 	ImGui::End();

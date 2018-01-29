@@ -15,15 +15,16 @@ public:
 	~ModuleRender();
 
 	bool init();
-	update_status preUpdate(const float deltaTime);
-	update_status update(const float deltaTime);
-	update_status postUpdate(const float deltaTime);
+	update_status preUpdate(float deltaTime);
+	update_status update(float deltaTime);
+	update_status postUpdate(float deltaTime);
 	bool cleanUp();
 
 	void  updatedWindowSize(int screenWidth, int screenHeight);
 
 public:
 	SDL_Renderer* renderer = nullptr;
+	bool wireframe = false;
 };
 
 #endif // __MODULERENDER_H__

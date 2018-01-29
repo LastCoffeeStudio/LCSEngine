@@ -17,14 +17,15 @@ public:
 	bool cleanUp();
 
 public:
-	float radius;
-	int nSeg;
+	float radius = 1.f;
+	int nSeg = 8;
 
 private:
 	void drawDirectMode();
 
 private:
-	int totalCoordsVBO;
+	unsigned int totalCoordsVBO = 0;
+	unsigned int totalTexCoordsVBO = 0;
 };
 
 #endif //__SPHERESHAPE_H__

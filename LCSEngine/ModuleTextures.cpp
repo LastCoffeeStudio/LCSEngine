@@ -2,8 +2,13 @@
 #include "Application.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "AssetTexture.h"
 #include "SDL/include/SDL.h"
+#include "DevIL/include/IL/il.h"
+#include "DevIL/include/IL/ilut.h"
+#include <stdlib.h> 
 
+#include <stdio.h> 
 
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
@@ -34,52 +39,82 @@ bool ModuleTextures::init()
 		ret = false;
 	}
 
+	LOG("Init Devil Library");
+	ilInit();
+
 	return ret;
 }
 
 // Called before quitting
 bool ModuleTextures::cleanUp()
 {
-	LOG("Freeing textures and Image library");
-
-	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); ++it)
-		SDL_DestroyTexture(*it);
-
-	textures.clear();
 	return true;
 }
 
-// Load new texture from file path
-SDL_Texture* const ModuleTextures::load(const char* path)
+AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 {
-	SDL_Texture* texture = nullptr;
-	SDL_Surface* surface = IMG_Load(path);
+	AssetTexture* asset = nullptr;
+	ILuint imageID;
+	GLuint textureID;
+	ILboolean success;
+	ILenum error;
+	ilGenImages(1, &imageID);
+	ilBindImage(imageID);
+	success = ilLoad(type,path);
 
-	if (surface == nullptr)
+	if (success)
 	{
-		LOG("Could not load surface with path: %s. IMG_Load: %s", path, IMG_GetError());
+		ILinfo ImageInfo;
+		iluGetImageInfo(&ImageInfo);
+		if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+		{
+			iluFlipImage();
+		}
+
+		success = ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+		if (!success)
+		{
+			error = ilGetError();
+			printf("Image conversion failed - IL reports error: %s\n", iluErrorString(error));
+			return asset;
+		}
+
+		glGenTextures(1, &textureID);
+		glBindTexture(GL_TEXTURE_2D, textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),
+			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+		glBindTexture(GL_TEXTURE_2D, 0);
+
+		asset = new AssetTexture(ImageInfo);
+		asset->ID = textureID;
+		asset->name = path;
+
+		//Delete file from memory
+		ilDeleteImages(1, &imageID);
 	}
 	else
 	{
-		texture = SDL_CreateTextureFromSurface(App->renderer->renderer, surface);
-
-		if (texture == nullptr)
-		{
-			LOG("Unable to create texture from surface! SDL Error: %s\n", SDL_GetError());
-		}
-		else
-		{
-			textures.push_back(texture);
-		}
-
-		SDL_FreeSurface(surface);
+		error = ilGetError();
+		printf("Image load failed - IL reports error: %s\n", iluErrorString(error));
+		return asset;
 	}
 
-	return texture;
+	ilDeleteImages(1, &imageID);
+
+	return asset;
 }
 
-void ModuleTextures::loadCheckers()
+AssetTexture* const ModuleTextures::loadCheckers()
 {
+	AssetTexture* checkers = new AssetTexture();
+	checkers->height = CHECKERS_HEIGHT;
+	checkers->width = CHECKERS_WIDTH;
+
 	for (int i = 0; i < CHECKERS_HEIGHT; i++) {
 		for (int j = 0; j < CHECKERS_WIDTH; j++) {
 			int c = ((((i & 0x8) == 0) ^ (((j & 0x8)) == 0))) * 255;
@@ -91,8 +126,8 @@ void ModuleTextures::loadCheckers()
 	}
 
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	glGenTextures(1, &ImageName);
-	glBindTexture(GL_TEXTURE_2D, ImageName);
+	glGenTextures(1, &checkers->ID);
+	glBindTexture(GL_TEXTURE_2D, checkers->ID);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -100,18 +135,6 @@ void ModuleTextures::loadCheckers()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, CHECKERS_WIDTH, CHECKERS_HEIGHT,
 		0, GL_RGBA, GL_UNSIGNED_BYTE, checkImage);
 	glBindTexture(GL_TEXTURE_2D, 0);
-}
 
-// Free texture from memory
-void ModuleTextures::unload(SDL_Texture* texture)
-{
-	for (list<SDL_Texture*>::iterator it = textures.begin(); it != textures.end(); ++it)
-	{
-		if (*it == texture)
-		{
-			SDL_DestroyTexture(*it);
-			textures.erase(it);
-			break;
-		}
-	}
+	return checkers;
 }

@@ -24,7 +24,7 @@ bool ModuleWindow::init()
 		//Create window
 		width = SCREEN_WIDTH;
 		height = SCREEN_HEIGHT;
-		Uint32 flags = SDL_WINDOW_OPENGL | SDL_WINDOW_RESIZABLE;
+		Uint32 flags = SDL_WINDOW_OPENGL;
 
 		if (FULLSCREEN == true)
 		{
@@ -37,6 +37,11 @@ bool ModuleWindow::init()
 		SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+
+		if (RESIZABLESCREEN == true)
+		{
+			flags |= SDL_WINDOW_RESIZABLE;
+		}
 
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width, height, flags);
 

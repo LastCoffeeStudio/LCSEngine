@@ -3,10 +3,11 @@
 
 #include "Module.h"
 
+class AssetTexture;
 class CubeShape;
 class SphereShape;
 
-enum Polygon
+enum PolygonType
 {
 	TRIANGLE,
 	CUBE,
@@ -21,15 +22,21 @@ public:
 
 	bool init() override;
 	bool start() override;
-	update_status update(const float deltaTime) override;
+	update_status update(float deltaTime) override;
 	bool cleanUp() override;
 	void draw();
 	void drawGrid();
 
+public:
+	AssetTexture * checkers = nullptr;
+	AssetTexture* lenna = nullptr;
+	AssetTexture* chocobo = nullptr;
+	AssetTexture* beer = nullptr;
+	AssetTexture* actual = nullptr;
+
 private:
-	bool manualRotation;
-	Polygon actualPolygon;
-	CubeShape* cube1;
-	SphereShape* sphere1;
+	PolygonType actualPolygon = TRIANGLE;
+	CubeShape* cube1 = nullptr;
+	SphereShape* sphere1 = nullptr;
 };
 #endif //__MODULESCENEMAIN_H__

@@ -1,4 +1,7 @@
+#include "Application.h"
 #include "Primitive.h"
+#include "ModuleSceneMain.h"
+#include "AssetTexture.h"
 
 Primitive::Primitive()
 {
@@ -60,17 +63,30 @@ void Primitive::drawDirectMode() {}
 
 void Primitive::drawVBO()
 {
+	//TODO: If more textures, on each primitive, indicate a GLuint for the texture applied to it
+	if (App->sceneMain->actual != nullptr)
+	{
+		glBindTexture(GL_TEXTURE_2D, App->sceneMain->actual->ID);
+	}
+
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, idColVBO);
 	glColorPointer(3, GL_FLOAT, 0, NULL);
+	glBindBuffer(GL_ARRAY_BUFFER, idTexCoordVBO);
+	glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+
 	glDrawArrays(GL_TRIANGLES, 0, verticesVBO.size());
 
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void Primitive::drawVertexArray()

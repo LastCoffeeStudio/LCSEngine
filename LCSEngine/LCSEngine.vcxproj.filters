@@ -34,6 +34,9 @@
     <Filter Include="Imgui">
       <UniqueIdentifier>{15077779-c19e-4378-b4ef-b3c41e03e980}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Assets">
+      <UniqueIdentifier>{ea015750-a8c6-4301-8196-5ea478c1bc3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -288,6 +291,12 @@
     <ClInclude Include="ModuleCamera.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Utils.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetTexture.h">
+      <Filter>Assets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -442,6 +451,9 @@
     </ClCompile>
     <ClCompile Include="ModuleCamera.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetTexture.cpp">
+      <Filter>Assets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

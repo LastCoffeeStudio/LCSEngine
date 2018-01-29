@@ -54,7 +54,7 @@ enum update_status
 #define VSYNC true
 #define TITLE "LCSEngine"
 #define FPS 60
-
+#define RESIZABLESCREEN true
 
 #define DIST_BTW_LINES_GRID 1
 #define SCREEN_COLUMNS 5
