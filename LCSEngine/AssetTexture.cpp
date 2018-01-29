@@ -6,7 +6,7 @@ AssetTexture::AssetTexture()
 {
 }
 
-AssetTexture::AssetTexture(ILinfo info) : width(info.Width), height(info.Height), depth(info.Depth), format(info.Format)
+AssetTexture::AssetTexture(ILinfo info) : width(info.Width), height(info.Height), depth(info.Depth), format(info.Format), bpp(info.Bpp), mips(info.NumMips), bytes(info.SizeOfData)
 {
 }
 

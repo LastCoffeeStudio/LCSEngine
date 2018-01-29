@@ -171,25 +171,30 @@ void ModuleGUI::showInspector()
 	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height));
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Inspector");
+
 	//Set functions to print diferent menus inside the inspector
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		static int e = 0;
-		ImGui::RadioButton("radio a", &e, 0); ImGui::SameLine();
-		ImGui::RadioButton("radio b", &e, 1); ImGui::SameLine();
-		ImGui::RadioButton("radio c", &e, 2);
+		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->checkers->ID, { 20, 20 });
+		ImGui::RadioButton("Lenna", &e, 1); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
+		ImGui::RadioButton("Chocobo", &e, 2); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->chocobo->ID, { 20, 20 });
+		ImGui::RadioButton("Beer", &e, 3); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->beer->ID, { 20, 20 });
 
 		//Code to show data from textures depending in which one is taken
 		switch (e)
 		{
 			case 0:
-				App->sceneMain->actual = App->sceneMain->lenna;
+				App->sceneMain->actual = App->sceneMain->checkers;
 				break;
 			case 1:
-				App->sceneMain->actual = App->sceneMain->beer;
+				App->sceneMain->actual = App->sceneMain->lenna;
 				break;
 			case 2:
 				App->sceneMain->actual = App->sceneMain->chocobo;
+				break;
+			case 3:
+				App->sceneMain->actual = App->sceneMain->beer;
 				break;
 		}
 	}
@@ -197,10 +202,14 @@ void ModuleGUI::showInspector()
 	//Show current texture
 	AssetTexture* current = App->sceneMain->actual;
 
-	ImGui::Text("Path"); ImGui::SameLine(0); ImGui::Text(current->name.c_str());
-	ImGui::Text("Width"); ImGui::SameLine(0); ImGui::Text(to_string(current->width).c_str());
-	ImGui::Text("Height"); ImGui::SameLine(0); ImGui::Text(to_string(current->height).c_str());
-	ImGui::Text("Depth"); ImGui::SameLine(0); ImGui::Text(to_string(current->depth).c_str());
+	ImGui::Text("Path:"); ImGui::SameLine(0); ImGui::TextColored({},current->name.c_str());
+	ImGui::Text("Width:"); ImGui::SameLine(0); ImGui::Text(to_string(current->width).c_str());
+	ImGui::Text("Height:"); ImGui::SameLine(0); ImGui::Text(to_string(current->height).c_str());
+	ImGui::Text("Depth:"); ImGui::SameLine(0); ImGui::Text(to_string(current->depth).c_str());
+	ImGui::Text("Bpp:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bpp).c_str());
+	ImGui::Text("Num of Mips:"); ImGui::SameLine(0); ImGui::Text(to_string(current->mips).c_str());
+	ImGui::Text("GPU Id:"); ImGui::SameLine(0); ImGui::Text(to_string(current->ID).c_str());
+	ImGui::Text("Size:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bytes).c_str());
 
 	ImGui::End();
 }
