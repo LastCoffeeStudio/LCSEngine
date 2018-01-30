@@ -12,6 +12,7 @@
 #include "SDL_mouse.h"
 #include "Utils.h"
 #include "DevIL/include/IL/il.h"
+#include "Shader.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -34,6 +35,7 @@ bool ModuleSceneMain::init()
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
 	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
 	actual = checkers;
+	shader = new Shader();
 
 	return true;
 }

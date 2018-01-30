@@ -297,6 +297,9 @@
     <ClInclude Include="AssetTexture.h">
       <Filter>Assets</Filter>
     </ClInclude>
+    <ClInclude Include="Shader.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -454,6 +457,9 @@
     </ClCompile>
     <ClCompile Include="AssetTexture.cpp">
       <Filter>Assets</Filter>
+    </ClCompile>
+    <ClCompile Include="Shader.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

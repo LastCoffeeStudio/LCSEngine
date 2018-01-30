@@ -188,7 +188,7 @@ void ModuleGUI::showInspector()
 	if (ImGui::CollapsingHeader("Textures"))
 	{
 		static int e = 0;
-		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
+		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->checkers->ID, { 20, 20 });
 		ImGui::RadioButton("Lenna", &e, 1); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
 		ImGui::RadioButton("Chocobo", &e, 2); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->chocobo->ID, { 20, 20 });
 		ImGui::RadioButton("Beer", &e, 3); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->beer->ID, { 20, 20 });

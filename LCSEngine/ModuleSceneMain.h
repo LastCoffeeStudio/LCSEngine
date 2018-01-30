@@ -3,6 +3,7 @@
 
 #include "Module.h"
 
+class Shader;
 class AssetTexture;
 class CubeShape;
 class SphereShape;
@@ -33,6 +34,7 @@ public:
 	AssetTexture* chocobo = nullptr;
 	AssetTexture* beer = nullptr;
 	AssetTexture* actual = nullptr;
+	Shader* shader = nullptr;
 
 private:
 	PolygonType actualPolygon = TRIANGLE;
