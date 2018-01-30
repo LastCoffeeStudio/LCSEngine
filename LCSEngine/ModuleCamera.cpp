@@ -68,53 +68,55 @@ void ModuleCamera::moveCamera(float deltaTime)
 {
 	float speed = cameraSpeed*deltaTime;
 	float3 displacement = { 0.f, 0.f, 0.f };
-
+	bool movment = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		speed *= 2.f;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_Q) == KEY_REPEAT)
 	{
 		displacement += { 0.f, 1.f, 0.f };
+		movment = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_E) == KEY_REPEAT)
 	{
 		displacement -= { 0.f, 1.f, 0.f };
+		movment = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT )
 	{
 		displacement += frustum.front;
+		movment = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_S) == KEY_REPEAT)
 	{
 		displacement -= frustum.front;
+		movment = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_D) == KEY_REPEAT || App->input->getMouseMotion().x < 0 && App->input->getMouseButtonDown(SDL_BUTTON_MIDDLE))
 	{
 		displacement += frustum.WorldRight();
+		movment = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_A) == KEY_REPEAT || App->input->getMouseMotion().x > 0 && App->input->getMouseButtonDown(SDL_BUTTON_MIDDLE))
 	{
 		displacement -= frustum.WorldRight();
+		movment = true;
 	}
-
 	if (App->input->getMouseMotion().y > 0 && App->input->getMouseButtonDown(SDL_BUTTON_MIDDLE))
 	{
 		displacement += frustum.up;
+		movment = true;
 	}
-
 	if (App->input->getMouseMotion().y < 0 && App->input->getMouseButtonDown(SDL_BUTTON_MIDDLE))
 	{
 		displacement -= frustum.up;
+		movment = true;
 	}
-
-	frustum.Translate(displacement*speed);
+	if (movment = true)
+	{
+		frustum.Translate(displacement*speed);
+	}
 }
 
 
@@ -122,6 +124,7 @@ void ModuleCamera::cameraZoom(float deltaTime)
 {
 	float speed = zoomSpeed*deltaTime;
 	float3 displacement = { 0.f, 0.f, 0.f };
+	bool doZoom = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		speed *= 2.f;
@@ -129,20 +132,24 @@ void ModuleCamera::cameraZoom(float deltaTime)
 	if (App->input->getKey(SDL_SCANCODE_X) == KEY_REPEAT || App->input->mouse_wheel < 0)
 	{
 		displacement += frustum.front;
+		doZoom = true;
 	}
-
 	if (App->input->getKey(SDL_SCANCODE_Z) == KEY_REPEAT || App->input->mouse_wheel > 0)
 	{
 		displacement -= frustum.front;
+		doZoom = true;
 	}
-	frustum.Translate(displacement*speed);
+	if(doZoom == true)
+	{
+		frustum.Translate(displacement*speed);
+	}
 }
 
 void ModuleCamera::cameraRotation(float deltaTime)
 {
 	float speed = rotationSpeed*deltaTime;
 	Quat rotation = Quat::identity;
-
+	bool rotated = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
 	{
 		speed *= 2.f;
@@ -150,25 +157,32 @@ void ModuleCamera::cameraRotation(float deltaTime)
 	if (App->input->getKey(SDL_SCANCODE_LEFT) == KEY_REPEAT || App->input->getMouseMotion().x > 0 && App->input->getMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		rotation = rotation.Mul(Quat::RotateY(speed));
+		rotated = true;
 	}
 	if (App->input->getKey(SDL_SCANCODE_RIGHT) == KEY_REPEAT || App->input->getMouseMotion().x < 0 && App->input->getMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		rotation = rotation.Mul(Quat::RotateY(-speed));
+		rotated = true;
 	}
 	if (App->input->getKey(SDL_SCANCODE_UP) == KEY_REPEAT || App->input->getMouseMotion().y > 0 && App->input->getMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		if (frustum.front.y < 0.999f) {
 			rotation = rotation.Mul(Quat::RotateAxisAngle(frustum.WorldRight(), speed));
+			rotated = true;
 		}
 	}
 	if (App->input->getKey(SDL_SCANCODE_DOWN) == KEY_REPEAT || App->input->getMouseMotion().y < 0 && App->input->getMouseButtonDown(SDL_BUTTON_RIGHT))
 	{
 		if (frustum.front.y > -0.999f) {
 			rotation = rotation.Mul(Quat::RotateAxisAngle(frustum.WorldRight(), -speed));
+			rotated = true;
 		}
 	}
-	frustum.up = rotation.Mul(frustum.up);
-	frustum.front = rotation.Mul(frustum.front);
-	frustum.up.Normalize();
-	frustum.front.Normalize();
+	if (rotated == true)
+	{
+		frustum.up = rotation.Mul(frustum.up);
+		frustum.front = rotation.Mul(frustum.front);
+		frustum.up.Normalize();
+		frustum.front.Normalize();
+	}
 }
