@@ -7,6 +7,7 @@ class Shader;
 class AssetTexture;
 class CubeShape;
 class SphereShape;
+class GameObject;
 
 enum PolygonType
 {
@@ -35,6 +36,7 @@ public:
 	AssetTexture* beer = nullptr;
 	AssetTexture* actual = nullptr;
 	Shader* shader = nullptr;
+	GameObject* root = nullptr;
 
 private:
 	PolygonType actualPolygon = TRIANGLE;

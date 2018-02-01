@@ -13,12 +13,14 @@
 #include "Utils.h"
 #include "DevIL/include/IL/il.h"
 #include "Shader.h"
+#include "GameObject.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
 
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
+	root = new GameObject();
 	cube1 = new CubeShape();
 	sphere1 = new SphereShape(1.f, 16);
 }

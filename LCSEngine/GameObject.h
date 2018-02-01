@@ -19,9 +19,11 @@ public:
 	//void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
 	void deleteGameObject(GameObject* gameObject);
+	void drawGui();
+	void draw();
 
 public:
-	string name = "";
+	char name[64] = "GameObject";
 	//Transform* transform;
 	bool enable = true;
 	//vector<Component*> components;
