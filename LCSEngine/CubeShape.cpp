@@ -18,6 +18,7 @@ void CubeShape::initializeValues()
 	verticesVBO.reserve(108);	//3 coords/vertex * 6 vertices/face * 6 faces
 	colorsVBO.reserve(108);		//3 values/color * 1 color/vertex * 36 vertices
 	texcoordsVBO.reserve(72);
+	//attribVBO.reserve(288);
 	verticesVA.reserve(24);		//3 coors/vertex * 8 vertices
 	indicesVA.reserve(36);		//6 indices/face * 6 faces
 	colorsVA.reserve(24);		//3 colors/vertex * 8 vertices

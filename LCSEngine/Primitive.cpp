@@ -1,11 +1,14 @@
 #include "Application.h"
 #include "Primitive.h"
 #include "ModuleSceneMain.h"
+#include "ModuleCamera.h"
 #include "AssetTexture.h"
+#include "MathGeoLib/src/MathGeoLib.h"
+#include "Shader.h"
 
 Primitive::Primitive()
 {
-	renderMode = DIRECTMODE;
+	renderMode = VBO;
 }
 
 Primitive::~Primitive() {}
@@ -73,9 +76,21 @@ void Primitive::drawVBO()
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+	float4x4 id = float4x4::identity;
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 	glEnableVertexAttribArray(0);
+	
 	/*glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, idColVBO);
 	glColorPointer(3, GL_FLOAT, 0, NULL);

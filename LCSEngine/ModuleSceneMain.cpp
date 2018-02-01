@@ -42,7 +42,7 @@ bool ModuleSceneMain::init()
 
 bool ModuleSceneMain::start()
 {
-	actualPolygon = TRIANGLE;
+	actualPolygon = CUBE;
 	return true;
 }
 

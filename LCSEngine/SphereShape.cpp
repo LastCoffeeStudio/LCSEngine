@@ -72,15 +72,6 @@ void SphereShape::initializeValues()
 
 			if (i == 0)
 			{
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
 				verticesVBO.push_back(sinj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosj*sini*radius);
@@ -90,6 +81,15 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(sinjj*sinii*radius);
 				verticesVBO.push_back(cosii*radius);
 				verticesVBO.push_back(cosjj*sinii*radius);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
 				texcoordsVBO.push_back(j*texCoordXDif);
 				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
@@ -135,15 +135,6 @@ void SphereShape::initializeValues()
 			else if (i == (nSeg / 2) - 1)
 			{
 				g = b = 0.f;
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
 				verticesVBO.push_back(sinj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosj*sini*radius);
@@ -153,6 +144,15 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(sinjj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosjj*sini*radius);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
 				texcoordsVBO.push_back(j*texCoordXDif);
 				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
@@ -189,15 +189,6 @@ void SphereShape::initializeValues()
 			else
 			{
 				g = 0.f;
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
 				verticesVBO.push_back(sinj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosj*sini*radius);
@@ -207,6 +198,15 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(sinjj*sinii*radius);
 				verticesVBO.push_back(cosii*radius);
 				verticesVBO.push_back(cosjj*sinii*radius);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
 				texcoordsVBO.push_back(j*texCoordXDif);
 				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back(j*texCoordXDif);
@@ -214,15 +214,6 @@ void SphereShape::initializeValues()
 				texcoordsVBO.push_back((j+1)*texCoordXDif);
 				texcoordsVBO.push_back(1.f - (i+1)*texCoordYDif);
 
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
-				colorsVBO.push_back(r);
-				colorsVBO.push_back(g);
-				colorsVBO.push_back(b);
 				verticesVBO.push_back(sinj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosj*sini*radius);
@@ -232,6 +223,15 @@ void SphereShape::initializeValues()
 				verticesVBO.push_back(sinjj*sini*radius);
 				verticesVBO.push_back(cosi*radius);
 				verticesVBO.push_back(cosjj*sini*radius);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
+				colorsVBO.push_back(r);
+				colorsVBO.push_back(g);
+				colorsVBO.push_back(b);
 				texcoordsVBO.push_back(j*texCoordXDif);
 				texcoordsVBO.push_back(1.f - i*texCoordYDif);
 				texcoordsVBO.push_back((j+1)*texCoordXDif);

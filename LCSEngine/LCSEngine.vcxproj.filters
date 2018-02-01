@@ -300,6 +300,9 @@
     <ClInclude Include="Shader.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="GameObject.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -460,6 +463,9 @@
     </ClCompile>
     <ClCompile Include="Shader.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="GameObject.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -89,6 +89,8 @@ void Shader::initDefaultShaders()
 	{
 		linkShaders();
 	}
+
+	glUseProgram(shaderProgram);
 }
 
 void Shader::cleanUp() {}
