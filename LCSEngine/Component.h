@@ -17,9 +17,13 @@ public:
 	virtual void enable();
 	virtual void disable();
 
+protected:
+	virtual void drawGUI();
+
 public:
 	bool isEnable;
 	TypeComponent typeComponent;
+
 private:
 	GameObject* gameObject;
 };

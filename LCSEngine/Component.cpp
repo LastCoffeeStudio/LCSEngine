@@ -30,3 +30,4 @@ void Component::disable()
 	//TODO Set Checker UI false and other commond thinks
 }
 
+void Component::drawGUI() {}
