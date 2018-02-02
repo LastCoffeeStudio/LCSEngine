@@ -143,6 +143,7 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetTexture.h" />
+    <ClInclude Include="Component.h" />
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -232,6 +233,7 @@
   <ItemGroup>
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetTexture.cpp" />
+    <ClCompile Include="Component.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

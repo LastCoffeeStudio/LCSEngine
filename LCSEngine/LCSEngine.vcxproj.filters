@@ -303,6 +303,9 @@
     <ClInclude Include="GameObject.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -465,6 +468,9 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="GameObject.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
