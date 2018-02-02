@@ -2,6 +2,11 @@
 #include "Globals.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
 
 Shader::Shader()
 {
@@ -47,20 +52,11 @@ void Shader::linkShaders()
 
 void Shader::initDefaultShaders()
 {
-	//Load shaders from files to const char*
-
-	const GLchar* vshaderFile = "#version 330 core\n"
-		"layout (location = 0) in vec3 position;\n"
-		"uniform mat4 model_matrix;\n"
-		"uniform mat4 view;\n"
-		"uniform mat4 projection;\n"
-		"void main() {\n"
-		"gl_Position = projection * view * model_matrix * vec4(position, 1.0f); }\n\0"; 
-
-	const GLchar* fshaderFile = "#version 330 core\n"
-		"out vec4 color;\n"
-		"void main() {\n"
-		"color = vec4(1.0f, 0.f, 0.f, 0.f); }\n\0";
+	string vertShader = readShader("Assets/Shaders/vertshader.txt");
+	const GLchar* vshaderFile = vertShader.c_str();
+	
+	string fragShader = readShader("Assets/Shaders/fragshader.txt");
+	const GLchar* fshaderFile = fragShader.c_str();;
 
 	vshaderID = glCreateShader(GL_VERTEX_SHADER);
 	glShaderSource(vshaderID, 1, &vshaderFile, NULL);
@@ -94,3 +90,21 @@ void Shader::initDefaultShaders()
 }
 
 void Shader::cleanUp() {}
+
+string Shader::readShader(char* filename)
+{
+	ifstream file;
+	file.open(filename, ios::in); // opens as ASCII!
+	if (!file) "";
+
+	string shaderText = "";
+	string line;
+	while (getline(file, line)) 
+	{
+		shaderText += line + "\n";
+	}
+	file.close();
+
+	return shaderText;
+}
+

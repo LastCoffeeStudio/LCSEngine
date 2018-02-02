@@ -2,6 +2,9 @@
 #define __SHADER_H_
 
 #include "Glew/include/glew.h"
+#include <fstream>
+
+using namespace std;
 
 class Shader {
 public:
@@ -9,6 +12,7 @@ public:
 	~Shader();
 
 	GLuint loadShader(const char* shader);
+	string readShader(char* filename);
 	void linkShaders();
 	void initDefaultShaders();
 	void cleanUp();
