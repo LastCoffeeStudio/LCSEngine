@@ -44,6 +44,7 @@ update_status ModuleGUI::preUpdate(float deltaTime)
 
 update_status ModuleGUI::update(float deltaTime)
 {
+	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
 	
 	if (show_engine_about)
@@ -59,8 +60,14 @@ update_status ModuleGUI::update(float deltaTime)
 	
 	if (show_inspector)
 	{
-		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), 0), ImGuiSetCond_Always);
+		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showInspector();
+	}
+
+	if (show_hierarchy)
+	{
+		ImGui::SetNextWindowPos(ImVec2(0, MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+		showHierarchy();
 	}
 
 	if (show_console)
@@ -68,6 +75,8 @@ update_status ModuleGUI::update(float deltaTime)
 		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_Always);
 		showConsole();
 	}
+
+
 	return UPDATE_CONTINUE;
 }
 
@@ -135,7 +144,7 @@ void ModuleGUI::showAboutWindow()
 
 void ModuleGUI::showMainWindow()
 {
-	ImGui::SetNextWindowSize(ImVec2(500, 200), ImGuiSetCond_FirstUseEver);
+	ImGui::SetNextWindowSize(ImVec2(App->window->width, MENU_TOP_BAR_HEIGHT));
 	ImGui::Begin("Render Window", &show_main_window, ImGuiWindowFlags_MenuBar);
 
 	// Menu
@@ -180,7 +189,7 @@ void ModuleGUI::showMainWindow()
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), App->window->height));
+	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), (App->window->height - MENU_TOP_BAR_HEIGHT)));
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Inspector");
 
@@ -227,6 +236,19 @@ void ModuleGUI::showInspector()
 
 	ImGui::End();
 }
+
+void ModuleGUI::showHierarchy()
+{
+	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), (App->window->height - MENU_TOP_BAR_HEIGHT)));
+	ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Text("Hierarchy");
+
+	//Set functions to print diferent menus inside the inspector
+	
+
+	ImGui::End();
+}
+
 
 void ModuleGUI::showFlagOptions()
 {

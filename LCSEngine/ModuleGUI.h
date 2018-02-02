@@ -25,6 +25,7 @@ public:
 	bool show_inspector = true;
 	bool show_console = true;
 	bool show_gl = true;
+	bool show_hierarchy = true;
 	ImVec4 clear_color;
 
 private:
@@ -33,6 +34,7 @@ private:
 	void showInspector();
 	void showFlagOptions();
 	void showConsole();
+	void showHierarchy();
 
 	void putHyperlink(const char* link);
 

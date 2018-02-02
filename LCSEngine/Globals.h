@@ -59,4 +59,5 @@ enum update_status
 #define DIST_BTW_LINES_GRID 1
 #define SCREEN_COLUMNS 5
 #define SCREEN_ROWS 5
+#define MENU_TOP_BAR_HEIGHT 38
 #endif //__GLOBALS_H__
