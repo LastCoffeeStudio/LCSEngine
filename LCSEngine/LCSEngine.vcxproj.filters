@@ -312,6 +312,9 @@
     <ClInclude Include="MeshComponent.h">
       <Filter>Componets</Filter>
     </ClInclude>
+    <ClInclude Include="TransformComponent.h">
+      <Filter>Componets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -480,6 +483,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
+      <Filter>Componets</Filter>
+    </ClCompile>
+    <ClCompile Include="TransformComponent.cpp">
       <Filter>Componets</Filter>
     </ClCompile>
   </ItemGroup>

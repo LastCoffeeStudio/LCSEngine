@@ -8,7 +8,8 @@ class GameObject;
 enum TypeComponent
 {
 	COMPONENT = 0,
-	MESHCOMPONENT
+	MESHCOMPONENT,
+	TRANSFORMCOMPONENT
 };
 
 class Component

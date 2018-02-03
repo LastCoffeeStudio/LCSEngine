@@ -12,6 +12,7 @@
 #include "GameObject.h"
 #include "MeshComponent.h"
 #include <string> 
+#include "TransformComponent.h"
 
 using namespace std;
 
@@ -167,7 +168,7 @@ void ModuleGUI::showMainWindow()
 			if (ImGui::MenuItem("Add Mesh component"))
 			{
 				GameObject* gameObject = new GameObject();
-				MeshComponent* component = new MeshComponent(gameObject,"Mesh Renderer", true);
+				TransformComponent* component = new TransformComponent(gameObject,"Transform", true);
 				gameObject->addComponent(component);
 				App->sceneMain->currentObject = gameObject;
 			}
