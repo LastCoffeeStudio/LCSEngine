@@ -4,7 +4,8 @@
 
 Component::Component() {}
 
-Component::Component(GameObject* gameObject): gameObject(gameObject)
+Component::Component(GameObject* gameObject, bool isEnable, bool isUnique)
+					: gameObject(gameObject), isEnable(isEnable), isUnique(isUnique)
 {
 	typeComponent = COMPONENT;
 	//TODO Set Checker in UI
@@ -30,4 +31,3 @@ void Component::disable()
 	//TODO Set Checker UI false and other commond thinks
 }
 
-void Component::drawGUI() {}
