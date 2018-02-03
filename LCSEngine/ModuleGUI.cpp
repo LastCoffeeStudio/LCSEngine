@@ -9,6 +9,7 @@
 #include "ModuleCamera.h"
 #include <shellapi.h>
 #include "ModuleRender.h"
+#include "GameObject.h"
 #include <string> 
 
 using namespace std;
@@ -191,10 +192,11 @@ void ModuleGUI::showInspector()
 {
 	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), (App->window->height - MENU_TOP_BAR_HEIGHT)));
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
-	ImGui::Text("Inspector");
+	
+	App->sceneMain->currentObject->drawGui();
 
 	//Set functions to print diferent menus inside the inspector
-	if (ImGui::CollapsingHeader("Textures"))
+	/*if (ImGui::CollapsingHeader("Textures"))
 	{
 		static int e = 0;
 		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->checkers->ID, { 20, 20 });
@@ -233,7 +235,7 @@ void ModuleGUI::showInspector()
 	ImGui::Text("Size:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bytes).c_str());
 
 	showFlagOptions();					///////
-
+	*/
 	ImGui::End();
 }
 

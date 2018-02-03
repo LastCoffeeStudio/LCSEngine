@@ -37,6 +37,7 @@ public:
 	AssetTexture* actual = nullptr;
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
+	GameObject* currentObject = nullptr;
 
 private:
 	PolygonType actualPolygon = TRIANGLE;
