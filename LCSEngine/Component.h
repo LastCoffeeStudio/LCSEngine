@@ -24,8 +24,9 @@ public:
 	bool isEnable = false;
 	bool isUnique = false;
 	TypeComponent typeComponent = COMPONENT;
+	bool suicide = false;
 
-private:
+protected:
 	GameObject* gameObject = nullptr;
 };
 

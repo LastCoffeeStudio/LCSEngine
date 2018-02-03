@@ -17,13 +17,17 @@ void GameObject::addComponent(Component* component)
 
 void GameObject::deleteComponent(Component* component)
 {
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
 	{
 		if (*it == component)
 		{
-			components.erase(it);
 			RELEASE(*it);
+			it = components.erase(it);
 			return;
+		}
+		else
+		{
+			++it;
 		}
 	}
 }
@@ -50,21 +54,26 @@ void GameObject::deleteGameObject()
 		GameObject* parent = current->parent;
 		bool erased = false;
 		//Delete info in parent children
-		for (vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end() && !erased; ++it)
+		for (vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end() && !erased;)
 		{
 			if ((*it) == current)
 			{
 				it = parent->children.erase(it);
 				erased = true;
 			}
+			else
+			{
+				++it;
+			}
 		}
 		parent = nullptr;
 
 		//Delete all components
-		for (vector<Component*>::iterator it = current->components.begin(); it != current->components.end(); ++it)
+		for (vector<Component*>::iterator it = current->components.begin(); it != current->components.end();)
 		{
 			//(*it)->cleanUp();
 			RELEASE(*it);
+			it = current->components.erase(it);
 		}
 		current->components.clear();
 
