@@ -37,6 +37,9 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{ea015750-a8c6-4301-8196-5ea478c1bc3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Componets">
+      <UniqueIdentifier>{520dc170-6991-4c50-b25b-d0775a08639e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -306,6 +309,9 @@
     <ClInclude Include="Component.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="MeshComponent.h">
+      <Filter>Componets</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -472,6 +478,9 @@
     </ClCompile>
     <ClCompile Include="Component.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="MeshComponent.cpp">
+      <Filter>Componets</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -10,6 +10,7 @@
 #include <shellapi.h>
 #include "ModuleRender.h"
 #include "GameObject.h"
+#include "MeshComponent.h"
 #include <string> 
 
 using namespace std;
@@ -160,6 +161,20 @@ void ModuleGUI::showMainWindow()
 
 			ImGui::EndMenu();
 		}
+
+		if (ImGui::BeginMenu("Components"))
+		{
+			if (ImGui::MenuItem("Add Mesh component"))
+			{
+				GameObject* gameObject = new GameObject();
+				MeshComponent* component = new MeshComponent(gameObject,"Mesh Renderer", true);
+				gameObject->addComponent(component);
+				App->sceneMain->currentObject = gameObject;
+			}
+
+			ImGui::EndMenu();
+		}
+
 		ImGui::EndMenuBar();
 	}
 

@@ -93,7 +93,7 @@ void GameObject::drawGui()
 	}
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		//(*it)->drawGUI();
+		(*it)->drawGUI();
 	}
 }
 

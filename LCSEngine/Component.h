@@ -1,17 +1,22 @@
 #ifndef __COMPONENT_H__
-#define ____COMPONENT_H__
+#define __COMPONENT_H__
+
+#include <string>
+
+class GameObject;
 
 enum TypeComponent
 {
-	COMPONENT = 0
+	COMPONENT = 0,
+	MESHCOMPONENT
 };
-class GameObject;
+
 class Component
 {
 public:
 	//Don't use component() => Use Component(GameObject*)
 	Component();
-	Component(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
+	Component(GameObject* gameObject, std::string name, bool isEnable = false, bool isUnique = false);
 	~Component();
 	virtual bool update();
 	virtual void enable();
@@ -21,9 +26,10 @@ public:
 public:
 	bool isEnable = false;
 	bool isUnique = false;
+	std::string name;
 	TypeComponent typeComponent = COMPONENT;
 
-private:
+protected:
 	GameObject* gameObject = nullptr;
 };
 

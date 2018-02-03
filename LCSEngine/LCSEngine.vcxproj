@@ -92,7 +92,7 @@
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
       <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -120,7 +120,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
       <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <SubSystem>Console</SubSystem>
+      <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -213,6 +213,7 @@
     <ClInclude Include="MathGeoLib\src\Math\sse_mathfun.h" />
     <ClInclude Include="MathGeoLib\src\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\src\Time\Clock.h" />
+    <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCamera.h" />
@@ -273,6 +274,7 @@
     <ClCompile Include="MathGeoLib\src\Math\SSEMath.cpp" />
     <ClCompile Include="MathGeoLib\src\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\src\Time\Clock.cpp" />
+    <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />
