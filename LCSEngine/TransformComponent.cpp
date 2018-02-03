@@ -6,7 +6,7 @@ using namespace std;
 
 TransformComponent::TransformComponent(GameObject* gameObject, string name, bool isEnable, bool isUnique) : Component(gameObject, name, isEnable, isUnique)
 {
-	typeComponent = TRANSFORMCOMPONENT;
+	typeComponent = TRANSFORM;
 }
 
 TransformComponent::~TransformComponent() { }

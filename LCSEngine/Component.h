@@ -1,21 +1,22 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
-
 #include <string>
 
-class GameObject;
+
+
 
 enum TypeComponent
 {
 	COMPONENT = 0,
 	MESHCOMPONENT,
-	TRANSFORMCOMPONENT
+	TRANSFORM,
+	MATERIAL
 };
 
+class GameObject;
 class Component
 {
 public:
-	//Don't use component() => Use Component(GameObject*)
 	Component();
 	Component(GameObject* gameObject, std::string name, bool isEnable = false, bool isUnique = false);
 	~Component();

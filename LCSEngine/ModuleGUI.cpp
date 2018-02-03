@@ -11,6 +11,7 @@
 #include "ModuleRender.h"
 #include "GameObject.h"
 #include "MeshComponent.h"
+#include "SDL_assert.h"
 #include <string> 
 #include "TransformComponent.h"
 
@@ -63,7 +64,7 @@ update_status ModuleGUI::update(float deltaTime)
 
 	if (show_inspector)
 	{
-		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+		ImGui::SetNextWindowPos(ImVec2((float)((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showInspector();
 	}
 
@@ -75,7 +76,7 @@ update_status ModuleGUI::update(float deltaTime)
 
 	if (show_console)
 	{
-		ImGui::SetNextWindowPos(ImVec2(0, (App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1)), ImGuiSetCond_Always);
+		ImGui::SetNextWindowPos(ImVec2(0.f, (float)((App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1))), ImGuiSetCond_Always);
 		showConsole();
 	}
 
@@ -147,7 +148,7 @@ void ModuleGUI::showAboutWindow()
 
 void ModuleGUI::showMainWindow()
 {
-	ImGui::SetNextWindowSize(ImVec2(App->window->width, MENU_TOP_BAR_HEIGHT));
+	ImGui::SetNextWindowSize(ImVec2((float)App->window->width, (float)MENU_TOP_BAR_HEIGHT));
 	ImGui::Begin("Render Window", &show_main_window, ImGuiWindowFlags_MenuBar);
 
 	// Menu
@@ -206,10 +207,10 @@ void ModuleGUI::showMainWindow()
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), (App->window->height - MENU_TOP_BAR_HEIGHT)));
+	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	
-	App->sceneMain->currentObject->drawGui();
+	App->sceneMain->currentObject->drawComponentsGui();
 
 	//Set functions to print diferent menus inside the inspector
 	/*if (ImGui::CollapsingHeader("Textures"))
@@ -257,16 +258,53 @@ void ModuleGUI::showInspector()
 
 void ModuleGUI::showHierarchy()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width / SCREEN_COLUMNS), (App->window->height - MENU_TOP_BAR_HEIGHT)));
+	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
 	ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Hierarchy");
 
 	//Set functions to print diferent menus inside the inspector
+	GameObject* root = App->sceneMain->root;
 
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		showHierarchyChildren((*it));
+	}
 
 	ImGui::End();
 }
 
+void ModuleGUI::showHierarchyChildren(GameObject* gameObject)
+{
+	SDL_assert(gameObject != nullptr);
+	ImGuiTreeNodeFlags node_flags = 0;
+	
+	if (App->sceneMain->currentObject == gameObject)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+	}
+	if (gameObject->children.size() > 0)
+	{
+		node_flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+	}
+	else
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+	
+	bool node = ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags);
+	if (ImGui::IsItemClicked())
+	{
+		App->sceneMain->currentObject = gameObject;
+	}
+	if (node)
+	{
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			showHierarchyChildren((*it));
+		}
+		ImGui::TreePop();
+	}
+}
 
 void ModuleGUI::showFlagOptions()
 {
@@ -323,7 +361,7 @@ void ModuleGUI::showFlagOptions()
 
 void ModuleGUI::showConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2((App->window->width/ SCREEN_COLUMNS) * 4, App->window->height/SCREEN_ROWS));
+	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width/ SCREEN_COLUMNS) * 4.f, (float)(App->window->height/SCREEN_ROWS)));
 
 	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Console");

@@ -22,7 +22,6 @@ void GameObject::deleteComponent(Component* component)
 		if (*it == component)
 		{
 			components.erase(it);
-			//(*it)->gameObject = nullptr;
 			RELEASE(*it);
 			return;
 		}
@@ -31,7 +30,6 @@ void GameObject::deleteComponent(Component* component)
 
 void GameObject::addGameObject(GameObject* gameObject)
 {
-	gameObject->parent = this;
 	children.push_back(gameObject);
 }
 
@@ -66,7 +64,6 @@ void GameObject::deleteGameObject()
 		for (vector<Component*>::iterator it = current->components.begin(); it != current->components.end(); ++it)
 		{
 			//(*it)->cleanUp();
-			//(*it)->gameObject = nullptr;
 			RELEASE(*it);
 		}
 		current->components.clear();
@@ -82,7 +79,7 @@ void GameObject::deleteGameObject()
 	}
 }
 
-void GameObject::drawGui()
+void GameObject::drawComponentsGui()
 {
 	ImGui::Checkbox("",&enable); ImGui::SameLine();
 	char aux[64];

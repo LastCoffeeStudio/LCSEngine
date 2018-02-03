@@ -37,8 +37,8 @@
     <Filter Include="Assets">
       <UniqueIdentifier>{ea015750-a8c6-4301-8196-5ea478c1bc3d}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Componets">
-      <UniqueIdentifier>{520dc170-6991-4c50-b25b-d0775a08639e}</UniqueIdentifier>
+    <Filter Include="Components">
+      <UniqueIdentifier>{ab33b2e1-b09a-4b6c-917f-efe7c1154c8e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -306,14 +306,17 @@
     <ClInclude Include="GameObject.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="Component.h">
+    <ClInclude Include="ComponentMaterial.h">
       <Filter>Core</Filter>
     </ClInclude>
     <ClInclude Include="MeshComponent.h">
-      <Filter>Componets</Filter>
+      <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="TransformComponent.h">
-      <Filter>Componets</Filter>
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -479,14 +482,17 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="Component.cpp">
+    <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
-      <Filter>Componets</Filter>
+      <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="TransformComponent.cpp">
-      <Filter>Componets</Filter>
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

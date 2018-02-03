@@ -14,6 +14,7 @@
 #include "DevIL/include/IL/il.h"
 #include "Shader.h"
 #include "GameObject.h"
+#include "ComponentMaterial.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -23,6 +24,14 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 	root = new GameObject();
 	cube1 = new CubeShape();
 	sphere1 = new SphereShape(1.f, 16);
+
+	/*This code is for testing purpose only, delete afterwards*/
+	root->addGameObject(new GameObject(root, "omg"));
+	root->addGameObject(new GameObject(root, "omg2"));
+	root->addGameObject(new GameObject(root, "omg3"));
+	root->addGameObject(new GameObject(root, "omg4"));
+	root->children[0]->addGameObject(new GameObject(root->children[0], "wow"));
+	root->children[0]->children[0]->addComponent(new ComponentMaterial(root->children[0]->children[0]));
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}

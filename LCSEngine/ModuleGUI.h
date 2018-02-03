@@ -5,6 +5,8 @@
 #include "Imgui/imgui.h"
 #include "Glew\include\glew.h"
 
+class GameObject;
+
 class ModuleGUI : public Module
 {
 
@@ -35,6 +37,7 @@ private:
 	void showFlagOptions();
 	void showConsole();
 	void showHierarchy();
+	void showHierarchyChildren(GameObject* gameObject);
 
 	void putHyperlink(const char* link);
 
