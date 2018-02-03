@@ -11,8 +11,8 @@ public:
 	Shader();
 	~Shader();
 
-	GLuint loadShader(const char* shader);
-	string readShader(char* filename);
+	GLuint loadShader(const char* shader, GLenum shaderType);
+	GLuint readShader(char* filename, GLenum shaderType);
 	void linkShaders();
 	void initDefaultShaders();
 	void cleanUp();

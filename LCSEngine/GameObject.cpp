@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "Component.h"
@@ -8,48 +9,35 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
-	assert(component == nullptr);
 	components.push_back(component);
 }
 
 void GameObject::deleteComponent(Component* component)
 {
-	assert(component == nullptr);
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if (*it == component)
 		{
 			components.erase(it);
-			delete (*it); // https://stackoverflow.com/questions/6353149/does-vectorerase-on-a-vector-of-object-pointers-destroy-the-object-itself 
+			RELEASE(*it);
 			return;
 		}
 	}
-
-	/*for(int i = 0; i < components.size(); ++i)
-	{
-		if(component == components[i])
-		{
-			components.erase(components.begin() + i);
-			delete(component);
-		}
-	}*/
 }
 
 void GameObject::addGameObject(GameObject* gameObject)
 {
-	assert(gameObject == nullptr);
 	childs.push_back(gameObject);
 }
 
 void GameObject::deleteGameObject(GameObject* gameObject)
 {
-	assert(gameObject == nullptr);
 	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
 	{
 		if (*it == gameObject)
 		{
 			childs.erase(it);
-			delete gameObject; //Same case of deleteComponent();
+			RELEASE(gameObject);
 			return;
 		}
 	}
@@ -59,9 +47,9 @@ void GameObject::drawGui()
 {
 	ImGui::Checkbox("",&enable); ImGui::SameLine();
 	ImGui::InputText("Name: ", name, IM_ARRAYSIZE(name));
-	/*for (vector<GameObject*>::iterator it = components.begin(); it != components.end(); ++it)
+	/*for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		*it->drawGui();
+		(*it)->drawGui();
 	}*/
 }
 

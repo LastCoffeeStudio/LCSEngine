@@ -15,10 +15,10 @@ Shader::Shader()
 
 Shader::~Shader() {}
 
-GLuint Shader::loadShader(const char* shader)
+GLuint Shader::loadShader(const char* shader, GLenum shaderType)
 {
 	GLuint shaderID;
-	shaderID = glCreateShader(GL_VERTEX_SHADER);
+	shaderID = glCreateShader(shaderType);
 	glShaderSource(shaderID, 1, &shader, NULL);
 	glCompileShader(shaderID);
 
@@ -52,46 +52,17 @@ void Shader::linkShaders()
 
 void Shader::initDefaultShaders()
 {
-	string vertShader = readShader("Assets/Shaders/vertshader.txt");
-	const GLchar* vshaderFile = vertShader.c_str();
-	
-	string fragShader = readShader("Assets/Shaders/fragshader.txt");
-	const GLchar* fshaderFile = fragShader.c_str();;
+	vshaderID = readShader("Assets/Shaders/vertshader.txt", GL_VERTEX_SHADER);
+	fshaderID = readShader("Assets/Shaders/fragshader.txt", GL_FRAGMENT_SHADER);
 
-	vshaderID = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vshaderID, 1, &vshaderFile, NULL);
-	glCompileShader(vshaderID);
-
-	fshaderID = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fshaderID, 1, &fshaderFile, NULL);
-	glCompileShader(fshaderID);
-
-	GLint success;
-	GLchar infoLog[512];
-	glGetShaderiv(vshaderID, GL_COMPILE_STATUS, &success);
-	if (success == 0)
-	{
-		glGetShaderInfoLog(vshaderID, 512, NULL, infoLog);
-		LOG("Shader compilation error: %s", infoLog);
-	}
-
-	glGetShaderiv(fshaderID, GL_COMPILE_STATUS, &success);
-	if (success == 0)
-	{
-		glGetShaderInfoLog(fshaderID, 512, NULL, infoLog);
-		LOG("Shader compilation error: %s", infoLog);
-	}
-	else
-	{
-		linkShaders();
-	}
+	linkShaders();
 
 	glUseProgram(shaderProgram);
 }
 
 void Shader::cleanUp() {}
 
-string Shader::readShader(char* filename)
+GLuint Shader::readShader(char* filename, GLenum shaderType)
 {
 	ifstream file;
 	file.open(filename, ios::in); // opens as ASCII!
@@ -105,6 +76,6 @@ string Shader::readShader(char* filename)
 	}
 	file.close();
 
-	return shaderText;
+	GLuint shaderID = loadShader(shaderText.c_str(), shaderType);
+	return shaderID;
 }
-

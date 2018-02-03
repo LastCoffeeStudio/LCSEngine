@@ -46,7 +46,7 @@ update_status ModuleGUI::update(float deltaTime)
 {
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
-	
+
 	if (show_engine_about)
 	{
 		showAboutWindow();
@@ -57,7 +57,7 @@ update_status ModuleGUI::update(float deltaTime)
 		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
 		ImGui::ShowTestWindow();
 	}
-	
+
 	if (show_inspector)
 	{
 		ImGui::SetNextWindowPos(ImVec2((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1), MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
@@ -182,7 +182,7 @@ void ModuleGUI::showMainWindow()
 			show_demo_window ^= 1;
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
-		
+
 	}
 	ImGui::End();
 }
@@ -205,18 +205,18 @@ void ModuleGUI::showInspector()
 		//Code to show data from textures depending in which one is taken
 		switch (e)
 		{
-			case 0:
-				App->sceneMain->actual = App->sceneMain->checkers;
-				break;
-			case 1:
-				App->sceneMain->actual = App->sceneMain->lenna;
-				break;
-			case 2:
-				App->sceneMain->actual = App->sceneMain->chocobo;
-				break;
-			case 3:
-				App->sceneMain->actual = App->sceneMain->beer;
-				break;
+		case 0:
+			App->sceneMain->actual = App->sceneMain->checkers;
+			break;
+		case 1:
+			App->sceneMain->actual = App->sceneMain->lenna;
+			break;
+		case 2:
+			App->sceneMain->actual = App->sceneMain->chocobo;
+			break;
+		case 3:
+			App->sceneMain->actual = App->sceneMain->beer;
+			break;
 		}
 	}
 
@@ -244,7 +244,7 @@ void ModuleGUI::showHierarchy()
 	ImGui::Text("Hierarchy");
 
 	//Set functions to print diferent menus inside the inspector
-	
+
 
 	ImGui::End();
 }

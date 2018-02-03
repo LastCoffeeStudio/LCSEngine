@@ -63,29 +63,6 @@ update_status ModuleSceneMain::update(float deltaTime)
 		actualPolygon = SPHERE;
 	}
 
-	if (App->input->getKey(SDL_SCANCODE_O) == KEY_DOWN)
-	{
-		if (actualPolygon == CUBE)
-		{
-			cube1->changeRenderMode(true);
-		}
-		if (actualPolygon == SPHERE)
-		{
-			sphere1->changeRenderMode(true);
-		}
-	}
-	if (App->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
-	{
-		if (actualPolygon == CUBE)
-		{
-			cube1->changeRenderMode(false);
-		}
-		if (actualPolygon == SPHERE)
-		{
-			sphere1->changeRenderMode(false);
-		}
-	}
-
 	return UPDATE_CONTINUE;
 }
 
