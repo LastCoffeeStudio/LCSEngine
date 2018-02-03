@@ -30,6 +30,7 @@ void GameObject::deleteComponent(Component* component)
 
 void GameObject::addGameObject(GameObject* gameObject)
 {
+	gameObject->parent = this;
 	children.push_back(gameObject);
 }
 

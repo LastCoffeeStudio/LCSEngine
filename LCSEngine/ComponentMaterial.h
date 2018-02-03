@@ -14,7 +14,7 @@ class ComponentMaterial : public Component
 public:
 	ComponentMaterial(GameObject* gameObject, bool isEnable = true);
 	~ComponentMaterial();
-	void drawGUI();
+	void drawGui();
 
 private:
 	AssetTexture * texture = nullptr;

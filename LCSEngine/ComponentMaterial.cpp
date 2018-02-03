@@ -8,7 +8,7 @@ ComponentMaterial::ComponentMaterial(GameObject* gameObject, bool isEnable) : Co
 
 ComponentMaterial::~ComponentMaterial() {}
 
-void ComponentMaterial::drawGUI()
+void ComponentMaterial::drawGui()
 {
 	if (ImGui::CollapsingHeader("Material"))
 	{
