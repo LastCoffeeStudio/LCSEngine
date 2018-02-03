@@ -2,8 +2,11 @@
 #include "GameObject.h"
 #include "Imgui/imgui.h"
 #include "Component.h"
+#include <stack>
 
 GameObject::GameObject() {}
+
+GameObject::GameObject(GameObject* parent, string name) : parent(parent), name(name) {}
 
 GameObject::~GameObject() {}
 
@@ -19,6 +22,7 @@ void GameObject::deleteComponent(Component* component)
 		if (*it == component)
 		{
 			components.erase(it);
+			//(*it)->gameObject = nullptr;
 			RELEASE(*it);
 			return;
 		}
@@ -27,35 +31,75 @@ void GameObject::deleteComponent(Component* component)
 
 void GameObject::addGameObject(GameObject* gameObject)
 {
-	childs.push_back(gameObject);
+	gameObject->parent = this;
+	children.push_back(gameObject);
 }
 
-void GameObject::deleteGameObject(GameObject* gameObject)
+void GameObject::deleteGameObject()
 {
-	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	stack<GameObject*> gameObjects;
+	gameObjects.push(this);
+
+	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 	{
-		if (*it == gameObject)
+		gameObjects.push(*it);
+	}
+
+	while (!gameObjects.empty())
+	{
+		GameObject* current = gameObjects.top();
+		gameObjects.pop();
+		GameObject* parent = current->parent;
+		bool erased = false;
+		//Delete info in parent children
+		for (vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end() && !erased; ++it)
 		{
-			childs.erase(it);
-			RELEASE(gameObject);
-			return;
+			if ((*it) == current)
+			{
+				it = parent->children.erase(it);
+				erased = true;
+			}
 		}
+		parent = nullptr;
+
+		//Delete all components
+		for (vector<Component*>::iterator it = current->components.begin(); it != current->components.end(); ++it)
+		{
+			//(*it)->cleanUp();
+			//(*it)->gameObject = nullptr;
+			RELEASE(*it);
+		}
+		current->components.clear();
+
+		//Push in the queue all children
+		for (vector<GameObject*>::iterator it = current->children.begin(); it != current->children.end(); ++it)
+		{
+			gameObjects.push(*it);
+		}
+		current->children.clear();
+
+		RELEASE(current);
 	}
 }
 
 void GameObject::drawGui()
 {
 	ImGui::Checkbox("",&enable); ImGui::SameLine();
-	ImGui::InputText("Name: ", name, IM_ARRAYSIZE(name));
-	/*for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	char aux[64];
+	strcpy_s(aux, 64, name.c_str());
+	if (ImGui::InputText("Name: ", aux, 64))
 	{
-		(*it)->drawGui();
-	}*/
+		name = aux;
+	}
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		//(*it)->drawGUI();
+	}
 }
 
 void GameObject::draw()
 {
-	for (vector<GameObject*>::iterator it = childs.begin(); it != childs.end(); ++it)
+	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 	{
 		(*it)->draw();
 	}

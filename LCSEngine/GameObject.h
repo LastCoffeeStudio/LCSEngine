@@ -13,20 +13,25 @@ class GameObject
 {
 public:
 	GameObject();
+	GameObject(GameObject* parent, string name);
 	~GameObject();
 
 	void addComponent(Component* component);
 	void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
-	void deleteGameObject(GameObject* gameObject);
+	void deleteGameObject();
 	void drawGui();
 	void draw();
 
+private:
+	void deleteChildren();
+	void deleteSelf();
+
 public:
-	char name[64] = "GameObject";
+	string name = "GameObject";
 	bool enable = true;
 	vector<Component*> components;
-	vector<GameObject*> childs;
+	vector<GameObject*> children;
 	GameObject* parent = nullptr;
 };
 
