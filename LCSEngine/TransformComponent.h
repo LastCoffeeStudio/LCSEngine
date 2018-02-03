@@ -7,7 +7,7 @@
 class TransformComponent : public Component
 {
 public:
-	TransformComponent(GameObject* gameObject, std::string name, bool isEnable = false, bool isUnique = false);
+	TransformComponent(GameObject* gameObject, bool isEnable = false, bool isUnique = true);
 	~TransformComponent();
 
 	void drawGUI() override;

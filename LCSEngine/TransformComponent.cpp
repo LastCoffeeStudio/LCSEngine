@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TransformComponent::TransformComponent(GameObject* gameObject, string name, bool isEnable, bool isUnique) : Component(gameObject, name, isEnable, isUnique)
+TransformComponent::TransformComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = TRANSFORM;
 }
@@ -13,7 +13,7 @@ TransformComponent::~TransformComponent() { }
 
 void TransformComponent::drawGUI()
 {
-	if (ImGui::CollapsingHeader(name.c_str())) {
+	if (ImGui::CollapsingHeader("Transform")) {
 		if (ImGui::Checkbox(" ", &isEnable))
 		{
 			

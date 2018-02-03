@@ -144,7 +144,6 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetTexture.h" />
     <ClInclude Include="Component.h" />
-    <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -156,6 +155,7 @@
     <ClInclude Include="Imgui\stb_rect_pack.h" />
     <ClInclude Include="Imgui\stb_textedit.h" />
     <ClInclude Include="Imgui\stb_truetype.h" />
+    <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="MathGeoLib\src\Algorithm\Random\LCG.h" />
     <ClInclude Include="MathGeoLib\src\Geometry\AABB.h" />
     <ClInclude Include="MathGeoLib\src\Geometry\AABB2D.h" />
@@ -237,7 +237,6 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetTexture.cpp" />
     <ClCompile Include="Component.cpp" />
-    <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
@@ -247,6 +246,7 @@
     <ClCompile Include="Imgui\imgui_user2.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="Main.cpp" />
+    <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MathGeoLib\src\Algorithm\Random\LCG.cpp" />
     <ClCompile Include="MathGeoLib\src\Geometry\AABB.cpp" />
     <ClCompile Include="MathGeoLib\src\Geometry\Capsule.cpp" />

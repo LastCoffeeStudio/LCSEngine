@@ -3,7 +3,7 @@
 
 using namespace std;
 
-MeshComponent::MeshComponent(GameObject* gameObject, string name, bool isEnable, bool isUnique) : Component(gameObject, name, isEnable, isUnique)
+MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = MESHCOMPONENT;
 }
@@ -12,7 +12,7 @@ MeshComponent::~MeshComponent() { }
 
 void MeshComponent::drawGUI()
 {
-	if (ImGui::CollapsingHeader(name.c_str())) {
+	if (ImGui::CollapsingHeader("Mesh")) {
 		if (ImGui::Checkbox(" ", &isEnable))
 		{
 			

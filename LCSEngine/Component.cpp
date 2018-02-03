@@ -6,7 +6,7 @@ using namespace std;
 
 Component::Component() {}
 
-Component::Component(GameObject* gameObject, string name, bool isEnable, bool isUnique) : gameObject(gameObject), name(name), isEnable(isEnable), isUnique(isUnique)
+Component::Component(GameObject* gameObject, bool isEnable, bool isUnique) : gameObject(gameObject), isEnable(isEnable), isUnique(isUnique)
 {
 	typeComponent = COMPONENT;
 	//TODO Set Checker in UI

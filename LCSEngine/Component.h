@@ -2,15 +2,12 @@
 #define __COMPONENT_H__
 #include <string>
 
-
-
-
 enum TypeComponent
 {
 	COMPONENT = 0,
-	MESHCOMPONENT,
 	TRANSFORM,
-	MATERIAL
+	MATERIAL,
+	MESHCOMPONENT
 };
 
 class GameObject;
@@ -18,7 +15,7 @@ class Component
 {
 public:
 	Component();
-	Component(GameObject* gameObject, std::string name, bool isEnable = false, bool isUnique = false);
+	Component(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
 	~Component();
 	virtual bool update();
 	virtual void enable();
@@ -28,7 +25,6 @@ public:
 public:
 	bool isEnable = false;
 	bool isUnique = false;
-	std::string name;
 	TypeComponent typeComponent = COMPONENT;
 	bool suicide = false;
 

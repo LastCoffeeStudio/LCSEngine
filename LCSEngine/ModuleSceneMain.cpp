@@ -15,7 +15,7 @@
 #include "Shader.h"
 #include "GameObject.h"
 #include "Component.h"
-#include "ComponentMaterial.h"
+#include "MaterialComponent.h"
 #include <queue>
 
 #define COUNT_LINES_GRID 100.f
@@ -33,7 +33,7 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 	root->addGameObject(new GameObject(root, "omg3"));
 	root->addGameObject(new GameObject(root, "omg4"));
 	root->children[0]->addGameObject(new GameObject(root->children[0], "wow"));
-	root->children[0]->children[0]->addComponent(new ComponentMaterial(root->children[0]->children[0]));
+	root->children[0]->children[0]->addComponent(new MaterialComponent(root->children[0]->children[0]));
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}

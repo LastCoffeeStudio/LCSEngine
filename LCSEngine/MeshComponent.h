@@ -6,7 +6,7 @@
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(GameObject* gameObject, std::string name, bool isEnable = false, bool isUnique = false);
+	MeshComponent(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
 	~MeshComponent();
 
 	void drawGUI() override;

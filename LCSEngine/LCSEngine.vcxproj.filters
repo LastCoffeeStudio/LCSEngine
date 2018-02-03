@@ -306,9 +306,6 @@
     <ClInclude Include="GameObject.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentMaterial.h">
-      <Filter>Core</Filter>
-    </ClInclude>
     <ClInclude Include="MeshComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
@@ -316,6 +313,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="Component.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="MaterialComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -482,9 +482,6 @@
     <ClCompile Include="GameObject.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentMaterial.cpp">
-      <Filter>Core</Filter>
-    </ClCompile>
     <ClCompile Include="MeshComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
@@ -492,6 +489,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="MaterialComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

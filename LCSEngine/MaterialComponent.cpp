@@ -1,14 +1,14 @@
-#include "ComponentMaterial.h"
+#include "MaterialComponent.h"
 #include "Imgui/imgui.h"
 
-ComponentMaterial::ComponentMaterial(GameObject* gameObject, bool isEnable) : Component(gameObject,"", isEnable)
+MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = MATERIAL;
 }
 
-ComponentMaterial::~ComponentMaterial() {}
+MaterialComponent::~MaterialComponent() {}
 
-void ComponentMaterial::drawGUI()
+void MaterialComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Material"))
 	{
