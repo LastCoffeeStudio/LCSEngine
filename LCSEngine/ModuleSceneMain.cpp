@@ -31,7 +31,7 @@ bool ModuleSceneMain::init()
 {
 	cube1->initializeValues();
 	sphere1->initializeValues();
-
+	currentObject = root;
 	checkers = App->textures->loadCheckers();
 	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
