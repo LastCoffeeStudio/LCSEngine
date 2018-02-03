@@ -10,6 +10,7 @@
 #include <shellapi.h>
 #include "ModuleRender.h"
 #include "GameObject.h"
+#include "SDL_assert.h"
 #include <string> 
 
 using namespace std;
@@ -250,10 +251,42 @@ void ModuleGUI::showHierarchy()
 
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
-		(*it)->draw();
+		showHierarchyChildren((*it));
 	}
 
 	ImGui::End();
+}
+
+void ModuleGUI::showHierarchyChildren(GameObject* gameObject)
+{
+	SDL_assert(gameObject != nullptr);
+	ImGuiTreeNodeFlags node_flags = 0;
+
+	if (App->sceneMain->currentObject == gameObject)
+	{
+		node_flags |= ImGuiTreeNodeFlags_Selected;
+	}
+	if (gameObject->children.size() > 0)
+	{
+		node_flags |= ImGuiTreeNodeFlags_OpenOnArrow;
+	}
+	else
+	{
+		node_flags |= ImGuiTreeNodeFlags_Leaf;
+	}
+
+	if (ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags))
+	{
+		if (ImGui::IsItemClicked())
+		{
+			App->sceneMain->currentObject = gameObject;
+		}
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			showHierarchyChildren((*it));
+		}
+		ImGui::TreePop();
+	}
 }
 
 void ModuleGUI::showFlagOptions()
