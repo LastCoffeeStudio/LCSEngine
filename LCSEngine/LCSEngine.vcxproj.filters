@@ -306,6 +306,9 @@
     <ClInclude Include="Component.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentMaterial.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -471,6 +474,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="Component.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentMaterial.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>

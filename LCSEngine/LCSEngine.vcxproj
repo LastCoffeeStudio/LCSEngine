@@ -144,6 +144,7 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetTexture.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ComponentMaterial.h" />
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -234,6 +235,7 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetTexture.cpp" />
     <ClCompile Include="Component.cpp" />
+    <ClCompile Include="ComponentMaterial.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />

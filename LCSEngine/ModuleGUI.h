@@ -19,7 +19,7 @@ public:
 
 	void draw();
 
-	bool show_demo_window = false;
+	bool show_demo_window = true;
 	bool show_main_window = true;
 	bool show_engine_about = false;
 	bool show_inspector = true;

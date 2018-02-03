@@ -20,12 +20,8 @@ public:
 	void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
 	void deleteGameObject();
-	void drawGui();
+	void drawComponentsGui();
 	void draw();
-
-private:
-	void deleteChildren();
-	void deleteSelf();
 
 public:
 	string name = "GameObject";

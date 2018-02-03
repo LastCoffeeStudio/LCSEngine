@@ -1,15 +1,17 @@
 #ifndef __COMPONENT_H__
-#define ____COMPONENT_H__
+#define __COMPONENT_H__
 
 enum TypeComponent
 {
-	COMPONENT = 0
+	COMPONENT = 0,
+	MATERIAL
 };
+
 class GameObject;
+
 class Component
 {
 public:
-	//Don't use component() => Use Component(GameObject*)
 	Component();
 	Component(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
 	~Component();
