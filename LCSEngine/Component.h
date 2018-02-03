@@ -30,6 +30,7 @@ public:
 	bool isUnique = false;
 	std::string name;
 	TypeComponent typeComponent = COMPONENT;
+	bool suicide = false;
 
 protected:
 	GameObject* gameObject = nullptr;

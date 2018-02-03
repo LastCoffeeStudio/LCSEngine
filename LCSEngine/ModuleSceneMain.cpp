@@ -14,7 +14,9 @@
 #include "DevIL/include/IL/il.h"
 #include "Shader.h"
 #include "GameObject.h"
+#include "Component.h"
 #include "ComponentMaterial.h"
+#include <queue>
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -57,6 +59,12 @@ bool ModuleSceneMain::start()
 	return true;
 }
 
+update_status ModuleSceneMain::preUpdate(float deltaTime)
+{
+	omaeWaMouShindeiru();
+	return UPDATE_CONTINUE;
+}
+
 update_status ModuleSceneMain::update(float deltaTime)
 {
 	if (App->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
@@ -81,6 +89,40 @@ bool ModuleSceneMain::cleanUp()
 	sphere1->cleanUp();
 
 	return true;
+}
+
+void ModuleSceneMain::omaeWaMouShindeiru()
+{
+	queue<GameObject*> entities;
+
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		entities.push(*it);
+	}
+
+	while (!entities.empty())
+	{
+		GameObject* child = entities.front();
+		entities.pop();
+		
+		for (vector<Component*>::iterator it = child->components.begin(); it != child->components.end();)
+		{
+			if ((*it)->suicide)
+			{
+				RELEASE(*it);
+				it = child->components.erase(it);
+			}
+			else
+			{
+				++it;
+			}
+		}
+
+		for (vector<GameObject*>::iterator it = child->children.begin(); it != child->children.end(); ++it)
+		{
+			entities.push(*it);
+		}
+	}
 }
 
 void ModuleSceneMain::draw()

@@ -24,8 +24,10 @@ public:
 
 	bool init() override;
 	bool start() override;
+	update_status preUpdate(float deltaTime);
 	update_status update(float deltaTime) override;
 	bool cleanUp() override;
+	void omaeWaMouShindeiru();
 	void draw();
 	void drawGrid();
 
