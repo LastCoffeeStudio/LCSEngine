@@ -2,9 +2,6 @@
 #define __COMPONENT_H__
 #include <string>
 
-
-
-
 enum TypeComponent
 {
 	COMPONENT = 0,
