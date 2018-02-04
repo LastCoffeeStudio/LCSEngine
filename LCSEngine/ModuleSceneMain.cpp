@@ -23,9 +23,12 @@
 
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
-	root = new GameObject();
+	/*
 	cube1 = new CubeShape();
 	sphere1 = new SphereShape(1.f, 16);
+	*/
+
+	root = new GameObject();
 
 	/*This code is for testing purpose only, delete afterwards*/
 	root->addGameObject(new GameObject(root, "omg"));
@@ -40,8 +43,8 @@ ModuleSceneMain::~ModuleSceneMain() {}
 
 bool ModuleSceneMain::init()
 {
-	cube1->initializeValues();
-	sphere1->initializeValues();
+	//cube1->initializeValues();
+	//sphere1->initializeValues();
 	currentObject = root;
 	checkers = App->textures->loadCheckers();
 	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
@@ -55,7 +58,7 @@ bool ModuleSceneMain::init()
 
 bool ModuleSceneMain::start()
 {
-	actualPolygon = CUBE;
+	//actualPolygon = CUBE;
 	return true;
 }
 
@@ -65,28 +68,10 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-update_status ModuleSceneMain::update(float deltaTime)
-{
-	if (App->input->getKey(SDL_SCANCODE_M) == KEY_DOWN)
-	{
-		actualPolygon = TRIANGLE;
-	}
-	if (App->input->getKey(SDL_SCANCODE_N) == KEY_DOWN)
-	{
-		actualPolygon = CUBE;
-	}
-	if (App->input->getKey(SDL_SCANCODE_B) == KEY_DOWN)
-	{
-		actualPolygon = SPHERE;
-	}
-
-	return UPDATE_CONTINUE;
-}
-
 bool ModuleSceneMain::cleanUp()
 {
-	cube1->cleanUp();
-	sphere1->cleanUp();
+	//cube1->cleanUp();
+	//sphere1->cleanUp();
 
 	return true;
 }
@@ -126,7 +111,7 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 }
 
 void ModuleSceneMain::draw()
-{
+{/*
 	switch (actualPolygon)
 	{
 	case TRIANGLE:
@@ -154,6 +139,7 @@ void ModuleSceneMain::draw()
 		sphere1->draw();
 		break;
 	}
+	*/
 	drawGrid();
 }
 

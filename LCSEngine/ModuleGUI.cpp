@@ -164,19 +164,6 @@ void ModuleGUI::showMainWindow()
 			ImGui::EndMenu();
 		}
 
-		if (ImGui::BeginMenu("Components"))
-		{
-			if (ImGui::MenuItem("Add Mesh component"))
-			{
-				GameObject* gameObject = new GameObject();
-				TransformComponent* component = new TransformComponent(gameObject,"Transform", true);
-				gameObject->addComponent(component);
-				App->sceneMain->currentObject = gameObject;
-			}
-
-			ImGui::EndMenu();
-		}
-
 		ImGui::EndMenuBar();
 	}
 
@@ -211,6 +198,11 @@ void ModuleGUI::showInspector()
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	
 	App->sceneMain->currentObject->drawComponentsGui();
+
+	if (ImGui::Button("Add Component", { 100, 40 }))
+	{
+		App->sceneMain->currentObject->addComponent(new MeshComponent(App->sceneMain->currentObject, true));
+	}
 
 	//Set functions to print diferent menus inside the inspector
 	/*if (ImGui::CollapsingHeader("Textures"))

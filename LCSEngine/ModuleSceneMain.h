@@ -5,16 +5,7 @@
 
 class Shader;
 class AssetTexture;
-class CubeShape;
-class SphereShape;
 class GameObject;
-
-enum PolygonType
-{
-	TRIANGLE,
-	CUBE,
-	SPHERE
-};
 
 class ModuleSceneMain : public Module
 {
@@ -25,7 +16,6 @@ public:
 	bool init() override;
 	bool start() override;
 	update_status preUpdate(float deltaTime);
-	update_status update(float deltaTime) override;
 	bool cleanUp() override;
 	void omaeWaMouShindeiru();
 	void draw();
@@ -40,10 +30,5 @@ public:
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;
-
-private:
-	PolygonType actualPolygon = TRIANGLE;
-	CubeShape* cube1 = nullptr;
-	SphereShape* sphere1 = nullptr;
 };
 #endif //__MODULESCENEMAIN_H__

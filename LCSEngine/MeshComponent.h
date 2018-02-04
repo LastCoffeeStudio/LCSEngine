@@ -3,6 +3,13 @@
 
 #include "Component.h"
 
+enum PresetType
+{
+	TRIANGLE = 1,
+	CUBE,
+	SPHERE
+};
+
 class MeshComponent : public Component
 {
 public:
@@ -12,7 +19,7 @@ public:
 	void drawGUI() override;
 
 public:
-	TypeComponent type;
+	PresetType currentPreset = TRIANGLE;
 };
 
 #endif
