@@ -97,6 +97,16 @@ void GameObject::drawComponentsGui()
 	{
 		name = aux;
 	}
+
+	/*DEBUG*/
+	if (parent != nullptr)
+	{
+		char aux2[64];
+		strcpy_s(aux2, 64, parent->name.c_str());
+		ImGui::Text(aux2);
+	}
+	/*END DEBUG*/
+	
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->drawGUI();

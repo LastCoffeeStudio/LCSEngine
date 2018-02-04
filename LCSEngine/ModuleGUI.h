@@ -37,7 +37,7 @@ private:
 	void showFlagOptions();
 	void showConsole();
 	void showHierarchy();
-	void showHierarchyChildren(GameObject* gameObject);
+	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 
 	void putHyperlink(const char* link);
 

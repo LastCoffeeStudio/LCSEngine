@@ -259,24 +259,31 @@ void ModuleGUI::showInspector()
 void ModuleGUI::showHierarchy()
 {
 	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
-	ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize);
-	ImGui::Text("Hierarchy");
-
-	//Set functions to print diferent menus inside the inspector
-	GameObject* root = App->sceneMain->root;
-
-	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		showHierarchyChildren((*it));
-	}
+		ImGui::Text("Hierarchy");
 
-	ImGui::End();
+		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
+		{
+			App->sceneMain->currentObject = App->sceneMain->root;
+		}
+		//Set functions to print diferent menus inside the inspector
+		GameObject* root = App->sceneMain->root;
+
+		for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+		{
+			showHierarchyChildren((*it), true);
+		}
+
+		ImGui::End();
+	}
 }
 
-void ModuleGUI::showHierarchyChildren(GameObject* gameObject)
+void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 {
 	SDL_assert(gameObject != nullptr);
 	ImGuiTreeNodeFlags node_flags = 0;
+	ImVec4 color = ImVec4(1.f,1.f,1.f,1.f);
 	
 	if (App->sceneMain->currentObject == gameObject)
 	{
@@ -290,17 +297,42 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject)
 	{
 		node_flags |= ImGuiTreeNodeFlags_Leaf;
 	}
-	
-	bool node = ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags);
-	if (ImGui::IsItemClicked())
+	if ((enabled == true && gameObject->enable == false) || enabled == false)
 	{
-		App->sceneMain->currentObject = gameObject;
+		enabled = false;
+		color = ImVec4(0.5f, 0.5f, 0.5f, 1.f);
 	}
+	ImGui::PushStyleColor(ImGuiCol_Text, color);
+	bool node = ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags);
+	ImGui::PopStyleColor();
+	
 	if (node)
 	{
+		if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
+		{
+			App->sceneMain->currentObject = gameObject;
+		}
+		if (ImGui::IsItemClicked(1))
+		{
+			ImGui::OpenPopup("GameObject Menu");
+		}
+		if (ImGui::BeginPopup("GameObject Menu"))
+		{
+			if (ImGui::MenuItem("New GameObject"))
+			{
+				//TODO: Fix bug where some GameObjects are not created well (share treenode, multiple popups,...)
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+			}
+			if (ImGui::MenuItem("Delete GameObject"))
+			{
+				//TODO: If we delete the selected gameobject, it will fail on the next for. We need a flag as we did for component
+				//App->sceneMain->currentObject->deleteGameObject();
+			}
+			ImGui::EndPopup();
+		}
 		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
 		{
-			showHierarchyChildren((*it));
+			showHierarchyChildren((*it), enabled);
 		}
 		ImGui::TreePop();
 	}
