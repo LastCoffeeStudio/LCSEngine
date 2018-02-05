@@ -18,6 +18,9 @@
 #include "MaterialComponent.h"
 #include <queue>
 
+/*TO DELETE*/
+#include "TransformComponent.h"
+
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
 
@@ -29,14 +32,16 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 	*/
 
 	root = new GameObject();
+	root->addComponent(new TransformComponent(root));
+	currentObject = root;
 
 	/*This code is for testing purpose only, delete afterwards*/
-	root->addGameObject(new GameObject(root, "omg"));
+	/*root->addGameObject(new GameObject(root, "omg"));
 	root->addGameObject(new GameObject(root, "omg2"));
 	root->addGameObject(new GameObject(root, "omg3"));
 	root->addGameObject(new GameObject(root, "omg4"));
 	root->children[0]->addGameObject(new GameObject(root->children[0], "wow"));
-	root->children[0]->children[0]->addComponent(new MaterialComponent(root->children[0]->children[0]));
+	root->children[0]->children[0]->addComponent(new MaterialComponent(root->children[0]->children[0]));*/
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
@@ -65,6 +70,11 @@ bool ModuleSceneMain::start()
 update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
 	omaeWaMouShindeiru();
+	return UPDATE_CONTINUE;
+}
+
+update_status ModuleSceneMain::update(float deltaTime)
+{
 	return UPDATE_CONTINUE;
 }
 
@@ -111,40 +121,36 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 }
 
 void ModuleSceneMain::draw()
-{/*
-	switch (actualPolygon)
-	{
-	case TRIANGLE:
-		glBegin(GL_TRIANGLES);
-
-		//Front Face
-		glColor3f(1.f, 0.f, 0.f);
-		glVertex3f(0.f, 0.5f, 0.f); // lower left vertex
-		glVertex3f(-0.5f, -0.5f, 0.f); // lower right vertex
-		glVertex3f(0.5f, -0.5f, 0.f); // upper vertex
-
-		glColor3f(0.5f, 0.f, 0.f);	//Back Face
-		glVertex3f(0.f, 0.5f, 0.f); // lower left vertex
-		glVertex3f(0.5f, -0.5f, 0.f); // lower right vertex
-		glVertex3f(-0.5f, -0.5f, 0.f); // upper vertex
-
-		glEnd();
-		break;
-
-	case CUBE:
-		cube1->draw();
-		break;
-
-	case SPHERE:
-		sphere1->draw();
-		break;
-	}
-	*/
+{
+	drawGameObjects(root);
 	drawGrid();
+}
+
+void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
+{
+	gameObject->draw();
+	for (unsigned int i = 0; i < gameObject->children.size(); ++i)
+	{
+		drawGameObjects(gameObject->children[i]);
+	}
 }
 
 void ModuleSceneMain::drawGrid()
 {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	float4x4 id = float4x4::identity;
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 	//Draw grid
 	float size = ImGui::GetWindowSize().x;
 	if (ImGui::GetWindowSize().y > size) size = ImGui::GetWindowSize().y;
@@ -184,4 +190,10 @@ void ModuleSceneMain::drawGrid()
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, POS_LINES_GRID + floor(cameraPos.z));
 		glEnd();
 	}
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

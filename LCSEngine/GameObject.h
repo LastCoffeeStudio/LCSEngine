@@ -1,7 +1,7 @@
 #ifndef __GAMEOBJECT_H__
 #define __GAMEOBJECT_H__
 
-
+#include "glew.h"
 #include <vector>
 
 using namespace std;
@@ -29,6 +29,13 @@ public:
 	vector<Component*> components;
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;
+
+	/*Create map to know if it has a component (updated when component added or deleted)*/
+
+	/*TO DELETE*/
+	vector<float> verticesVBO;
+	GLuint idVertVBO = 0;
+	float lengthX, lengthY, lengthZ;
 };
 
 #endif // __GAMEOBJECT_H__
