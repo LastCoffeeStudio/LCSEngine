@@ -3,9 +3,37 @@
 #include "Imgui/imgui.h"
 #include "SDL\include\SDL_assert.h"
 #include "Component.h"
+#include "Glew/include/glew.h"
+#include "MathGeoLib/src/MathGeoLib.h"
 #include <stack>
 
-GameObject::GameObject() {}
+/**/
+#include "Application.h"
+#include "ModuleSceneMain.h"
+#include "Shader.h"
+#include "ModuleCamera.h"
+#include "TransformComponent.h"
+
+GameObject::GameObject()
+{
+	verticesVBO.reserve(108);
+
+	lengthX = lengthY = lengthZ = 1.f;
+
+	verticesVBO = { lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
+		lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
+		-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
+		-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
+		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
+		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
+		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f,
+		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f,
+		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
+		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
+		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
+		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f };
+		
+}
 
 GameObject::GameObject(GameObject* parent, string name) : parent(parent) {
 	initialName = name;
@@ -16,6 +44,10 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
+	glGenBuffers(1, (GLuint*) &(idVertVBO));
+	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size(), &verticesVBO[0], GL_STATIC_DRAW);
+
 	components.push_back(component);
 }
 
@@ -119,12 +151,51 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
-	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	float4x4 id = float4x4::identity;
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->typeComponent == TRANSFORM && (*it)->isEnable)
+		{
+			id = ((TransformComponent*)(*it))->transform.Transposed();
+		}
+	}
+	
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	/*Set VBO*/
+	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	glEnableVertexAttribArray(0);
+
+	glDrawArrays(GL_TRIANGLES, 0, verticesVBO.size());
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+
+
+
+	/*for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 	{
 		(*it)->draw();
 	}
 
-	/*Mesh* mesh = nullptr;
+	Mesh* mesh = nullptr;
 	Material* material = nullptr;
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{

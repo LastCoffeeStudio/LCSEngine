@@ -38,9 +38,9 @@ void TransformComponent::drawGUI()
 		if (ImGui::SliderFloat3("Sclale", &scale[0], 0.f/*numeric_limits<float>::min()*/, 100.f/*numeric_limits<float>::max()*/))
 		{
 			matrixScale.SetIdentity();
-			matrixScale[0][0] = position[0];
-			matrixScale[1][1] = position[1];
-			matrixScale[2][2] = position[2];
+			matrixScale[0][0] = scale[0];
+			matrixScale[1][1] = scale[1];
+			matrixScale[2][2] = scale[2];
 			updateTransform();
 		}
 

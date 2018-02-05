@@ -16,9 +16,11 @@ public:
 	bool init() override;
 	bool start() override;
 	update_status preUpdate(float deltaTime);
+	update_status update(float deltaTime);
 	bool cleanUp() override;
 	void omaeWaMouShindeiru();
 	void draw();
+	void drawGameObjects(GameObject* gameObject);
 	void drawGrid();
 
 public:
