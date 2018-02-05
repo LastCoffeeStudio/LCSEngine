@@ -1,12 +1,16 @@
 #include "Globals.h"
 #include "GameObject.h"
 #include "Imgui/imgui.h"
+#include "SDL\include\SDL_assert.h"
 #include "Component.h"
 #include <stack>
 
 GameObject::GameObject() {}
 
-GameObject::GameObject(GameObject* parent, string name) : parent(parent), name(name) {}
+GameObject::GameObject(GameObject* parent, string name) : parent(parent) {
+	initialName = name;
+	GameObject::name = getFinalName(name);
+}
 
 GameObject::~GameObject() {}
 
@@ -149,4 +153,27 @@ void GameObject::draw()
 			
 		}
 	}*/
+}
+
+string GameObject::getFinalName(string name)
+{
+	bool rep = false;
+
+	for (vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end(); ++it)
+	{
+		if ((*it)->name == name)
+		{
+			rep = true;
+		}
+	}
+
+	if (!rep)
+	{
+		return name;
+	}
+	else {
+		++nameNumber;
+		string number = " (" + std::to_string(nameNumber) + ")";
+		return getFinalName(initialName + number);
+	}
 }
