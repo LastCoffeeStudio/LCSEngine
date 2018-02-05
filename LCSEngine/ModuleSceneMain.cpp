@@ -32,7 +32,6 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 	*/
 
 	root = new GameObject();
-	root->addComponent(new TransformComponent(root));
 	currentObject = root;
 
 	/*This code is for testing purpose only, delete afterwards*/
@@ -64,6 +63,7 @@ bool ModuleSceneMain::init()
 bool ModuleSceneMain::start()
 {
 	//actualPolygon = CUBE;
+	root->addComponent(new TransformComponent(root));
 	return true;
 }
 

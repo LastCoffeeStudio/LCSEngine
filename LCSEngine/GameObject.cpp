@@ -31,7 +31,7 @@ GameObject::GameObject()
 		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
 		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
 		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f };
-
+		
 }
 
 GameObject::GameObject(GameObject* parent, string name) : parent(parent), name(name) {}
@@ -40,6 +40,10 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
+	glGenBuffers(1, (GLuint*) &(idVertVBO));
+	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size(), &verticesVBO[0], GL_STATIC_DRAW);
+
 	components.push_back(component);
 }
 
@@ -143,9 +147,6 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
-	glGenBuffers(1, (GLuint*) &(idVertVBO));
-	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size(), &verticesVBO[0], GL_STATIC_DRAW);
 
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
