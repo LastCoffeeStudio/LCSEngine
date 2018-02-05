@@ -13,27 +13,9 @@
 #include "Shader.h"
 #include "ModuleCamera.h"
 #include "TransformComponent.h"
+#include "MeshComponent.h"
 
-GameObject::GameObject()
-{
-	verticesVBO.reserve(108);
-
-	lengthX = lengthY = lengthZ = 1.f;
-
-	verticesVBO = { lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
-		lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
-		-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
-		-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
-		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
-		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f,
-		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f,
-		lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f,
-		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
-		lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
-		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f, -lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f,
-		-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f, lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f };
-		
-}
+GameObject::GameObject() {}
 
 GameObject::GameObject(GameObject* parent, string name) : parent(parent) {
 	initialName = name;
@@ -44,9 +26,7 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
-	glGenBuffers(1, (GLuint*) &(idVertVBO));
-	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size(), &verticesVBO[0], GL_STATIC_DRAW);
+	
 
 	components.push_back(component);
 }
@@ -175,20 +155,27 @@ void GameObject::draw()
 	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
+	
 	/*Set VBO*/
-	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
-
-	glDrawArrays(GL_TRIANGLES, 0, verticesVBO.size());
+	for(int i = 0; i < components.size(); ++i)
+	{
+		if (components[i]->typeComponent == MESHCOMPONENT && components[i]->isEnable)
+		{
+			GLint idVertVBO;
+			idVertVBO = ((MeshComponent*)components[i])->idVertVBO;
+			glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+			glEnableVertexAttribArray(0);
+			glDrawArrays(GL_TRIANGLES, 0, ((MeshComponent*)components[i])->verticesVBO.size());
+		}
+	}
+	
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
-
-
 
 	/*for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 	{

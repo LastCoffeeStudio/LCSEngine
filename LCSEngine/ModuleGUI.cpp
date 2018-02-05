@@ -202,6 +202,7 @@ void ModuleGUI::showInspector()
 	if (ImGui::Button("Add Component", { 100, 40 }))
 	{
 		App->sceneMain->currentObject->addComponent(new MeshComponent(App->sceneMain->currentObject, true));
+		App->sceneMain->currentObject->addComponent(new TransformComponent(App->sceneMain->currentObject, true));
 	}
 
 	//Set functions to print diferent menus inside the inspector
@@ -258,6 +259,24 @@ void ModuleGUI::showHierarchy()
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
 			App->sceneMain->currentObject = App->sceneMain->root;
+		}
+		if (ImGui::IsMouseHoveringWindow() &&ImGui::IsMouseClicked(1))
+		{
+			ImGui::OpenPopup("GameObject Menu");
+		}
+		if (ImGui::BeginPopup("GameObject Menu"))
+		{
+			if (ImGui::MenuItem("New GameObject"))
+			{
+				//TODO: Fix bug where some GameObjects are not created well (share treenode, multiple popups,...)
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+			}
+			if (ImGui::MenuItem("Delete GameObject"))
+			{
+				//TODO: If we delete the selected gameobject, it will fail on the next for. We need a flag as we did for component
+				//App->sceneMain->currentObject->deleteGameObject();
+			}
+			ImGui::EndPopup();
 		}
 		//Set functions to print diferent menus inside the inspector
 		GameObject* root = App->sceneMain->root;

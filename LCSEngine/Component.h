@@ -15,7 +15,7 @@ class Component
 {
 public:
 	Component();
-	Component(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
+	Component(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
 	~Component();
 	virtual bool update();
 	virtual void enable();

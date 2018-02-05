@@ -20,6 +20,7 @@
 
 /*TO DELETE*/
 #include "TransformComponent.h"
+#include "MeshComponent.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -64,6 +65,7 @@ bool ModuleSceneMain::start()
 {
 	//actualPolygon = CUBE;
 	root->addComponent(new TransformComponent(root));
+	root->addComponent(new MeshComponent(root));
 	return true;
 }
 

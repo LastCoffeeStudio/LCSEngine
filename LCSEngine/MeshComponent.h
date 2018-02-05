@@ -2,6 +2,8 @@
 #define __MESHCOMPONENT_H__
 
 #include "Component.h"
+#include <vector>
+#include <glew.h>
 
 enum PresetType
 {
@@ -13,10 +15,14 @@ enum PresetType
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(GameObject* gameObject, bool isEnable = false, bool isUnique = false);
+	MeshComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
 	~MeshComponent();
 
 	void drawGUI() override;
+	bool update() override;
+	std::vector<float> verticesVBO;
+	GLuint idVertVBO = 0;
+	float lengthX, lengthY, lengthZ;
 
 public:
 	PresetType currentPreset = TRIANGLE;

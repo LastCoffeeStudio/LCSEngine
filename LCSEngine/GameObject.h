@@ -37,9 +37,6 @@ private:
 	/*Create map to know if it has a component (updated when component added or deleted)*/
 
 	/*TO DELETE*/
-	vector<float> verticesVBO;
-	GLuint idVertVBO = 0;
-	float lengthX, lengthY, lengthZ;
 };
 
 #endif // __GAMEOBJECT_H__
