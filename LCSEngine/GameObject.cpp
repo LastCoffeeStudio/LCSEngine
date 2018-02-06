@@ -6,8 +6,6 @@
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/MathGeoLib.h"
 #include <stack>
-
-/**/
 #include "Application.h"
 #include "ModuleSceneMain.h"
 #include "Shader.h"
