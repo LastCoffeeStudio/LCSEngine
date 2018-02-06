@@ -1,17 +1,10 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
 #include <string>
+#include "Globals.h"
 
-enum TypeComponent
-{
-	COMPONENT = 0,
-	TRANSFORM,
-	MATERIAL,
-	MESH
-};
 
 class GameObject;
-
 class Component
 {
 public:

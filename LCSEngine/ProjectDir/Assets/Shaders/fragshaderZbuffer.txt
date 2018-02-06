@@ -5,6 +5,8 @@ out vec4 color;
 void main()
 {
  float myColor = 1.f;
+
+ myColor = 1 - mod((gl_FragCoord.z * 10),1);
  color = vec4(myColor, myColor, myColor, 1.0f);
 }
 
