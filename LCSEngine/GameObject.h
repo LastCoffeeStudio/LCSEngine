@@ -4,6 +4,8 @@
 #include "glew.h"
 #include <vector>
 #include "MathGeoLib/src/Math/float4x4.h"
+#include "MathGeoLib/src/Geometry/AABB.h"
+
 using namespace std;
 
 class Component;
@@ -31,6 +33,7 @@ public:
 	GameObject* parent = nullptr;
 	int nameNumber = 0;
 	float4x4 id;
+	AABB boundingBox;
 
 private:
 	string getFinalName(string name);

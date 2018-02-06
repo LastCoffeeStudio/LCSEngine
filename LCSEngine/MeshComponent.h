@@ -2,6 +2,7 @@
 #define __MESHCOMPONENT_H__
 
 #include "Component.h"
+#include "MathGeoLib/src/Math/float3.h"
 #include <vector>
 #include <glew.h>
 
@@ -20,7 +21,8 @@ public:
 
 	void drawGUI() override;
 	bool update() override;
-	std::vector<float> verticesVBO;
+	//std::vector<float> verticesVBO;
+	std::vector<float3> verticesVBO;
 	GLuint idVertVBO = 0;
 	float lengthX, lengthY, lengthZ;
 

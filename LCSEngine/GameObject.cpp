@@ -4,7 +4,6 @@
 #include "SDL\include\SDL_assert.h"
 #include "Component.h"
 #include "Glew/include/glew.h"
-#include "MathGeoLib/src/MathGeoLib.h"
 #include <stack>
 #include "Application.h"
 #include "ModuleSceneMain.h"
@@ -15,17 +14,15 @@
 
 GameObject::GameObject() {}
 
-GameObject::GameObject(GameObject* parent, string name) : parent(parent) {
-	initialName = name;
+GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name) {
 	GameObject::name = getFinalName(name);
+	boundingBox.SetNegativeInfinity();
 }
 
 GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
-	
-
 	components.push_back(component);
 }
 
@@ -129,91 +126,59 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
+	id = (parent != nullptr) ? parent->id : float4x4::identity;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-	if (parent == nullptr)
-	{
-		id = float4x4::identity;
-	}else
-	{
-		id = parent->id;
-	}
+	GLint idVertVBO = -1;
+	unsigned int sizeVertVBO = 0;
+
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		if ((*it)->typeComponent == TRANSFORM && (*it)->isEnable)
+		if ((*it)->isEnable)
 		{
-			id = ((TransformComponent*)(*it))->transform.Transposed()*id;
-		}
-	}
-	
-
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
-
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
-
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
-	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
-	
-	/*Set VBO*/
-	for(int i = 0; i < components.size(); ++i)
-	{
-		if (components[i]->typeComponent == MESHCOMPONENT && components[i]->isEnable)
-		{
-			GLint idVertVBO;
-			idVertVBO = ((MeshComponent*)components[i])->idVertVBO;
-			glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-			glEnableVertexAttribArray(0);
-			glDrawArrays(GL_TRIANGLES, 0, ((MeshComponent*)components[i])->verticesVBO.size());
+			switch ((*it)->typeComponent)
+			{
+				case TRANSFORM:
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+					break;
+				case MESH:
+					idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
+					sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size();
+					break;
+			}
 		}
 	}
 
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
-
-	/*for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	//If has array of vertices, draw
+	if (idVertVBO != -1 /*&& check if is inside the frustum*/)
 	{
-		(*it)->draw();
-	}*/
-	/*
-	Mesh* mesh = nullptr;
-	Material* material = nullptr;
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		switch ((*it)->type)
-		{
-			case MESH:
-				mesh = (*it);
-				break;
-			case MATERIAL:
-				material = (*it);
-				break;
-		}
+		/*Then change bool forDraw to true*/
+		/*We need to modify this later to add the information in the queue for drawing*/
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+		GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+		GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+		GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(0);
+		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
+
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
+
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	//If it has a mesh and a material, draw it
-	if (mesh != nullptr)
-	{
-		//Draw mesh with the material shaders and color depending of the input data
-		//If it doesn't has material, draw it with default material and shaders
-		if (material != nullptr)
-		{
-			
-		}
-		else
-		{
-			
-		}
-	}*/
+	//drawBoundingBox();
 }
 
 string GameObject::getFinalName(string name)
@@ -238,3 +203,8 @@ string GameObject::getFinalName(string name)
 		return getFinalName(initialName + number);
 	}
 }
+
+/*void GameObject::drawBoundingBox()
+{
+
+}*/

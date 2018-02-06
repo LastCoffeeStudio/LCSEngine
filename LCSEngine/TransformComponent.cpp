@@ -4,7 +4,7 @@
 
 using namespace std;
 
-TransformComponent::TransformComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
+TransformComponent::TransformComponent(GameObject* gameObject, bool isUnique) : Component(gameObject, true, isUnique)
 {
 	typeComponent = TRANSFORM;
 	transform.SetIdentity();
@@ -23,7 +23,7 @@ void TransformComponent::updateTransform()
 void TransformComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Transform")) {
-		if (ImGui::Checkbox("Active", &isEnable)) ImGui::SameLine(0);
+		/*if (ImGui::Checkbox("Active", &isEnable)) ImGui::SameLine(0);*/
 
 		if (ImGui::SliderFloat3("Position", &position[0], -10.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
 		{

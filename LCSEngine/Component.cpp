@@ -1,5 +1,4 @@
 #include "Component.h"
-#include "GameObject.h"
 #include "Imgui/imgui.h"
 
 using namespace std;

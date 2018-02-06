@@ -7,10 +7,11 @@ enum TypeComponent
 	COMPONENT = 0,
 	TRANSFORM,
 	MATERIAL,
-	MESHCOMPONENT
+	MESH
 };
 
 class GameObject;
+
 class Component
 {
 public:
