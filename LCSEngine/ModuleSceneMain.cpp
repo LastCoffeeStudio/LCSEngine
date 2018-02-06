@@ -64,8 +64,8 @@ bool ModuleSceneMain::init()
 bool ModuleSceneMain::start()
 {
 	//actualPolygon = CUBE;
-	root->addComponent(new TransformComponent(root));
-	root->addComponent(new MeshComponent(root));
+	/*root->addComponent(new TransformComponent(root));
+	root->addComponent(new MeshComponent(root));*/
 	return true;
 }
 

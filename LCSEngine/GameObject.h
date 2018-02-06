@@ -3,6 +3,7 @@
 
 #include "glew.h"
 #include <vector>
+#include "MathGeoLib/src/Math/float4x4.h"
 using namespace std;
 
 class Component;
@@ -29,6 +30,7 @@ public:
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;
 	int nameNumber = 0;
+	float4x4 id;
 
 private:
 	string getFinalName(string name);

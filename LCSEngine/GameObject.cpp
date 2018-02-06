@@ -135,13 +135,18 @@ void GameObject::draw()
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	float4x4 id = float4x4::identity;
+	if (parent == nullptr)
+	{
+		id = float4x4::identity;
+	}else
+	{
+		id = parent->id;
+	}
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->typeComponent == TRANSFORM && (*it)->isEnable)
 		{
-			id = ((TransformComponent*)(*it))->transform.Transposed();
+			id = ((TransformComponent*)(*it))->transform.Transposed()*id;
 		}
 	}
 	
@@ -169,7 +174,7 @@ void GameObject::draw()
 			glDrawArrays(GL_TRIANGLES, 0, ((MeshComponent*)components[i])->verticesVBO.size());
 		}
 	}
-	
+
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
@@ -180,8 +185,8 @@ void GameObject::draw()
 	/*for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
 	{
 		(*it)->draw();
-	}
-
+	}*/
+	/*
 	Mesh* mesh = nullptr;
 	Material* material = nullptr;
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)

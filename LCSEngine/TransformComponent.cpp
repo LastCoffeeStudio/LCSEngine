@@ -17,7 +17,7 @@ TransformComponent::~TransformComponent() { }
 
 void TransformComponent::updateTransform()
 {
-	transform = matrixRotate*matrixScale*matrixTranslate;
+	transform = matrixTranslate*matrixRotate*matrixScale;
 }
 
 void TransformComponent::drawGUI()
@@ -25,17 +25,16 @@ void TransformComponent::drawGUI()
 	if (ImGui::CollapsingHeader("Transform")) {
 		if (ImGui::Checkbox("Active", &isEnable)) ImGui::SameLine(0);
 
-		if (ImGui::SliderFloat3("Position", &position[0], -100.f/*numeric_limits<float>::min()*/, 100.f/*numeric_limits<float>::max()*/))
+		if (ImGui::SliderFloat3("Position", &position[0], -10.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
 		{
 			matrixTranslate.SetIdentity();
 			matrixTranslate[0][3] = position[0];
 			matrixTranslate[1][3] = position[1];
 			matrixTranslate[2][3] = position[2];
 			updateTransform();
-			//matrixTranslate.SetIdentity();
 		}
 
-		if (ImGui::SliderFloat3("Sclale", &scale[0], 0.f/*numeric_limits<float>::min()*/, 100.f/*numeric_limits<float>::max()*/))
+		if (ImGui::SliderFloat3("Scale", &scale[0], 0.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
 		{
 			matrixScale.SetIdentity();
 			matrixScale[0][0] = scale[0];
