@@ -17,6 +17,14 @@ enum update_status
 	UPDATE_ERROR
 };
 
+enum TypeComponent
+{
+	COMPONENT = 0,
+	TRANSFORM,
+	MATERIAL,
+	MESH
+};
+
 // Deletes a buffer
 #define RELEASE( x ) \
     {\

@@ -8,7 +8,7 @@ const char* presets[] = { "Triangle", "Cube", "Sphere" };
 
 MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
-	typeComponent = MESHCOMPONENT;
+	typeComponent = MESH;
 	verticesVBO.reserve(108);
 
 	lengthX = lengthY = lengthZ = 1.f;

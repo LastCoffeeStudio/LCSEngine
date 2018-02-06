@@ -3,6 +3,7 @@
 #include "Imgui/imgui.h"
 #include "SDL\include\SDL_assert.h"
 #include "Component.h"
+#include "Globals.h"
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/MathGeoLib.h"
 #include <stack>
@@ -164,7 +165,7 @@ void GameObject::draw()
 	/*Set VBO*/
 	for(int i = 0; i < components.size(); ++i)
 	{
-		if (components[i]->typeComponent == MESHCOMPONENT && components[i]->isEnable)
+		if (components[i]->typeComponent == MESH && components[i]->isEnable)
 		{
 			GLint idVertVBO;
 			idVertVBO = ((MeshComponent*)components[i])->idVertVBO;

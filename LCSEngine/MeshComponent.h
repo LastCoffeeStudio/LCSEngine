@@ -15,7 +15,7 @@ enum PresetType
 class MeshComponent : public Component
 {
 public:
-	MeshComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
+	MeshComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = true);
 	~MeshComponent();
 
 	void drawGUI() override;

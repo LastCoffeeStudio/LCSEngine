@@ -318,6 +318,7 @@
     <ClInclude Include="MaterialComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ComponentFactory.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -494,6 +495,7 @@
     <ClCompile Include="MaterialComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl">

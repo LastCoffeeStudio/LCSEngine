@@ -12,7 +12,7 @@ class AssetTexture;
 class MaterialComponent : public Component
 {
 public:
-	MaterialComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = true);
+	MaterialComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
 	~MaterialComponent();
 	void drawGUI();
 
