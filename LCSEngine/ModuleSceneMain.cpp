@@ -33,8 +33,8 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 	*/
 
 	root = new GameObject();
+	root->addComponent(new TransformComponent(root));
 	currentObject = root;
-
 	/*This code is for testing purpose only, delete afterwards*/
 	/*root->addGameObject(new GameObject(root, "omg"));
 	root->addGameObject(new GameObject(root, "omg2"));
@@ -50,7 +50,6 @@ bool ModuleSceneMain::init()
 {
 	//cube1->initializeValues();
 	//sphere1->initializeValues();
-	currentObject = root;
 	checkers = App->textures->loadCheckers();
 	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
@@ -124,16 +123,19 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 
 void ModuleSceneMain::draw()
 {
-	drawGameObjects(root);
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		drawGameObjects((*it));
+	}
 	drawGrid();
 }
 
 void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
 {
 	gameObject->draw();
-	for (unsigned int i = 0; i < gameObject->children.size(); ++i)
+	for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
 	{
-		drawGameObjects(gameObject->children[i]);
+		drawGameObjects((*it));
 	}
 }
 

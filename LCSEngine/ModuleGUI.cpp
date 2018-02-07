@@ -197,12 +197,9 @@ void ModuleGUI::showInspector()
 	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
 	
-	App->sceneMain->currentObject->drawComponentsGui();
-
-	if (ImGui::Button("Add Component", { 100, 40 }))
+	if (App->sceneMain->currentObject->parent != nullptr)
 	{
-		App->sceneMain->currentObject->addComponent(new MeshComponent(App->sceneMain->currentObject, true));
-		App->sceneMain->currentObject->addComponent(new TransformComponent(App->sceneMain->currentObject, true));
+		App->sceneMain->currentObject->drawComponentsGui();
 	}
 
 	//Set functions to print diferent menus inside the inspector

@@ -24,6 +24,7 @@ public:
 	void deleteGameObject();
 	void drawComponentsGui();
 	void draw();
+	void drawBoundingBox();
 
 public:
 	string name = "GameObject";

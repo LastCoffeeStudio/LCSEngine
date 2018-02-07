@@ -16,6 +16,7 @@ GameObject::GameObject() {}
 
 GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name) {
 	GameObject::name = getFinalName(name);
+	addComponent(new TransformComponent(this, true));
 	boundingBox.SetNegativeInfinity();
 }
 
@@ -122,11 +123,25 @@ void GameObject::drawComponentsGui()
 	{
 		(*it)->drawGUI();
 	}
+
+	if (ImGui::Button("Add Component", { 100, 20 }))
+	{
+		ImGui::OpenPopup("Add Component Popup");
+	}
+
+	if (ImGui::BeginPopup("Add Component Popup"))
+	{
+		if (ImGui::MenuItem("Mesh"))
+		{
+			addComponent(new MeshComponent(this));
+		}
+		ImGui::EndPopup();
+	}
 }
 
 void GameObject::draw()
 {
-	id = (parent != nullptr) ? parent->id : float4x4::identity;
+	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
 
 	GLint idVertVBO = -1;
 	unsigned int sizeVertVBO = 0;
@@ -142,7 +157,7 @@ void GameObject::draw()
 					break;
 				case MESH:
 					idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
-					sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size();
+					sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size()*3;	//vertices contains float3, that's why we multiply by 3
 					break;
 			}
 		}
@@ -178,7 +193,7 @@ void GameObject::draw()
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	//drawBoundingBox();
+	drawBoundingBox();
 }
 
 string GameObject::getFinalName(string name)
@@ -204,7 +219,52 @@ string GameObject::getFinalName(string name)
 	}
 }
 
-/*void GameObject::drawBoundingBox()
+void GameObject::drawBoundingBox()
 {
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-}*/
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glEnd();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
