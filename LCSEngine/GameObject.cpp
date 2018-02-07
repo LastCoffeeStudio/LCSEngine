@@ -25,7 +25,21 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
-	components.push_back(component);
+	bool alreadyHave = false;
+	if (component->isUnique)
+	{
+		for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		{
+			if (component->typeComponent == (*it)->typeComponent)
+			{
+				alreadyHave = true;
+			}
+		}
+	}
+	if (!alreadyHave)
+	{
+		components.push_back(component);
+	}
 }
 
 void GameObject::deleteComponent(Component* component)
