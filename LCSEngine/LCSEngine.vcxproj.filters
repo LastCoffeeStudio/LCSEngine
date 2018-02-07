@@ -318,8 +318,10 @@
     <ClInclude Include="MaterialComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="CameraComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ComponentFactory.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -498,8 +500,10 @@
     <ClCompile Include="MaterialComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="CameraComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ComponentFactory.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

@@ -17,7 +17,7 @@ ModuleCamera::~ModuleCamera() {}
 
 bool ModuleCamera::init()
 {
-	currentCamera = new CameraComponent();
+	currentCamera = new CameraComponent(nullptr);
 	updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return true;
 }

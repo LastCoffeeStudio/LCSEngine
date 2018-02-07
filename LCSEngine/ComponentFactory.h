@@ -8,14 +8,12 @@ class ComponentFactory
 {
 public:
 	~ComponentFactory();
-	ComponentFactory* getInstance();
+	static ComponentFactory* getInstance();
 	Component* getComponent(TypeComponent typeComponent, GameObject* parentObject);
 	
 private:
 	ComponentFactory();
-
-private:
-	ComponentFactory* componentFactory = nullptr;
+	
 };
 
 #endif

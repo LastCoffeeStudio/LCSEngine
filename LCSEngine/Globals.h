@@ -22,7 +22,8 @@ enum TypeComponent
 	COMPONENT = 0,
 	TRANSFORM,
 	MATERIAL,
-	MESH
+	MESH,
+	CAMERA
 };
 
 // Deletes a buffer

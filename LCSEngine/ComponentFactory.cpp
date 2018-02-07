@@ -3,11 +3,14 @@
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 #include "MaterialComponent.h"
+#include "CameraComponent.h"
 #include "GameObject.h"
 #include "Globals.h"
 
-
 ComponentFactory::~ComponentFactory() {}
+
+
+ComponentFactory* componentFactory = nullptr;
 
 ComponentFactory* ComponentFactory::getInstance()
 {
@@ -23,13 +26,16 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 	switch (typeComponent)
 	{
 	case TypeComponent::MESH:
-			return new MeshComponent(parentObject);
+		return new MeshComponent(parentObject);
 		break;
 	case TypeComponent::TRANSFORM:
 		return new TransformComponent(parentObject);
 		break;
 	case TypeComponent::MATERIAL:
 		return new MaterialComponent(parentObject);
+		break;
+	case TypeComponent::CAMERA:
+		return new CameraComponent(parentObject);
 		break;
 	default:
 		break;

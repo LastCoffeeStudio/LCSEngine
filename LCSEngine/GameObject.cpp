@@ -10,8 +10,10 @@
 #include "Shader.h"
 #include "ModuleCamera.h"
 #include "TransformComponent.h"
+#include "ComponentFactory.h"
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
+#include "CameraComponent.h"
 
 GameObject::GameObject() {}
 
@@ -147,13 +149,19 @@ void GameObject::drawComponentsGui()
 
 	if (ImGui::BeginPopup("Add Component Popup"))
 	{
+		static ComponentFactory* factory = ComponentFactory::getInstance();
+
 		if (ImGui::MenuItem("Mesh"))
 		{
-			addComponent(new MeshComponent(this));
+			addComponent(factory->getComponent(MESH, this));
 		}
 		else if (ImGui::MenuItem("Material"))
 		{
-			addComponent(new MaterialComponent(this));
+			addComponent(factory->getComponent(MATERIAL, this));
+		}
+		else if (ImGui::MenuItem("Camera"))
+		{
+			addComponent(factory->getComponent(CAMERA, this));
 		}
 
 		ImGui::EndPopup();
@@ -224,6 +232,7 @@ void GameObject::draw()
 
 	drawAABB();
 	drawOBB();
+	
 }
 
 string GameObject::getFinalName(string name)

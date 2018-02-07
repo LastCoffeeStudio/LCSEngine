@@ -7,7 +7,7 @@
 class CameraComponent : public Component
 {
 public:
-	CameraComponent();
+	CameraComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
 	~CameraComponent();
 
 	float* getViewMatrix();
