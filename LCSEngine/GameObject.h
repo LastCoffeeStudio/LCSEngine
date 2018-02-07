@@ -38,6 +38,7 @@ public:
 	float4x4 id;
 	AABB aabb;
 	OBB obb;
+	bool suicide = false;
 
 private:
 	string getFinalName(string name);

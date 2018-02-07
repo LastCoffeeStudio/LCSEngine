@@ -272,13 +272,15 @@ void ModuleGUI::showHierarchy()
 		{
 			if (ImGui::MenuItem("New GameObject"))
 			{
-				//TODO: Fix bug where some GameObjects are not created well (share treenode, multiple popups,...)
 				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
 			}
 			if (ImGui::MenuItem("Delete GameObject"))
 			{
-				//TODO: If we delete the selected gameobject, it will fail on the next for. We need a flag as we did for component
-				//App->sceneMain->currentObject->deleteGameObject();
+				if (App->sceneMain->currentObject != App->sceneMain->root)
+				{
+					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->currentObject = App->sceneMain->root;
+				}
 			}
 			ImGui::EndPopup();
 		}
@@ -335,13 +337,15 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 		{
 			if (ImGui::MenuItem("New GameObject"))
 			{
-				//TODO: Fix bug where some GameObjects are not created well (share treenode, multiple popups,...)
 				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
 			}
 			if (ImGui::MenuItem("Delete GameObject"))
 			{
-				//TODO: If we delete the selected gameobject, it will fail on the next for. We need a flag as we did for component
-				//App->sceneMain->currentObject->deleteGameObject();
+				if (App->sceneMain->currentObject != App->sceneMain->root)
+				{
+					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->currentObject = App->sceneMain->root;
+				}
 			}
 			ImGui::EndPopup();
 		}

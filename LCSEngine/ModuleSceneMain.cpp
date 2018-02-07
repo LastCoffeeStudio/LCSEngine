@@ -101,22 +101,29 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 		GameObject* child = entities.front();
 		entities.pop();
 		
-		for (vector<Component*>::iterator it = child->components.begin(); it != child->components.end();)
+		if (child->suicide == true)
 		{
-			if ((*it)->suicide)
-			{
-				RELEASE(*it);
-				it = child->components.erase(it);
-			}
-			else
-			{
-				++it;
-			}
+			child->deleteGameObject();
 		}
-
-		for (vector<GameObject*>::iterator it = child->children.begin(); it != child->children.end(); ++it)
+		else
 		{
-			entities.push(*it);
+			for (vector<Component*>::iterator it = child->components.begin(); it != child->components.end();)
+			{
+				if ((*it)->suicide)
+				{
+					RELEASE(*it);
+					it = child->components.erase(it);
+				}
+				else
+				{
+					++it;
+				}
+			}
+
+			for (vector<GameObject*>::iterator it = child->children.begin(); it != child->children.end(); ++it)
+			{
+				entities.push(*it);
+			}
 		}
 	}
 }
