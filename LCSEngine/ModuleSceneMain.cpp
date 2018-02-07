@@ -125,7 +125,10 @@ void ModuleSceneMain::draw()
 {
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
-		drawGameObjects((*it));
+		if ((*it)->enable)
+		{
+			drawGameObjects((*it));
+		}
 	}
 	drawGrid();
 }
@@ -135,7 +138,10 @@ void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
 	gameObject->draw();
 	for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
 	{
-		drawGameObjects((*it));
+		if ((*it)->enable)
+		{
+			drawGameObjects((*it));
+		}
 	}
 }
 

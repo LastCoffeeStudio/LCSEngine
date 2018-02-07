@@ -17,7 +17,8 @@ GameObject::GameObject() {}
 GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name) {
 	GameObject::name = getFinalName(name);
 	addComponent(new TransformComponent(this, true));
-	boundingBox.SetNegativeInfinity();
+	aabb.SetNegativeInfinity();
+	obb.SetNegativeInfinity();
 }
 
 GameObject::~GameObject() {}
@@ -161,6 +162,14 @@ void GameObject::draw()
 					break;
 			}
 		}
+
+		/*This must be called only when changing transform parameters in the future*/
+		if ((*it)->typeComponent == MESH)
+		{
+			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
+			obb = aabb.ToOBB();
+			obb.Transform(id.Transposed());
+		}
 	}
 
 	//If has array of vertices, draw
@@ -193,7 +202,8 @@ void GameObject::draw()
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	drawBoundingBox();
+	drawAABB();
+	drawOBB();
 }
 
 string GameObject::getFinalName(string name)
@@ -219,7 +229,7 @@ string GameObject::getFinalName(string name)
 	}
 }
 
-void GameObject::drawBoundingBox()
+void GameObject::drawAABB()
 {
 	glEnableClientState(GL_VERTEX_ARRAY);
 	glEnableClientState(GL_COLOR_ARRAY);
@@ -236,30 +246,85 @@ void GameObject::drawBoundingBox()
 
 	glBegin(GL_LINES);
 	glColor3f(1.0f, 1.0f, 1.0f);
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MinZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MinY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MinX(), boundingBox.MaxY(), boundingBox.MaxZ());
-	glVertex3f(boundingBox.MaxX(), boundingBox.MaxY(), boundingBox.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glEnd();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void GameObject::drawOBB()
+{
+	AABB aabbAux = obb.MinimalEnclosingAABB();
+	float4x4 identity = float4x4::identity;
+
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MinZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MinY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MaxZ());
+	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
+
 	glEnd();
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);

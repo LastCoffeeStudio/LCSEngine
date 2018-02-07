@@ -5,6 +5,7 @@
 #include <vector>
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "MathGeoLib/src/Geometry/AABB.h"
+#include "MathGeoLib/src/Geometry/OBB.h"
 
 using namespace std;
 
@@ -24,7 +25,8 @@ public:
 	void deleteGameObject();
 	void drawComponentsGui();
 	void draw();
-	void drawBoundingBox();
+	void drawAABB();
+	void drawOBB();
 
 public:
 	string name = "GameObject";
@@ -34,7 +36,8 @@ public:
 	GameObject* parent = nullptr;
 	int nameNumber = 0;
 	float4x4 id;
-	AABB boundingBox;
+	AABB aabb;
+	OBB obb;
 
 private:
 	string getFinalName(string name);

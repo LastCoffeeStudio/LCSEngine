@@ -33,14 +33,13 @@ MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUniqu
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size()*3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
 
-	gameObject->boundingBox.Enclose((float3*)verticesVBO[0].ptr(), verticesVBO.size());
+	gameObject->aabb.Enclose(&verticesVBO[0], verticesVBO.size());
 }
 
 MeshComponent::~MeshComponent() { }
 
 bool MeshComponent::update()
 {
-	
 	return true;
 }
 
