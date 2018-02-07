@@ -11,6 +11,7 @@
 #include "ModuleCamera.h"
 #include "TransformComponent.h"
 #include "MeshComponent.h"
+#include "MaterialComponent.h"
 
 GameObject::GameObject() {}
 
@@ -135,6 +136,11 @@ void GameObject::drawComponentsGui()
 		{
 			addComponent(new MeshComponent(this));
 		}
+		else if (ImGui::MenuItem("Material"))
+		{
+			addComponent(new MaterialComponent(this));
+		}
+
 		ImGui::EndPopup();
 	}
 }

@@ -201,3 +201,19 @@ void ModuleSceneMain::drawGrid()
 
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
+
+void ModuleSceneMain::swapDefaultShader()
+{
+	if (drawZbuffer)
+	{
+		shader->fshaderID = shader->readShader("Assets/Shaders/fragshader.txt", GL_FRAGMENT_SHADER);
+		drawZbuffer = false;
+	}
+	else
+	{
+		shader->fshaderID = shader->readShader("Assets/Shaders/fragshaderZbuffer.txt", GL_FRAGMENT_SHADER);
+		drawZbuffer = true;
+	}
+	shader->linkShaders();
+	glUseProgram(shader->shaderProgram);
+}

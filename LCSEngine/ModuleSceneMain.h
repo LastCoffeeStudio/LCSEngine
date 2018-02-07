@@ -22,6 +22,7 @@ public:
 	void draw();
 	void drawGameObjects(GameObject* gameObject);
 	void drawGrid();
+	void swapDefaultShader();
 
 public:
 	AssetTexture * checkers = nullptr;
@@ -32,5 +33,7 @@ public:
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;
+
+	bool drawZbuffer = false;
 };
 #endif //__MODULESCENEMAIN_H__
