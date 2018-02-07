@@ -27,6 +27,7 @@ public:
 	void draw();
 	void drawAABB();
 	void drawOBB();
+	void drawFrustum(Frustum frustum);
 
 public:
 	string name = "GameObject";

@@ -174,6 +174,7 @@ void GameObject::draw()
 
 	GLint idVertVBO = -1;
 	unsigned int sizeVertVBO = 0;
+	Frustum cameraFrustum;
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -198,6 +199,12 @@ void GameObject::draw()
 			obb = aabb.ToOBB();
 			obb.Transform(id.Transposed());
 		}
+		if ((*it)->typeComponent == CAMERA)
+		{
+			cameraFrustum = ((CameraComponent*)(*it))->frustum;
+			drawFrustum(cameraFrustum);
+		}
+
 	}
 
 	//If has array of vertices, draw
@@ -353,6 +360,83 @@ void GameObject::drawOBB()
 	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
 	glVertex3f(aabbAux.MinX(), aabbAux.MaxY(), aabbAux.MaxZ());
 	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
+
+	glEnd();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void GameObject::drawFrustum(Frustum frustum)
+{
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+
+	//Left Near
+	glVertex3f(frustum.CornerPoint(0).x, frustum.CornerPoint(0).y, frustum.CornerPoint(0).z);
+	glVertex3f(frustum.CornerPoint(2).x, frustum.CornerPoint(2).y, frustum.CornerPoint(2).z);
+
+	//Top Near
+	glVertex3f(frustum.CornerPoint(2).x, frustum.CornerPoint(2).y, frustum.CornerPoint(2).z);
+	glVertex3f(frustum.CornerPoint(6).x, frustum.CornerPoint(6).y, frustum.CornerPoint(6).z);
+	
+	//Right Near
+	glVertex3f(frustum.CornerPoint(6).x, frustum.CornerPoint(6).y, frustum.CornerPoint(6).z);
+	glVertex3f(frustum.CornerPoint(4).x, frustum.CornerPoint(4).y, frustum.CornerPoint(4).z);
+	
+	//Bottom Near
+	glVertex3f(frustum.CornerPoint(4).x, frustum.CornerPoint(4).y, frustum.CornerPoint(4).z);
+	glVertex3f(frustum.CornerPoint(0).x, frustum.CornerPoint(0).y, frustum.CornerPoint(0).z);
+
+
+	//Left Far
+	glVertex3f(frustum.CornerPoint(1).x, frustum.CornerPoint(1).y, frustum.CornerPoint(1).z);
+	glVertex3f(frustum.CornerPoint(3).x, frustum.CornerPoint(3).y, frustum.CornerPoint(3).z);
+
+	//Top Far
+	glVertex3f(frustum.CornerPoint(3).x, frustum.CornerPoint(3).y, frustum.CornerPoint(3).z);
+	glVertex3f(frustum.CornerPoint(7).x, frustum.CornerPoint(7).y, frustum.CornerPoint(7).z);
+
+	//Right Far
+	glVertex3f(frustum.CornerPoint(7).x, frustum.CornerPoint(7).y, frustum.CornerPoint(7).z);
+	glVertex3f(frustum.CornerPoint(5).x, frustum.CornerPoint(5).y, frustum.CornerPoint(5).z);
+
+	//Bottom Far
+	glVertex3f(frustum.CornerPoint(5).x, frustum.CornerPoint(5).y, frustum.CornerPoint(5).z);
+	glVertex3f(frustum.CornerPoint(1).x, frustum.CornerPoint(1).y, frustum.CornerPoint(1).z);
+
+
+	//Left-Top Cam->Far
+	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.CornerPoint(3).x, frustum.CornerPoint(3).y, frustum.CornerPoint(3).z);
+
+	//Right-Top Cam->Far
+	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.CornerPoint(7).x, frustum.CornerPoint(7).y, frustum.CornerPoint(7).z);
+
+	//Right-Bottom Cam->Far
+	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.CornerPoint(5).x, frustum.CornerPoint(5).y, frustum.CornerPoint(5).z);
+
+	//Left-Bottom Cam->Far
+	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.CornerPoint(1).x, frustum.CornerPoint(1).y, frustum.CornerPoint(1).z);
 
 	glEnd();
 
