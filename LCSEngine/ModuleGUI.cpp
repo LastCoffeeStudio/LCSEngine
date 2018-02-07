@@ -163,6 +163,15 @@ void ModuleGUI::showMainWindow()
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Options"))
+		{
+			if (ImGui::MenuItem("Print ZBuffer"))
+			{
+				App->sceneMain->swapDefaultShader();
+			}
+
+			ImGui::EndMenu();
+		}
 
 		ImGui::EndMenuBar();
 	}
@@ -251,8 +260,6 @@ void ModuleGUI::showHierarchy()
 	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
 	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize))
 	{
-		ImGui::Text("Hierarchy");
-
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
 			App->sceneMain->currentObject = App->sceneMain->root;

@@ -11,6 +11,7 @@
 #include "ModuleCamera.h"
 #include "TransformComponent.h"
 #include "MeshComponent.h"
+#include "MaterialComponent.h"
 
 GameObject::GameObject() {}
 
@@ -25,7 +26,21 @@ GameObject::~GameObject() {}
 
 void GameObject::addComponent(Component* component)
 {
-	components.push_back(component);
+	bool alreadyHave = false;
+	if (component->isUnique)
+	{
+		for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		{
+			if (component->typeComponent == (*it)->typeComponent)
+			{
+				alreadyHave = true;
+			}
+		}
+	}
+	if (!alreadyHave)
+	{
+		components.push_back(component);
+	}
 }
 
 void GameObject::deleteComponent(Component* component)
@@ -136,6 +151,11 @@ void GameObject::drawComponentsGui()
 		{
 			addComponent(new MeshComponent(this));
 		}
+		else if (ImGui::MenuItem("Material"))
+		{
+			addComponent(new MaterialComponent(this));
+		}
+
 		ImGui::EndPopup();
 	}
 }

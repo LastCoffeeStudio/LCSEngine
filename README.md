@@ -25,10 +25,8 @@
 
 Right now, this engine is under construction. The latest release contains the following:
 
-* Printing a geometry (Triangle/Cube/Sphere). Usage:
-
-  Change visualization to triangle/cube/sphere ('T'/'C'/'S' keys)
-  
-  Change geometry draw between Direct Draw/Vertex Buffer Object/Vertex Array (Left/Right keys)
-  
-  Change between auto/manual Rotation (Space key). In manual rotation, use the mouse to rotate the object (Click and drag)
+* GUI navigation: Main window, Hierarchy window, Inspector window
+* Scene Visualization
+* Create GameObjects
+* Create and delete Components to GameObjects
+* Activate/Deactivate GameObjects and Components
