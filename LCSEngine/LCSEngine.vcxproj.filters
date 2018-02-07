@@ -319,6 +319,9 @@
       <Filter>Components</Filter>
     </ClInclude>
     <ClInclude Include="ComponentFactory.h" />
+    <ClInclude Include="CameraComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -496,6 +499,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ComponentFactory.cpp" />
+    <ClCompile Include="CameraComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl">

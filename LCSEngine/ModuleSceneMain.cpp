@@ -16,6 +16,7 @@
 #include "GameObject.h"
 #include "Component.h"
 #include "MaterialComponent.h"
+#include "CameraComponent.h"
 #include <queue>
 
 /*TO DELETE*/
@@ -172,7 +173,7 @@ void ModuleSceneMain::drawGrid()
 	float size = ImGui::GetWindowSize().x;
 	if (ImGui::GetWindowSize().y > size) size = ImGui::GetWindowSize().y;
 
-	float3 cameraPos = App->camera->frustum.pos;
+	float3 cameraPos = App->camera->currentCamera->frustum.pos;
 
 	if (distance2(float2(cameraPos.x, cameraPos.z), float2(0.0f, 0.0f)) < sqrt(pow(POS_LINES_GRID, 2) + pow(POS_LINES_GRID, 2)))
 	{
