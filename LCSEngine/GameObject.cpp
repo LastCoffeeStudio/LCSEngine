@@ -26,6 +26,8 @@ GameObject::GameObject(GameObject* parent, string name) : parent(parent), initia
 
 GameObject::~GameObject() {}
 
+void GameObject::preUpdate() {}
+
 void GameObject::addComponent(Component* component)
 {
 	bool alreadyHave = false;
@@ -173,6 +175,8 @@ void GameObject::draw()
 	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
 	GLint idVertVBO = -1;
 	unsigned int sizeVertVBO = 0;
+	aabb.SetNegativeInfinity();
+	obb.SetNegativeInfinity();
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{

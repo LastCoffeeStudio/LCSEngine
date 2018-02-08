@@ -28,29 +28,19 @@
 
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
-	/*
-	cube1 = new CubeShape();
-	sphere1 = new SphereShape(1.f, 16);
-	*/
-
 	root = new GameObject();
 	root->addComponent(new TransformComponent(root));
 	currentObject = root;
-	/*This code is for testing purpose only, delete afterwards*/
-	/*root->addGameObject(new GameObject(root, "omg"));
-	root->addGameObject(new GameObject(root, "omg2"));
-	root->addGameObject(new GameObject(root, "omg3"));
-	root->addGameObject(new GameObject(root, "omg4"));
-	root->children[0]->addGameObject(new GameObject(root->children[0], "wow"));
-	root->children[0]->children[0]->addComponent(new MaterialComponent(root->children[0]->children[0]));*/
+	/*for (int i = 0; i < 1000; ++i)
+	{
+		root->addGameObject(new GameObject(root,"a"));
+	}*/
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
 
 bool ModuleSceneMain::init()
 {
-	//cube1->initializeValues();
-	//sphere1->initializeValues();
 	checkers = App->textures->loadCheckers();
 	lenna = App->textures->loadTexture(IL_PNG, "Assets/Images/Lenna.png");
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
@@ -63,15 +53,13 @@ bool ModuleSceneMain::init()
 
 bool ModuleSceneMain::start()
 {
-	//actualPolygon = CUBE;
-	/*root->addComponent(new TransformComponent(root));
-	root->addComponent(new MeshComponent(root));*/
 	return true;
 }
 
 update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
 	omaeWaMouShindeiru();
+	preUpdateGameObjects();
 	return UPDATE_CONTINUE;
 }
 
@@ -83,9 +71,6 @@ update_status ModuleSceneMain::update(float deltaTime)
 
 bool ModuleSceneMain::cleanUp()
 {
-	//cube1->cleanUp();
-	//sphere1->cleanUp();
-
 	return true;
 }
 
@@ -126,6 +111,29 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 			{
 				entities.push(*it);
 			}
+		}
+	}
+}
+
+void ModuleSceneMain::preUpdateGameObjects()
+{
+	queue<GameObject*> queue;
+
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		gameObject->preUpdate();
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
 		}
 	}
 }

@@ -19,6 +19,7 @@ public:
 	update_status update(float deltaTime);
 	bool cleanUp() override;
 	void omaeWaMouShindeiru();
+	void preUpdateGameObjects();
 	void draw();
 	void drawGameObjects(GameObject* gameObject);
 	void drawGrid();

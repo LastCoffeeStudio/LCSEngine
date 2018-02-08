@@ -19,6 +19,7 @@ public:
 	GameObject(GameObject* parent, string name);
 	~GameObject();
 
+	void preUpdate();
 	void addComponent(Component* component);
 	void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);

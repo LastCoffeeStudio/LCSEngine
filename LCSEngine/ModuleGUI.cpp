@@ -24,6 +24,8 @@ ModuleGUI::~ModuleGUI() {}
 bool ModuleGUI::init()
 {
 	// Setup ImGui binding
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
 	ImGui_ImplSdlGL3_Init(App->window->window);
 
 	checkbox_depthTest = glIsEnabled(GL_DEPTH_TEST);
