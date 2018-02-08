@@ -40,6 +40,7 @@ public:
 	AABB aabb;
 	OBB obb;
 	bool suicide = false;
+	bool visible = true;
 
 private:
 	string getFinalName(string name);

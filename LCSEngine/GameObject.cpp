@@ -120,7 +120,7 @@ void GameObject::deleteGameObject()
 
 void GameObject::drawComponentsGui()
 {
-	ImGui::Checkbox("",&enable); ImGui::SameLine();
+	ImGui::Checkbox("", &enable); ImGui::SameLine();
 	char aux[64];
 	strcpy_s(aux, 64, name.c_str());
 	if (ImGui::InputText("Name: ", aux, 64))
@@ -136,7 +136,7 @@ void GameObject::drawComponentsGui()
 		ImGui::Text(aux2);
 	}
 	/*END DEBUG*/
-	
+
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->drawGUI();
@@ -171,10 +171,8 @@ void GameObject::drawComponentsGui()
 void GameObject::draw()
 {
 	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
-
 	GLint idVertVBO = -1;
 	unsigned int sizeVertVBO = 0;
-	Frustum cameraFrustum;
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -182,13 +180,13 @@ void GameObject::draw()
 		{
 			switch ((*it)->typeComponent)
 			{
-				case TRANSFORM:
-					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
-					break;
-				case MESH:
-					idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
-					sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size()*3;	//vertices contains float3, that's why we multiply by 3
-					break;
+			case TRANSFORM:
+				id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				break;
+			case MESH:
+				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
+				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
+				break;
 			}
 		}
 
@@ -201,45 +199,50 @@ void GameObject::draw()
 		}
 		if ((*it)->typeComponent == CAMERA)
 		{
-			cameraFrustum = ((CameraComponent*)(*it))->frustum;
-			drawFrustum(cameraFrustum);
+			//Update camera Frustum
+			((CameraComponent*)(*it))->frustum;
+			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
+			((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
+			((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
+			drawFrustum(((CameraComponent*)(*it))->frustum);
+		}
+	}
+
+	if (visible)
+	{
+		//If has array of vertices, draw
+		if (idVertVBO != -1 /*&& check if is inside the frustum*/)
+		{
+			/*Then change bool forDraw to true*/
+			/*We need to modify this later to add the information in the queue for drawing*/
+			glEnableClientState(GL_VERTEX_ARRAY);
+			glEnableClientState(GL_COLOR_ARRAY);
+			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+			GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+
+			GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+			GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+			glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+			glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+			glEnableVertexAttribArray(0);
+			glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
+
+			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+			glDisableClientState(GL_COLOR_ARRAY);
+			glDisableClientState(GL_VERTEX_ARRAY);
+
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 
+		drawAABB();
+		drawOBB();
 	}
-
-	//If has array of vertices, draw
-	if (idVertVBO != -1 /*&& check if is inside the frustum*/)
-	{
-		/*Then change bool forDraw to true*/
-		/*We need to modify this later to add the information in the queue for drawing*/
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-		GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
-
-		GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
-
-		GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
-		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
-		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		glEnableVertexAttribArray(0);
-		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
-
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
-	}
-
-	drawAABB();
-	drawOBB();
-	
 }
 
 string GameObject::getFinalName(string name)
@@ -376,8 +379,10 @@ void GameObject::drawFrustum(Frustum frustum)
 	glEnableClientState(GL_COLOR_ARRAY);
 	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
+	float4x4 identity = float4x4::identity;
+
 	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
 	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
@@ -395,11 +400,11 @@ void GameObject::drawFrustum(Frustum frustum)
 	//Top Near
 	glVertex3f(frustum.CornerPoint(2).x, frustum.CornerPoint(2).y, frustum.CornerPoint(2).z);
 	glVertex3f(frustum.CornerPoint(6).x, frustum.CornerPoint(6).y, frustum.CornerPoint(6).z);
-	
+
 	//Right Near
 	glVertex3f(frustum.CornerPoint(6).x, frustum.CornerPoint(6).y, frustum.CornerPoint(6).z);
 	glVertex3f(frustum.CornerPoint(4).x, frustum.CornerPoint(4).y, frustum.CornerPoint(4).z);
-	
+
 	//Bottom Near
 	glVertex3f(frustum.CornerPoint(4).x, frustum.CornerPoint(4).y, frustum.CornerPoint(4).z);
 	glVertex3f(frustum.CornerPoint(0).x, frustum.CornerPoint(0).y, frustum.CornerPoint(0).z);
@@ -423,19 +428,19 @@ void GameObject::drawFrustum(Frustum frustum)
 
 
 	//Left-Top Cam->Far
-	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.pos.x, frustum.pos.y, frustum.pos.z);
 	glVertex3f(frustum.CornerPoint(3).x, frustum.CornerPoint(3).y, frustum.CornerPoint(3).z);
 
 	//Right-Top Cam->Far
-	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.pos.x, frustum.pos.y, frustum.pos.z);
 	glVertex3f(frustum.CornerPoint(7).x, frustum.CornerPoint(7).y, frustum.CornerPoint(7).z);
 
 	//Right-Bottom Cam->Far
-	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.pos.x, frustum.pos.y, frustum.pos.z);
 	glVertex3f(frustum.CornerPoint(5).x, frustum.CornerPoint(5).y, frustum.CornerPoint(5).z);
 
 	//Left-Bottom Cam->Far
-	glVertex3f(0, 0, 0);
+	glVertex3f(frustum.pos.x, frustum.pos.y, frustum.pos.z);
 	glVertex3f(frustum.CornerPoint(1).x, frustum.CornerPoint(1).y, frustum.CornerPoint(1).z);
 
 	glEnd();

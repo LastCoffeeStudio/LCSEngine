@@ -52,7 +52,7 @@ bool ModuleSceneMain::init()
 	//cube1->initializeValues();
 	//sphere1->initializeValues();
 	checkers = App->textures->loadCheckers();
-	lenna = App->textures->loadTexture(IL_PNG,"Assets/Images/Lenna.png");
+	lenna = App->textures->loadTexture(IL_PNG, "Assets/Images/Lenna.png");
 	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
 	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
 	actual = checkers;
@@ -77,6 +77,7 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 
 update_status ModuleSceneMain::update(float deltaTime)
 {
+	checkVisibleItems();
 	return UPDATE_CONTINUE;
 }
 
@@ -101,7 +102,7 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 	{
 		GameObject* child = entities.front();
 		entities.pop();
-		
+
 		if (child->suicide == true)
 		{
 			child->deleteGameObject();
@@ -125,6 +126,64 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 			{
 				entities.push(*it);
 			}
+		}
+	}
+}
+
+void ModuleSceneMain::checkVisibleItems()
+{
+	vector<GameObject*> elements;
+	vector<CameraComponent*> frustums;
+	queue<GameObject*> queue;
+
+	//We take all active frustums in the scene
+	//And all the elements for fast iteration afterwars
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		elements.push_back(gameObject);
+
+		for (vector<Component*>::iterator it = gameObject->components.begin(); it != gameObject->components.end(); ++it)
+		{
+			if ((*it)->typeComponent == CAMERA)
+			{
+				frustums.push_back((CameraComponent*)(*it));
+			}
+		}
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
+
+	//for each gameobject we check if any frustum makes this object visible. If it does, we continue with the next gameobject
+	//If not, we make the gameobject as not visible
+	for (vector<GameObject*>::iterator element = elements.begin(); element != elements.end(); ++element)
+	{
+		bool visible = false;
+		(*element)->visible = true;
+		for (vector<CameraComponent*>::iterator frustum = frustums.begin(); frustum != frustums.end() && !visible; ++frustum)
+		{
+			if (!(*frustum)->frustumCulling)
+			{
+				visible = true;
+			}
+			else
+			{
+				visible = (*frustum)->frustum.Intersects((*element)->obb.MinimalEnclosingAABB());
+			}
+		}
+		if (frustums.size() > 0)
+		{
+			(*element)->visible = visible;
 		}
 	}
 }

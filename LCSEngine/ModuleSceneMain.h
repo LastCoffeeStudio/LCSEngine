@@ -23,6 +23,7 @@ public:
 	void drawGameObjects(GameObject* gameObject);
 	void drawGrid();
 	void swapDefaultShader();
+	void checkVisibleItems();
 
 public:
 	AssetTexture * checkers = nullptr;
