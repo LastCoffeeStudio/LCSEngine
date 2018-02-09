@@ -1,9 +1,10 @@
 #ifndef __ASSETTEXTURE_H__
 #define __ASSETTEXTURE_H__
+
 #include "Glew/include/glew.h"
 #include <string>
 
-class ILinfo;
+struct ILinfo;
 
 typedef unsigned int ILenum;
 

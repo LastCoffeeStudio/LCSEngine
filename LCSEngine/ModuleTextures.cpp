@@ -7,13 +7,9 @@
 #include "DevIL/include/IL/il.h"
 #include "DevIL/include/IL/ilut.h"
 #include <stdlib.h> 
-
 #include <stdio.h> 
-
 #include "SDL_image/include/SDL_image.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
-
-using namespace std;
 
 ModuleTextures::ModuleTextures() {}
 

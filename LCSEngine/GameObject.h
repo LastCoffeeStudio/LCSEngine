@@ -2,10 +2,10 @@
 #define __GAMEOBJECT_H__
 
 #include "glew.h"
-#include <vector>
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "MathGeoLib/src/Geometry/AABB.h"
 #include "MathGeoLib/src/Geometry/OBB.h"
+#include <vector>
 
 using namespace std;
 
@@ -23,7 +23,6 @@ public:
 	void addComponent(Component* component);
 	void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
-	void deleteGameObject();
 	void drawComponentsGui();
 	void draw();
 	void drawAABB();
@@ -46,10 +45,8 @@ public:
 private:
 	string getFinalName(string name);
 	string initialName;
-
-	/*Create map to know if it has a component (updated when component added or deleted)*/
-
-	/*TO DELETE*/
+	GLint idVertVBO = -1;
+	unsigned int sizeVertVBO = 0;
 };
 
 #endif // __GAMEOBJECT_H__

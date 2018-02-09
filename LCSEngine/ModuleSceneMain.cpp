@@ -3,25 +3,20 @@
 #include "ModuleSceneMain.h"
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
+#include "ModuleTextures.h"
+#include "Component.h"
+#include "CameraComponent.h"
+#include "GameObject.h"
 #include "CubeShape.h"
 #include "SphereShape.h"
-#include "ModuleTextures.h"
 #include "AssetTexture.h"
+#include "SDL_mouse.h"
+#include "Shader.h"
+#include "Utils.h"
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
-#include "SDL_mouse.h"
-#include "Utils.h"
 #include "DevIL/include/IL/il.h"
-#include "Shader.h"
-#include "GameObject.h"
-#include "Component.h"
-#include "MaterialComponent.h"
-#include "CameraComponent.h"
 #include <queue>
-
-/*TO DELETE*/
-#include "TransformComponent.h"
-#include "MeshComponent.h"
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -29,8 +24,9 @@
 ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
 	root = new GameObject();
-	root->addComponent(new TransformComponent(root));
 	currentObject = root;
+
+	/*Needed for testing times*/
 	/*for (int i = 0; i < 1000; ++i)
 	{
 		root->addGameObject(new GameObject(root,"a"));
@@ -90,7 +86,16 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 
 		if (child->suicide == true)
 		{
-			child->deleteGameObject();
+			bool erased = false;
+			for (vector<GameObject*>::iterator it = child->parent->children.begin(); it != child->parent->children.end() && !erased; ++it)
+			{
+				if ((*it) == child)
+				{
+					it = child->parent->children.erase(it);
+					erased = true;
+				}
+			}
+			RELEASE(child);
 		}
 		else
 		{
@@ -148,7 +153,10 @@ void ModuleSceneMain::checkVisibleItems()
 	//And all the elements for fast iteration afterwars
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
-		queue.push((*it));
+		if ((*it)->enable)
+		{
+			queue.push((*it));
+		}
 	}
 
 	while (!queue.empty())
@@ -160,7 +168,7 @@ void ModuleSceneMain::checkVisibleItems()
 
 		for (vector<Component*>::iterator it = gameObject->components.begin(); it != gameObject->components.end(); ++it)
 		{
-			if ((*it)->typeComponent == CAMERA)
+			if ((*it)->typeComponent == CAMERA && (*it)->isEnable)
 			{
 				frustums.push_back((CameraComponent*)(*it));
 			}
@@ -168,7 +176,10 @@ void ModuleSceneMain::checkVisibleItems()
 
 		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
 		{
-			queue.push((*it));
+			if ((*it)->enable)
+			{
+				queue.push((*it));
+			}
 		}
 	}
 

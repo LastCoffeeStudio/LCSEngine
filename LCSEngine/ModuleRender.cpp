@@ -4,10 +4,10 @@
 #include "ModuleWindow.h"
 #include "ModuleGUI.h"
 #include "ModuleSceneMain.h"
+#include "ModuleCamera.h"
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
-#include "ModuleCamera.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
 
@@ -19,8 +19,6 @@ ModuleRender::~ModuleRender() {}
 // Called before render is available
 bool ModuleRender::init()
 {
-	
-
 	bool ret = true;
 
 	SDL_GLContext context = SDL_GL_CreateContext(App->window->window);
@@ -100,10 +98,6 @@ update_status ModuleRender::postUpdate(float deltaTime)
 bool ModuleRender::cleanUp()
 {
 	LOG("Destroying renderer");
-
-	//Destroy window
-	
-
 	return true;
 }
 

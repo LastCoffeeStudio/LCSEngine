@@ -19,4 +19,4 @@ public:
 	bool frustumCulling = false;
 };
 
-#endif
+#endif //__CAMERACOMPONENT_H__

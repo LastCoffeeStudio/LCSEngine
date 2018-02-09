@@ -1,32 +1,74 @@
+#include "Application.h"
 #include "Globals.h"
 #include "GameObject.h"
-#include "Imgui/imgui.h"
-#include "SDL\include\SDL_assert.h"
 #include "Component.h"
-#include "Glew/include/glew.h"
-#include <stack>
-#include "Application.h"
-#include "ModuleSceneMain.h"
-#include "Shader.h"
-#include "ModuleCamera.h"
-#include "TransformComponent.h"
-#include "ComponentFactory.h"
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
 #include "CameraComponent.h"
+#include "TransformComponent.h"
+#include "ComponentFactory.h"
+#include "ModuleSceneMain.h"
+#include "ModuleCamera.h"
+#include "Shader.h"
+#include "Imgui/imgui.h"
+#include "SDL/include/SDL_assert.h"
+#include "Glew/include/glew.h"
+#include <queue>
 
 GameObject::GameObject() {}
 
-GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name) {
+GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name)
+{
 	GameObject::name = getFinalName(name);
-	addComponent(new TransformComponent(this, true));
+	addComponent(new TransformComponent(this));
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 }
 
 GameObject::~GameObject() {}
 
-void GameObject::preUpdate() {}
+void GameObject::preUpdate()
+{
+	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
+	idVertVBO = -1;
+	sizeVertVBO = 0;
+	aabb.SetNegativeInfinity();
+	obb.SetNegativeInfinity();
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->isEnable)
+		{
+			switch ((*it)->typeComponent)
+			{
+			case TRANSFORM:
+				id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				break;
+			case MESH:
+				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
+				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
+				break;
+			}
+		}
+	}
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		switch ((*it)->typeComponent)
+		{
+			case MESH:
+				aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
+				obb = aabb.ToOBB();
+				obb.Transform(id.Transposed());
+				break;
+			case CAMERA:
+				((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
+				((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
+				((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
+				break;
+		}
+	}
+}
 
 void GameObject::addComponent(Component* component)
 {
@@ -69,57 +111,6 @@ void GameObject::addGameObject(GameObject* gameObject)
 	children.push_back(gameObject);
 }
 
-void GameObject::deleteGameObject()
-{
-	stack<GameObject*> gameObjects;
-	gameObjects.push(this);
-
-	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
-	{
-		gameObjects.push(*it);
-	}
-
-	while (!gameObjects.empty())
-	{
-		GameObject* current = gameObjects.top();
-		gameObjects.pop();
-		GameObject* parent = current->parent;
-		bool erased = false;
-		//Delete info in parent children
-		for (vector<GameObject*>::iterator it = parent->children.begin(); it != parent->children.end() && !erased;)
-		{
-			if ((*it) == current)
-			{
-				it = parent->children.erase(it);
-				erased = true;
-			}
-			else
-			{
-				++it;
-			}
-		}
-		parent = nullptr;
-
-		//Delete all components
-		for (vector<Component*>::iterator it = current->components.begin(); it != current->components.end();)
-		{
-			//(*it)->cleanUp();
-			RELEASE(*it);
-			it = current->components.erase(it);
-		}
-		current->components.clear();
-
-		//Push in the queue all children
-		for (vector<GameObject*>::iterator it = current->children.begin(); it != current->children.end(); ++it)
-		{
-			gameObjects.push(*it);
-		}
-		current->children.clear();
-
-		RELEASE(current);
-	}
-}
-
 void GameObject::drawComponentsGui()
 {
 	ImGui::Checkbox("", &enable); ImGui::SameLine();
@@ -129,15 +120,6 @@ void GameObject::drawComponentsGui()
 	{
 		name = aux;
 	}
-
-	/*DEBUG*/
-	if (parent != nullptr)
-	{
-		char aux2[64];
-		strcpy_s(aux2, 64, parent->name.c_str());
-		ImGui::Text(aux2);
-	}
-	/*END DEBUG*/
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -172,80 +154,45 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
-	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
-	GLint idVertVBO = -1;
-	unsigned int sizeVertVBO = 0;
-	aabb.SetNegativeInfinity();
-	obb.SetNegativeInfinity();
-
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	//If has a mesh, draw it
+	if (idVertVBO != -1 && visible)
 	{
-		if ((*it)->isEnable)
-		{
-			switch ((*it)->typeComponent)
-			{
-			case TRANSFORM:
-				id = ((TransformComponent*)(*it))->transform.Transposed()*id;
-				break;
-			case MESH:
-				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
-				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
-				break;
-			}
-		}
+		/*Then change bool forDraw to true*/
+		/*We need to modify this later to add the information in the queue for drawing*/
+		glEnableClientState(GL_VERTEX_ARRAY);
+		glEnableClientState(GL_COLOR_ARRAY);
+		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-		/*This must be called only when changing transform parameters in the future*/
-		if ((*it)->typeComponent == MESH)
-		{
-			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
-			obb = aabb.ToOBB();
-			obb.Transform(id.Transposed());
-		}
-		if ((*it)->typeComponent == CAMERA)
-		{
-			//Update camera Frustum
-			((CameraComponent*)(*it))->frustum;
-			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
-			((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
-			((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
-			drawFrustum(((CameraComponent*)(*it))->frustum);
-		}
-	}
+		GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
 
-	if (visible)
-	{
-		//If has array of vertices, draw
-		if (idVertVBO != -1 /*&& check if is inside the frustum*/)
-		{
-			/*Then change bool forDraw to true*/
-			/*We need to modify this later to add the information in the queue for drawing*/
-			glEnableClientState(GL_VERTEX_ARRAY);
-			glEnableClientState(GL_COLOR_ARRAY);
-			glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-			GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+		GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
-			GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glEnableVertexAttribArray(0);
+		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
 
-			GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
-			glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+		glDisableClientState(GL_COLOR_ARRAY);
+		glDisableClientState(GL_VERTEX_ARRAY);
 
-			glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-			glEnableVertexAttribArray(0);
-			glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
-
-			glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-			glDisableClientState(GL_COLOR_ARRAY);
-			glDisableClientState(GL_VERTEX_ARRAY);
-
-			glBindTexture(GL_TEXTURE_2D, 0);
-		}
+		glBindTexture(GL_TEXTURE_2D, 0);
 
 		drawAABB();
 		drawOBB();
+	}
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->typeComponent == CAMERA && (*it)->isEnable)
+		{
+			drawFrustum(((CameraComponent*)(*it))->frustum);
+		}
 	}
 }
 
@@ -265,7 +212,8 @@ string GameObject::getFinalName(string name)
 	{
 		return name;
 	}
-	else {
+	else
+	{
 		++nameNumber;
 		string number = " (" + std::to_string(nameNumber) + ")";
 		return getFinalName(initialName + number);

@@ -7,7 +7,7 @@
 class TransformComponent : public Component
 {
 public:
-	TransformComponent(GameObject* gameObject, bool isUnique = true);
+	TransformComponent(GameObject* gameObject);
 	~TransformComponent();
 
 	void drawGUI() override;
@@ -28,4 +28,4 @@ private:
 	float4x4 matrixRotate;
 };
 
-#endif
+#endif //__TRANSFORMCOMPONENT_H__

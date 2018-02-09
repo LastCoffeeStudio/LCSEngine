@@ -1,9 +1,5 @@
 #include "MeshComponent.h"
 #include "Imgui/imgui.h"
-#include "GameObject.h"
-#include "MathGeoLib/src/Geometry/AABB.h"
-
-using namespace std;
 
 static int selected_preset = -1;
 const char* presets[] = { "Triangle", "Cube", "Sphere" };
@@ -12,7 +8,6 @@ MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUniqu
 {
 	typeComponent = MESH;
 	verticesVBO.reserve(36);
-
 	lengthX = lengthY = lengthZ = 1.f;
 	 
 	verticesVBO = { float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
@@ -28,21 +23,17 @@ MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUniqu
 		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
 		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f) };
 
-
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size()*3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
-
-	gameObject->aabb.Enclose(&verticesVBO[0], verticesVBO.size());
 }
 
-MeshComponent::~MeshComponent() { }
+MeshComponent::~MeshComponent() {}
 
 bool MeshComponent::update()
 {
 	return true;
 }
-
 
 void MeshComponent::drawGUI()
 {
@@ -64,12 +55,14 @@ void MeshComponent::drawGUI()
 		if (ImGui::BeginPopup("select preset"))
 		{
 			for (int i = 0; i < IM_ARRAYSIZE(presets); i++)
+			{
 				if (ImGui::Selectable(presets[i]))
 				{
 					selected_preset = i;
 					//Set Mesh of preset selected
 
 				}
+			}
 			ImGui::EndPopup();
 		}
 		ImGui::PopStyleColor(3);

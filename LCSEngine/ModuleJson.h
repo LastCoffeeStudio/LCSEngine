@@ -4,15 +4,13 @@
 #include "Module.h"
 #include <string>
 
-using namespace std;
-
 class ModuleJson : public Module
 {
 public:
 	ModuleJson();
 	~ModuleJson();
 
-	string readPathImage(const string path) const;
+	std::string readPathImage(const std::string path) const;
 
 };
 

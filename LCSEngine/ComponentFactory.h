@@ -1,9 +1,10 @@
 #ifndef __COMPONENTFACTORY_H__
 #define __COMPONENTFACTORY_H__
-#include "Globals.h"
-#include "Component.h"
 
+enum TypeComponent;
 class Component;
+class GameObject;
+
 class ComponentFactory
 {
 public:
@@ -16,4 +17,4 @@ private:
 	
 };
 
-#endif
+#endif //__COMPONENTFACTORY_H__

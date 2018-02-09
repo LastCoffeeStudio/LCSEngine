@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "ComponentFactory.h"
 #include "Component.h"
 #include "MeshComponent.h"
@@ -5,10 +6,8 @@
 #include "MaterialComponent.h"
 #include "CameraComponent.h"
 #include "GameObject.h"
-#include "Globals.h"
 
 ComponentFactory::~ComponentFactory() {}
-
 
 ComponentFactory* componentFactory = nullptr;
 
@@ -38,9 +37,9 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 		return new CameraComponent(parentObject);
 		break;
 	default:
+		return nullptr;
 		break;
 	}
-	
 }
 
 ComponentFactory::ComponentFactory() {}

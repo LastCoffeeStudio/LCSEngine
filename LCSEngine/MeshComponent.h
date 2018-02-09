@@ -30,4 +30,4 @@ public:
 	PresetType currentPreset = TRIANGLE;
 };
 
-#endif
+#endif //__MESHCOMPONENT_H__

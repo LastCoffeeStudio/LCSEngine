@@ -1,10 +1,10 @@
 #ifndef __COMPONENT_H__
 #define __COMPONENT_H__
-#include <string>
+
 #include "Globals.h"
 
-
 class GameObject;
+
 class Component
 {
 public:
@@ -26,4 +26,4 @@ protected:
 	GameObject* gameObject = nullptr;
 };
 
-#endif
+#endif //__COMPONENT_H__

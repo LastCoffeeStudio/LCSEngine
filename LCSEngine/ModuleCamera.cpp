@@ -1,19 +1,16 @@
 #include "Application.h"
 #include "ModuleCamera.h"
-#include "MathGeoLib/src/Math/float3x4.h"
-#include "MathGeoLib/src/Math/MathFunc.h"
-#include <SDL.h>
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
 #include "CameraComponent.h"
+#include "MathGeoLib/src/Math/float3x4.h"
+#include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/Quat.h"
-
+#include <SDL.h>
 
 ModuleCamera::ModuleCamera() {}
 
-
 ModuleCamera::~ModuleCamera() {}
-
 
 bool ModuleCamera::init()
 {
@@ -21,7 +18,6 @@ bool ModuleCamera::init()
 	updatedWindowSize(SCREEN_WIDTH, SCREEN_HEIGHT);
 	return true;
 }
-
 
 update_status ModuleCamera::update(float deltaTime)
 {
@@ -31,30 +27,25 @@ update_status ModuleCamera::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-
 bool ModuleCamera::cleanUp()
 {
 	return true;
 }
-
 
 float* ModuleCamera::getViewMatrix()
 {
 	 return currentCamera->getViewMatrix();
 }
 
-
 float* ModuleCamera::getProjectMatrix()
 {
 	return currentCamera->getProjectMatrix();
 }
 
-
 void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 {
 	currentCamera->frustum.horizontalFov = 2.0f * atanf(tanf(currentCamera->frustum.verticalFov / 2.0f)*((float)screenWidth / (float)screenHeight));
 }
-
 
 void ModuleCamera::moveCamera(float deltaTime)
 {
@@ -110,7 +101,6 @@ void ModuleCamera::moveCamera(float deltaTime)
 		currentCamera->frustum.Translate(displacement*speed);
 	}
 }
-
 
 void ModuleCamera::cameraZoom(float deltaTime)
 {

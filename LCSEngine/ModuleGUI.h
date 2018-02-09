@@ -3,7 +3,7 @@
 
 #include "Module.h"
 #include "Imgui/imgui.h"
-#include "Glew\include\glew.h"
+#include "Glew/include/glew.h"
 
 class GameObject;
 
@@ -42,17 +42,17 @@ private:
 	void putHyperlink(const char* link);
 
 private:
-	bool checkbox_depthTest;
-	bool checkbox_cullFace;
-	bool checkbox_lighting;
+	bool checkbox_depthTest = false;
+	bool checkbox_cullFace = false;
+	bool checkbox_lighting = false;
 	GLfloat alColor[3] = { 1.0f, 1.0f, 1.0f };
-	bool checkbox_colorMaterial;
-	bool checkbox_texture2D;
-	bool checkbox_fog;
+	bool checkbox_colorMaterial = false;
+	bool checkbox_texture2D = false;
+	bool checkbox_fog = false;
 	GLfloat fogColor[3] = { 1.0f, 1.0f, 1.0f };
 	GLfloat fogIntensity = 1.0f;
-	bool checkbox_aliasing;
+	bool checkbox_aliasing = false;
 	
 };
 
-#endif // __MODULEIGUI_H__
+#endif //__MODULEGUI_H__

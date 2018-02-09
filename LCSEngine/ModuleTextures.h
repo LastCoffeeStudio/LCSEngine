@@ -1,10 +1,10 @@
 #ifndef __MODULETEXTURES_H__
 #define __MODULETEXTURES_H__
 
-#include <list>
 #include "Module.h"
 #include "Globals.h"
 #include "Glew/include/glew.h"
+#include <list>
 
 struct SDL_Texture;
 class AssetTexture;

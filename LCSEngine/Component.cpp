@@ -1,13 +1,9 @@
 #include "Component.h"
-#include "Imgui/imgui.h"
-
-using namespace std;
 
 Component::Component() {}
 
 Component::Component(GameObject* gameObject, bool isEnable, bool isUnique) : gameObject(gameObject), isEnable(isEnable), isUnique(isUnique)
 {
-	typeComponent = COMPONENT;
 	//TODO Set Checker in UI
 }
 

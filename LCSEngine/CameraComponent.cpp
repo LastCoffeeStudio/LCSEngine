@@ -1,13 +1,12 @@
+#include "Globals.h"
 #include "CameraComponent.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/float3x4.h"
-#include "ModuleCamera.h"
 #include "Imgui/imgui.h"
 
 CameraComponent::CameraComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = CAMERA;
-
 	frustum.type = PerspectiveFrustum;
 	frustum.verticalFov = DegToRad(60.0f);
 	frustum.horizontalFov = DegToRad(36.0f);
@@ -18,7 +17,7 @@ CameraComponent::CameraComponent(GameObject* gameObject, bool isEnable, bool isU
 	frustum.up = float3::unitY;
 }
 
-CameraComponent::~CameraComponent() { }
+CameraComponent::~CameraComponent() {}
 
 float* CameraComponent::getViewMatrix()
 {
@@ -51,4 +50,3 @@ void CameraComponent::drawGUI()
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }
-

@@ -1,3 +1,4 @@
+#include "Globals.h"
 #include "Application.h"
 #include "ModuleWindow.h"
 #include "ModuleJson.h"
@@ -7,9 +8,9 @@
 #include "ModuleInput.h"
 #include "ModuleAudio.h"
 #include "ModuleFadeToBlack.h"
-#include "Globals.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+
 using namespace std;
 
 Application::Application()
@@ -17,16 +18,13 @@ Application::Application()
 	// Order matters: they will init/start/pre/update/post in this order
 	modules.push_back(input = new ModuleInput());
 	modules.push_back(window = new ModuleWindow());
-
 	modules.push_back(json = new ModuleJson());
-
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(renderer = new ModuleRender());
 	modules.push_back(gui = new ModuleGUI());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(fade = new ModuleFadeToBlack());
-
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	
 	timer = 0;
@@ -59,7 +57,6 @@ bool Application::init()
 	}
 
 	// Start the first scene --
-	//fade->FadeToBlack(intro, nullptr, 3.0f);
 	sceneMain->enable();
 
 	return ret;

@@ -2,9 +2,7 @@
 #include "Imgui/imgui.h"
 #include <limits.h>
 
-using namespace std;
-
-TransformComponent::TransformComponent(GameObject* gameObject, bool isUnique) : Component(gameObject, true, isUnique)
+TransformComponent::TransformComponent(GameObject* gameObject) : Component(gameObject, true, true)
 {
 	typeComponent = TRANSFORM;
 	transform.SetIdentity();
@@ -13,7 +11,7 @@ TransformComponent::TransformComponent(GameObject* gameObject, bool isUnique) : 
 	matrixTranslate.SetIdentity();
 }
 
-TransformComponent::~TransformComponent() { }
+TransformComponent::~TransformComponent() {}
 
 void TransformComponent::updateTransform()
 {
@@ -22,9 +20,8 @@ void TransformComponent::updateTransform()
 
 void TransformComponent::drawGUI()
 {
-	if (ImGui::CollapsingHeader("Transform")) {
-		/*if (ImGui::Checkbox("Active", &isEnable)) ImGui::SameLine(0);*/
-
+	if (ImGui::CollapsingHeader("Transform"))
+	{
 		if (ImGui::SliderFloat3("Position", &position[0], -10.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
 		{
 			matrixTranslate.SetIdentity();

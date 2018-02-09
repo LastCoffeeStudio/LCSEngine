@@ -2,20 +2,18 @@
 #include "Application.h"
 #include "ModuleGUI.h"
 #include "ModuleWindow.h"
-#include "AssetTexture.h"
 #include "ModuleSceneMain.h"
-#include "Imgui/imgui_impl_sdl_gl3.h"
-#include "windows.h"
 #include "ModuleCamera.h"
-#include <shellapi.h>
 #include "ModuleRender.h"
+#include "AssetTexture.h"
 #include "GameObject.h"
 #include "MeshComponent.h"
+#include "TransformComponent.h"
+#include "Imgui/imgui_impl_sdl_gl3.h"
+#include "windows.h"
 #include "SDL_assert.h"
 #include <string> 
-#include "TransformComponent.h"
-
-using namespace std;
+#include <shellapi.h>
 
 ModuleGUI::ModuleGUI() {}
 
@@ -191,53 +189,13 @@ void ModuleGUI::showInspector()
 		App->sceneMain->currentObject->drawComponentsGui();
 	}
 
-	//Set functions to print diferent menus inside the inspector
-	/*if (ImGui::CollapsingHeader("Textures"))
-	{
-		static int e = 0;
-		ImGui::RadioButton("Checkers", &e, 0); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->checkers->ID, { 20, 20 });
-		ImGui::RadioButton("Lenna", &e, 1); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->lenna->ID, { 20, 20 });
-		ImGui::RadioButton("Chocobo", &e, 2); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->chocobo->ID, { 20, 20 });
-		ImGui::RadioButton("Beer", &e, 3); ImGui::SameLine(0); ImGui::Image((void*)App->sceneMain->beer->ID, { 20, 20 });
-
-		//Code to show data from textures depending in which one is taken
-		switch (e)
-		{
-		case 0:
-			App->sceneMain->actual = App->sceneMain->checkers;
-			break;
-		case 1:
-			App->sceneMain->actual = App->sceneMain->lenna;
-			break;
-		case 2:
-			App->sceneMain->actual = App->sceneMain->chocobo;
-			break;
-		case 3:
-			App->sceneMain->actual = App->sceneMain->beer;
-			break;
-		}
-	}
-
-	//Show current texture
-	AssetTexture* current = App->sceneMain->actual;
-
-	ImGui::Text("Path:"); ImGui::SameLine(0); ImGui::TextColored({},current->name.c_str());
-	ImGui::Text("Width:"); ImGui::SameLine(0); ImGui::Text(to_string(current->width).c_str());
-	ImGui::Text("Height:"); ImGui::SameLine(0); ImGui::Text(to_string(current->height).c_str());
-	ImGui::Text("Depth:"); ImGui::SameLine(0); ImGui::Text(to_string(current->depth).c_str());
-	ImGui::Text("Bpp:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bpp).c_str());
-	ImGui::Text("Num of Mips:"); ImGui::SameLine(0); ImGui::Text(to_string(current->mips).c_str());
-	ImGui::Text("GPU Id:"); ImGui::SameLine(0); ImGui::Text(to_string(current->ID).c_str());
-	ImGui::Text("Size:"); ImGui::SameLine(0); ImGui::Text(to_string(current->bytes).c_str());
-
-	showFlagOptions();					///////
-	*/
 	ImGui::End();
 }
 
 void ModuleGUI::showHierarchy()
 {
 	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
+
 	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize))
 	{
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
@@ -299,6 +257,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 		enabled = false;
 		color = ImVec4(0.5f, 0.5f, 0.5f, 1.f);
 	}
+
 	ImGui::PushStyleColor(ImGuiCol_Text, color);
 	bool node = ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags);
 	ImGui::PopStyleColor();
@@ -393,10 +352,8 @@ void ModuleGUI::showFlagOptions()
 void ModuleGUI::showConsole()
 {
 	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width/ SCREEN_COLUMNS) * 4.f, (float)(App->window->height/SCREEN_ROWS)));
-
 	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
 	ImGui::Text("Console");
-
 	ImGui::End();
 }
 
@@ -407,5 +364,5 @@ void ModuleGUI::putHyperlink(const char * link)
 	if (ImGui::InvisibleButton(link, ImVec2(ImGui::CalcTextSize(link).x, ImGui::CalcTextSize(link).y)))
 	{
 		ShellExecute(NULL, TEXT("open"), TEXT(link), NULL, NULL, 0);
-	};
+	}
 }

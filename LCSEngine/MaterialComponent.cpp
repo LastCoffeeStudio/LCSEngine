@@ -1,7 +1,7 @@
 #include "MaterialComponent.h"
 #include "Imgui/imgui.h"
 
-MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
+MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Component(gameObject, isEnable, true)
 {
 	typeComponent = MATERIAL;
 }
