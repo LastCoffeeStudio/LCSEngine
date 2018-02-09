@@ -18,7 +18,7 @@ public:
 	update_status preUpdate(float deltaTime);
 	update_status update(float deltaTime);
 	bool cleanUp() override;
-	void omaeWaMouShindeiru();
+	void clearGameObjects(); 
 	void preUpdateGameObjects();
 	void draw();
 	void drawGameObjects(GameObject* gameObject);

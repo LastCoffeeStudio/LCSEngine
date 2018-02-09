@@ -54,7 +54,7 @@ bool ModuleSceneMain::start()
 
 update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
-	omaeWaMouShindeiru();
+	clearGameObjects();
 	preUpdateGameObjects();
 	return UPDATE_CONTINUE;
 }
@@ -70,7 +70,7 @@ bool ModuleSceneMain::cleanUp()
 	return true;
 }
 
-void ModuleSceneMain::omaeWaMouShindeiru()
+void ModuleSceneMain::clearGameObjects()
 {
 	queue<GameObject*> entities;
 
