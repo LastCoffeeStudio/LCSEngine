@@ -324,6 +324,9 @@
     <ClInclude Include="ComponentFactory.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="QuadTree.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -505,6 +508,9 @@
     </ClCompile>
     <ClCompile Include="ComponentFactory.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="QuadTree.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
