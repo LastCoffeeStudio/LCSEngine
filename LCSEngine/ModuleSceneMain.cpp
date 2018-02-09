@@ -87,12 +87,16 @@ void ModuleSceneMain::omaeWaMouShindeiru()
 		if (child->suicide == true)
 		{
 			bool erased = false;
-			for (vector<GameObject*>::iterator it = child->parent->children.begin(); it != child->parent->children.end() && !erased; ++it)
+			for (vector<GameObject*>::iterator it = child->parent->children.begin(); it != child->parent->children.end() && !erased;)
 			{
 				if ((*it) == child)
 				{
 					it = child->parent->children.erase(it);
 					erased = true;
+				}
+				else
+				{
+					++it;
 				}
 			}
 			RELEASE(child);
