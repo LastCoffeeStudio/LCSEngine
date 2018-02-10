@@ -14,6 +14,8 @@
 #include "SDL_assert.h"
 #include <string> 
 #include <shellapi.h>
+#include "Brofiler.h"
+#include "ComponentFactory.h"
 
 ModuleGUI::ModuleGUI() {}
 
@@ -48,6 +50,7 @@ update_status ModuleGUI::preUpdate(float deltaTime)
 
 update_status ModuleGUI::update(float deltaTime)
 {
+	BROFILER_CATEGORY("UpdateGUI", Profiler::Color::Orchid)
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
 
