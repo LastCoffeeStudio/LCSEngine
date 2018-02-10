@@ -29,7 +29,7 @@ public:
 private:
 	void inizialiceChildrens(QuadNode* nodeToCheck);
 	QuadNode* getChildToPutGameObject(GameObject* gameObject, QuadNode* nodeToCheck);
-	QuadNode* root;
+	QuadNode* root = new QuadNode();
 	
 };
 
