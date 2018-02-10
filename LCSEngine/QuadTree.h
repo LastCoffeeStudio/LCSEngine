@@ -5,6 +5,7 @@
 #include "MathGeoLib/src/Geometry/AABB.h"
 
 class GameObject;
+
 struct QuadNode
 {
 	std::vector<GameObject*> myGameObjects;
@@ -16,13 +17,14 @@ class QuadTree
 {
 public:
 	QuadTree();
-	QuadTree(math::AABB limits);
 	~QuadTree();
+	void create(math::AABB limits);
 	void clear();
 	void insert(GameObject* gameObject);
 	void insertAll(const std::vector<GameObject*> &gameObjects);
-	void remove(GameObject*); //OPTIONAL NOT USED
-	void intersect(std::vector<GameObject*> &resultGameObjects /*,Primitive*/);
+	void remove(GameObject* gameObject); //OPTIONAL NOT USED
+	template<typename T>
+	inline void intersect(std::vector<GameObject*> &resultGameObjects, const T& primitive);
 	
 public:
 

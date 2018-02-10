@@ -1,23 +1,26 @@
+#include "Globals.h"
 #include "QuadTree.h"
 #include "MathGeoLib/src/Geometry/AABB.h"
 #include "GameObject.h"
 #include "SDL/include/SDL_assert.h"
-#include <list>
+#include <queue>
+
 QuadTree::QuadTree() {}
 
-QuadTree::QuadTree(AABB limits)
-{
-	root->limit = limits;
-}
+QuadTree::~QuadTree() {}
 
-QuadTree::~QuadTree()
+void QuadTree::create(AABB limits)
 {
-	
+	clear();
+	root->limit = limits;
 }
 
 void QuadTree::clear()
 {
-	
+	if (root != nullptr)
+	{
+		RELEASE(root);
+	}
 }
 
 void QuadTree::insert(GameObject* gameObject)
@@ -69,20 +72,41 @@ void QuadTree::insert(GameObject* gameObject)
 
 }
 
-void QuadTree::insertAll(const std::vector<GameObject*>& gameObjects)
-{
-	
-}
+void QuadTree::insertAll(const std::vector<GameObject*>& gameObjects) {}
 
-void QuadTree::remove(GameObject*)
-{
-	
-}
+void QuadTree::remove(GameObject* gameObject) {}
 
-
-void QuadTree::intersect(std::vector<GameObject*>& resultGameObjects)
+template<typename T>
+inline void QuadTree::intersect(std::vector<GameObject*> &resultGameObjects, const T& primitive)
 {
-	
+	queue<QuadNode*> children;
+
+	children.push(root);
+
+	while (!children.empty())
+	{
+		QuadNode* node = children.front();
+		SDL_assert(node != nullptr);
+		children.pop();
+		if (primitive.Intersects(node->limit))
+		{
+			for (vector<GameObject*>::iterator it = node->myGameObjects.begin(); it != node->myGameObjects.end(); ++it)
+			{
+				if (primitive.Intersects((*it)->obb.MinimalEnclosingAABB()))
+				{
+					resultGameObjects.push_back(*it);
+				}
+			}
+
+			for (vector<QuadNode*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+			{
+				if ((*it) != nullptr)
+				{
+					children.push(*it);
+				}
+			}
+		}
+	}
 }
 
 void QuadTree::inizialiceChildrens(QuadNode* nodeToCheck)
