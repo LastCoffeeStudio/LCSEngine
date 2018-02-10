@@ -7,7 +7,7 @@
 class GameObject;
 struct QuadNode
 {
-	std::list<GameObject*> myGameObjects;
+	std::vector<GameObject*> myGameObjects;
 	std::vector<QuadNode*> children = std::vector<QuadNode*>(4, nullptr);
 	math::AABB limit;
 };
@@ -18,16 +18,18 @@ public:
 	QuadTree();
 	QuadTree(math::AABB limits);
 	~QuadTree();
-	virtual void clear();
-	virtual void insert(GameObject* gameObject);
-	virtual void insertAll(const std::vector<GameObject*> &gameObjects);
-	virtual void remove(GameObject*); //OPTIONAL NOT USED
-	virtual void intersect(std::vector<GameObject*> &resultGameObjects /*,Primitive*/);
+	void clear();
+	void insert(GameObject* gameObject);
+	void insertAll(const std::vector<GameObject*> &gameObjects);
+	void remove(GameObject*); //OPTIONAL NOT USED
+	void intersect(std::vector<GameObject*> &resultGameObjects /*,Primitive*/);
 	
 public:
 
 private:
-	QuadNode root;
+	void inizialiceChildrens(QuadNode* nodeToCheck);
+	QuadNode* getChildToPutGameObject(GameObject* gameObject, QuadNode* nodeToCheck);
+	QuadNode* root;
 	
 };
 
