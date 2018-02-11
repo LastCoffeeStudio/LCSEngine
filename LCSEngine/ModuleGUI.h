@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Imgui/imgui.h"
+#include "Imgui/imgui_impl_sdl_gl3.h"
 #include "Glew/include/glew.h"
 
 class GameObject;
@@ -18,6 +19,7 @@ public:
 	update_status preUpdate(float deltaTime) override;
 	update_status update(float deltaTime) override;
 	update_status postUpdate(float deltaTime) override;
+	bool cleanUp() override;
 
 	void draw();
 

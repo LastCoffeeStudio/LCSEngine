@@ -9,11 +9,14 @@
 #include "GameObject.h"
 #include "MeshComponent.h"
 #include "TransformComponent.h"
-#include "Imgui/imgui_impl_sdl_gl3.h"
 #include "windows.h"
 #include "SDL_assert.h"
+#include "SDL\include\SDL.h"
+#include "ModuleInput.h"
 #include <string> 
 #include <shellapi.h>
+#include "Brofiler.h"
+#include "ComponentFactory.h"
 
 ModuleGUI::ModuleGUI() {}
 
@@ -37,6 +40,29 @@ bool ModuleGUI::init()
 	glLightModelfv(GL_LIGHT_MODEL_AMBIENT, alColor);
 	checkbox_aliasing = glIsEnabled(GL_POLYGON_SMOOTH);
 
+	ImGuiStyle& style = ImGui::GetStyle();
+	style.WindowRounding = 0;
+	style.FrameRounding = 2;
+	style.GrabRounding = 2;
+	style.ItemSpacing.y = 7;
+
+	//ImGui::PushStyleColor(ImGuiCol_TitleBgActive, { 0.2f, 0.2f, 0.22f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_Header, { 0.2f, 0.2f, 0.22f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, { 0.2f, 0.2f, 0.22f, 1.f });
+
+	ImGui::PushStyleColor(ImGuiCol_FrameBg, { 0.1f, 0.12f, 0.13f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_CloseButton, { 0.1f, 0.12f, 0.13f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_TitleBg, { 0.1f, 0.12f, 0.13f, 1.f });
+
+	ImGui::PushStyleColor(ImGuiCol_Border, { 0.1f, 0.12f, 0.13f, 1.f });
+
+	ImGui::PushStyleColor(ImGuiCol_HeaderHovered, { 0.28f, 0.3f, 0.32f, 1.f });
+	ImGui::PushStyleColor(ImGuiCol_TitleBgActive, { 0.28f, 0.3f, 0.32f, 1.f });
+
+	ImGui::PushStyleColor(ImGuiCol_TextSelectedBg, { 0.f, 0.f, 0.32f, 1.f });
+
+	io.Fonts->AddFontFromFileTTF("Assets/Fonts/Roboto-Regular.ttf", 14.0f);
+
 	return true;
 }
 
@@ -48,6 +74,7 @@ update_status ModuleGUI::preUpdate(float deltaTime)
 
 update_status ModuleGUI::update(float deltaTime)
 {
+	BROFILER_CATEGORY("UpdateGUI", Profiler::Color::Orchid)
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
 
@@ -64,18 +91,21 @@ update_status ModuleGUI::update(float deltaTime)
 
 	if (show_inspector)
 	{
-		ImGui::SetNextWindowPos(ImVec2((float)((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
+		ImGui::SetNextWindowPos(ImVec2((float)(App->window->width - (App->window->width / SCREEN_COLUMNS)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showInspector();
 	}
 
 	if (show_hierarchy)
 	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT - (float)(App->window->height / SCREEN_ROWS))));
 		ImGui::SetNextWindowPos(ImVec2(0, MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showHierarchy();
 	}
 
 	if (show_console)
 	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 4.f, (float)(App->window->height / SCREEN_ROWS)));
 		ImGui::SetNextWindowPos(ImVec2(0.f, (float)((App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1))), ImGuiSetCond_Always);
 		showConsole();
 	}
@@ -87,6 +117,12 @@ update_status ModuleGUI::update(float deltaTime)
 update_status ModuleGUI::postUpdate(float deltaTime)
 {
 	return UPDATE_CONTINUE;
+}
+
+bool ModuleGUI::cleanUp()
+{
+	ImGui::PopStyleColor(8);
+	return false;
 }
 
 void ModuleGUI::draw()
@@ -148,11 +184,11 @@ void ModuleGUI::showAboutWindow()
 
 void ModuleGUI::showMainWindow()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)App->window->width, (float)MENU_TOP_BAR_HEIGHT));
-	ImGui::Begin("Render Window", &show_main_window, ImGuiWindowFlags_MenuBar);
+	//ImGui::SetNextWindowSize(ImVec2((float)App->window->width, (float)MENU_TOP_BAR_HEIGHT));
+	//ImGui::Begin("Render Window", &show_main_window, ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_NoTitleBar);
 
 	// Menu
-	if (ImGui::BeginMenuBar())
+	if (ImGui::BeginMainMenuBar())
 	{
 		if (ImGui::BeginMenu("Help"))
 		{
@@ -172,17 +208,38 @@ void ModuleGUI::showMainWindow()
 
 			ImGui::EndMenu();
 		}
+		if ((ImGui::BeginMenu("Window")))
+		{
+			ImGui::MenuItem("Inspector", "Ctrl+I", &show_inspector);
+			ImGui::MenuItem("Hierarchy", "Ctrl+H", &show_hierarchy);
+			ImGui::MenuItem("Console", "Ctrl+C", &show_console);
+			ImGui::MenuItem("Demo Window", nullptr, &show_demo_window);
 
-		ImGui::EndMenuBar();
+			ImGui::EndMenu();
+		}
+
+		ImGui::EndMainMenuBar();
 	}
 
-	ImGui::End();
+	if (App->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->getKey(SDL_SCANCODE_I) == KEY_DOWN)
+	{
+		show_inspector = !show_inspector;
+	}
+	if (App->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->getKey(SDL_SCANCODE_H) == KEY_DOWN)
+	{
+		show_hierarchy = !show_hierarchy;
+	}
+	if (App->input->getKey(SDL_SCANCODE_LCTRL) == KEY_REPEAT && App->input->getKey(SDL_SCANCODE_C) == KEY_DOWN)
+	{
+		show_console = !show_console;
+	}
+
+	//ImGui::End();
 }
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
-	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse );
 	
 	if (App->sceneMain->currentObject->parent != nullptr)
 	{
@@ -194,9 +251,7 @@ void ModuleGUI::showInspector()
 
 void ModuleGUI::showHierarchy()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
-
-	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize))
+	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 	{
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
@@ -243,6 +298,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 	if (App->sceneMain->currentObject == gameObject)
 	{
 		node_flags |= ImGuiTreeNodeFlags_Selected;
+		color = ImVec4(0.52f, 0.8f, 0.98f, 1.f);
 	}
 	if (gameObject->children.size() > 0)
 	{
@@ -260,7 +316,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 
 	ImGui::PushStyleColor(ImGuiCol_Text, color);
 	bool node = ImGui::TreeNodeEx(gameObject->name.c_str(), node_flags);
-	ImGui::PopStyleColor();
+	ImGui::PopStyleColor(1);
 	
 	if (node)
 	{
@@ -351,8 +407,7 @@ void ModuleGUI::showFlagOptions()
 
 void ModuleGUI::showConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width/ SCREEN_COLUMNS) * 4.f, (float)(App->window->height/SCREEN_ROWS)));
-	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_NoResize);
 	ImGui::Text("Console");
 	ImGui::End();
 }

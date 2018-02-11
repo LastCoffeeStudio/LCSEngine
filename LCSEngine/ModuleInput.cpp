@@ -3,6 +3,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleGUI.h"
 #include "SDL/include/SDL.h"
 #include <string>
 
@@ -94,6 +95,7 @@ update_status ModuleInput::preUpdate(float deltaTime)
 	mouse_wheel = 0;
 	while (SDL_PollEvent(&event) != 0)
 	{
+		ImGui_ImplSdlGL3_ProcessEvent(&event);
 		switch (event.type)
 		{
 		case SDL_QUIT:

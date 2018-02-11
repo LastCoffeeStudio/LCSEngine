@@ -16,6 +16,7 @@
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include "DevIL/include/IL/il.h"
+#include "Brofiler.h"
 #include <queue>
 
 #define COUNT_LINES_GRID 100.f
@@ -61,6 +62,7 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 
 update_status ModuleSceneMain::update(float deltaTime)
 {
+	BROFILER_CATEGORY("UpdateSceneMain", Profiler::Color::Orchid)
 	checkVisibleItems();
 	return UPDATE_CONTINUE;
 }
@@ -213,6 +215,7 @@ void ModuleSceneMain::checkVisibleItems()
 
 void ModuleSceneMain::draw()
 {
+	BROFILER_CATEGORY("DrawSceneMain", Profiler::Color::Orchid)
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
 		if ((*it)->enable)

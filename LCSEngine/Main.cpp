@@ -12,6 +12,8 @@
 #include <gl/GLU.h>
 #pragma comment( lib, "Glew/libx86/glew32.lib" )
 
+#include "Brofiler.h"
+#pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
 
 
 enum main_states
@@ -32,6 +34,7 @@ int main(int argc, char ** argv)
 
 	while (state != MAIN_EXIT)
 	{
+		BROFILER_FRAME("MainThread")
 		switch (state)
 		{
 		case MAIN_CREATION:
