@@ -1,5 +1,6 @@
 #include "TransformComponent.h"
 #include "Imgui/imgui.h"
+#include "MathGeoLib/src/Math/MathFunc.h"
 #include <limits.h>
 
 TransformComponent::TransformComponent(GameObject* gameObject) : Component(gameObject, true, true)
