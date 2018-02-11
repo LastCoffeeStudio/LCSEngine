@@ -91,18 +91,21 @@ update_status ModuleGUI::update(float deltaTime)
 
 	if (show_inspector)
 	{
-		ImGui::SetNextWindowPos(ImVec2((float)((App->window->width/ SCREEN_COLUMNS) * (SCREEN_COLUMNS-1)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
+		ImGui::SetNextWindowPos(ImVec2((float)(App->window->width - (App->window->width / SCREEN_COLUMNS)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showInspector();
 	}
 
 	if (show_hierarchy)
 	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT - (float)(App->window->height / SCREEN_ROWS))));
 		ImGui::SetNextWindowPos(ImVec2(0, MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
 		showHierarchy();
 	}
 
 	if (show_console)
 	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 4.f, (float)(App->window->height / SCREEN_ROWS)));
 		ImGui::SetNextWindowPos(ImVec2(0.f, (float)((App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1))), ImGuiSetCond_Always);
 		showConsole();
 	}
@@ -236,8 +239,7 @@ void ModuleGUI::showMainWindow()
 
 void ModuleGUI::showInspector()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
-	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse);
+	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse );
 	
 	if (App->sceneMain->currentObject->parent != nullptr)
 	{
@@ -249,9 +251,7 @@ void ModuleGUI::showInspector()
 
 void ModuleGUI::showHierarchy()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT - (float)(App->window->height / SCREEN_ROWS))));
-
-	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_NoCollapse))
+	if (ImGui::Begin("Hierarchy", &show_hierarchy, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
 	{
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
@@ -407,8 +407,7 @@ void ModuleGUI::showFlagOptions()
 
 void ModuleGUI::showConsole()
 {
-	ImGui::SetNextWindowSize(ImVec2((float)(App->window->width/ SCREEN_COLUMNS) * 4.f, (float)(App->window->height/SCREEN_ROWS)));
-	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_AlwaysAutoResize);
+	ImGui::Begin("Console", &show_console, ImGuiWindowFlags_NoResize);
 	ImGui::Text("Console");
 	ImGui::End();
 }
