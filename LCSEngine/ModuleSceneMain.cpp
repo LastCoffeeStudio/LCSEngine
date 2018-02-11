@@ -12,11 +12,13 @@
 #include "AssetTexture.h"
 #include "SDL_mouse.h"
 #include "Shader.h"
-#include "Utils.h"
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include "DevIL/include/IL/il.h"
 #include "Brofiler.h"
+#include "MathGeoLib/src/Math/MathFunc.h"
+#include "QuadTree.h"
+#include "SDL/include/SDL_assert.h"
 #include <queue>
 
 #define COUNT_LINES_GRID 100.f
@@ -260,7 +262,7 @@ void ModuleSceneMain::drawGrid()
 
 	float3 cameraPos = App->camera->currentCamera->frustum.pos;
 
-	if (distance2(float2(cameraPos.x, cameraPos.z), float2(0.0f, 0.0f)) < sqrt(pow(POS_LINES_GRID, 2) + pow(POS_LINES_GRID, 2)))
+	if (Distance(float2(cameraPos.x, cameraPos.z), float2(0.0f, 0.0f)) < sqrt(pow(POS_LINES_GRID, 2) + pow(POS_LINES_GRID, 2)))
 	{
 		glBegin(GL_LINES);
 		// draw line for x axis
@@ -315,4 +317,78 @@ void ModuleSceneMain::swapDefaultShader()
 	}
 	shader->linkShaders();
 	glUseProgram(shader->shaderProgram);
+}
+
+void ModuleSceneMain::drawQuadTree()
+{
+	queue<QuadNode*> nodes;
+	SDL_assert(quadtree->root != nullptr);
+	nodes.push(quadtree->root);
+
+	while (!nodes.empty())
+	{
+		QuadNode* node = nodes.front();
+		nodes.pop();
+
+		drawAABB(node->limit);
+
+		for (vector<QuadNode*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			if ((*it) != nullptr)
+			{
+				nodes.push(*it);
+			}
+		}
+	}
+}
+
+void ModuleSceneMain::drawAABB(const AABB& aabb)
+{
+	float4x4 identity = float4x4::identity;
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	glBegin(GL_LINES);
+	glColor3f(1.0f, 1.0f, 1.0f);
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MinZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MinY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
+	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
+	glEnd();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }

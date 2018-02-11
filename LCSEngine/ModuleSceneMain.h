@@ -2,10 +2,12 @@
 #define __MODULESCENEMAIN_H__
 
 #include "Module.h"
+#include "MathGeoLib/src/Geometry/AABB.h"
 
 class Shader;
 class AssetTexture;
 class GameObject;
+class QuadTree;
 
 class ModuleSceneMain : public Module
 {
@@ -25,6 +27,7 @@ public:
 	void drawGrid();
 	void swapDefaultShader();
 	void checkVisibleItems();
+	void drawQuadTree();
 
 public:
 	AssetTexture * checkers = nullptr;
@@ -35,7 +38,11 @@ public:
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;
+	QuadTree* quadtree = nullptr;
 
 	bool drawZbuffer = false;
+
+private:
+	void drawAABB(const AABB& aabb);
 };
 #endif //__MODULESCENEMAIN_H__

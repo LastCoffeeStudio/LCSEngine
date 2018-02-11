@@ -27,11 +27,11 @@ public:
 	inline void intersect(std::vector<GameObject*> &resultGameObjects, const T& primitive);
 	
 public:
+	QuadNode * root = new QuadNode();
 
 private:
 	void inizialiceChildrens(QuadNode* nodeToCheck);
 	QuadNode* getChildToPutGameObject(GameObject* gameObject, QuadNode* nodeToCheck);
-	QuadNode* root = new QuadNode();
 	
 };
 

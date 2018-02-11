@@ -2,7 +2,9 @@
 #define __TRANSFORMCOMPONENT_H__
 
 #include "Component.h"
-#include "MathGeoLib/src/MathGeoLib.h"
+#include "MathGeoLib/src/Math/float3.h"
+#include "MathGeoLib/src/Math/float4x4.h"
+#include "MathGeoLib/src/Math/Quat.h"
 
 class TransformComponent : public Component
 {
