@@ -19,6 +19,7 @@ public:
 	~GameObject();
 
 	void preUpdate();
+	void postUpdate();
 	void addComponent(Component* component);
 	void deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
@@ -27,6 +28,8 @@ public:
 	void drawAABB();
 	void drawOBB();
 	void drawFrustum(Frustum frustum);
+	void setStaticValueToChildrens();
+	void setStaticFlag(bool flag);
 
 public:
 	string name = "GameObject";
@@ -47,6 +50,9 @@ private:
 	string initialName;
 	GLint idVertVBO = -1;
 	unsigned int sizeVertVBO = 0;
+
+	bool staticHasChanged = false;
+	bool staticPreviousValue = false;
 };
 
 #endif // __GAMEOBJECT_H__

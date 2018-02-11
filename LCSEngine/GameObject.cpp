@@ -9,6 +9,7 @@
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "ModuleGUI.h"
 #include "Shader.h"
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
@@ -34,6 +35,12 @@ void GameObject::preUpdate()
 	sizeVertVBO = 0;
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
+
+	if (staticPreviousValue != staticFlag)
+	{
+		App->gui->show_static_popup = true;
+		staticPreviousValue = staticFlag;
+	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -78,6 +85,8 @@ void GameObject::preUpdate()
 	}
 }
 
+void GameObject::postUpdate() {}
+
 void GameObject::addComponent(Component* component)
 {
 	bool alreadyHave = false;
@@ -117,6 +126,34 @@ void GameObject::deleteComponent(Component* component)
 void GameObject::addGameObject(GameObject* gameObject)
 {
 	children.push_back(gameObject);
+}
+
+void GameObject::setStaticValueToChildrens()
+{
+	queue<GameObject*> queue;
+
+	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		gameObject->setStaticFlag(staticFlag);
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
+}
+
+void GameObject::setStaticFlag(bool flag) {
+	staticFlag = flag;
+	staticPreviousValue = flag;
 }
 
 void GameObject::drawComponentsGui()

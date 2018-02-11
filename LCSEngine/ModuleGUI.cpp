@@ -110,6 +110,12 @@ update_status ModuleGUI::update(float deltaTime)
 		showConsole();
 	}
 
+	if (show_static_popup)
+	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 2, (float)(App->window->height / SCREEN_ROWS)));
+		ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - (((float)(App->window->width / SCREEN_COLUMNS))), (App->window->height / 2) - (((float)(App->window->height / SCREEN_ROWS))/2)), ImGuiSetCond_Always);
+		showStaticChildernPopUp();
+	}
 
 	return UPDATE_CONTINUE;
 }
@@ -246,6 +252,24 @@ void ModuleGUI::showInspector()
 		App->sceneMain->currentObject->drawComponentsGui();
 	}
 
+	ImGui::End();
+}
+
+void ModuleGUI::showStaticChildernPopUp()
+{
+	ImGui::Begin("Static GameObject", &show_static_popup, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+	ImGui::Text("Do you want to enable/disable the static flags for all the child objects as well?");
+	ImGui::Text("");
+	if (ImGui::Button("Yes, change children"))
+	{
+		App->sceneMain->currentObject->setStaticValueToChildrens();
+		show_static_popup = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("No, this object only"))
+	{
+		show_static_popup = false;
+	}
 	ImGui::End();
 }
 

@@ -30,6 +30,7 @@ public:
 	bool show_console = true;
 	bool show_gl = true;
 	bool show_hierarchy = true;
+	bool show_static_popup = false;
 	ImVec4 clear_color;
 
 private:
@@ -39,6 +40,7 @@ private:
 	void showFlagOptions();
 	void showConsole();
 	void showHierarchy();
+	void showStaticChildernPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 
 	void putHyperlink(const char* link);

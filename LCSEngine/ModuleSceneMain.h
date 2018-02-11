@@ -17,9 +17,11 @@ public:
 	bool start() override;
 	update_status preUpdate(float deltaTime);
 	update_status update(float deltaTime);
+	update_status postUpdate(float deltaTime);
 	bool cleanUp() override;
 	void clearGameObjects(); 
 	void preUpdateGameObjects();
+	void postUpdateGameObjects();
 	void draw();
 	void drawGameObjects(GameObject* gameObject);
 	void drawGrid();

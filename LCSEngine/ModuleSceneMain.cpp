@@ -67,6 +67,13 @@ update_status ModuleSceneMain::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
+update_status ModuleSceneMain::postUpdate(float deltaTime)
+{
+
+	//postUpdateGameObjects();
+	return UPDATE_CONTINUE;
+}
+
 bool ModuleSceneMain::cleanUp()
 {
 	return true;
@@ -141,6 +148,29 @@ void ModuleSceneMain::preUpdateGameObjects()
 		queue.pop();
 
 		gameObject->preUpdate();
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
+}
+
+void ModuleSceneMain::postUpdateGameObjects()
+{
+	queue<GameObject*> queue;
+
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		gameObject->postUpdate();
 
 		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
 		{
