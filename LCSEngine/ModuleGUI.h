@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "Imgui/imgui.h"
+#include "Imgui/imgui_impl_sdl_gl3.h"
 #include "Glew/include/glew.h"
 
 class GameObject;
@@ -18,6 +19,7 @@ public:
 	update_status preUpdate(float deltaTime) override;
 	update_status update(float deltaTime) override;
 	update_status postUpdate(float deltaTime) override;
+	bool cleanUp() override;
 
 	void draw();
 
@@ -28,6 +30,7 @@ public:
 	bool show_console = true;
 	bool show_gl = true;
 	bool show_hierarchy = true;
+	bool show_static_popup = false;
 	ImVec4 clear_color;
 
 private:
@@ -37,6 +40,7 @@ private:
 	void showFlagOptions();
 	void showConsole();
 	void showHierarchy();
+	void showStaticChildernPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 
 	void putHyperlink(const char* link);

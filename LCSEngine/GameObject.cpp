@@ -10,6 +10,7 @@
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "ModuleGUI.h"
 #include "Shader.h"
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
@@ -36,6 +37,12 @@ void GameObject::preUpdate()
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 
+	if (staticPreviousValue != staticFlag)
+	{
+		App->gui->show_static_popup = true;
+		staticPreviousValue = staticFlag;
+	}
+
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->isEnable)
@@ -43,7 +50,15 @@ void GameObject::preUpdate()
 			switch ((*it)->typeComponent)
 			{
 			case TRANSFORM:
-				id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				//Check if the element is static, in that case the transform is the identity
+				if (staticFlag)
+				{
+					id = float4x4::identity;
+				}
+				else
+				{
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				}
 				break;
 			case MESH:
 				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
@@ -70,6 +85,8 @@ void GameObject::preUpdate()
 		}
 	}
 }
+
+void GameObject::postUpdate() {}
 
 void GameObject::addComponent(Component* component)
 {
@@ -112,26 +129,66 @@ void GameObject::addGameObject(GameObject* gameObject)
 	children.push_back(gameObject);
 }
 
+void GameObject::setStaticValueToChildrens()
+{
+	queue<GameObject*> queue;
+
+	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		gameObject->setStaticFlag(staticFlag);
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
+}
+
+void GameObject::setStaticFlag(bool flag) {
+	staticFlag = flag;
+	staticPreviousValue = flag;
+}
+
 void GameObject::drawComponentsGui()
 {
-	ImGui::Checkbox("", &enable); ImGui::SameLine();
+	ImGui::PushID("ActiveGameObject");
+	ImGui::Checkbox("", &enable); ImGui::SameLine(0);
+	ImGui::PopID();
+
 	char aux[64];
 	strcpy_s(aux, 64, name.c_str());
-	if (ImGui::InputText("Name: ", aux, 64))
+
+	ImGui::PushID("NameGameObject");
+	if (ImGui::InputText("", aux, 64))
 	{
 		name = aux;
 	}
+	ImGui::PopID();
+
+	ImGui::Separator();
+
+	ImGui::Checkbox("Static", &staticFlag);
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->drawGUI();
+		ImGui::Separator();
 	}
 
-	if (ImGui::Button("Add Component", { 100, 20 }))
+	ImGui::PushStyleColor(ImGuiCol_Button, { 0.25f, 0.27f, 0.3f, 1.f });
+	if (ImGui::Button("Add Component", { 150, 20 }))
 	{
 		ImGui::OpenPopup("Add Component Popup");
 	}
-
+	ImGui::PopStyleColor(1);
 	if (ImGui::BeginPopup("Add Component Popup"))
 	{
 		static ComponentFactory* factory = ComponentFactory::getInstance();
