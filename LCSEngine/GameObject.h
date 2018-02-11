@@ -11,7 +11,6 @@ using namespace std;
 
 class Component;
 class Transform;
-
 class GameObject
 {
 public:
@@ -32,6 +31,7 @@ public:
 public:
 	string name = "GameObject";
 	bool enable = true;
+	bool staticFlag = false;
 	vector<Component*> components;
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;

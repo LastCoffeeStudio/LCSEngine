@@ -42,7 +42,15 @@ void GameObject::preUpdate()
 			switch ((*it)->typeComponent)
 			{
 			case TRANSFORM:
-				id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				//Check if the element is static, in that case the transform is the identity
+				if (staticFlag)
+				{
+					id = float4x4::identity;
+				}
+				else
+				{
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				}
 				break;
 			case MESH:
 				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
@@ -114,12 +122,15 @@ void GameObject::addGameObject(GameObject* gameObject)
 void GameObject::drawComponentsGui()
 {
 	ImGui::Checkbox("", &enable); ImGui::SameLine();
+	
 	char aux[64];
 	strcpy_s(aux, 64, name.c_str());
 	if (ImGui::InputText("Name: ", aux, 64))
 	{
 		name = aux;
 	}
+
+	ImGui::Checkbox("Static", &staticFlag);
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
