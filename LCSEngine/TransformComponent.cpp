@@ -51,7 +51,7 @@ void TransformComponent::drawGUI()
 		ImGui::Text("Rotation");
 		ImGui::SameLine(70);
 		ImGui::PushID("Rotation");
-		if (ImGui::DragFloat3("", &rotation[0], 1.f))
+		if (ImGui::DragFloat3("", &rotation[0], 0.1f))
 		{
 			float3 rotationRad = { DegToRad(rotation[0]), DegToRad(rotation[1]), DegToRad(rotation[2]) };
 			rotationQad = Quat::FromEulerXYZ(rotationRad.x, rotationRad.y, rotationRad.z);

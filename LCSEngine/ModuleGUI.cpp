@@ -210,6 +210,7 @@ void ModuleGUI::showMainWindow()
 			ImGui::MenuItem("Inspector", "Ctrl+I", &show_inspector);
 			ImGui::MenuItem("Hierarchy", "Ctrl+H", &show_hierarchy);
 			ImGui::MenuItem("Console", "Ctrl+C", &show_console);
+			ImGui::MenuItem("Demo Window", nullptr, &show_demo_window);
 
 			ImGui::EndMenu();
 		}
