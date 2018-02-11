@@ -113,24 +113,34 @@ void GameObject::addGameObject(GameObject* gameObject)
 
 void GameObject::drawComponentsGui()
 {
-	ImGui::Checkbox("", &enable); ImGui::SameLine();
+	ImGui::PushID("ActiveGameObject");
+	ImGui::Checkbox("", &enable); ImGui::SameLine(0);
+	ImGui::PopID();
+
 	char aux[64];
 	strcpy_s(aux, 64, name.c_str());
-	if (ImGui::InputText("Name: ", aux, 64))
+
+	ImGui::PushID("NameGameObject");
+	if (ImGui::InputText("", aux, 64))
 	{
 		name = aux;
 	}
+	ImGui::PopID();
+
+	ImGui::Separator();
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		(*it)->drawGUI();
+		ImGui::Separator();
 	}
 
-	if (ImGui::Button("Add Component", { 100, 20 }))
+	ImGui::PushStyleColor(ImGuiCol_Button, { 0.25f, 0.27f, 0.3f, 1.f });
+	if (ImGui::Button("Add Component", { 150, 20 }))
 	{
 		ImGui::OpenPopup("Add Component Popup");
 	}
-
+	ImGui::PopStyleColor(1);
 	if (ImGui::BeginPopup("Add Component Popup"))
 	{
 		static ComponentFactory* factory = ComponentFactory::getInstance();

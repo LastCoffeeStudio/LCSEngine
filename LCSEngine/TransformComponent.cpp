@@ -22,7 +22,10 @@ void TransformComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Transform"))
 	{
-		if (ImGui::SliderFloat3("Position", &position[0], -10.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
+		ImGui::Text("Position");
+		ImGui::SameLine(78);
+		ImGui::PushID("Position");
+		if (ImGui::DragFloat3("", &position[0], 0.1f))
 		{
 			matrixTranslate.SetIdentity();
 			matrixTranslate[0][3] = position[0];
@@ -30,8 +33,12 @@ void TransformComponent::drawGUI()
 			matrixTranslate[2][3] = position[2];
 			updateTransform();
 		}
+		ImGui::PopID();
 
-		if (ImGui::SliderFloat3("Scale", &scale[0], 0.f/*numeric_limits<float>::min()*/, 10.f/*numeric_limits<float>::max()*/))
+		ImGui::Text("Scale");
+		ImGui::SameLine(70);
+		ImGui::PushID("Scale");
+		if (ImGui::DragFloat3("", &scale[0], 0.1f))
 		{
 			matrixScale.SetIdentity();
 			matrixScale[0][0] = scale[0];
@@ -39,12 +46,18 @@ void TransformComponent::drawGUI()
 			matrixScale[2][2] = scale[2];
 			updateTransform();
 		}
+		ImGui::PopID();
 
-		if (ImGui::SliderAngle3("Rotation", &rotation[0]))
+		ImGui::Text("Rotation");
+		ImGui::SameLine(70);
+		ImGui::PushID("Rotation");
+		if (ImGui::DragFloat3("", &rotation[0], 1.f))
 		{
-			rotationQad = Quat::FromEulerXYZ(rotation.x, rotation.y, rotation.z);
+			float3 rotationRad = { DegToRad(rotation[0]), DegToRad(rotation[1]), DegToRad(rotation[2]) };
+			rotationQad = Quat::FromEulerXYZ(rotationRad.x, rotationRad.y, rotationRad.z);
 			matrixRotate = rotationQad.ToFloat4x4();
 			updateTransform();
 		}
+		ImGui::PopID();
 	}
 }

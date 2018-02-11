@@ -56,7 +56,7 @@ enum TypeComponent
 #define CHECKERS_WIDTH 128
 
 // Configuration -----------
-#define SCREEN_WIDTH 1000
+#define SCREEN_WIDTH 1400
 #define SCREEN_HEIGHT 800
 #define SCREEN_SIZE 1
 #define FULLSCREEN false
@@ -68,5 +68,5 @@ enum TypeComponent
 #define DIST_BTW_LINES_GRID 1
 #define SCREEN_COLUMNS 5
 #define SCREEN_ROWS 5
-#define MENU_TOP_BAR_HEIGHT 38
+#define MENU_TOP_BAR_HEIGHT 20
 #endif //__GLOBALS_H__
