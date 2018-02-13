@@ -12,6 +12,7 @@ QuadTree::~QuadTree() {}
 void QuadTree::create(AABB limits)
 {
 	clear();
+	root = new QuadNode();
 	root->limit = limits;
 }
 

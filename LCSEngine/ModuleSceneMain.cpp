@@ -52,6 +52,11 @@ bool ModuleSceneMain::init()
 
 bool ModuleSceneMain::start()
 {
+	/*DEBUG*/
+	quadtree = new QuadTree();
+	quadtree->create(AABB(float3(-50.f, -50.f, -50.f), float3(50.f, 50.f, 50.f)));
+	/*END DEBUG*/
+
 	return true;
 }
 
@@ -71,7 +76,6 @@ update_status ModuleSceneMain::update(float deltaTime)
 
 update_status ModuleSceneMain::postUpdate(float deltaTime)
 {
-
 	//postUpdateGameObjects();
 	return UPDATE_CONTINUE;
 }
@@ -256,6 +260,10 @@ void ModuleSceneMain::draw()
 		}
 	}
 	drawGrid();
+
+	/*DEBUG*/
+	drawQuadTree();
+	/*END DEBUG*/
 }
 
 void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
