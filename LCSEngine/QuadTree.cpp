@@ -112,25 +112,26 @@ inline void QuadTree::intersect(std::vector<GameObject*> &resultGameObjects, con
 
 void QuadTree::inizialiceChildrens(QuadNode* nodeToCheck)
 {
+	float3 centerPoint = nodeToCheck->limit.CenterPoint();
 	AABB newAABB;
 	nodeToCheck->children[0] = new QuadNode();
-	newAABB = nodeToCheck->limit;
-	newAABB.minPoint = { 0, nodeToCheck->limit.MinY(), 0 };
+	newAABB.maxPoint = { nodeToCheck->limit.MaxX(), nodeToCheck->limit.MaxY(), nodeToCheck->limit.MaxZ() };
+	newAABB.minPoint = { centerPoint.x, nodeToCheck->limit.MinY(), centerPoint.z };
 	nodeToCheck->children[0]->limit = newAABB;
 
 	nodeToCheck->children[1] = new QuadNode();
-	newAABB = nodeToCheck->limit;
-	newAABB.maxPoint = { 0, nodeToCheck->limit.MaxY(), 0 };
+	newAABB.maxPoint = { centerPoint.x, nodeToCheck->limit.MaxY(), centerPoint.y };
+	newAABB.minPoint = { nodeToCheck->limit.MinX(), nodeToCheck->limit.MinY(),nodeToCheck->limit.MinZ() };
 	nodeToCheck->children[1]->limit = newAABB;
 
 	nodeToCheck->children[2] = new QuadNode();
-	newAABB.maxPoint = { 0, nodeToCheck->limit.MaxY(),  nodeToCheck->limit.MaxZ() };
-	newAABB.minPoint = { nodeToCheck->limit.MinX(), nodeToCheck->limit.MinY(), 0 };
+	newAABB.maxPoint = { centerPoint.x, nodeToCheck->limit.MaxY(), nodeToCheck->limit.MaxZ() };
+	newAABB.minPoint = { nodeToCheck->limit.MinX(), nodeToCheck->limit.MinY(), centerPoint.z };
 	nodeToCheck->children[2]->limit = newAABB;
 
 	nodeToCheck->children[3] = new QuadNode();
-	newAABB.maxPoint = { nodeToCheck->limit.MaxY(), nodeToCheck->limit.MaxY(), 0 };
-	newAABB.minPoint = { 0, nodeToCheck->limit.MinY(), nodeToCheck->limit.MinZ() };
+	newAABB.maxPoint = { nodeToCheck->limit.MaxX(), nodeToCheck->limit.MaxY(), centerPoint.z };
+	newAABB.minPoint = { centerPoint.x, nodeToCheck->limit.MinY(), nodeToCheck->limit.MinZ() };
 	nodeToCheck->children[3]->limit = newAABB;
 
 }
