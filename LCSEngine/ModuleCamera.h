@@ -3,6 +3,7 @@
 
 #include "Module.h"
 #include "MathGeoLib/src/Geometry/Frustum.h"
+#include "MathGeoLib/src/Geometry/LineSegment.h"
 
 class CameraComponent;
 
@@ -21,6 +22,7 @@ public:
 	void updatedWindowSize(int screenWidth, int screenHeight);
 	void cameraZoom(float deltaTime);
 	void cameraRotation(float deltaTime);
+	void onClickEvent();
 
 public:
 	
@@ -32,9 +34,10 @@ public:
 
 private:
 	void moveCamera(float deltaTime);
+	void drawLine(float3 origin, float3 end);
 
 private:
-
+	LineSegment l;
 };
 
 #endif // __MODULECAMERA_H__
