@@ -46,7 +46,11 @@ bool ModuleSceneMain::init()
 	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
 	actual = checkers;
 	shader = new Shader();
-
+	quadtree = new QuadTree();
+	const float3 min = { -20.0f, -20.0f, -20.0f };
+	const float3 max = { 20.0f, 20.0f, 20.0f };
+	limits = AABB(min, max);
+	quadtree->create(limits);
 	return true;
 }
 
@@ -256,6 +260,7 @@ void ModuleSceneMain::draw()
 		}
 	}
 	drawGrid();
+	drawQuadTree();
 }
 
 void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
@@ -421,4 +426,33 @@ void ModuleSceneMain::drawAABB(const AABB& aabb)
 	glDisableClientState(GL_VERTEX_ARRAY);
 
 	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
+void ModuleSceneMain::makeQuadTree()
+{
+	queue<GameObject*> queue;
+	quadtree->clear();
+	quadtree = new QuadTree();
+	quadtree->create(limits);
+
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		if(gameObject->staticFlag == true)
+		{
+			quadtree->insert(gameObject);
+		}
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
 }

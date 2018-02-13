@@ -12,6 +12,7 @@
 #include "ModuleCamera.h"
 #include "ModuleGUI.h"
 #include "Shader.h"
+#include "QuadTree.h"
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
@@ -155,6 +156,10 @@ void GameObject::setStaticValueToChildrens()
 void GameObject::setStaticFlag(bool flag) {
 	staticFlag = flag;
 	staticPreviousValue = flag;
+	if(flag == true)
+	{
+		App->sceneMain->makeQuadTree();
+	}
 }
 
 void GameObject::drawComponentsGui()

@@ -9,9 +9,10 @@ QuadTree::QuadTree() {}
 
 QuadTree::~QuadTree() {}
 
-void QuadTree::create(AABB limits)
+void QuadTree::create(const AABB &limits)
 {
 	clear();
+	root = new QuadNode();
 	root->limit = limits;
 }
 
@@ -139,7 +140,7 @@ QuadNode* QuadTree::getChildToPutGameObject(GameObject* gameObject, QuadNode* no
 	QuadNode* ret = nullptr;
 	for(vector<QuadNode*>::iterator it = nodeToCheck->children.begin(); it != nodeToCheck->children.end(); ++it)
 	{
-		if((*it)->limit.Contains(gameObject->aabb))
+		if((*it)->limit.Contains(gameObject->obb) || (*it)->limit.Intersects(gameObject->obb))
 		{
 			if(ret == nullptr)
 			{

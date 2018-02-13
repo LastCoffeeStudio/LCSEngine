@@ -18,7 +18,7 @@ class QuadTree
 public:
 	QuadTree();
 	~QuadTree();
-	void create(math::AABB limits);
+	void create(const math::AABB &limits);
 	void clear();
 	void insert(GameObject* gameObject);
 	void insertAll(const std::vector<GameObject*> &gameObjects);
