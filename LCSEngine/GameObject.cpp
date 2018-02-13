@@ -55,6 +55,7 @@ void GameObject::preUpdate()
 				if (staticFlag)
 				{
 					id = float4x4::identity;
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
 				}
 				else
 				{
@@ -156,10 +157,6 @@ void GameObject::setStaticValueToChildrens()
 void GameObject::setStaticFlag(bool flag) {
 	staticFlag = flag;
 	staticPreviousValue = flag;
-	if(flag == true)
-	{
-		App->sceneMain->makeQuadTree();
-	}
 }
 
 void GameObject::drawComponentsGui()
@@ -180,7 +177,12 @@ void GameObject::drawComponentsGui()
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("Static", &staticFlag);
+	if(ImGui::Checkbox("Static", &staticFlag)) {
+		if(staticFlag == true)
+		{
+				App->sceneMain->makeQuadTree();
+		}
+	};
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
