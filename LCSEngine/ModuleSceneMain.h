@@ -43,6 +43,7 @@ public:
 	QuadTree* quadtree = nullptr;
 
 	bool drawZbuffer = false;
+	std::list<GameObject*> garbageCollector;
 
 private:
 	void drawAABB(const AABB& aabb);

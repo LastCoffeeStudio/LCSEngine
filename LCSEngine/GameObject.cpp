@@ -53,7 +53,8 @@ void GameObject::preUpdate()
 				//Check if the element is static, in that case the transform is the identity
 				if (staticFlag)
 				{
-					id = float4x4::identity;
+				//	id = float4x4::identity;
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
 				}
 				else
 				{
@@ -67,16 +68,18 @@ void GameObject::preUpdate()
 			}
 		}
 	}
-
+	
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		switch ((*it)->typeComponent)
 		{
+			/*
 			case MESH:
 				aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
 				obb = aabb.ToOBB();
 				obb.Transform(id.Transposed());
 				break;
+				*/
 			case CAMERA:
 				((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
 				((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
@@ -84,6 +87,7 @@ void GameObject::preUpdate()
 				break;
 		}
 	}
+	
 }
 
 void GameObject::postUpdate() {}
@@ -175,7 +179,9 @@ void GameObject::drawComponentsGui()
 
 	ImGui::Separator();
 
-	ImGui::Checkbox("Static", &staticFlag);
+	if (ImGui::Checkbox("Static", &staticFlag)) {
+		//App->sceneMain->
+	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -241,8 +247,8 @@ void GameObject::draw()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		drawAABB();
-		drawOBB();
+		//drawAABB();
+		//drawOBB();
 	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)

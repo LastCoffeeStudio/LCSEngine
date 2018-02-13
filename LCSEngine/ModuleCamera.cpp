@@ -6,6 +6,7 @@
 #include "MathGeoLib/src/Math/float3x4.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/Quat.h"
+#include "Brofiler.h"
 #include <SDL.h>
 
 ModuleCamera::ModuleCamera() {}
@@ -21,6 +22,7 @@ bool ModuleCamera::init()
 
 update_status ModuleCamera::update(float deltaTime)
 {
+	BROFILER_CATEGORY("ModuleCamera", Profiler::Color::Orchid)
 	moveCamera(deltaTime);
 	cameraZoom(deltaTime);
 	cameraRotation(deltaTime);

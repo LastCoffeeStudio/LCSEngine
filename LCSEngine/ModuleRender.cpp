@@ -10,6 +10,7 @@
 #include "SDL/include/SDL_opengl.h"
 #include <gl/GL.h>
 #include <gl/GLU.h>
+#include "Brofiler.h"
 
 ModuleRender::ModuleRender() {}
 
@@ -81,6 +82,12 @@ update_status ModuleRender::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
+void swap()
+{
+	BROFILER_CATEGORY("SwapWindow", Profiler::Color::Orchid)
+	SDL_GL_SwapWindow(App->window->window);
+}
+
 update_status ModuleRender::postUpdate(float deltaTime)
 {
 	if (wireframe == true)
@@ -90,7 +97,8 @@ update_status ModuleRender::postUpdate(float deltaTime)
 	App->sceneMain->draw();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
-	SDL_GL_SwapWindow(App->window->window);
+	//SDL_GL_SwapWindow(App->window->window);
+	swap();
 	return UPDATE_CONTINUE;
 }
 

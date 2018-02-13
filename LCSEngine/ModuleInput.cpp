@@ -5,6 +5,7 @@
 #include "ModuleRender.h"
 #include "ModuleGUI.h"
 #include "SDL/include/SDL.h"
+#include "Brofiler.h"
 #include <string>
 
 #define MAX_KEYS 300
@@ -47,6 +48,7 @@ bool ModuleInput::start()
 // Called each loop iteration
 update_status ModuleInput::preUpdate(float deltaTime)
 {
+	BROFILER_CATEGORY("ModuleInput", Profiler::Color::Orchid)
 	static SDL_Event event;
 
 	mouse_motion = { 0, 0 };

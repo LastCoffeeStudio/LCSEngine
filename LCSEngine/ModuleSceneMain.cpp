@@ -20,6 +20,12 @@
 #include "QuadTree.h"
 #include "SDL/include/SDL_assert.h"
 #include <queue>
+#include <list>
+#include "MeshComponent.h"
+#include "ComponentFactory.h"
+#include "TransformComponent.h"
+
+using namespace std;
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -28,12 +34,6 @@ ModuleSceneMain::ModuleSceneMain(bool active) : Module(active)
 {
 	root = new GameObject();
 	currentObject = root;
-
-	/*Needed for testing times*/
-	/*for (int i = 0; i < 1000; ++i)
-	{
-		root->addGameObject(new GameObject(root,"a"));
-	}*/
 }
 
 ModuleSceneMain::~ModuleSceneMain() {}
@@ -55,6 +55,10 @@ bool ModuleSceneMain::start()
 	/*DEBUG*/
 	quadtree = new QuadTree();
 	quadtree->create(AABB(float3(-50.f, -50.f, -50.f), float3(50.f, 50.f, 50.f)));
+	
+
+	/*Needed for testing times*/
+	
 	/*END DEBUG*/
 
 	return true;
@@ -62,6 +66,7 @@ bool ModuleSceneMain::start()
 
 update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
+	BROFILER_CATEGORY("PreUpdateSceneMain", Profiler::Color::Orchid)
 	clearGameObjects();
 	preUpdateGameObjects();
 	return UPDATE_CONTINUE;
@@ -87,13 +92,22 @@ bool ModuleSceneMain::cleanUp()
 
 void ModuleSceneMain::clearGameObjects()
 {
+	BROFILER_CATEGORY("ClearGameObjects", Profiler::Color::Orchid)
+	
+	for (list<GameObject*>::iterator it = garbageCollector.begin(); it != garbageCollector.end(); ++it)
+	{
+		//RELEASE((*it));
+	}
+		
+	/*
 	queue<GameObject*> entities;
 
+	
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
 		entities.push(*it);
 	}
-
+	
 	while (!entities.empty())
 	{
 		GameObject* child = entities.front();
@@ -137,10 +151,12 @@ void ModuleSceneMain::clearGameObjects()
 			}
 		}
 	}
+	*/
 }
 
 void ModuleSceneMain::preUpdateGameObjects()
 {
+	BROFILER_CATEGORY("PreUpdateGameObjects", Profiler::Color::Orchid)
 	queue<GameObject*> queue;
 
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
@@ -359,6 +375,7 @@ void ModuleSceneMain::swapDefaultShader()
 
 void ModuleSceneMain::drawQuadTree()
 {
+	BROFILER_CATEGORY("DrawQuadTree", Profiler::Color::Orchid)
 	queue<QuadNode*> nodes;
 	SDL_assert(quadtree->root != nullptr);
 	nodes.push(quadtree->root);
