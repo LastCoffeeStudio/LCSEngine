@@ -40,6 +40,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{ab33b2e1-b09a-4b6c-917f-efe7c1154c8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ImGuizmo">
+      <UniqueIdentifier>{31b53ef4-f258-427f-8862-4ded190aee51}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -327,6 +330,15 @@
     <ClInclude Include="QuadTree.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="ImApp.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
+    <ClInclude Include="ImSequencer.h">
+      <Filter>ImGuizmo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -511,6 +523,12 @@
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>ImGuizmo</Filter>
+    </ClCompile>
+    <ClCompile Include="ImSequencer.cpp">
+      <Filter>ImGuizmo</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

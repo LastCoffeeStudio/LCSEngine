@@ -20,6 +20,15 @@
 #include "QuadTree.h"
 #include "SDL/include/SDL_assert.h"
 #include <queue>
+#include "TransformComponent.h"
+#include "ModuleWindow.h"
+
+//#include "ImApp.h"
+#include "ImGuizmo.h"
+#include "ImSequencer.h"
+
+#include <math.h>
+#include <vector>
 
 #define COUNT_LINES_GRID 100.f
 #define POS_LINES_GRID COUNT_LINES_GRID / 2
@@ -62,7 +71,16 @@ bool ModuleSceneMain::start()
 update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
 	clearGameObjects();
-	preUpdateGameObjects();
+	preUpdateGameObjects();	
+	ImGuizmo::BeginFrame();
+	ImGuizmo::Enable(true);
+	if (currentObject != root) {
+		TransformComponent *tc = (TransformComponent*)currentObject->components[0];
+		float4x4 ident = float4x4::identity;
+		ImGuizmo::SetRect(0, 0, App->window->width, App->window->height);
+		ImGuizmo::Manipulate(&ident[0][0], &ident[0][0], ImGuizmo::ROTATE,
+			ImGuizmo::WORLD, &tc->transform[0][0]);
+	}
 	return UPDATE_CONTINUE;
 }
 
