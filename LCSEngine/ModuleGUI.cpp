@@ -7,16 +7,18 @@
 #include "ModuleRender.h"
 #include "AssetTexture.h"
 #include "GameObject.h"
+#include "QuadTree.h"
 #include "MeshComponent.h"
 #include "TransformComponent.h"
+#include "ComponentFactory.h"
 #include "windows.h"
 #include "SDL_assert.h"
 #include "SDL\include\SDL.h"
 #include "ModuleInput.h"
 #include <string> 
 #include <shellapi.h>
+#include <queue>
 #include "Brofiler.h"
-#include "ComponentFactory.h"
 
 ModuleGUI::ModuleGUI() {}
 
@@ -246,10 +248,54 @@ void ModuleGUI::showMainWindow()
 void ModuleGUI::showInspector()
 {
 	ImGui::Begin("Inspector", &show_inspector, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse );
-	
+
 	if (App->sceneMain->currentObject->parent != nullptr)
 	{
 		App->sceneMain->currentObject->drawComponentsGui();
+	}
+
+	if (ImGui::CollapsingHeader("QuadTree Minimap"))
+	{
+		static float ratio = 1.5f;
+		ImGui::DragFloat("Aspect ratio", &ratio, 0.01f, 1.f, 2.f);
+		ImDrawList* drawList = ImGui::GetWindowDrawList();
+		ImVec2 minimapPos = ImGui::GetCursorScreenPos();
+		float minimapW = ImGui::GetWindowContentRegionWidth();
+		float minimapH = minimapW / ratio;
+		drawList->AddRectFilled(minimapPos, ImVec2(minimapPos.x + minimapW, minimapPos.y + minimapH), ImColor(255.f, 100.f, 100.f, 0.5f));
+		ImGui::InvisibleButton("minimap", ImVec2(minimapW, minimapH));
+
+		if (App->sceneMain->quadtree != nullptr)
+		{
+			QuadNode* root = App->sceneMain->quadtree->root;
+			float rootMinX = root->limit.MinX();
+			float rootMinZ = root->limit.MinZ();
+			float rootMaxX = root->limit.MaxX();
+			float rootMaxZ = root->limit.MaxZ();
+
+			queue<QuadNode*> nodes;
+			nodes.push(root);
+
+			while (!nodes.empty())
+			{
+				QuadNode* node = nodes.front();
+				nodes.pop();
+
+				float iniPosX = minimapPos.x + ((node->limit.MinX() - rootMinX) * minimapW) / (rootMaxX - rootMinX);
+				float endPosX = minimapPos.x + ((node->limit.MaxX() - rootMinX) * minimapW) / (rootMaxX - rootMinX);
+				float iniPosZ = minimapPos.y + ((node->limit.MinZ() - rootMinZ) * minimapH) / (rootMaxZ - rootMinZ);
+				float endPosZ = minimapPos.y + ((node->limit.MaxZ() - rootMinZ) * minimapH) / (rootMaxZ - rootMinZ);
+				drawList->AddRect(ImVec2(iniPosX, iniPosZ), ImVec2(endPosX, endPosZ), ImColor(0.f, 255.f, 0.f, 1.f));
+
+				for (vector<QuadNode*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+				{
+					if ((*it) != nullptr)
+					{
+						nodes.push(*it);
+					}
+				}
+			}
+		}
 	}
 
 	ImGui::End();

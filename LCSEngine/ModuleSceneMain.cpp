@@ -75,7 +75,6 @@ update_status ModuleSceneMain::update(float deltaTime)
 
 update_status ModuleSceneMain::postUpdate(float deltaTime)
 {
-
 	//postUpdateGameObjects();
 	return UPDATE_CONTINUE;
 }
@@ -261,6 +260,7 @@ void ModuleSceneMain::draw()
 	}
 	drawGrid();
 	drawQuadTree();
+
 }
 
 void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
