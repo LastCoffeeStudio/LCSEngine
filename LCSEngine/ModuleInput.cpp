@@ -178,3 +178,4 @@ const iPoint& ModuleInput::getMouseMotion() const
 {
 	return mouse_motion;
 }
+

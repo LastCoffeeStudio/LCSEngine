@@ -30,6 +30,7 @@ public:
 	void swapDefaultShader();
 	void checkVisibleItems();
 	void drawQuadTree();
+	void makeQuadTree();
 
 public:
 	AssetTexture * checkers = nullptr;
@@ -41,7 +42,7 @@ public:
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;
 	QuadTree* quadtree = nullptr;
-
+	AABB limits;
 	bool drawZbuffer = false;
 	std::list<GameObject*> garbageCollector;
 

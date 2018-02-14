@@ -12,6 +12,7 @@
 #include "ModuleCamera.h"
 #include "ModuleGUI.h"
 #include "Shader.h"
+#include "QuadTree.h"
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
@@ -53,7 +54,7 @@ void GameObject::preUpdate()
 				//Check if the element is static, in that case the transform is the identity
 				if (staticFlag)
 				{
-				//	id = float4x4::identity;
+					id = float4x4::identity;
 					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
 				}
 				else
@@ -179,9 +180,12 @@ void GameObject::drawComponentsGui()
 
 	ImGui::Separator();
 
-	if (ImGui::Checkbox("Static", &staticFlag)) {
-		//App->sceneMain->
-	}
+	if(ImGui::Checkbox("Static", &staticFlag)) {
+		if(staticFlag == true)
+		{
+				App->sceneMain->makeQuadTree();
+		}
+	};
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{

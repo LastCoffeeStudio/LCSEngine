@@ -9,6 +9,10 @@
 #include "Brofiler.h"
 #include <SDL.h>
 
+#include "Glew/include/glew.h"
+#include "Shader.h"
+#include "ModuleSceneMain.h"
+
 ModuleCamera::ModuleCamera() {}
 
 ModuleCamera::~ModuleCamera() {}
@@ -26,6 +30,7 @@ update_status ModuleCamera::update(float deltaTime)
 	moveCamera(deltaTime);
 	cameraZoom(deltaTime);
 	cameraRotation(deltaTime);
+	onClickEvent();
 	return UPDATE_CONTINUE;
 }
 
@@ -171,4 +176,47 @@ void ModuleCamera::cameraRotation(float deltaTime)
 		currentCamera->frustum.up.Normalize();
 		currentCamera->frustum.front.Normalize();
 	}
+}
+
+void ModuleCamera::onClickEvent()
+{
+	if (App->input->getMouseButtonDown(SDL_BUTTON_LEFT) == KEY_DOWN)
+	{
+		iPoint mousePos = App->input->getMousePosition();
+		float2 fMousePos = currentCamera->frustum.ScreenToViewportSpace((float)mousePos.x, (float)mousePos.y, App->window->width, App->window->height);
+		l = currentCamera->frustum.UnProjectLineSegment(fMousePos.x, fMousePos.y);
+	}
+	/*DEBUG*/
+	drawLine(l.a, l.b);
+	/*END DEBUG*/
+}
+
+void ModuleCamera::drawLine(float3 origin, float3 end)
+{
+	float4x4 identity = float4x4::identity;
+	glEnableClientState(GL_VERTEX_ARRAY);
+	glEnableClientState(GL_COLOR_ARRAY);
+	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+
+	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+	glBegin(GL_LINES);
+
+	glVertex3f(origin.x,origin.y,origin.z);
+	glVertex3f(end.x,end.y,end.z);
+
+	glEnd();
+
+	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
+	glDisableClientState(GL_COLOR_ARRAY);
+	glDisableClientState(GL_VERTEX_ARRAY);
+
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
