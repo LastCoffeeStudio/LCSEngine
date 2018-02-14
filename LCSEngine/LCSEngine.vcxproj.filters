@@ -40,6 +40,9 @@
     <Filter Include="Components">
       <UniqueIdentifier>{ab33b2e1-b09a-4b6c-917f-efe7c1154c8e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{10a460ff-d374-4d42-aafd-62e7a830c645}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -327,6 +330,9 @@
     <ClInclude Include="QuadTree.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="PhysRaycast.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -511,6 +517,9 @@
     </ClCompile>
     <ClCompile Include="QuadTree.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="PhysRaycast.cpp">
+      <Filter>Physics</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

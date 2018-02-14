@@ -11,6 +11,7 @@
 #include "Glew/include/glew.h"
 #include "Shader.h"
 #include "ModuleSceneMain.h"
+#include "PhysRaycast.h"
 
 ModuleCamera::ModuleCamera() {}
 
@@ -39,7 +40,7 @@ bool ModuleCamera::cleanUp()
 
 float* ModuleCamera::getViewMatrix()
 {
-	 return currentCamera->getViewMatrix();
+	return currentCamera->getViewMatrix();
 }
 
 float* ModuleCamera::getProjectMatrix()
@@ -54,7 +55,7 @@ void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 
 void ModuleCamera::moveCamera(float deltaTime)
 {
-	float speed = cameraSpeed*deltaTime;
+	float speed = cameraSpeed * deltaTime;
 	float3 displacement = { 0.f, 0.f, 0.f };
 	bool movement = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -71,7 +72,7 @@ void ModuleCamera::moveCamera(float deltaTime)
 		displacement -= { 0.f, 1.f, 0.f };
 		movement = true;
 	}
-	if (App->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT )
+	if (App->input->getKey(SDL_SCANCODE_W) == KEY_REPEAT)
 	{
 		displacement += currentCamera->frustum.front;
 		movement = true;
@@ -109,7 +110,7 @@ void ModuleCamera::moveCamera(float deltaTime)
 
 void ModuleCamera::cameraZoom(float deltaTime)
 {
-	float speed = zoomSpeed*deltaTime;
+	float speed = zoomSpeed * deltaTime;
 	float3 displacement = { 0.f, 0.f, 0.f };
 	bool doZoom = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -126,7 +127,7 @@ void ModuleCamera::cameraZoom(float deltaTime)
 		displacement -= currentCamera->frustum.front;
 		doZoom = true;
 	}
-	if(doZoom == true)
+	if (doZoom == true)
 	{
 		currentCamera->frustum.Translate(displacement*speed);
 	}
@@ -134,7 +135,7 @@ void ModuleCamera::cameraZoom(float deltaTime)
 
 void ModuleCamera::cameraRotation(float deltaTime)
 {
-	float speed = rotationSpeed*deltaTime;
+	float speed = rotationSpeed * deltaTime;
 	Quat rotation = Quat::identity;
 	bool rotated = false;
 	if (App->input->getKey(SDL_SCANCODE_LSHIFT) == KEY_REPEAT)
@@ -183,6 +184,11 @@ void ModuleCamera::onClickEvent()
 		iPoint mousePos = App->input->getMousePosition();
 		float2 fMousePos = currentCamera->frustum.ScreenToViewportSpace((float)mousePos.x, (float)mousePos.y, App->window->width, App->window->height);
 		l = currentCamera->frustum.UnProjectLineSegment(fMousePos.x, fMousePos.y);
+		PhysRaycast* ray = new PhysRaycast();
+		if (ray->castRay(l, Distance(l.a, l.b)))
+		{
+			App->sceneMain->currentObject = ray->gameObject;
+		}
 	}
 	/*DEBUG*/
 	drawLine(l.a, l.b);
@@ -207,8 +213,8 @@ void ModuleCamera::drawLine(float3 origin, float3 end)
 
 	glBegin(GL_LINES);
 
-	glVertex3f(origin.x,origin.y,origin.z);
-	glVertex3f(end.x,end.y,end.z);
+	glVertex3f(origin.x, origin.y, origin.z);
+	glVertex3f(end.x, end.y, end.z);
 
 	glEnd();
 

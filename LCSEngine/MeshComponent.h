@@ -21,7 +21,6 @@ public:
 
 	void drawGUI() override;
 	bool update() override;
-	//std::vector<float> verticesVBO;
 	std::vector<float3> verticesVBO;
 	GLuint idVertVBO = 0;
 	float lengthX, lengthY, lengthZ;
