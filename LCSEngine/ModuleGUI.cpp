@@ -336,12 +336,32 @@ void ModuleGUI::showHierarchy()
 			if (ImGui::MenuItem("New GameObject"))
 			{
 				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+
+				/*ComponentFactory* factory = ComponentFactory::getInstance();
+				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "a");
+				
+				for (int i = 0; i < 10; ++i)
+				{
+					GameObject* gameobjectChildren = new GameObject(gameobject, "a");
+					((TransformComponent*)(gameobjectChildren->components[0]))->position.x = (float)(rand() % 20) - 10;
+					((TransformComponent*)(gameobjectChildren->components[0]))->position.y = (float)(rand() % 20) - 10;
+					((TransformComponent*)(gameobjectChildren->components[0]))->position.z = (float)(rand() % 20) - 10;
+					((TransformComponent*)(gameobjectChildren->components[0]))->matrixTranslate.SetIdentity();
+					((TransformComponent*)(gameobjectChildren->components[0]))->matrixTranslate[0][3] = ((TransformComponent*)(gameobjectChildren->components[0]))->position[0];
+					((TransformComponent*)(gameobjectChildren->components[0]))->matrixTranslate[1][3] = ((TransformComponent*)(gameobjectChildren->components[0]))->position[1];
+					((TransformComponent*)(gameobjectChildren->components[0]))->matrixTranslate[2][3] = ((TransformComponent*)(gameobjectChildren->components[0]))->position[2];
+					((TransformComponent*)(gameobjectChildren->components[0]))->updateTransform();
+					gameobjectChildren->addComponent(factory->getComponent(MESH, gameobjectChildren));
+					gameobject->addGameObject(gameobjectChildren);
+				}
+				App->sceneMain->currentObject->addGameObject(gameobject);
+				//gameobject->staticFlag = true;*/
 			}
 			if (ImGui::MenuItem("Delete GameObject"))
 			{
 				if (App->sceneMain->currentObject != App->sceneMain->root)
 				{
-					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->garbageCollector.push_back(App->sceneMain->currentObject);
 					App->sceneMain->currentObject = App->sceneMain->root;
 				}
 			}
@@ -408,7 +428,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 			{
 				if (App->sceneMain->currentObject != App->sceneMain->root)
 				{
-					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->garbageCollector.push_back(App->sceneMain->currentObject);
 					App->sceneMain->currentObject = App->sceneMain->root;
 				}
 			}

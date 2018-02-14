@@ -69,7 +69,7 @@ void GameObject::preUpdate()
 			}
 		}
 	}
-
+	
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		switch ((*it)->typeComponent)
@@ -86,6 +86,7 @@ void GameObject::preUpdate()
 				break;
 		}
 	}
+	
 }
 
 void GameObject::postUpdate() {}
@@ -248,8 +249,8 @@ void GameObject::draw()
 
 		glBindTexture(GL_TEXTURE_2D, 0);
 
-		drawAABB();
-		drawOBB();
+		//drawAABB();
+		//drawOBB();
 	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
