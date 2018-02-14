@@ -340,7 +340,7 @@ void ModuleGUI::showHierarchy()
 				ComponentFactory* factory = ComponentFactory::getInstance();
 				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "a");
 				
-				for (int i = 0; i < 1000; ++i)
+				for (int i = 0; i < 10; ++i)
 				{
 					GameObject* gameobjectChildren = new GameObject(gameobject, "a");
 					((TransformComponent*)(gameobjectChildren->components[0]))->position.x = (float)(rand() % 20) - 10;
@@ -361,7 +361,7 @@ void ModuleGUI::showHierarchy()
 			{
 				if (App->sceneMain->currentObject != App->sceneMain->root)
 				{
-					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->garbageCollector.push_back(App->sceneMain->currentObject);
 					App->sceneMain->currentObject = App->sceneMain->root;
 				}
 			}
@@ -428,7 +428,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 			{
 				if (App->sceneMain->currentObject != App->sceneMain->root)
 				{
-					App->sceneMain->currentObject->suicide = true;
+					App->sceneMain->garbageCollector.push_back(App->sceneMain->currentObject);
 					App->sceneMain->currentObject = App->sceneMain->root;
 				}
 			}

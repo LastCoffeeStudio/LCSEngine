@@ -55,11 +55,6 @@ bool ModuleSceneMain::start()
 	/*DEBUG*/
 	quadtree = new QuadTree();
 	quadtree->create(AABB(float3(-50.f, -50.f, -50.f), float3(50.f, 50.f, 50.f)));
-	
-
-	/*Needed for testing times*/
-	
-	/*END DEBUG*/
 
 	return true;
 }
@@ -94,64 +89,47 @@ void ModuleSceneMain::clearGameObjects()
 {
 	BROFILER_CATEGORY("ClearGameObjects", Profiler::Color::Orchid)
 	
-	for (list<GameObject*>::iterator it = garbageCollector.begin(); it != garbageCollector.end(); ++it)
+	bool erased = false;
+	if (garbageCollector.size() > 0)
 	{
-		//RELEASE((*it));
-	}
-		
-	/*
-	queue<GameObject*> entities;
-
-	
-	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
-	{
-		entities.push(*it);
-	}
-	
-	while (!entities.empty())
-	{
-		GameObject* child = entities.front();
-		entities.pop();
-
-		if (child->suicide == true)
+		//delate parent pointer
+		GameObject* gameObjectRoot = garbageCollector.front();
+		for (vector<GameObject*>::iterator itDelete = gameObjectRoot->parent->children.begin(); itDelete != gameObjectRoot->parent->children.end() && !erased;)
 		{
-			bool erased = false;
-			for (vector<GameObject*>::iterator it = child->parent->children.begin(); it != child->parent->children.end() && !erased;)
+			if (*itDelete == gameObjectRoot)
 			{
-				if ((*it) == child)
-				{
-					it = child->parent->children.erase(it);
-					erased = true;
-				}
-				else
-				{
-					++it;
-				}
+				itDelete = gameObjectRoot->parent->children.erase(itDelete);
+				erased = true;
 			}
-			RELEASE(child);
-		}
-		else
-		{
-			for (vector<Component*>::iterator it = child->components.begin(); it != child->components.end();)
+			else
 			{
-				if ((*it)->suicide)
-				{
-					RELEASE(*it);
-					it = child->components.erase(it);
-				}
-				else
-				{
-					++it;
-				}
-			}
-
-			for (vector<GameObject*>::iterator it = child->children.begin(); it != child->children.end(); ++it)
-			{
-				entities.push(*it);
+				++itDelete;
 			}
 		}
+
+		//Add all childrens to be deleted
+		for (list<GameObject*>::iterator it = garbageCollector.begin(); it != garbageCollector.end(); ++it)
+		{
+			GameObject* gameObject = (GameObject*)*it;
+			for (vector<GameObject*>::iterator it2 = gameObject->children.begin(); it2 != gameObject->children.end(); ++it2)
+			{
+				garbageCollector.push_back(*it2);
+			}
+		}
+
+		for (list<GameObject*>::reverse_iterator it = garbageCollector.rbegin(); it != garbageCollector.rend(); ++it)
+		{
+			//Delete all components
+			GameObject* gameObject = (GameObject*)*it;
+			for (vector<Component*>::iterator itComponents = gameObject->components.begin(); itComponents != gameObject->components.end();)
+			{
+				RELEASE(*itComponents);
+				itComponents = gameObject->components.erase(itComponents);
+			}
+			RELEASE(*it);
+		}
+		garbageCollector.clear();
 	}
-	*/
 }
 
 void ModuleSceneMain::preUpdateGameObjects()
