@@ -335,9 +335,9 @@ void ModuleGUI::showHierarchy()
 		{
 			if (ImGui::MenuItem("New GameObject"))
 			{
-				//App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
 
-				ComponentFactory* factory = ComponentFactory::getInstance();
+				/*ComponentFactory* factory = ComponentFactory::getInstance();
 				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "a");
 				
 				for (int i = 0; i < 10; ++i)
@@ -355,7 +355,7 @@ void ModuleGUI::showHierarchy()
 					gameobject->addGameObject(gameobjectChildren);
 				}
 				App->sceneMain->currentObject->addGameObject(gameobject);
-				//gameobject->staticFlag = true;
+				//gameobject->staticFlag = true;*/
 			}
 			if (ImGui::MenuItem("Delete GameObject"))
 			{
