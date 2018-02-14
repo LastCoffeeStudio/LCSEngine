@@ -74,13 +74,11 @@ void GameObject::preUpdate()
 	{
 		switch ((*it)->typeComponent)
 		{
-			/*
 			case MESH:
 				aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
 				obb = aabb.ToOBB();
 				obb.Transform(id.Transposed());
 				break;
-				*/
 			case CAMERA:
 				((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
 				((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
