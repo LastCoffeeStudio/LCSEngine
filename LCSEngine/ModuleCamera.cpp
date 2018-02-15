@@ -50,6 +50,16 @@ float* ModuleCamera::getProjectMatrix()
 	return currentCamera->getProjectMatrix();
 }
 
+float* ModuleCamera::getViewMatrix4x4()
+{
+	return currentCamera->getViewMatrix4x4();
+}
+
+float4x4 ModuleCamera::getViewProjectMatrix()
+{
+	return currentCamera->getViewProjectMatrix();
+}
+
 void ModuleCamera::updatedWindowSize(int screenWidth, int screenHeight)
 {
 	currentCamera->frustum.horizontalFov = 2.0f * atanf(tanf(currentCamera->frustum.verticalFov / 2.0f)*((float)screenWidth / (float)screenHeight));

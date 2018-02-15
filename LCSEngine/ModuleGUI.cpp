@@ -11,6 +11,7 @@
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 #include "ComponentFactory.h"
+#include "MathGeoLib/src/Math/float4x4.h"
 #include "windows.h"
 #include "SDL_assert.h"
 #include "SDL\include\SDL.h"
@@ -19,6 +20,9 @@
 #include <shellapi.h>
 #include <queue>
 #include "Brofiler.h"
+#include "ImGuizmo.h"
+#include "CameraComponent.h"
+#include "ModuleInput.h"
 
 ModuleGUI::ModuleGUI() {}
 
@@ -71,6 +75,7 @@ bool ModuleGUI::init()
 update_status ModuleGUI::preUpdate(float deltaTime)
 {
 	ImGui_ImplSdlGL3_NewFrame(App->window->window);
+	ImGuizmo::BeginFrame();
 	return UPDATE_CONTINUE;
 }
 
@@ -119,11 +124,17 @@ update_status ModuleGUI::update(float deltaTime)
 		showStaticChildernPopUp();
 	}
 
+	if (show_gizmo)
+	{
+		showGizmo();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
 update_status ModuleGUI::postUpdate(float deltaTime)
 {
+	
 	return UPDATE_CONTINUE;
 }
 
@@ -326,6 +337,7 @@ void ModuleGUI::showHierarchy()
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
 			App->sceneMain->currentObject = App->sceneMain->root;
+			show_gizmo = false;
 		}
 		if (ImGui::IsMouseHoveringWindow() &&ImGui::IsMouseClicked(1))
 		{
@@ -413,6 +425,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 		if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 		{
 			App->sceneMain->currentObject = gameObject;
+			show_gizmo = true;
 		}
 		if (ImGui::IsItemClicked(1))
 		{
@@ -439,6 +452,53 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 			showHierarchyChildren((*it), enabled);
 		}
 		ImGui::TreePop();
+	}
+}
+
+void ModuleGUI::showGizmo()
+{
+	static ImGuizmo::OPERATION currentGizmoOperation(ImGuizmo::TRANSLATE);
+	static ImGuizmo::MODE currentGizmoMode(ImGuizmo::LOCAL);
+
+	if (App->input->getKey(SDL_SCANCODE_T) == KEY_DOWN)				
+	{
+		currentGizmoOperation = ImGuizmo::TRANSLATE;
+		currentGizmoMode = ImGuizmo::LOCAL;
+	}
+
+	if (App->input->getKey(SDL_SCANCODE_R) == KEY_DOWN)
+	{
+		currentGizmoOperation = ImGuizmo::ROTATE;
+		currentGizmoMode = ImGuizmo::LOCAL;
+	}
+
+	if (App->input->getKey(SDL_SCANCODE_Y) == KEY_DOWN)
+	{
+		currentGizmoOperation = ImGuizmo::SCALE;
+		currentGizmoMode = ImGuizmo::LOCAL;
+
+	}
+
+	ImGuizmo::Enable(true);
+	ImGuizmo::BeginFrame();
+
+	ImGuiIO& io = ImGui::GetIO();
+	ImGuizmo::SetRect(0, 0, io.DisplaySize.x, io.DisplaySize.y);
+
+	float4x4 viewProjm = App->camera->getViewProjectMatrix();
+	float* transpost = ((TransformComponent*)App->sceneMain->currentObject->components[0])->transform.Transposed().ptr();
+
+	ImGuizmo::Manipulate(float4x4::identity.ptr(), viewProjm.Transposed().ptr(), currentGizmoOperation, currentGizmoMode, transpost);
+
+	if (ImGuizmo::IsUsing())
+	{
+		ImGuizmo::DecomposeMatrixToComponents(transpost, ((TransformComponent*)(App->sceneMain->currentObject->components[0]))->position.ptr(),
+			((TransformComponent*)(App->sceneMain->currentObject->components[0]))->rotation.ptr(), 
+			((TransformComponent*)(App->sceneMain->currentObject->components[0]))->scale.ptr());
+
+		((TransformComponent*)(App->sceneMain->currentObject->components[0]))->updateTranslate();
+		((TransformComponent*)(App->sceneMain->currentObject->components[0]))->updateScale();
+		((TransformComponent*)(App->sceneMain->currentObject->components[0]))->updateRotate();
 	}
 }
 

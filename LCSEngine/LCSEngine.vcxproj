@@ -151,6 +151,7 @@
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h" />
@@ -247,6 +248,7 @@
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />

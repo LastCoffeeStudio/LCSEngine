@@ -5,6 +5,7 @@
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "Glew/include/glew.h"
+#include "MathGeoLib\src\Math\float4x4.h"
 
 class GameObject;
 
@@ -31,6 +32,7 @@ public:
 	bool show_gl = true;
 	bool show_hierarchy = true;
 	bool show_static_popup = false;
+	bool show_gizmo = false;
 	ImVec4 clear_color;
 
 private:
@@ -42,6 +44,7 @@ private:
 	void showHierarchy();
 	void showStaticChildernPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
+	void showGizmo();
 
 	void putHyperlink(const char* link);
 

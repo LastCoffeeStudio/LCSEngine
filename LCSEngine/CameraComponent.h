@@ -12,6 +12,8 @@ public:
 
 	float* getViewMatrix();
 	float* getProjectMatrix();
+	float* getViewMatrix4x4();
+	float4x4 getViewProjectMatrix();
 	void drawGUI() override;
 
 public:

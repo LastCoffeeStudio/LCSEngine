@@ -333,6 +333,7 @@
     <ClInclude Include="PhysRaycast.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="ImGuizmo.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -521,6 +522,7 @@
     <ClCompile Include="PhysRaycast.cpp">
       <Filter>Physics</Filter>
     </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl">
