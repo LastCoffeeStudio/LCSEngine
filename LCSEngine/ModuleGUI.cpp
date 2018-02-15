@@ -124,7 +124,7 @@ update_status ModuleGUI::update(float deltaTime)
 		showStaticChildernPopUp();
 	}
 
-	if (show_gizmo)
+	if (App->sceneMain->currentObject != App->sceneMain->root)
 	{
 		showGizmo();
 	}
@@ -337,7 +337,6 @@ void ModuleGUI::showHierarchy()
 		if (ImGui::IsMouseHoveringWindow() && ImGui::IsMouseClicked(0))
 		{
 			App->sceneMain->currentObject = App->sceneMain->root;
-			show_gizmo = false;
 		}
 		if (ImGui::IsMouseHoveringWindow() &&ImGui::IsMouseClicked(1))
 		{
@@ -425,7 +424,6 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 		if (ImGui::IsItemClicked(0) || ImGui::IsItemClicked(1))
 		{
 			App->sceneMain->currentObject = gameObject;
-			show_gizmo = true;
 		}
 		if (ImGui::IsItemClicked(1))
 		{
