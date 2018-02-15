@@ -32,7 +32,6 @@ public:
 	bool show_gl = true;
 	bool show_hierarchy = true;
 	bool show_static_popup = false;
-	bool show_gizmo = false;
 	ImVec4 clear_color;
 
 private:
