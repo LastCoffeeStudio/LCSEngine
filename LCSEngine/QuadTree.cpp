@@ -73,12 +73,40 @@ void QuadTree::insert(GameObject* gameObject)
 
 }
 
-void QuadTree::insertAll(const std::vector<GameObject*>& gameObjects) {}
+void QuadTree::insertAll(list<GameObject*>& gameObjects)
+{
+	float3 min;
+	float3 max;
+	list<GameObject*>::iterator it = gameObjects.begin();
+
+	if(it != gameObjects.end())
+	{
+		min = (*it)->obb.CornerPoint(0);
+		max = (*it)->obb.CornerPoint(7);
+	}else
+	{
+		return;
+	}
+
+	for(; it != gameObjects.end(); ++it)
+	{
+		min = Min(min, (*it)->obb.CornerPoint(0));
+		max = Max(max, (*it)->obb.CornerPoint(7));
+	}
+	AABB newLimit = AABB(min, max);
+	create(newLimit);
+
+	it = gameObjects.begin();
+	for (; it != gameObjects.end(); ++it)
+	{
+		insert(*it);
+	}
+}
 
 void QuadTree::remove(GameObject* gameObject) {}
 
 template<typename T>
-inline void QuadTree::intersect(std::vector<GameObject*> &resultGameObjects, const T& primitive)
+inline void QuadTree::intersect(vector<GameObject*> &resultGameObjects, const T& primitive)
 {
 	queue<QuadNode*> children;
 
@@ -133,7 +161,7 @@ void QuadTree::inizialiceChildrens(QuadNode* nodeToCheck)
 	newAABB.maxPoint = { nodeToCheck->limit.MaxX(), nodeToCheck->limit.MaxY(), centerPoint.z };
 	newAABB.minPoint = { centerPoint.x, nodeToCheck->limit.MinY(), nodeToCheck->limit.MinZ() };
 	nodeToCheck->children[3]->limit = newAABB;
-
+	
 }
 
 QuadNode* QuadTree::getChildToPutGameObject(GameObject* gameObject, QuadNode* nodeToCheck)
