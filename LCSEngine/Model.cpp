@@ -1,6 +1,6 @@
 #include "Model.h"
 
-//#include <assimp/scene.h>
+#include "assimp/assimp/scene.h"
 
 Model::Model()
 {}
