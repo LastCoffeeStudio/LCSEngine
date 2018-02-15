@@ -822,8 +822,10 @@ namespace ImGuizmo
          float mulAxisY = (dotCameraDirY > 0.f) ? -1.f : 1.f;
          dirPlaneX *= mulAxisX;
          dirPlaneY *= mulAxisY;
-
          belowAxisLimit = fabsf(dotCameraDirX) < angleLimit;
+		 //THIS IS ADRIAN'S FAULT! ALERT!! 
+		 belowAxisLimit = true;
+		 //HERE ENDS ADRIAN'S SHITTY CODE!
          belowPlaneLimit = (fabsf(cameraEyeToGizmo.Dot3(dirPlaneNormalWorld)) > planeLimit);
 
          // and store values

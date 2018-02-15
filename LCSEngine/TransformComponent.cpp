@@ -2,6 +2,7 @@
 #include "Imgui/imgui.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include <limits.h>
+#include "GameObject.h"
 
 TransformComponent::TransformComponent(GameObject* gameObject) : Component(gameObject, true, true)
 {
@@ -53,32 +54,52 @@ void TransformComponent::updateRotate()
 void TransformComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Transform"))
-	{
-		ImGui::Text("Position");
-		ImGui::SameLine(78);
-		ImGui::PushID("Position");
-		if (ImGui::DragFloat3("", &position[0], 0.1f))
+	{		
+		if (gameObject->staticFlag) 
 		{
-			updateTranslate();
-		}
-		ImGui::PopID();
+			ImGui::Text("Position");
+			ImGui::SameLine(78);
+			ImGui::PushID("Position");
+			ImGui::PopID();
 
-		ImGui::Text("Scale");
-		ImGui::SameLine(70);
-		ImGui::PushID("Scale");
-		if (ImGui::DragFloat3("", &scale[0], 0.1f))
-		{
-			updateScale();
-		}
-		ImGui::PopID();
+			ImGui::Text("Scale");
+			ImGui::SameLine(70);
+			ImGui::PushID("Scale");
+			ImGui::PopID();
 
-		ImGui::Text("Rotation");
-		ImGui::SameLine(70);
-		ImGui::PushID("Rotation");
-		if (ImGui::DragFloat3("", &rotation[0], 0.1f))
-		{
-			updateRotate();
+			ImGui::Text("Rotation");
+			ImGui::SameLine(70);
+			ImGui::PushID("Rotation");
+			ImGui::PopID();
 		}
-		ImGui::PopID();
+		else
+		{
+			ImGui::Text("Position");
+			ImGui::SameLine(78);
+			ImGui::PushID("Position");
+			if (ImGui::DragFloat3("", &position[0], 0.1f))
+			{
+				updateTranslate();
+			}
+			ImGui::PopID();
+
+			ImGui::Text("Scale");
+			ImGui::SameLine(70);
+			ImGui::PushID("Scale");
+			if (ImGui::DragFloat3("", &scale[0], 0.1f))
+			{
+				updateScale();
+			}
+			ImGui::PopID();
+
+			ImGui::Text("Rotation");
+			ImGui::SameLine(70);
+			ImGui::PushID("Rotation");
+			if (ImGui::DragFloat3("", &rotation[0], 0.1f))
+			{
+				updateRotate();
+			}
+			ImGui::PopID();
+		}
 	}
 }
