@@ -427,10 +427,7 @@ void ModuleSceneMain::drawAABB(const AABB& aabb)
 void ModuleSceneMain::makeQuadTree()
 {
 	queue<GameObject*> queue;
-	quadtree->clear();
-	quadtree = new QuadTree();
-	quadtree->create(limits);
-
+	list<GameObject*> listStaticMeshObjects;
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
 		queue.push((*it));
@@ -441,9 +438,12 @@ void ModuleSceneMain::makeQuadTree()
 		GameObject* gameObject = queue.front();
 		queue.pop();
 
-		if(gameObject->staticFlag == true)
+		for (vector<Component*>::iterator it = gameObject->components.begin(); it != gameObject->components.end(); ++it)
 		{
-			quadtree->insert(gameObject);
+			if (MESH == (*it)->typeComponent &&gameObject->staticFlag == true)
+			{
+				listStaticMeshObjects.push_back(gameObject);
+			}
 		}
 
 		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
@@ -451,4 +451,5 @@ void ModuleSceneMain::makeQuadTree()
 			queue.push((*it));
 		}
 	}
+	quadtree->insertAll(listStaticMeshObjects);
 }

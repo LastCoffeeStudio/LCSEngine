@@ -3,6 +3,7 @@
 #include <list>
 #include <vector>
 #include "MathGeoLib/src/Geometry/AABB.h"
+#include <queue>
 
 class GameObject;
 
@@ -21,13 +22,14 @@ public:
 	void create(const math::AABB &limits);
 	void clear();
 	void insert(GameObject* gameObject);
-	void insertAll(const std::vector<GameObject*> &gameObjects);
+	void insertAll(std::list<GameObject*> &gameObjects);
 	void remove(GameObject* gameObject); //OPTIONAL NOT USED
 	template<typename T>
 	inline void intersect(std::vector<GameObject*> &resultGameObjects, const T& primitive);
 	
 public:
 	QuadNode* root = nullptr;
+	int numGameObjectInNode = 3;
 
 private:
 	void inizialiceChildrens(QuadNode* nodeToCheck);

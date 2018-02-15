@@ -153,11 +153,13 @@ void GameObject::setStaticValueToChildrens()
 			queue.push((*it));
 		}
 	}
+	App->sceneMain->makeQuadTree();
 }
 
 void GameObject::setStaticFlag(bool flag) {
 	staticFlag = flag;
 	staticPreviousValue = flag;
+	App->sceneMain->makeQuadTree();
 }
 
 void GameObject::drawComponentsGui()
