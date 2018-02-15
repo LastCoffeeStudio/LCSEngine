@@ -27,47 +27,46 @@ void QuadTree::clear()
 void QuadTree::insert(GameObject* gameObject)
 {
 	SDL_assert(gameObject != nullptr);
-	list<GameObject*> objectsToInsert;
-	objectsToInsert.push_back(gameObject);
 	QuadNode* nodeToCheck = root;
+	GameObject* gameObjectToInsert = gameObject;
+	list<pair<GameObject*, QuadNode*> > gameObjectNodeList;
+	gameObjectNodeList.push_front({ gameObject, root });
 
-	while(nodeToCheck != nullptr)
+	//while list Pair not empty
+	while (gameObjectNodeList.empty() == false)
 	{
-		if(nodeToCheck->myGameObjects.empty() == true && nodeToCheck->children[0] == nullptr)
+		gameObjectToInsert = gameObjectNodeList.front().first;
+		nodeToCheck = gameObjectNodeList.front().second;
+
+		if (nodeToCheck->myGameObjects.size() <= numGameObjectInNode && nodeToCheck->children[0] == nullptr)
 		{
-			nodeToCheck->myGameObjects.push_back(objectsToInsert.front());
-			objectsToInsert.pop_front();
+			nodeToCheck->myGameObjects.push_back(gameObjectToInsert);
+			gameObjectNodeList.pop_front();
 		}
-		else if(nodeToCheck->myGameObjects.empty() == false && nodeToCheck->children[0] == nullptr)
+		else if(nodeToCheck->myGameObjects.size() > numGameObjectInNode && nodeToCheck->children[0] == nullptr)
 		{
-			//Si el nodo tiene 1 objecto, tendre que añadir 2 objetos (el nuevo mas el que tiene el nodo).
-			//Creo los hijos, añado un objeto, me mantengo en este nodo porque me queda añadir el otro objeto.
 			inizialiceChildrens(nodeToCheck);
-			objectsToInsert.push_back(nodeToCheck->myGameObjects.front());
+
+			for(int i = 0; i < nodeToCheck->myGameObjects.size(); ++i)
+			{
+				gameObjectNodeList.push_back({ nodeToCheck->myGameObjects[i], nodeToCheck });
+			}
 			nodeToCheck->myGameObjects = vector<GameObject*>();
-			QuadNode* nodeToPut = getChildToPutGameObject(objectsToInsert.front(), nodeToCheck);
-			SDL_assert(nodeToPut != nullptr);
-			nodeToPut->myGameObjects.push_back(objectsToInsert.front());
-			objectsToInsert.pop_front();
 		}
 		else
 		{
-			QuadNode* nodeToPut = getChildToPutGameObject(objectsToInsert.front(), nodeToCheck);
+			QuadNode* nodeToPut = getChildToPutGameObject(gameObjectToInsert, nodeToCheck);
 			SDL_assert(nodeToPut != nullptr);
 
 			if(nodeToPut == nodeToCheck)
 			{
-				nodeToCheck->myGameObjects.push_back(objectsToInsert.front());
-				objectsToInsert.pop_front();
+				nodeToCheck->myGameObjects.push_back(gameObjectToInsert);
+				gameObjectNodeList.pop_front();
 			}
 			else
 			{
-				nodeToCheck = nodeToPut;
+				gameObjectNodeList.front().second = nodeToPut;
 			}
-		}
-		if(objectsToInsert.empty() == true)
-		{
-			nodeToCheck = nullptr;
 		}
 	}
 
@@ -75,14 +74,18 @@ void QuadTree::insert(GameObject* gameObject)
 
 void QuadTree::insertAll(list<GameObject*>& gameObjects)
 {
-	float3 min;
-	float3 max;
+	float minX, minY, minZ;
+	float maxX, maxY, maxZ;
 	list<GameObject*>::iterator it = gameObjects.begin();
 
 	if(it != gameObjects.end())
 	{
-		min = (*it)->obb.CornerPoint(0);
-		max = (*it)->obb.CornerPoint(7);
+		minX = (*it)->obb.CornerPoint(0).x;
+		minY = (*it)->obb.CornerPoint(0).y;
+		minZ = (*it)->obb.CornerPoint(0).z;
+		maxX = (*it)->obb.CornerPoint(7).x;
+		maxY = (*it)->obb.CornerPoint(7).y;
+		maxZ = (*it)->obb.CornerPoint(7).z;
 	}else
 	{
 		return;
@@ -90,10 +93,14 @@ void QuadTree::insertAll(list<GameObject*>& gameObjects)
 
 	for(; it != gameObjects.end(); ++it)
 	{
-		min = Min(min, (*it)->obb.CornerPoint(0));
-		max = Max(max, (*it)->obb.CornerPoint(7));
+		minX = MIN(minX, (*it)->obb.CornerPoint(0).x);
+		minY = MIN(minY, (*it)->obb.CornerPoint(0).y);
+		minZ = MIN(minZ, (*it)->obb.CornerPoint(0).z);
+		maxX = MAX(maxX, (*it)->obb.CornerPoint(7).x);
+		maxY = MAX(maxY, (*it)->obb.CornerPoint(7).y);
+		maxZ = MAX(maxZ, (*it)->obb.CornerPoint(7).z);
 	}
-	AABB newLimit = AABB(min, max);
+	AABB newLimit = AABB({ minX, minY, minZ }, { maxX, maxY, maxZ});
 	create(newLimit);
 
 	it = gameObjects.begin();
@@ -148,7 +155,7 @@ void QuadTree::inizialiceChildrens(QuadNode* nodeToCheck)
 	nodeToCheck->children[0]->limit = newAABB;
 
 	nodeToCheck->children[1] = new QuadNode();
-	newAABB.maxPoint = { centerPoint.x, nodeToCheck->limit.MaxY(), centerPoint.y };
+	newAABB.maxPoint = { centerPoint.x, nodeToCheck->limit.MaxY(), centerPoint.z };
 	newAABB.minPoint = { nodeToCheck->limit.MinX(), nodeToCheck->limit.MinY(),nodeToCheck->limit.MinZ() };
 	nodeToCheck->children[1]->limit = newAABB;
 
