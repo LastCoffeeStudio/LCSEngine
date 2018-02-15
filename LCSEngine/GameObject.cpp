@@ -38,7 +38,7 @@ void GameObject::preUpdate()
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 
-	if (staticPreviousValue != staticFlag)
+	if (staticPreviousValue != staticFlag && children.size() > 0)
 	{
 		App->gui->show_static_popup = true;
 		staticPreviousValue = staticFlag;
@@ -54,7 +54,6 @@ void GameObject::preUpdate()
 				//Check if the element is static, in that case the transform is the identity
 				if (staticFlag)
 				{
-					id = float4x4::identity;
 					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
 				}
 				else
@@ -107,6 +106,10 @@ void GameObject::addComponent(Component* component)
 	if (!alreadyHave)
 	{
 		components.push_back(component);
+		if (component->typeComponent == MESH && staticFlag)
+		{
+			App->sceneMain->rebuildQuadTree = true;
+		}
 	}
 }
 
@@ -116,6 +119,10 @@ void GameObject::deleteComponent(Component* component)
 	{
 		if (*it == component)
 		{
+			if ((*it)->typeComponent == MESH && staticFlag)
+			{
+				App->sceneMain->rebuildQuadTree = true;
+			}
 			RELEASE(*it);
 			it = components.erase(it);
 			return;
@@ -153,13 +160,11 @@ void GameObject::setStaticValueToChildrens()
 			queue.push((*it));
 		}
 	}
-	App->sceneMain->makeQuadTree();
 }
 
 void GameObject::setStaticFlag(bool flag) {
 	staticFlag = flag;
 	staticPreviousValue = flag;
-	App->sceneMain->makeQuadTree();
 }
 
 void GameObject::drawComponentsGui()
@@ -183,7 +188,7 @@ void GameObject::drawComponentsGui()
 	if(ImGui::Checkbox("Static", &staticFlag)) {
 		if(staticFlag == true)
 		{
-				App->sceneMain->makeQuadTree();
+			App->sceneMain->rebuildQuadTree = true;
 		}
 	};
 

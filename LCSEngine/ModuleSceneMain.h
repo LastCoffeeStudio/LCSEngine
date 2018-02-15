@@ -44,6 +44,7 @@ public:
 	QuadTree* quadtree = nullptr;
 	AABB limits;
 	bool drawZbuffer = false;
+	bool rebuildQuadTree = false;
 	std::list<GameObject*> garbageCollector;
 
 private:

@@ -321,10 +321,12 @@ void ModuleGUI::showStaticChildernPopUp()
 	{
 		App->sceneMain->currentObject->setStaticValueToChildrens();
 		show_static_popup = false;
+		App->sceneMain->rebuildQuadTree = true;
 	}
 	ImGui::SameLine();
 	if (ImGui::Button("No, this object only"))
 	{
+		App->sceneMain->rebuildQuadTree = true;
 		show_static_popup = false;
 	}
 	ImGui::End();
