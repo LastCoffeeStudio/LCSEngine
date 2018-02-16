@@ -449,3 +449,18 @@ void GameObject::drawFrustum(Frustum frustum)
 
 	glEnd();
 }
+
+vector<Component*> GameObject::getComponents(TypeComponent type)
+{
+	vector<Component*> comps;
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->typeComponent == type)
+		{
+			comps.push_back((*it));
+		}
+	}
+
+	return comps;
+}

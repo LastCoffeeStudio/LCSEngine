@@ -21,6 +21,7 @@ public:
 	Quat rotationQad = Quat({ 0.0f, 0.0f, 1.0f }, 0.0f);
 	float4x4 transform;
 	void updateTransform();
+	void updateTransform(float* trans);
 
 private:
 
@@ -28,6 +29,10 @@ public:
 	float4x4 matrixTranslate;
 	float4x4 matrixScale;
 	float4x4 matrixRotate;
+
+	void updateTranslate();
+	void updateScale();
+	void updateRotate();
 };
 
 #endif //__TRANSFORMCOMPONENT_H__

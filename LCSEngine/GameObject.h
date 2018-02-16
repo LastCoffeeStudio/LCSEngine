@@ -30,6 +30,7 @@ public:
 	void drawFrustum(Frustum frustum);
 	void setStaticValueToChildrens();
 	void setStaticFlag(bool flag);
+	vector<Component*> getComponents(TypeComponent type);
 
 public:
 	string name = "GameObject";

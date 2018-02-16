@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Mizel\Source\Repos\LCSEngine\LCSEngine\assimp\assimp;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Mizel\Source\Repos\LCSEngine\LCSEngine\assimp\Release;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Mizel\Source\Repos\LCSEngine\LCSEngine\assimp\assimp;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Mizel\Source\Repos\LCSEngine\LCSEngine\assimp\Release;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -92,7 +92,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -121,7 +121,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -151,6 +151,7 @@
     <ClInclude Include="CubeShape.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
+    <ClInclude Include="ImGuizmo.h" />
     <ClInclude Include="Imgui\imconfig.h" />
     <ClInclude Include="Imgui\imgui.h" />
     <ClInclude Include="Imgui\imgui_impl_sdl_gl3.h" />
@@ -219,6 +220,7 @@
     <ClInclude Include="MathGeoLib\src\Math\TransformOps.h" />
     <ClInclude Include="MathGeoLib\src\Time\Clock.h" />
     <ClInclude Include="MeshComponent.h" />
+    <ClInclude Include="Model.h" />
     <ClInclude Include="Module.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCamera.h" />
@@ -247,6 +249,7 @@
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="CubeShape.cpp" />
     <ClCompile Include="GameObject.cpp" />
+    <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
     <ClCompile Include="Imgui\imgui_demo.cpp" />
     <ClCompile Include="Imgui\imgui_draw.cpp" />
@@ -286,6 +289,7 @@
     <ClCompile Include="MathGeoLib\src\Math\TransformOps.cpp" />
     <ClCompile Include="MathGeoLib\src\Time\Clock.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
+    <ClCompile Include="Model.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />

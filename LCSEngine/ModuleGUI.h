@@ -5,6 +5,7 @@
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
 #include "Glew/include/glew.h"
+#include "MathGeoLib\src\Math\float4x4.h"
 
 class GameObject;
 
@@ -42,6 +43,7 @@ private:
 	void showHierarchy();
 	void showStaticChildernPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
+	void showGizmo();
 
 	void putHyperlink(const char* link);
 

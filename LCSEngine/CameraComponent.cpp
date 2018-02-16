@@ -29,6 +29,16 @@ float* CameraComponent::getProjectMatrix()
 	return frustum.ProjectionMatrix().Transposed().v[0];
 }
 
+float* CameraComponent::getViewMatrix4x4()
+{
+	return ((float4x4)frustum.ViewMatrix()).Transposed().ptr();
+}
+
+float4x4 CameraComponent::getViewProjectMatrix()
+{
+	return frustum.ViewProjMatrix();
+}
+
 void CameraComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Camera"))

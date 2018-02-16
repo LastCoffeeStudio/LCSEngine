@@ -18,7 +18,9 @@ public:
 	update_status update(float deltaTime);
 	bool cleanUp();
 	float* getViewMatrix();
+	float* getViewMatrix4x4();
 	float* getProjectMatrix();
+	float4x4 getViewProjectMatrix();
 	void updatedWindowSize(int screenWidth, int screenHeight);
 	void cameraZoom(float deltaTime);
 	void cameraRotation(float deltaTime);

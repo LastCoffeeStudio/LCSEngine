@@ -333,6 +333,12 @@
     <ClInclude Include="PhysRaycast.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="Model.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="ImGuizmo.h">
+      <Filter>Imgui</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -520,6 +526,12 @@
     </ClCompile>
     <ClCompile Include="PhysRaycast.cpp">
       <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="Model.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="ImGuizmo.cpp">
+      <Filter>Imgui</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
