@@ -67,7 +67,7 @@ void Primitive::drawDirectMode() {}
 void Primitive::drawVBO()
 {
 	//TODO: If more textures, on each primitive, indicate a GLuint for the texture applied to it
-	if (App->sceneMain->actual != nullptr)
+	/*if (App->sceneMain->actual != nullptr)
 	{
 		glBindTexture(GL_TEXTURE_2D, App->sceneMain->actual->ID);
 	}
@@ -78,18 +78,20 @@ void Primitive::drawVBO()
 
 	float4x4 id = float4x4::identity;
 
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	glEnableVertexAttribArray(0);
+	glEnableVertexAttribArray(0);*/
 	
 	/*glVertexPointer(3, GL_FLOAT, 0, NULL);
 	glBindBuffer(GL_ARRAY_BUFFER, idColVBO);
@@ -97,13 +99,13 @@ void Primitive::drawVBO()
 	glBindBuffer(GL_ARRAY_BUFFER, idTexCoordVBO);
 	glTexCoordPointer(2, GL_FLOAT, 0, NULL);*/
 
-	glDrawArrays(GL_TRIANGLES, 0, verticesVBO.size());
+	/*glDrawArrays(GL_TRIANGLES, 0, verticesVBO.size());
 
 	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
 	glDisableClientState(GL_COLOR_ARRAY);
 	glDisableClientState(GL_VERTEX_ARRAY);
 
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glBindTexture(GL_TEXTURE_2D, 0);*/
 }
 
 void Primitive::drawVertexArray()

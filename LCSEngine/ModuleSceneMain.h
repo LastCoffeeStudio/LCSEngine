@@ -42,7 +42,6 @@ public:
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;
 	QuadTree* quadtree = nullptr;
-	AABB limits;
 	bool drawZbuffer = false;
 	std::list<GameObject*> garbageCollector;
 

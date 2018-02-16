@@ -47,9 +47,9 @@ bool ModuleSceneMain::init()
 	actual = checkers;
 	shader = new Shader();
 	quadtree = new QuadTree();
-	const float3 min = { -20.0f, -20.0f, -20.0f };
-	const float3 max = { 20.0f, 20.0f, 20.0f };
-	limits = AABB(min, max);
+	float3 min = { 0.0f, 0.0f, 0.0f };
+	float3 max = { 0.0f, 0.0f, 0.0f };
+	AABB limits = AABB(min, max);
 	quadtree->create(limits);
 	return true;
 }
@@ -272,29 +272,27 @@ void ModuleSceneMain::drawGameObjects(GameObject* gameObject)
 
 void ModuleSceneMain::drawGrid()
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	GLuint program = shader->programs[shader->defaultShaders[DEFAULTSHADER]];
+	glUseProgram(program);
 
-	float4x4 id = float4x4::identity;
+	float4x4 identity = float4x4::identity;
 
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-	//Draw grid
-	float size = ImGui::GetWindowSize().x;
-	if (ImGui::GetWindowSize().y > size) size = ImGui::GetWindowSize().y;
 
 	float3 cameraPos = App->camera->currentCamera->frustum.pos;
 
+	glBegin(GL_LINES);
+
+	//TODO: All vertices must be stored in VBO's, and calls to glVertex3f and glColor3f must be removed.
 	if (Distance(float2(cameraPos.x, cameraPos.z), float2(0.0f, 0.0f)) < sqrt(pow(POS_LINES_GRID, 2) + pow(POS_LINES_GRID, 2)))
 	{
-		glBegin(GL_LINES);
 		// draw line for x axis
 		glColor3f(1.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
@@ -307,46 +305,36 @@ void ModuleSceneMain::drawGrid()
 		glColor3f(0.0, 0.0, 1.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 1.0);
-		glEnd();
 	}
-
+	
 	for (unsigned int i = 0; i <= COUNT_LINES_GRID; i += DIST_BTW_LINES_GRID)
 	{
-		glBegin(GL_LINES);
 		glColor3f(1.0f, 1.0f, 1.0f);
 		//Linies en X
 		glVertex3f(-POS_LINES_GRID + floor(cameraPos.x), 0.0f, (float)i - POS_LINES_GRID + floor(cameraPos.z));
 		glVertex3f(POS_LINES_GRID + floor(cameraPos.x), 0.0f, (float)i - POS_LINES_GRID + floor(cameraPos.z));
-		glEnd();
-		glBegin(GL_LINES);
 		glColor3f(1.0f, 1.0f, 1.0f);
 		//Linies en Y
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, -POS_LINES_GRID + floor(cameraPos.z));
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, POS_LINES_GRID + floor(cameraPos.z));
-		glEnd();
 	}
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
+	glEnd();
 }
 
 void ModuleSceneMain::swapDefaultShader()
 {
-	if (drawZbuffer)
+	//Keep this commented until we have a render queue, so it'll be easier to handle drawing ZBuffer on all the scene,
+	//instead of changing program ID on every part of the code where glUseProgram is called.
+
+	/*if (drawZbuffer)
 	{
-		shader->fshaderID = shader->readShader("Assets/Shaders/fragshader.txt", GL_FRAGMENT_SHADER);
 		drawZbuffer = false;
 	}
 	else
 	{
-		shader->fshaderID = shader->readShader("Assets/Shaders/fragshaderZbuffer.txt", GL_FRAGMENT_SHADER);
+		glUseProgram(shader->programs[shader->defaultShaders[ZBUFFERSHADER]]);
 		drawZbuffer = true;
-	}
-	shader->linkShaders();
-	glUseProgram(shader->shaderProgram);
+	}*/
 }
 
 void ModuleSceneMain::drawQuadTree()
@@ -375,18 +363,18 @@ void ModuleSceneMain::drawQuadTree()
 
 void ModuleSceneMain::drawAABB(const AABB& aabb)
 {
-	float4x4 identity = float4x4::identity;
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+	GLuint program = shader->programs[shader->defaultShaders[DEFAULTSHADER]];
 
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	glUseProgram(program);
+	float4x4 identity = float4x4::identity;
+
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 	glBegin(GL_LINES);
@@ -416,12 +404,6 @@ void ModuleSceneMain::drawAABB(const AABB& aabb)
 	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
 	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
 	glEnd();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void ModuleSceneMain::makeQuadTree()

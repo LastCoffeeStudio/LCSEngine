@@ -13,7 +13,65 @@ Shader::Shader()
 
 Shader::~Shader() {}
 
-GLuint Shader::loadShader(const char* shader, GLenum shaderType)
+bool Shader::loadShaders(const char* vshaderFile, const char* fshaderFile, string name)
+{
+	if (programs.find(name) != programs.end())
+	{
+		LOG("This shader name already exists");
+		return false;
+	}
+	shaderInfo* info = new shaderInfo();
+	info->name = name;
+
+	if (!readShader(vshaderFile, GL_VERTEX_SHADER, info->vshaderID))
+	{
+		LOG("Couldn't read vertex shader");
+		return false;
+	}
+	if (!readShader(fshaderFile, GL_FRAGMENT_SHADER, info->fshaderID))
+	{
+		LOG("Couldn't read fragment shader");
+		return false;
+	}
+
+	if (!linkShaders(info))
+	{
+		LOG("Couldn't create program");
+		return false;
+	}
+
+	shaders.push_back(info);
+}
+
+bool Shader::readShader(const char* filename, GLenum shaderType, GLuint& id)
+{
+	bool ret = false;
+	ifstream file;
+	file.open(filename, ios::in); // opens as ASCII!
+	if (file.is_open())
+	{
+		if (!file) "";
+
+		string shaderText = "";
+		string line;
+		while (getline(file, line))
+		{
+			shaderText += line + "\n";
+		}
+		file.close();
+
+		id = createShader(shaderText.c_str(), shaderType);
+		ret = true;
+	}
+	else
+	{
+		LOG("File couldn't be opened");
+	}
+
+	return ret;
+}
+
+GLuint Shader::createShader(const char* shader, GLenum shaderType)
 {
 	GLuint shaderID;
 	shaderID = glCreateShader(shaderType);
@@ -32,11 +90,11 @@ GLuint Shader::loadShader(const char* shader, GLenum shaderType)
 	return shaderID;
 }
 
-void Shader::linkShaders()
+bool Shader::linkShaders(shaderInfo* info)
 {
-	shaderProgram = glCreateProgram();
-	glAttachShader(shaderProgram, vshaderID);
-	glAttachShader(shaderProgram, fshaderID);
+	GLuint shaderProgram = glCreateProgram();
+	glAttachShader(shaderProgram, info->vshaderID);
+	glAttachShader(shaderProgram, info->fshaderID);
 	glLinkProgram(shaderProgram);
 
 	GLint success;
@@ -45,35 +103,27 @@ void Shader::linkShaders()
 	if (!success) {
 		glGetProgramInfoLog(shaderProgram, 512, NULL, &infoLog);
 		LOG("Shader link error: %s", infoLog);
+		return false;
 	}
+	programs[info->name] = shaderProgram;
+
+	return true;
 }
 
 void Shader::initDefaultShaders()
 {
-	vshaderID = readShader("Assets/Shaders/vertshader.txt", GL_VERTEX_SHADER);
-	fshaderID = readShader("Assets/Shaders/fragshader.txt", GL_FRAGMENT_SHADER);
-
-	linkShaders();
-
-	glUseProgram(shaderProgram);
+	loadShaders("Assets/Shaders/vertshader.txt", "Assets/Shaders/fragshader.txt", "Default shader");
+	loadShaders("Assets/Shaders/vertshader.txt", "Assets/Shaders/fragshaderZbuffer.txt", "ZBuffer shader");
+	glUseProgram(programs["Default shader"]);
 }
 
-void Shader::cleanUp() {}
-
-GLuint Shader::readShader(char* filename, GLenum shaderType)
+void Shader::cleanUp()
 {
-	ifstream file;
-	file.open(filename, ios::in); // opens as ASCII!
-	if (!file) "";
-
-	string shaderText = "";
-	string line;
-	while (getline(file, line)) 
+	for (vector<shaderInfo*>::iterator it = shaders.begin(); it != shaders.end(); ++it)
 	{
-		shaderText += line + "\n";
+		glDetachShader(programs[(*it)->name], (*it)->vshaderID);
+		glDetachShader(programs[(*it)->name], (*it)->fshaderID);
+		glDeleteShader((*it)->vshaderID);
+		glDeleteShader((*it)->fshaderID);
 	}
-	file.close();
-
-	GLuint shaderID = loadShader(shaderText.c_str(), shaderType);
-	return shaderID;
 }

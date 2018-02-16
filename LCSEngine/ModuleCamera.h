@@ -34,7 +34,6 @@ public:
 
 private:
 	void moveCamera(float deltaTime);
-	void drawLine(float3 origin, float3 end);
 
 private:
 	LineSegment l;

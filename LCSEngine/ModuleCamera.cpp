@@ -2,17 +2,15 @@
 #include "ModuleCamera.h"
 #include "ModuleInput.h"
 #include "ModuleWindow.h"
+#include "ModuleSceneMain.h"
 #include "CameraComponent.h"
+#include "Shader.h"
+#include "PhysRaycast.h"
 #include "MathGeoLib/src/Math/float3x4.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/Quat.h"
 #include "Brofiler.h"
 #include <SDL.h>
-
-#include "Glew/include/glew.h"
-#include "Shader.h"
-#include "ModuleSceneMain.h"
-#include "PhysRaycast.h"
 
 ModuleCamera::ModuleCamera() {}
 
@@ -192,37 +190,4 @@ void ModuleCamera::onClickEvent()
 			App->sceneMain->currentObject = ray->gameObject;
 		}
 	}
-	/*DEBUG*/
-	drawLine(l.a, l.b);
-	/*END DEBUG*/
-}
-
-void ModuleCamera::drawLine(float3 origin, float3 end)
-{
-	float4x4 identity = float4x4::identity;
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
-
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
-
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
-	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
-	glBegin(GL_LINES);
-
-	glVertex3f(origin.x, origin.y, origin.z);
-	glVertex3f(end.x, end.y, end.z);
-
-	glEnd();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }

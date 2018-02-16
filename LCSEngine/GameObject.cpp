@@ -26,6 +26,7 @@ GameObject::GameObject(GameObject* parent, string name) : parent(parent), initia
 	addComponent(new TransformComponent(this));
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
+	program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 }
 
 GameObject::~GameObject() {}
@@ -66,6 +67,8 @@ void GameObject::preUpdate()
 				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
 				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
 				break;
+			case MATERIAL:
+				program = ((MaterialComponent*)(*it))->program;
 			}
 		}
 	}
@@ -114,6 +117,12 @@ void GameObject::deleteComponent(Component* component)
 {
 	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
 	{
+		//Reset program to default shaders
+		if ((*it)->typeComponent == MATERIAL)
+		{
+			program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+		}
+
 		if (*it == component)
 		{
 			RELEASE(*it);
@@ -222,34 +231,33 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
+	if (App->sceneMain->drawZbuffer == false)
+	{
+		glUseProgram(program);
+	}
+
 	//If has a mesh, draw it
 	if (idVertVBO != -1 && visible)
 	{
-		/*Then change bool forDraw to true*/
-		/*We need to modify this later to add the information in the queue for drawing*/
-		glEnableClientState(GL_VERTEX_ARRAY);
-		glEnableClientState(GL_COLOR_ARRAY);
-		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
+		//Then change bool forDraw to true
+		//We need to modify this later to add the information in the queue for drawing
 
-		GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+		//Pass uniform data
+		GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
 
-		GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+		GLint viewLoc = glGetUniformLocation(program, "view");
 		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-		GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
 
-		glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-		glDisableClientState(GL_COLOR_ARRAY);
-		glDisableClientState(GL_VERTEX_ARRAY);
-
-		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 		//drawAABB();
 		//drawOBB();
@@ -290,17 +298,13 @@ string GameObject::getFinalName(string name)
 
 void GameObject::drawAABB()
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 	glBegin(GL_LINES);
@@ -330,12 +334,6 @@ void GameObject::drawAABB()
 	glVertex3f(aabb.MinX(), aabb.MaxY(), aabb.MaxZ());
 	glVertex3f(aabb.MaxX(), aabb.MaxY(), aabb.MaxZ());
 	glEnd();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GameObject::drawOBB()
@@ -343,17 +341,13 @@ void GameObject::drawOBB()
 	AABB aabbAux = obb.MinimalEnclosingAABB();
 	float4x4 identity = float4x4::identity;
 
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 	glBegin(GL_LINES);
@@ -385,29 +379,19 @@ void GameObject::drawOBB()
 	glVertex3f(aabbAux.MaxX(), aabbAux.MaxY(), aabbAux.MaxZ());
 
 	glEnd();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void GameObject::drawFrustum(Frustum frustum)
 {
-	glEnableClientState(GL_VERTEX_ARRAY);
-	glEnableClientState(GL_COLOR_ARRAY);
-	glEnableClientState(GL_TEXTURE_COORD_ARRAY);
-
 	float4x4 identity = float4x4::identity;
 
-	GLint modelLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "model_matrix");
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
-	GLint viewLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "view");
+	GLint viewLoc = glGetUniformLocation(program, "view");
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
 
-	GLint projectLoc = glGetUniformLocation(App->sceneMain->shader->shaderProgram, "projection");
+	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 	glBegin(GL_LINES);
@@ -464,10 +448,4 @@ void GameObject::drawFrustum(Frustum frustum)
 	glVertex3f(frustum.CornerPoint(1).x, frustum.CornerPoint(1).y, frustum.CornerPoint(1).z);
 
 	glEnd();
-
-	glDisableClientState(GL_TEXTURE_COORD_ARRAY);
-	glDisableClientState(GL_COLOR_ARRAY);
-	glDisableClientState(GL_VERTEX_ARRAY);
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }

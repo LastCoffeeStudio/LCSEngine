@@ -2,6 +2,7 @@
 #define __MATERIALCOMPONENT_H__
 
 #include "Component.h"
+#include "Glew/include/glew.h"
 #include <string>
 
 class AssetTexture;
@@ -12,6 +13,9 @@ public:
 	MaterialComponent(GameObject* gameObject, bool isEnable = true);
 	~MaterialComponent();
 	void drawGUI();
+
+public:
+	GLuint program = 0;
 
 private:
 	AssetTexture * texture = nullptr;

@@ -1,9 +1,14 @@
+#include "Application.h"
+#include "ModuleSceneMain.h"
 #include "MaterialComponent.h"
+#include "Shader.h"
 #include "Imgui/imgui.h"
 
 MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Component(gameObject, isEnable, true)
 {
 	typeComponent = MATERIAL;
+	shaderName = App->sceneMain->shader->defaultShaders[DEFAULTSHADER];
+	program = App->sceneMain->shader->programs[shaderName];
 }
 
 MaterialComponent::~MaterialComponent() {}
@@ -23,23 +28,16 @@ void MaterialComponent::drawGUI()
 		ImGui::PopStyleColor(3);
 		ImGui::Text("Shader:"); ImGui::SameLine(0);
 		ImGui::PushID(1);
+		Shader* shader = App->sceneMain->shader;
 		if (ImGui::BeginMenu(shaderName.c_str()))
 		{
-			if (ImGui::MenuItem("Shader 1"))
+			for (vector<shaderInfo*>::iterator it = shader->shaders.begin(); it != shader->shaders.end(); ++it)
 			{
-				shaderName = "Shader 1";
-			}
-			if (ImGui::MenuItem("Shader 2"))
-			{
-				shaderName = "Shader 2";
-			}
-			if (ImGui::MenuItem("Shader 3"))
-			{
-				shaderName = "Shader 3";
-			}
-			if (ImGui::MenuItem("Shader 4"))
-			{
-				shaderName = "Shader 4";
+				if (ImGui::MenuItem(((*it)->name).c_str()))
+				{
+					shaderName = (*it)->name;
+					program = shader->programs[shaderName];
+				}
 			}
 			ImGui::EndMenu();
 		}

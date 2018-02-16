@@ -49,6 +49,7 @@ private:
 	string getFinalName(string name);
 	string initialName;
 	GLint idVertVBO = -1;
+	GLuint program = 0;
 	unsigned int sizeVertVBO = 0;
 
 	bool staticHasChanged = false;
