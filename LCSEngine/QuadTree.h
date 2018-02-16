@@ -29,7 +29,7 @@ public:
 	
 public:
 	QuadNode* root = nullptr;
-	int numGameObjectInNode = 3;
+	unsigned int numGameObjectInNode = 3;
 
 private:
 	void inizialiceChildrens(QuadNode* nodeToCheck);

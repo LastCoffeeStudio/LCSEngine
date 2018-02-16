@@ -41,6 +41,8 @@ bool Shader::loadShaders(const char* vshaderFile, const char* fshaderFile, strin
 	}
 
 	shaders.push_back(info);
+
+	return true;
 }
 
 bool Shader::readShader(const char* filename, GLenum shaderType, GLuint& id)

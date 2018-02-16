@@ -47,7 +47,7 @@ void QuadTree::insert(GameObject* gameObject)
 		{
 			inizialiceChildrens(nodeToCheck);
 
-			for(int i = 0; i < nodeToCheck->myGameObjects.size(); ++i)
+			for(unsigned int i = 0; i < nodeToCheck->myGameObjects.size(); ++i)
 			{
 				gameObjectNodeList.push_back({ nodeToCheck->myGameObjects[i], nodeToCheck });
 			}
