@@ -63,12 +63,12 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
 	BROFILER_CATEGORY("PreUpdateSceneMain", Profiler::Color::Orchid)
 	clearGameObjects();
+	preUpdateGameObjects();
 	if (rebuildQuadTree)
 	{
 		makeQuadTree();
 		rebuildQuadTree = false;
 	}
-	preUpdateGameObjects();
 	return UPDATE_CONTINUE;
 }
 
@@ -134,6 +134,8 @@ void ModuleSceneMain::clearGameObjects()
 			RELEASE(*it);
 		}
 		garbageCollector.clear();
+
+		rebuildQuadTree = true;
 	}
 }
 

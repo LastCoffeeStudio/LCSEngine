@@ -43,7 +43,6 @@ public:
 	float4x4 id;
 	AABB aabb;
 	OBB obb;
-	//bool suicide = false;
 	bool visible = true;
 
 private:

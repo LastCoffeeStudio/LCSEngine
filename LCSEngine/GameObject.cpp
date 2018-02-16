@@ -120,18 +120,22 @@ void GameObject::deleteComponent(Component* component)
 {
 	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
 	{
-		//Reset program to default shaders
-		if ((*it)->typeComponent == MATERIAL)
-		{
-			program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
-		}
-
 		if (*it == component)
 		{
-			if ((*it)->typeComponent == MESH && staticFlag)
+			switch ((*it)->typeComponent)
 			{
-				App->sceneMain->rebuildQuadTree = true;
+			case MESH:
+				if (staticFlag)
+				{
+					App->sceneMain->rebuildQuadTree = true;
+				}
+				break;
+
+			case MATERIAL:
+				program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+				break;
 			}
+
 			RELEASE(*it);
 			it = components.erase(it);
 			return;
@@ -195,10 +199,7 @@ void GameObject::drawComponentsGui()
 	ImGui::Separator();
 
 	if(ImGui::Checkbox("Static", &staticFlag)) {
-		if(staticFlag == true)
-		{
-			App->sceneMain->rebuildQuadTree = true;
-		}
+		App->sceneMain->rebuildQuadTree = true;
 	};
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
