@@ -61,16 +61,19 @@ void TransformComponent::drawGUI()
 			ImGui::Text("Position");
 			ImGui::SameLine(78);
 			ImGui::PushID("Position");
+			ImGui::InputFloat3("", &position[0], -1, ImGuiInputTextFlags_ReadOnly);
 			ImGui::PopID();
 
 			ImGui::Text("Scale");
 			ImGui::SameLine(70);
 			ImGui::PushID("Scale");
+			ImGui::InputFloat3("", &scale[0], -1, ImGuiInputTextFlags_ReadOnly);
 			ImGui::PopID();
 
 			ImGui::Text("Rotation");
 			ImGui::SameLine(70);
 			ImGui::PushID("Rotation");
+			ImGui::InputFloat3("", &rotation[0], -1, ImGuiInputTextFlags_ReadOnly);
 			ImGui::PopID();
 		}
 		else
