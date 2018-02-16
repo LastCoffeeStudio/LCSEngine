@@ -43,6 +43,7 @@ public:
 	GameObject* currentObject = nullptr;
 	QuadTree* quadtree = nullptr;
 	bool drawZbuffer = false;
+	bool rebuildQuadTree = false;
 	std::list<GameObject*> garbageCollector;
 
 private:
