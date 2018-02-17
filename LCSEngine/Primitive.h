@@ -1,9 +1,11 @@
 #ifndef __PRIMITIVE_H__
 #define __PRIMITIVE_H__
 
-#include "Glew/include/glew.h"
 #include <vector>
+
 using namespace std;
+
+typedef unsigned int GLuint;
 
 enum RenderMode
 {

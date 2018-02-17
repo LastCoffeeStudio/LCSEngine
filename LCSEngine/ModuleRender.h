@@ -2,11 +2,24 @@
 #define __MODULERENDER_H__
 
 #include "Module.h"
-#include "Globals.h"
+#include "MathGeoLib/src/Math/float4x4.h"
+#include <map>
+#include <list>
+
+typedef unsigned int GLuint;
+typedef int GLint;
 
 struct SDL_Texture;
 struct SDL_Renderer;
 struct SDL_Rect;
+
+struct renderData
+{
+	float4x4 id;
+	GLint idVertVBO;
+	GLuint sizeVertVBO;
+	//Later we will add textures data
+};
 
 class ModuleRender : public Module
 {
@@ -25,6 +38,11 @@ public:
 public:
 	SDL_Renderer* renderer = nullptr;
 	bool wireframe = false;
+	std::multimap<GLuint, renderData> renderQueue;
+
+private:
+	void swap();
+	void renderObjects();
 };
 
 #endif // __MODULERENDER_H__

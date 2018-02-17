@@ -10,6 +10,7 @@
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "ModuleRender.h"
 #include "ModuleGUI.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -237,38 +238,19 @@ void GameObject::drawComponentsGui()
 
 void GameObject::draw()
 {
-	if (App->sceneMain->drawZbuffer == false)
-	{
-		glUseProgram(program);
-	}
-
-	//If has a mesh, draw it
 	if (idVertVBO != -1 && visible)
 	{
-		//Then change bool forDraw to true
-		//We need to modify this later to add the information in the queue for drawing
-
-		//Pass uniform data
-		GLint modelLoc = glGetUniformLocation(program, "model_matrix");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
-
-		GLint viewLoc = glGetUniformLocation(program, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
-
-		GLint projectLoc = glGetUniformLocation(program, "projection");
-		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
-		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
-
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		renderData data;
+		data.id = id;
+		data.idVertVBO = idVertVBO;
+		data.sizeVertVBO = sizeVertVBO;
+		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
 		//drawAABB();
 		//drawOBB();
 	}
 
+	//TODO: AABB, OBB and Frustum data must be passed as VBO data, so we can add them to the render queue
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		if ((*it)->typeComponent == CAMERA && (*it)->isEnable)

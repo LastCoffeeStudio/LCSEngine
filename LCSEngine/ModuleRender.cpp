@@ -5,6 +5,7 @@
 #include "ModuleGUI.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "Shader.h"
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
@@ -82,12 +83,6 @@ update_status ModuleRender::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-void swap()
-{
-	BROFILER_CATEGORY("SwapWindow", Profiler::Color::Orchid)
-	SDL_GL_SwapWindow(App->window->window);
-}
-
 update_status ModuleRender::postUpdate(float deltaTime)
 {
 	if (wireframe == true)
@@ -98,6 +93,9 @@ update_status ModuleRender::postUpdate(float deltaTime)
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
 	//SDL_GL_SwapWindow(App->window->window);
+
+	renderObjects();
+
 	swap();
 	return UPDATE_CONTINUE;
 }
@@ -109,10 +107,48 @@ bool ModuleRender::cleanUp()
 	return true;
 }
 
-
 void ModuleRender::updatedWindowSize(int screenWidth, int screenHeight)
 {
 	glViewport(0, 0, screenWidth, screenHeight);
 	App->window->width = screenWidth;
 	App->window->height = screenHeight;
+}
+
+void ModuleRender::swap()
+{
+	BROFILER_CATEGORY("SwapWindow", Profiler::Color::Orchid)
+		SDL_GL_SwapWindow(App->window->window);
+}
+
+void ModuleRender::renderObjects()
+{
+	Shader* shader = App->sceneMain->shader;
+	GLuint program = 0;
+
+	for (std::multimap<GLuint, renderData>::iterator it = renderQueue.begin(); it != renderQueue.end(); ++it)
+	{
+		if ((*it).first != program)
+		{
+			program = (*it).first;
+			glUseProgram(program);
+		}
+
+		GLint modelLoc = glGetUniformLocation(program, "model_matrix");
+		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &(*it).second.id[0][0]);
+
+		GLint viewLoc = glGetUniformLocation(program, "view");
+		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+
+		GLint projectLoc = glGetUniformLocation(program, "projection");
+		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+		glDrawArrays(GL_TRIANGLES, 0, (*it).second.sizeVertVBO);
+
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+	}
+
+	renderQueue.clear();
 }
