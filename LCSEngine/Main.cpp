@@ -5,6 +5,7 @@
 
 #pragma comment( lib, "SDL/libx86/SDL2.lib" )
 #pragma comment( lib, "SDL/libx86/SDL2main.lib" )
+#pragma comment(lib, "assimp/libx86/assimp-vc140-mt.lib") 
 
 #include "Glew/include/glew.h"
 #include "SDL/include/SDL_opengl.h"
