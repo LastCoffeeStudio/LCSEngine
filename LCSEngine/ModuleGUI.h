@@ -4,9 +4,9 @@
 #include "Module.h"
 #include "Imgui/imgui.h"
 #include "Imgui/imgui_impl_sdl_gl3.h"
-#include "Glew/include/glew.h"
 #include "MathGeoLib\src\Math\float4x4.h"
 
+typedef float GLfloat;
 class GameObject;
 
 class ModuleGUI : public Module

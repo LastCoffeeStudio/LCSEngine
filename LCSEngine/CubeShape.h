@@ -2,8 +2,8 @@
 #define __CUBESHAPE_H__
 
 #include "Primitive.h"
-#include "Glew/include/glew.h"
 #include <vector>
+
 using namespace std;
 
 class CubeShape : public Primitive

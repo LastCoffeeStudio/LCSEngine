@@ -1,12 +1,14 @@
 #ifndef __SHADER_H_
 #define __SHADER_H_
 
-#include "Glew/include/glew.h"
 #include <fstream>
 #include <vector>
 #include <map>
 
 using namespace std;
+
+typedef unsigned int GLuint;
+typedef unsigned int GLenum;
 
 enum defaultShaders
 {

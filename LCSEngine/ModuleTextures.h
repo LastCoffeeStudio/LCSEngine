@@ -3,12 +3,14 @@
 
 #include "Module.h"
 #include "Globals.h"
-#include "Glew/include/glew.h"
 #include <list>
 
+typedef unsigned int ILenum;
+typedef unsigned char GLubyte;
+typedef unsigned int GLuint;
 struct SDL_Texture;
 class AssetTexture;
-typedef unsigned int ILenum;
+
 
 class ModuleTextures : public Module
 {
