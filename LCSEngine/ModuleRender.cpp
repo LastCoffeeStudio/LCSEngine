@@ -92,11 +92,10 @@ update_status ModuleRender::postUpdate(float deltaTime)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	App->sceneMain->draw();
+	renderObjects();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
 	//SDL_GL_SwapWindow(App->window->window);
-
-	renderObjects();
 
 	swap();
 	return UPDATE_CONTINUE;

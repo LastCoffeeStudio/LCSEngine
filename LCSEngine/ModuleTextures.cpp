@@ -9,6 +9,7 @@
 #include <stdlib.h> 
 #include <stdio.h> 
 #include "SDL_image/include/SDL_image.h"
+#include "assimp/include/scene.h"
 #pragma comment( lib, "SDL_image/libx86/SDL2_image.lib" )
 
 ModuleTextures::ModuleTextures() {}
@@ -37,6 +38,8 @@ bool ModuleTextures::init()
 
 	LOG("Init Devil Library");
 	ilInit();
+	iluInit();
+	ilutInit();
 
 	return ret;
 }
@@ -103,6 +106,54 @@ AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 	ilDeleteImages(1, &imageID);
 
 	return asset;
+}
+
+void const ModuleTextures::loadModelTextures(const aiScene* scene, std::map<unsigned int, AssetTexture*>& textures)
+{
+	ILboolean success;
+	ILenum error;
+	//Fill textures with all generated id textures from DevIL
+	for (unsigned int i = 0; i < scene->mNumMaterials; ++i)
+	{
+		aiString path;
+		//We suppose only one diffuse per material, so index is 0
+		aiReturn texture = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		if (texture == AI_SUCCESS)
+		{
+			ILuint imageID;
+			ilGenImages(1, &imageID);
+			ilBindImage(imageID);
+			success = ilutGLLoadImage((ILstring)path.data);
+			if (success)
+			{
+				ILinfo ImageInfo;
+				iluGetImageInfo(&ImageInfo);
+				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
+
+				GLuint textureID;
+				glGenTextures(1, &textureID);
+				glBindTexture(GL_TEXTURE_2D, textureID);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+				glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+				glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),
+					ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+				glBindTexture(GL_TEXTURE_2D, 0);
+
+				AssetTexture* asset = new AssetTexture(ImageInfo);
+				asset->ID = textureID;
+				asset->name = path.data;
+
+				textures[i] = asset;
+			}
+			else
+			{
+				error = ilGetError();
+				printf("Image load failed - IL reports error: %s\n", iluErrorString(error));
+			}
+		}
+	}
 }
 
 AssetTexture* const ModuleTextures::loadCheckers()

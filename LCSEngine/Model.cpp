@@ -1,4 +1,8 @@
+#include "Application.h"
 #include "Model.h"
+#include "ModuleTextures.h"
+#include "AssetTexture.h"
+
 
 #include "assimp/include/scene.h"
 #include "assimp/include/cimport.h"
@@ -12,6 +16,7 @@ Model::~Model() {}
 void Model::Load(const char* file)
 {
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
+	App->textures->loadModelTextures(scene, textures);
 }
 
 void Model::Clear()

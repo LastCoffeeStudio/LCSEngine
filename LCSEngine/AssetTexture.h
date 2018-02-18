@@ -17,12 +17,12 @@ public:
 
 public:
 	std::string name;
-	unsigned int width;
-	unsigned int height;
-	unsigned int depth;
-	unsigned int bpp;
-	unsigned int mips;
-	unsigned int bytes;
+	unsigned int width = 0;
+	unsigned int height = 0;
+	unsigned int depth = 0;
+	unsigned int bpp = 0;
+	unsigned int mips = 0;
+	unsigned int bytes = 0;
 	ILenum format = 0;
 	GLuint ID = 0;
 };
