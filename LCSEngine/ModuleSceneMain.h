@@ -7,6 +7,7 @@
 class Shader;
 class AssetTexture;
 class GameObject;
+class Component;
 class QuadTree;
 
 class ModuleSceneMain : public Module
@@ -22,6 +23,7 @@ public:
 	update_status postUpdate(float deltaTime);
 	bool cleanUp() override;
 	void clearGameObjects(); 
+	void clearComponents();
 	void preUpdateGameObjects();
 	void postUpdateGameObjects();
 	void draw();
@@ -45,6 +47,7 @@ public:
 	bool drawZbuffer = false;
 	bool rebuildQuadTree = false;
 	std::list<GameObject*> garbageCollector;
+	std::list<Component*> garbageCollectorComponent;
 
 private:
 	void drawAABB(const AABB& aabb);

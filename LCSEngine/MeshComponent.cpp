@@ -1,3 +1,5 @@
+#include "Application.h"
+#include "ModuleSceneMain.h"
 #include "MeshComponent.h"
 #include "Imgui/imgui.h"
 
@@ -59,7 +61,7 @@ void MeshComponent::drawGUI()
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(0.6f, 0.8f, 0.8f));
 		if (ImGui::Button("Delete Component"))
 		{
-			suicide = true;
+			App->sceneMain->garbageCollectorComponent.push_back(this);
 		}
 		ImGui::TextColored({0.8f, 0.8f, 0.3f, 1.f}, selected_preset == -1 ? "<None>" : presets[selected_preset]);
 		if (ImGui::Button("Change Preset.."))
