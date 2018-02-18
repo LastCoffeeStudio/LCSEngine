@@ -29,8 +29,6 @@ GameObject::GameObject(GameObject* parent, string name) : parent(parent), initia
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 	program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
-	model = new Model();
-	model->Load("Assets/Models/BakerHouse.fbx");
 }
 
 GameObject::~GameObject() {}
@@ -69,6 +67,10 @@ void GameObject::preUpdate()
 			case MESH:
 				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
 				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
+				idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
+				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
+				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
+				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;
@@ -245,28 +247,16 @@ void GameObject::draw()
 	{
 		//Then change bool forDraw to true
 		//We need to modify this later to add the information in the queue for drawing
-
-		
-		//Pass uniform data
-		GLint modelLoc = glGetUniformLocation(program, "model_matrix");
-		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
-
-		GLint viewLoc = glGetUniformLocation(program, "view");
-		glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
-
-		GLint projectLoc = glGetUniformLocation(program, "projection");
-		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
-		//model->Draw();
-
-		//COMMENTED ONLY FOR TEST PURPOSE
 		
 		renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
+		data.idIdxVAO = idIdxVAO;
+		data.idNormalVBO = idNormalVBO;
+		data.sizeIdxVAO = sizeIdxVAO;
+		data.sizeNormalVBO = sizeNormalVBO;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
-		
 
 		//drawAABB();
 		//drawOBB();

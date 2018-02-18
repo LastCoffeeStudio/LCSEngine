@@ -18,6 +18,10 @@ struct renderData
 	float4x4 id;
 	GLint idVertVBO;
 	GLuint sizeVertVBO;
+	GLint idNormalVBO;
+	GLint idIdxVAO;
+	GLuint sizeNormalVBO;
+	GLuint sizeIdxVAO;
 	//Later we will add textures data
 };
 

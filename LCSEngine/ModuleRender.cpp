@@ -92,11 +92,11 @@ update_status ModuleRender::postUpdate(float deltaTime)
 		glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 	}
 	App->sceneMain->draw();
+	renderObjects();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
 	//SDL_GL_SwapWindow(App->window->window);
 
-	renderObjects();
 
 	swap();
 	return UPDATE_CONTINUE;
@@ -145,11 +145,21 @@ void ModuleRender::renderObjects()
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		glDrawArrays(GL_TRIANGLES, 0, (*it).second.sizeVertVBO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idNormalVBO);
+		glNormalPointer(GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
+		glIndexPointer(GL_UNSIGNED_INT, 0, NULL);
+
+		//glDrawArrays(GL_TRIANGLES, 0, (*it).second.sizeVertVBO);
+		glDrawElements(GL_TRIANGLES, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);
+
+
 	}
 
 	renderQueue.clear();

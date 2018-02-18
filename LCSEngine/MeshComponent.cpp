@@ -1,8 +1,10 @@
 #include "MeshComponent.h"
 #include "Imgui/imgui.h"
+#include "Model.h"
+#include "assimp/include/scene.h"
 
 static int selected_preset = 1;
-const char* presets[] = { "Triangle", "Cube", "Sphere" };
+const char* presets[] = { "House", "Cube", "Sphere" };
 
 MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
@@ -26,6 +28,7 @@ void MeshComponent::setPreset(PresetType type)
 void MeshComponent::loadPreset()
 {
 	verticesVBO.clear();
+	currentPreset = MODEL;
 	switch (currentPreset)
 	{
 		case CUBE:
@@ -33,9 +36,14 @@ void MeshComponent::loadPreset()
 			loadCube();
 			break;
 		}
-		case TRIANGLE:
+		case MODEL:
 		{
-
+			if (!model)
+			{
+				model = new Model();
+				model->Load("Assets/Models/BakerHouse.fbx");
+			}
+			loadModel();
 			break;
 		}
 		case SPHERE:
@@ -47,6 +55,14 @@ void MeshComponent::loadPreset()
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(idIdxVAO));
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
+
+	glGenBuffers(1, (GLuint*) &(idNormVBO));
+	glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);
 }
 
 void MeshComponent::drawGUI()
@@ -76,7 +92,7 @@ void MeshComponent::drawGUI()
 					//Set Mesh of preset selected
 					if (i == 0)
 					{
-						currentPreset = PresetType::TRIANGLE;
+						currentPreset = PresetType::MODEL;
 					}
 					else if (i == 1)
 					{
@@ -185,4 +201,45 @@ void MeshComponent::loadCube()
 		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
 		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f) };
 }
+
+void MeshComponent::loadModel()
+{
+	for (unsigned i = 0; i < model->scene->mRootNode->mNumChildren; ++i)
+	{
+		unsigned int meshNum = model->scene->mRootNode->mChildren[i]->mMeshes[0];
+		aiMesh* currentMesh = model->scene->mMeshes[meshNum];
+
+		for (int l = 0; l < currentMesh->mNumVertices; ++l) {
+			verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
+				currentMesh->mVertices[l].y,
+				currentMesh->mVertices[l].z));
+
+			normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
+				currentMesh->mNormals[l].y,
+				currentMesh->mNormals[l].z));
+		}
+
+		for (unsigned k = 0; k < currentMesh->mNumFaces; ++k)
+		{
+			for (unsigned j = 0; j < currentMesh->mFaces[k].mNumIndices; ++j)
+			{
+				unsigned int index = currentMesh->mFaces[k].mIndices[j];
+				indicesVAO.push_back(index);
+			}
+		}
+	}
+	
+	//glGenBuffers(1, (GLuint*) &(idNormVBO));
+	//glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);
+
+	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+	//glEnableVertexAttribArray(1);
+
+	
+	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (GLvoid*)0);
+	//glEnableVertexAttribArray(2);
+	
+}
+
 
