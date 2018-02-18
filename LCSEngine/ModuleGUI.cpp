@@ -82,6 +82,7 @@ update_status ModuleGUI::preUpdate(float deltaTime)
 update_status ModuleGUI::update(float deltaTime)
 {
 	BROFILER_CATEGORY("UpdateGUI", Profiler::Color::Orchid)
+
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
 
@@ -209,11 +210,29 @@ void ModuleGUI::showMainWindow()
 	// Menu
 	if (ImGui::BeginMainMenuBar())
 	{
-		if (ImGui::BeginMenu("Help"))
+		if (ImGui::BeginMenu("GameObject"))
 		{
-			if (ImGui::MenuItem("About LCSEngine"))
+			if (ImGui::MenuItem("Create Empty"))
 			{
-				show_engine_about ^= 1;
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+			}
+			ImGui::Separator();
+			if (ImGui::MenuItem("Cube"))
+			{
+				ComponentFactory* factory = ComponentFactory::getInstance();
+				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Cube");
+				gameobject->addComponent(factory->getComponent(MESH, gameobject));
+				App->sceneMain->currentObject->addGameObject(gameobject);
+			}
+			if (ImGui::MenuItem("Sphere"))
+			{
+				ComponentFactory* factory = ComponentFactory::getInstance();
+				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Sphere");
+				MeshComponent* component = (MeshComponent*)factory->getComponent(MESH, gameobject);
+				component->setPreset(SPHERE);
+
+				gameobject->addComponent(component);
+				App->sceneMain->currentObject->addGameObject(gameobject);
 			}
 
 			ImGui::EndMenu();
@@ -236,7 +255,15 @@ void ModuleGUI::showMainWindow()
 
 			ImGui::EndMenu();
 		}
+		if (ImGui::BeginMenu("Help"))
+		{
+			if (ImGui::MenuItem("About LCSEngine"))
+			{
+				show_engine_about ^= 1;
+			}
 
+			ImGui::EndMenu();
+		}
 		ImGui::EndMainMenuBar();
 	}
 

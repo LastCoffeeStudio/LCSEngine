@@ -257,16 +257,16 @@ void GameObject::draw()
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
-		model->Draw();
+		//model->Draw();
 
 		//COMMENTED ONLY FOR TEST PURPOSE
-		/*
+		
 		renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
-		*/
+		
 
 		//drawAABB();
 		//drawOBB();

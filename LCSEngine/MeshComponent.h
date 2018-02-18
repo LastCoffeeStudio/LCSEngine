@@ -10,7 +10,8 @@ enum PresetType
 {
 	TRIANGLE = 1,
 	CUBE,
-	SPHERE
+	SPHERE,
+	MODEL
 };
 
 class MeshComponent : public Component
@@ -24,9 +25,15 @@ public:
 	std::vector<float3> verticesVBO;
 	GLuint idVertVBO = 0;
 	float lengthX, lengthY, lengthZ;
+	void setPreset(PresetType type);
 
 public:
-	PresetType currentPreset = TRIANGLE;
+	PresetType currentPreset = CUBE;
+
+private:
+	void loadPreset();
+	void loadSphere();
+	void loadCube();
 };
 
 #endif //__MESHCOMPONENT_H__
