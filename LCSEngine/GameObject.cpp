@@ -17,6 +17,7 @@
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
 #include <queue>
+#include "Model.h"
 
 GameObject::GameObject() {}
 
@@ -27,6 +28,8 @@ GameObject::GameObject(GameObject* parent, string name) : parent(parent), initia
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 	program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+	model = new Model();
+	model->Load("Assets/Models/BakerHouse.fbx");
 }
 
 GameObject::~GameObject() {}
@@ -248,6 +251,7 @@ void GameObject::draw()
 		//Then change bool forDraw to true
 		//We need to modify this later to add the information in the queue for drawing
 
+		
 		//Pass uniform data
 		GLint modelLoc = glGetUniformLocation(program, "model_matrix");
 		glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &id[0][0]);
@@ -257,16 +261,22 @@ void GameObject::draw()
 
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
-
+		
+		//COMMENTED ONLY FOR TEST PURPOSE
+		/*
 		glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 		glDrawArrays(GL_TRIANGLES, 0, sizeVertVBO);
 
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		*/
+
+		model->Draw();
 
 		//drawAABB();
 		//drawOBB();
+		
 	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)

@@ -62,6 +62,8 @@ bool ModuleRender::init()
 	//glEnable(GL_LIGHT0);
 	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
+	glFrontFace(GL_CCW);
+	glCullFace(GL_BACK);
 	return ret;
 }
 

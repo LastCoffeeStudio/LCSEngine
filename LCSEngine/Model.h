@@ -2,11 +2,10 @@
 #define _MODEL_H_
 
 class aiScene;
+struct aiMesh;
 
 class Model
 {
-	const aiScene* scene = 0;
-
 public:
 	Model();
 	~Model();
@@ -14,6 +13,12 @@ public:
 	void Load(const char* file);
 	void Clear();
 	void Draw();
+
+public:
+	const aiScene* scene = 0;
+	
+private:
+	void DrawMesh(unsigned int meshNum);
 };
 
 #endif /*_MODEL_H_ */

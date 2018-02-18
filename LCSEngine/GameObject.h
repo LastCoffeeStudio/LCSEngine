@@ -11,6 +11,8 @@ using namespace std;
 
 class Component;
 class Transform;
+class Model;
+
 class GameObject
 {
 public:
@@ -44,6 +46,7 @@ public:
 	AABB aabb;
 	OBB obb;
 	bool visible = true;
+	Model* model = nullptr;
 
 private:
 	string getFinalName(string name);
