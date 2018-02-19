@@ -245,8 +245,13 @@ void GameObject::draw()
 {
 	if (idVertVBO != -1 && visible)
 	{
-		//Then change bool forDraw to true
-		//We need to modify this later to add the information in the queue for drawing
+		/*for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+		{
+			if ((*it)->typeComponent == MESH)
+			{
+				((MeshComponent*)(*it))->model->Draw();
+			}
+		}*/
 		
 		renderData data;
 		data.id = id;

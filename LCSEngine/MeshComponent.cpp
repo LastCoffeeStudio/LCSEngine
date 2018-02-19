@@ -60,9 +60,9 @@ void MeshComponent::loadPreset()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(idNormVBO));
+	/*glGenBuffers(1, (GLuint*) &(idNormVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);*/
 }
 
 void MeshComponent::drawGUI()
@@ -185,31 +185,33 @@ void MeshComponent::loadSphere()
 
 void MeshComponent::loadCube()
 {
-	verticesVBO.reserve(36);
+	verticesVBO.reserve(8);
+	indicesVAO.reserve(36);
 	lengthX = lengthY = lengthZ = 1.f;
 
-	verticesVBO = { float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
-		float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
-		float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
-		float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
-		float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
-		float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
-		float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f),
-		float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f),
-		float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
-		float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
-		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f),
-		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f) };
+	verticesVBO = { float3(-lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, lengthZ / 2.f),
+		float3(lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, lengthZ / 2.f),
+		float3(-lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f), float3(lengthX / 2.f, lengthY / 2.f, -lengthZ / 2.f),
+		float3(lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f), float3(-lengthX / 2.f, -lengthY / 2.f, -lengthZ / 2.f) };
+
+	indicesVAO = { 1, 3, 2, 1, 0, 3,
+		0, 7, 3, 0, 4, 7,
+		5, 2, 6, 5, 1, 2,
+		5, 0, 1, 5, 4, 0,
+		2, 7, 6, 2, 3, 7,
+		4, 6, 7, 4, 5, 6 };
 }
 
 void MeshComponent::loadModel()
 {
 	for (unsigned i = 0; i < model->scene->mRootNode->mNumChildren; ++i)
 	{
+		int verticesVBOsize = verticesVBO.size();
 		unsigned int meshNum = model->scene->mRootNode->mChildren[i]->mMeshes[0];
 		aiMesh* currentMesh = model->scene->mMeshes[meshNum];
 
-		for (int l = 0; l < currentMesh->mNumVertices; ++l) {
+		for (int l = 0; l < currentMesh->mNumVertices; ++l)
+		{
 			verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
 				currentMesh->mVertices[l].y,
 				currentMesh->mVertices[l].z));
@@ -224,22 +226,10 @@ void MeshComponent::loadModel()
 			for (unsigned j = 0; j < currentMesh->mFaces[k].mNumIndices; ++j)
 			{
 				unsigned int index = currentMesh->mFaces[k].mIndices[j];
-				indicesVAO.push_back(index);
+				indicesVAO.push_back(index + verticesVBOsize);
 			}
 		}
 	}
-	
-	//glGenBuffers(1, (GLuint*) &(idNormVBO));
-	//glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);
-
-	//glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-	//glEnableVertexAttribArray(1);
-
-	
-	//glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(GLfloat), (GLvoid*)0);
-	//glEnableVertexAttribArray(2);
-	
 }
 
 

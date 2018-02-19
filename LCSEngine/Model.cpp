@@ -22,7 +22,7 @@ void Model::Clear()
 void Model::Draw() {
 	for (unsigned i = 0; i < scene->mRootNode->mNumChildren; ++i)
 	{
-		DrawMesh(scene->mRootNode->mChildren[i]->mMeshes[0]);
+		DrawMesh(scene->mRootNode->mChildren[1]->mMeshes[0]);
 	}
 }
 
@@ -35,7 +35,7 @@ void Model::DrawMesh(unsigned int meshNum)
 		{
 			int index = scene->mMeshes[meshNum]->mFaces[i].mIndices[j];
 			
-			glNormal3fv(&scene->mMeshes[meshNum]->mNormals[index].x);
+			//glNormal3fv(&scene->mMeshes[meshNum]->mNormals[index].x);
 			glVertex3fv(&scene->mMeshes[meshNum]->mVertices[index].x);
 			if (scene->mMeshes[meshNum]->HasTextureCoords(index))
 			{
