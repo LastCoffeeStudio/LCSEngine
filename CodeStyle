@@ -59,6 +59,14 @@ void fuu() {}
 int a, b, c;
 bool res;
 
+//If the condition is a bool don't use == true/false
+if (boolCondition)
+{
+
+}
+
+//Use aserts if the function recieve a pointer.
+
 //Have fun!
 
 
