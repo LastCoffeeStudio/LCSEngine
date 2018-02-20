@@ -38,8 +38,6 @@ bool ModuleTextures::init()
 
 	LOG("Init Devil Library");
 	ilInit();
-	iluInit();
-	ilutInit();
 
 	return ret;
 }
@@ -104,7 +102,7 @@ AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 	}
 
 	ilDeleteImages(1, &imageID);
-
+	
 	return asset;
 }
 
@@ -118,12 +116,17 @@ void const ModuleTextures::loadModelTextures(const aiScene* scene, std::map<unsi
 		aiString path;
 		//We suppose only one diffuse per material, so index is 0
 		aiReturn texture = scene->mMaterials[i]->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		
 		if (texture == AI_SUCCESS)
 		{
 			ILuint imageID;
 			ilGenImages(1, &imageID);
 			ilBindImage(imageID);
-			success = ilutGLLoadImage((ILstring)path.data);
+			char p[100];
+			strcpy_s(p, 100, "Assets/Models/");
+			strcat_s(p, 100, path.data);
+			//success = ilLoadImage(path.data);
+			success = ilLoad(IL_PNG, p);
 			if (success)
 			{
 				ILinfo ImageInfo;
