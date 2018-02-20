@@ -46,12 +46,13 @@ void Model::DrawMesh(unsigned int meshNum)
 		{
 			int index = scene->mMeshes[meshNum]->mFaces[i].mIndices[j];
 			
-			glNormal3fv(&scene->mMeshes[meshNum]->mNormals[index].x);
+			//glNormal3fv(&scene->mMeshes[meshNum]->mNormals[index].x);
 			glVertex3fv(&scene->mMeshes[meshNum]->mVertices[index].x);
-			if (scene->mMeshes[meshNum]->HasTextureCoords(index))
+			/*if (scene->mMeshes[meshNum]->HasTextureCoords(index))
 			{
-				glTexCoord2f(scene->mMeshes[meshNum]->mTextureCoords[index]->x, scene->mMeshes[meshNum]->mTextureCoords[index]->y);
-			}
+				glTexCoord2fv(&scene->mMeshes[meshNum]->mTextureCoords[index]->x);
+			}*/
+			glTexCoord2f(0.3f, 0.4f);
 			
 		}
 		glEnd();
