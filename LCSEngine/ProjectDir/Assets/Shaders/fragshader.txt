@@ -5,10 +5,19 @@ in vec2 UV;
 out vec4 color;
 
 uniform sampler2D text;
+uniform bool useText;
 
 void main()
 {
- float myColor = 1.f;
- color = vec4(texture(text, UV).rgb, 1.0f);
+	float myColor = 1.f;
+	if (true)
+	{
+		color = vec4(texture(text, UV).rgb, 1.0f);
+	}
+	else
+	{
+		color = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	}
+  
 }
 

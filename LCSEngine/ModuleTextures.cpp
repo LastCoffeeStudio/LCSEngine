@@ -131,6 +131,12 @@ void const ModuleTextures::loadModelTextures(const aiScene* scene, std::map<unsi
 			{
 				ILinfo ImageInfo;
 				iluGetImageInfo(&ImageInfo);
+
+				if (ImageInfo.Origin == IL_ORIGIN_UPPER_LEFT)
+				{
+					iluFlipImage();
+				}
+
 				ilConvertImage(IL_RGBA, IL_UNSIGNED_BYTE);
 
 				GLuint textureID;

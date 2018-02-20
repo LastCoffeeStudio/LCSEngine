@@ -3,6 +3,7 @@
 #include "MeshComponent.h"
 #include "Imgui/imgui.h"
 #include "Model.h"
+#include "AssetTexture.h"
 #include "assimp/include/scene.h"
 
 static int selected_preset = 1;
@@ -225,6 +226,8 @@ void MeshComponent::loadModel()
 			normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
 				currentMesh->mNormals[l].y,
 				currentMesh->mNormals[l].z));
+
+			texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y));
 		}
 
 		for (unsigned k = 0; k < currentMesh->mNumFaces; ++k)
@@ -235,10 +238,7 @@ void MeshComponent::loadModel()
 				indicesVAO.push_back(index + verticesVBOsize);
 			}
 		}
-
-		for (unsigned int n = 0; n < currentMesh->mNumVertices; ++n)
-		{
-			texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][n].x, currentMesh->mTextureCoords[0][n].y));
-		}
 	}
+
+	idTexture = model->textures[0]->ID;
 }

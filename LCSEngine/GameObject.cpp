@@ -71,6 +71,9 @@ void GameObject::preUpdate()
 				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
 				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
 				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
+				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
+				textureID = ((MeshComponent*)(*it))->idTexture;
+
 				//TODO: set textureID and texCoordsID for renderer
 
 				break;
@@ -263,6 +266,8 @@ void GameObject::draw()
 		data.idNormalVBO = idNormalVBO;
 		data.sizeIdxVAO = sizeIdxVAO;
 		data.sizeNormalVBO = sizeNormalVBO;
+		data.textureID = textureID;
+		data.textureCoordsID = texCoordsID;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
 		//drawAABB();

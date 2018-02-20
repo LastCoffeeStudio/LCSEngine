@@ -39,11 +39,11 @@ bool PhysRaycast::castRay(float3 origin, float3 direction, float distance)
 					Triangle t;
 					l.Transform(node->id.Transposed().Inverted());
 
-					for (unsigned int i = 0; i < mesh->verticesVBO.size(); i += 3)
+					for (unsigned int i = 0; i < mesh->indicesVAO.size(); i += 3)
 					{
-						t.a = mesh->verticesVBO[i];
-						t.b = mesh->verticesVBO[i + 1];
-						t.c = mesh->verticesVBO[i + 2];
+						t.a = mesh->verticesVBO[mesh->indicesVAO[i]];
+						t.b = mesh->verticesVBO[mesh->indicesVAO[i + 1]];
+						t.c = mesh->verticesVBO[mesh->indicesVAO[i + 2]];
 
 						float dist;
 						float3 intersectionPoint;
