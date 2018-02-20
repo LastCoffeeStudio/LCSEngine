@@ -62,6 +62,10 @@ void MeshComponent::loadPreset()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
 
+	glGenBuffers(1, (GLuint*) &(idTexCoords));
+	glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
+
 	/*glGenBuffers(1, (GLuint*) &(idNormVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);*/
@@ -212,7 +216,7 @@ void MeshComponent::loadModel()
 		unsigned int meshNum = model->scene->mRootNode->mChildren[i]->mMeshes[0];
 		aiMesh* currentMesh = model->scene->mMeshes[meshNum];
 
-		for (int l = 0; l < currentMesh->mNumVertices; ++l)
+		for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
 		{
 			verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
 				currentMesh->mVertices[l].y,
@@ -231,7 +235,10 @@ void MeshComponent::loadModel()
 				indicesVAO.push_back(index + verticesVBOsize);
 			}
 		}
+
+		for (unsigned int n = 0; n < currentMesh->mNumVertices; ++n)
+		{
+			texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][n].x, currentMesh->mTextureCoords[0][n].y));
+		}
 	}
 }
-
-

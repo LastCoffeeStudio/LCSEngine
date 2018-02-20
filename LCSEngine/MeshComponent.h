@@ -2,6 +2,7 @@
 #define __MESHCOMPONENT_H__
 
 #include "Component.h"
+#include "MathGeoLib/src/Math/float2.h"
 #include "MathGeoLib/src/Math/float3.h"
 #include <vector>
 #include <glew.h>
@@ -26,10 +27,13 @@ public:
 	bool update() override;
 	std::vector<float3> verticesVBO;
 	std::vector<float3> normalsVBO;
+	std::vector<float2> texCoordsVBO;
 	std::vector<unsigned int> indicesVAO;
 	GLuint idVertVBO = 0;
 	GLuint idNormVBO = 0;
 	GLuint idIdxVAO = 0;
+	GLuint idTexCoords = 0;
+	//TODO: save textureID from model
 	float lengthX, lengthY, lengthZ;
 	void setPreset(PresetType type);
 

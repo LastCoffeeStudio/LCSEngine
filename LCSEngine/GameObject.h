@@ -57,6 +57,8 @@ private:
 	GLuint sizeVertVBO = 0;
 	GLuint sizeNormalVBO = 0;
 	GLuint sizeIdxVAO = 0;
+	GLuint textureID = 0;
+	GLuint texCoordsID = 0;
 
 	bool staticHasChanged = false;
 	bool staticPreviousValue = false;

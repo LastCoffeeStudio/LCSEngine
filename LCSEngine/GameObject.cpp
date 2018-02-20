@@ -71,6 +71,8 @@ void GameObject::preUpdate()
 				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
 				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
 				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
+				//TODO: set textureID and texCoordsID for renderer
+
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;
