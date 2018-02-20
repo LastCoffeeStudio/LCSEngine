@@ -5,6 +5,7 @@
 #include "Globals.h"
 #include <list>
 #include <map>
+#include <string>
 
 typedef unsigned int ILenum;
 typedef unsigned char GLubyte;
@@ -23,14 +24,13 @@ public:
 	bool cleanUp();
 
 	AssetTexture* const loadTexture(ILenum type, const char* path);
-	void const loadModelTextures(const aiScene* scene, std::map<unsigned int, AssetTexture*>& textures);
+	void const loadModelTextures(const aiScene* scene);
 	AssetTexture* const loadCheckers();
 
+public:
 	GLubyte checkImage[CHECKERS_HEIGHT][CHECKERS_WIDTH][4];
 	GLuint ImageName;
-
-private:
-	std::list<SDL_Texture*> textures;
+	std::map<std::string, AssetTexture*> textures;
 };
 
 #endif // __MODULETEXTURES_H__

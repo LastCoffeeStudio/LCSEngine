@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneMain.h"
+#include "ModuleTextures.h"
 #include "MaterialComponent.h"
 #include "Shader.h"
 #include "Imgui/imgui.h"
@@ -9,6 +10,10 @@ MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Co
 	typeComponent = MATERIAL;
 	shaderName = App->sceneMain->shader->defaultShaders[DEFAULTSHADER];
 	program = App->sceneMain->shader->programs[shaderName];
+	if (App->textures->textures.size() > 0)
+	{
+		textureName = (*App->textures->textures.begin()).first;
+	}
 }
 
 MaterialComponent::~MaterialComponent() {}
@@ -47,21 +52,12 @@ void MaterialComponent::drawGUI()
 		//This should get all the textures availables and show them
 		if (ImGui::BeginMenu(textureName.c_str()))
 		{
-			if (ImGui::MenuItem("Texture 1"))
+			for (map<string, AssetTexture*>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
 			{
-				textureName = "Texture 1";
-			}
-			if (ImGui::MenuItem("Texture 2"))
-			{
-				textureName = "Texture 2";
-			}
-			if (ImGui::MenuItem("Texture 3"))
-			{
-				textureName = "Texture 3";
-			}
-			if (ImGui::MenuItem("Texture 4"))
-			{
-				textureName = "Texture 4";
+				if (ImGui::MenuItem((*it).first.c_str()))
+				{
+					textureName = (*it).first.c_str();
+				}
 			}
 			ImGui::EndMenu();
 		}

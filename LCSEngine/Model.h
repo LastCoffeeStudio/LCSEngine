@@ -20,7 +20,6 @@ public:
 
 public:
 	const aiScene* scene = 0;
-	std::map<unsigned int, AssetTexture*> textures;
 	
 private:
 	void DrawMesh(unsigned int meshNum);

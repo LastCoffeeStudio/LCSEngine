@@ -1,5 +1,6 @@
 #include "Application.h"
 #include "ModuleSceneMain.h"
+#include "ModuleTextures.h"
 #include "MeshComponent.h"
 #include "Imgui/imgui.h"
 #include "Model.h"
@@ -239,6 +240,4 @@ void MeshComponent::loadModel()
 			}
 		}
 	}
-
-	idTexture = model->textures[0]->ID;
 }

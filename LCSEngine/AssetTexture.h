@@ -23,6 +23,7 @@ public:
 	unsigned int bpp = 0;
 	unsigned int mips = 0;
 	unsigned int bytes = 0;
+	unsigned int numberUsages = 0;
 	ILenum format = 0;
 	GLuint ID = 0;
 };

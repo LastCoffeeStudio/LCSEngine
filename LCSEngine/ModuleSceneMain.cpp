@@ -129,8 +129,7 @@ void ModuleSceneMain::clearGameObjects()
 			GameObject* gameObject = (GameObject*)*it;
 			for (vector<Component*>::iterator itComponents = gameObject->components.begin(); itComponents != gameObject->components.end();)
 			{
-				RELEASE(*itComponents);
-				itComponents = gameObject->components.erase(itComponents);
+				gameObject->deleteComponent((*itComponents));
 			}
 			RELEASE(*it);
 		}

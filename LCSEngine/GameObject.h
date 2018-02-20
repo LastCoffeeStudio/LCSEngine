@@ -6,6 +6,7 @@
 #include "MathGeoLib/src/Geometry/AABB.h"
 #include "MathGeoLib/src/Geometry/OBB.h"
 #include <vector>
+#include <string>
 
 using namespace std;
 
@@ -57,11 +58,12 @@ private:
 	GLuint sizeVertVBO = 0;
 	GLuint sizeNormalVBO = 0;
 	GLuint sizeIdxVAO = 0;
-	GLuint textureID = 0;
 	GLuint texCoordsID = 0;
+	std::string texPath = "";
 
 	bool staticHasChanged = false;
 	bool staticPreviousValue = false;
+	bool hasMaterial = false;
 };
 
 #endif // __GAMEOBJECT_H__

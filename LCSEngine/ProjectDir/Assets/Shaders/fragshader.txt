@@ -10,7 +10,7 @@ uniform bool useText;
 void main()
 {
 	float myColor = 1.f;
-	if (true)
+	if (useText)
 	{
 		color = vec4(texture(text, UV).rgb, 1.0f);
 	}

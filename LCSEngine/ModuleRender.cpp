@@ -144,6 +144,8 @@ void ModuleRender::renderObjects()
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
+		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasMaterial);
+
 		//Order matters!
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_2D, (*it).second.textureID);

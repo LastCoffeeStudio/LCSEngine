@@ -16,11 +16,11 @@ public:
 
 public:
 	GLuint program = 0;
+	std::string textureName = "";
 
 private:
 	AssetTexture * texture = nullptr;
 	std::string shaderName = "Default Shader";
-	std::string textureName = "None";
 	float texTiling[2] = { 1.f, 1.f };
 	float texOffset[2] = { 0.f, 0.f };
 };

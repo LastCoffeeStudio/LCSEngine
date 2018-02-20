@@ -11,6 +11,7 @@
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleTextures.h"
 #include "ModuleGUI.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -19,6 +20,7 @@
 #include "Glew/include/glew.h"
 #include <queue>
 #include "Model.h"
+#include "AssetTexture.h"
 
 GameObject::GameObject() {}
 
@@ -72,13 +74,13 @@ void GameObject::preUpdate()
 				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
 				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
 				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
-				textureID = ((MeshComponent*)(*it))->idTexture;
 
 				//TODO: set textureID and texCoordsID for renderer
 
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;
+				texPath = ((MaterialComponent*)(*it))->textureName;
 			}
 		}
 	}
@@ -96,6 +98,8 @@ void GameObject::preUpdate()
 				((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
 				((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
 				((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
+				break;
+			default:
 				break;
 		}
 	}
@@ -120,9 +124,19 @@ void GameObject::addComponent(Component* component)
 	if (!alreadyHave)
 	{
 		components.push_back(component);
-		if (component->typeComponent == MESH && staticFlag)
+		switch (component->typeComponent)
 		{
-			App->sceneMain->rebuildQuadTree = true;
+			case MESH:
+				if (staticFlag)
+				{
+					App->sceneMain->rebuildQuadTree = true;
+				}
+				break;
+			case MATERIAL:
+				hasMaterial = true;
+				break;
+			default:
+				break;
 		}
 	}
 }
@@ -135,16 +149,26 @@ void GameObject::deleteComponent(Component* component)
 		{
 			switch ((*it)->typeComponent)
 			{
-			case MESH:
-				if (staticFlag)
-				{
-					App->sceneMain->rebuildQuadTree = true;
-				}
-				break;
+				case MESH:
+					if (staticFlag)
+					{
+						App->sceneMain->rebuildQuadTree = true;
+					}
+					break;
 
-			case MATERIAL:
-				program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
-				break;
+				case MATERIAL:
+					program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+					hasMaterial = false;
+					map<std::string, AssetTexture*>::iterator itMap = App->textures->textures.find(texPath);
+					if (itMap != App->textures->textures.end())
+					{
+						(*itMap).second->numberUsages--;
+						if ((*itMap).second->numberUsages <= 0)
+						{
+							App->textures->textures.erase(itMap);
+						}
+					}
+					break;
 			}
 
 			RELEASE(*it);
@@ -266,7 +290,9 @@ void GameObject::draw()
 		data.idNormalVBO = idNormalVBO;
 		data.sizeIdxVAO = sizeIdxVAO;
 		data.sizeNormalVBO = sizeNormalVBO;
-		data.textureID = textureID;
+		map<std::string, AssetTexture*>::iterator it = App->textures->textures.find(texPath);
+		(it != App->textures->textures.end()) ? data.textureID = (*it).second->ID : 0;
+		data.hasMaterial = hasMaterial;
 		data.textureCoordsID = texCoordsID;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 

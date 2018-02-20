@@ -33,7 +33,6 @@ public:
 	GLuint idNormVBO = 0;
 	GLuint idIdxVAO = 0;
 	GLuint idTexCoords = 0;
-	GLuint idTexture = 0;
 	//TODO: save textureID from model
 	float lengthX, lengthY, lengthZ;
 	void setPreset(PresetType type);

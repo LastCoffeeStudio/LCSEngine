@@ -16,7 +16,7 @@ Model::~Model() {}
 void Model::Load(const char* file)
 {
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
-	App->textures->loadModelTextures(scene, textures);
+	App->textures->loadModelTextures(scene);
 }
 
 void Model::Clear()
@@ -32,13 +32,7 @@ void Model::Draw() {
 }
 
 void Model::DrawMesh(unsigned int meshNum)
-{
-	std::map<unsigned int, AssetTexture*>::iterator it = textures.find(scene->mMeshes[meshNum]->mMaterialIndex);
-	if (it != textures.end())
-	{
-		glBindTexture(GL_TEXTURE_2D, (*it).second->ID);
-	}
-	
+{	
 	for (unsigned i = 0; i < scene->mMeshes[meshNum]->mNumFaces; ++i)
 	{
 		glBegin(GL_TRIANGLES);
@@ -56,7 +50,5 @@ void Model::DrawMesh(unsigned int meshNum)
 		}
 		glEnd();
 	}
-
-	glBindTexture(GL_TEXTURE_2D, 0);
 }
 

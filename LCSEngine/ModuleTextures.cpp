@@ -106,7 +106,7 @@ AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 	return asset;
 }
 
-void const ModuleTextures::loadModelTextures(const aiScene* scene, std::map<unsigned int, AssetTexture*>& textures)
+void const ModuleTextures::loadModelTextures(const aiScene* scene)
 {
 	ILboolean success;
 	ILenum error;
@@ -153,8 +153,9 @@ void const ModuleTextures::loadModelTextures(const aiScene* scene, std::map<unsi
 				AssetTexture* asset = new AssetTexture(ImageInfo);
 				asset->ID = textureID;
 				asset->name = path.data;
+				++asset->numberUsages;
 
-				textures[i] = asset;
+				textures[p] = asset;
 			}
 			else
 			{
