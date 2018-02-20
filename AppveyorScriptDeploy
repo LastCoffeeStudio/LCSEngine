@@ -1,0 +1,12 @@
+cd LCSEngine\ProjectDir
+ls
+7z a LCSEngine-build.zip *
+cd..
+pwd
+ls
+mv ProjectDir\LCSEngine-build.zip Release\LCSEngine-build.zip
+cd Release
+7z a LCSEngine-build.zip *.exe
+cd..
+cd..
+mv LCSEngine\Release\LCSEngine-build.zip LCSEngine-build.zip
