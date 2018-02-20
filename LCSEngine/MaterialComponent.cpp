@@ -23,7 +23,7 @@ void MaterialComponent::drawGUI()
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(0.6f, 0.8f, 0.8f));
 		if (ImGui::Button("Delete Component"))
 		{
-			suicide = true;
+			App->sceneMain->garbageCollectorComponent.push_back(this);
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::Text("Shader:"); ImGui::SameLine(0);

@@ -46,14 +46,17 @@ public:
 	AABB aabb;
 	OBB obb;
 	bool visible = true;
-	Model* model = nullptr;
 
 private:
 	string getFinalName(string name);
 	string initialName;
 	GLint idVertVBO = -1;
+	GLint idNormalVBO = -1;
+	GLint idIdxVAO = -1;
 	GLuint program = 0;
 	GLuint sizeVertVBO = 0;
+	GLuint sizeNormalVBO = 0;
+	GLuint sizeIdxVAO = 0;
 
 	bool staticHasChanged = false;
 	bool staticPreviousValue = false;

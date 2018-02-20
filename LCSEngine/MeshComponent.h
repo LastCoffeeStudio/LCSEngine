@@ -14,6 +14,8 @@ enum PresetType
 	MODEL
 };
 
+class Model;
+
 class MeshComponent : public Component
 {
 public:
@@ -23,15 +25,21 @@ public:
 	void drawGUI() override;
 	bool update() override;
 	std::vector<float3> verticesVBO;
+	std::vector<float3> normalsVBO;
+	std::vector<unsigned int> indicesVAO;
 	GLuint idVertVBO = 0;
+	GLuint idNormVBO = 0;
+	GLuint idIdxVAO = 0;
 	float lengthX, lengthY, lengthZ;
 	void setPreset(PresetType type);
 
 public:
 	PresetType currentPreset = CUBE;
+	Model* model = nullptr;
 
 private:
 	void loadPreset();
+	void loadModel();
 	void loadSphere();
 	void loadCube();
 };

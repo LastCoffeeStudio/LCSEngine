@@ -1,4 +1,6 @@
 #include "Globals.h"
+#include "Application.h"
+#include "ModuleSceneMain.h"
 #include "CameraComponent.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/float3x4.h"
@@ -49,7 +51,7 @@ void CameraComponent::drawGUI()
 		ImGui::PushStyleColor(ImGuiCol_ButtonActive, ImColor::HSV(0.6f, 0.8f, 0.8f));
 		if (ImGui::Button("Delete Component"))
 		{
-			suicide = true;
+			App->sceneMain->garbageCollectorComponent.push_back(this);
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::SliderFloat("FOV Horizontal", &frustum.horizontalFov, 0.001f, 3.0f);

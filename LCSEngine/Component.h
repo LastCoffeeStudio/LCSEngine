@@ -20,10 +20,8 @@ public:
 	bool isEnable = false;
 	bool isUnique = false;
 	TypeComponent typeComponent = COMPONENT;
-	bool suicide = false;
-
-protected:
 	GameObject* gameObject = nullptr;
+
 };
 
 #endif //__COMPONENT_H__

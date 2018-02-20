@@ -97,6 +97,7 @@ update_status ModuleRender::postUpdate(float deltaTime)
 	App->gui->draw();
 	//SDL_GL_SwapWindow(App->window->window);
 
+
 	swap();
 	return UPDATE_CONTINUE;
 }
@@ -144,11 +145,13 @@ void ModuleRender::renderObjects()
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
+		glVertexPointer(3, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
+
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-		glDrawArrays(GL_TRIANGLES, 0, (*it).second.sizeVertVBO);
 
-		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		glDrawElements(GL_TRIANGLES, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);
 	}
 
 	renderQueue.clear();
