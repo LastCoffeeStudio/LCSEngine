@@ -144,8 +144,6 @@ void ModuleRender::renderObjects()
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
-		glEnableClientState(GL_VERTEX_ARRAY);
-
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
 		glVertexPointer(3, GL_FLOAT, 0, NULL);
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
@@ -154,8 +152,6 @@ void ModuleRender::renderObjects()
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
 		glDrawElements(GL_TRIANGLES, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);
-
-		glDisableClientState(GL_VERTEX_ARRAY);
 	}
 
 	renderQueue.clear();
