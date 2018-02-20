@@ -63,6 +63,7 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 {
 	BROFILER_CATEGORY("PreUpdateSceneMain", Profiler::Color::Orchid)
 	clearGameObjects();
+	clearComponents();
 	preUpdateGameObjects();
 	if (rebuildQuadTree)
 	{
@@ -136,6 +137,21 @@ void ModuleSceneMain::clearGameObjects()
 		garbageCollector.clear();
 
 		rebuildQuadTree = true;
+	}
+}
+
+void ModuleSceneMain::clearComponents()
+{
+	bool ereased = false;
+	for (list<Component*>::iterator it = garbageCollectorComponent.begin(); it != garbageCollectorComponent.end(); ++it)
+	{
+		Component* component = (Component*)*it;
+		component->gameObject->deleteComponent(component);
+		ereased = true;
+	}
+	if (ereased)
+	{
+		garbageCollectorComponent.clear();
 	}
 }
 
