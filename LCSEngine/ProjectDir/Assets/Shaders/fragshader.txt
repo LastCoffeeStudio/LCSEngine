@@ -9,6 +9,6 @@ uniform sampler2D text;
 void main()
 {
  float myColor = 1.f;
- color = texture(text, UV);
+ color = vec4(texture(text, UV).rgb, 1.0f);
 }
 
