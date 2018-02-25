@@ -26,6 +26,7 @@ public:
 	void drawGUI() override;
 	bool update() override;
 	std::vector<float3> verticesVBO;
+	std::vector<float3> colorsVBO;
 	std::vector<float3> normalsVBO;
 	std::vector<float2> texCoordsVBO;
 	std::vector<unsigned int> indicesVAO;
@@ -33,9 +34,11 @@ public:
 	GLuint idNormVBO = 0;
 	GLuint idIdxVAO = 0;
 	GLuint idTexCoords = 0;
+	GLuint idColors = 0;
 	//TODO: save textureID from model
 	float lengthX, lengthY, lengthZ;
 	void setPreset(PresetType type);
+	void updateColor(const float3& color);
 
 public:
 	PresetType currentPreset = CUBE;

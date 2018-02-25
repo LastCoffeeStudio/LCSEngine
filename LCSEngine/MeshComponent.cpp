@@ -56,6 +56,13 @@ void MeshComponent::loadPreset()
 		}
 	}
 
+	//Clean buffers
+	glDeleteBuffers(1, (GLuint*) &(idVertVBO));
+	glDeleteBuffers(1, (GLuint*) &(idIdxVAO));
+	glDeleteBuffers(1, (GLuint*) &(idTexCoords));
+	glDeleteBuffers(1, (GLuint*) &(idColors));
+	//glDeleteBuffers(1, (GLuint*) &(idNormVBO));
+
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
@@ -67,6 +74,16 @@ void MeshComponent::loadPreset()
 	glGenBuffers(1, (GLuint*) &(idTexCoords));
 	glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
+
+	colorsVBO.clear();
+	for (unsigned int i = 0; i < verticesVBO.size(); ++i)
+	{
+		colorsVBO.push_back(float3(1.f,1.f,1.f));
+	}
+
+	glGenBuffers(1, (GLuint*) &(idColors));
+	glBindBuffer(GL_ARRAY_BUFFER, idColors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_STATIC_DRAW);
 
 	/*glGenBuffers(1, (GLuint*) &(idNormVBO));
 	glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
@@ -240,4 +257,15 @@ void MeshComponent::loadModel()
 			}
 		}
 	}
+}
+
+void MeshComponent::updateColor(const float3& color)
+{
+	for (unsigned int i = 0; i < colorsVBO.size(); ++i)
+	{
+		colorsVBO[i] = float3(color.x,color.y,color.z);
+	}
+
+	glBindBuffer(GL_ARRAY_BUFFER, idColors);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_STATIC_DRAW);
 }

@@ -18,6 +18,7 @@
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
+#include "DevIL/include/IL/il.h"
 #include <queue>
 #include "Model.h"
 #include "AssetTexture.h"
@@ -74,13 +75,66 @@ void GameObject::preUpdate()
 				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
 				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
 				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
+				colorID = ((MeshComponent*)(*it))->idColors;
 
 				//TODO: set textureID and texCoordsID for renderer
 
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;
-				texPath = ((MaterialComponent*)(*it))->textureName;
+				/*map<std::string, AssetTexture*>::iterator it = App->textures->textures.find(texPath);
+				if (it != App->textures->textures.end())
+				{
+					texID = (*it).second->ID;
+					hasTexture = true;
+				}
+				else
+				{
+					texID = 0;
+					hasTexture = false;
+				}*/
+				if (((MaterialComponent*)(*it))->textureChanged && ((MaterialComponent*)(*it))->textureName != texPath)
+				{
+					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
+					if (itTexture != App->textures->textures.end())
+					{
+						(*itTexture).second->numberUsages--;
+						if ((*itTexture).second->numberUsages <= 0)
+						{
+							App->textures->textures.erase(itTexture);
+						}
+					}
+
+					texPath = ((MaterialComponent*)(*it))->textureName;
+					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((MaterialComponent*)(*it))->textureName);
+					if (itNewTexture != App->textures->textures.end())
+					{
+						texID = (*itNewTexture).second->ID;
+						hasTexture = true;
+						(*itNewTexture).second->numberUsages++;
+					}
+					else if (App->textures->loadTexture(IL_PNG,texPath.c_str()))
+					{
+						texID = App->textures->textures[texPath]->ID;
+						hasTexture = true;
+					}
+					else
+					{
+						texID = 0;
+						hasTexture = false;
+					}
+					((MaterialComponent*)(*it))->textureChanged = false;
+				}
+
+				if (((MaterialComponent*)(*it))->colorChanged)
+				{
+					MeshComponent* mesh = (MeshComponent*)getComponent(MESH);
+					if (mesh != nullptr)
+					{
+						mesh->updateColor(((MaterialComponent*)(*it))->color);
+					}
+					((MaterialComponent*)(*it))->colorChanged = false;
+				}
 			}
 		}
 	}
@@ -133,7 +187,7 @@ void GameObject::addComponent(Component* component)
 				}
 				break;
 			case MATERIAL:
-				hasMaterial = true;
+				//hasMaterial = true;
 				break;
 			default:
 				break;
@@ -158,7 +212,8 @@ void GameObject::deleteComponent(Component* component)
 
 				case MATERIAL:
 					program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
-					hasMaterial = false;
+					//hasMaterial = false;
+					hasTexture = false;
 					map<std::string, AssetTexture*>::iterator itMap = App->textures->textures.find(texPath);
 					if (itMap != App->textures->textures.end())
 					{
@@ -290,9 +345,10 @@ void GameObject::draw()
 		data.idNormalVBO = idNormalVBO;
 		data.sizeIdxVAO = sizeIdxVAO;
 		data.sizeNormalVBO = sizeNormalVBO;
-		map<std::string, AssetTexture*>::iterator it = App->textures->textures.find(texPath);
-		(it != App->textures->textures.end()) ? data.textureID = (*it).second->ID : 0;
-		data.hasMaterial = hasMaterial;
+		data.textureID = texID;
+		data.colorID = colorID;
+		//data.hasMaterial = hasMaterial;
+		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
@@ -502,4 +558,17 @@ vector<Component*> GameObject::getComponents(TypeComponent type)
 	}
 
 	return comps;
+}
+
+Component* GameObject::getComponent(TypeComponent type)
+{
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->typeComponent == type)
+		{
+			return (*it);
+		}
+	}
+
+	return nullptr;
 }

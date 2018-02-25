@@ -144,7 +144,7 @@ void ModuleRender::renderObjects()
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
-		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasMaterial);
+		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasTexture);
 
 		//Order matters!
 		glActiveTexture(GL_TEXTURE0);
@@ -159,7 +159,10 @@ void ModuleRender::renderObjects()
 		glEnableVertexAttribArray(1);
 		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 
-		glTexCoordPointer(2, GL_FLOAT, 0, NULL);
+		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.colorID);
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
 
 		glDrawElements(GL_TRIANGLES, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);

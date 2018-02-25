@@ -4,16 +4,13 @@
 #include "MaterialComponent.h"
 #include "Shader.h"
 #include "Imgui/imgui.h"
+#include <filesystem>
 
 MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Component(gameObject, isEnable, true)
 {
 	typeComponent = MATERIAL;
 	shaderName = App->sceneMain->shader->defaultShaders[DEFAULTSHADER];
 	program = App->sceneMain->shader->programs[shaderName];
-	if (App->textures->textures.size() > 0)
-	{
-		textureName = (*App->textures->textures.begin()).first;
-	}
 }
 
 MaterialComponent::~MaterialComponent() {}
@@ -32,7 +29,7 @@ void MaterialComponent::drawGUI()
 		}
 		ImGui::PopStyleColor(3);
 		ImGui::Text("Shader:"); ImGui::SameLine(0);
-		ImGui::PushID(1);
+		ImGui::PushID("shader");
 		Shader* shader = App->sceneMain->shader;
 		if (ImGui::BeginMenu(shaderName.c_str()))
 		{
@@ -47,11 +44,15 @@ void MaterialComponent::drawGUI()
 			ImGui::EndMenu();
 		}
 		ImGui::PopID();
-		ImGui::PushID(2);
+		ImGui::PushID("texture");
 		ImGui::Text("Texture:"); ImGui::SameLine(0);
 		//This should get all the textures availables and show them
-		if (ImGui::BeginMenu(textureName.c_str()))
+		/*if (ImGui::BeginMenu(textureName.c_str()))
 		{
+			if (ImGui::MenuItem("None"))
+			{
+				textureName = "None";
+			}
 			for (map<string, AssetTexture*>::iterator it = App->textures->textures.begin(); it != App->textures->textures.end(); ++it)
 			{
 				if (ImGui::MenuItem((*it).first.c_str()))
@@ -59,7 +60,22 @@ void MaterialComponent::drawGUI()
 					textureName = (*it).first.c_str();
 				}
 			}
+			
+
 			ImGui::EndMenu();
+		}*/
+		ImGui::PopID();
+
+		ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
+		if (ImGui::Button("Set texture"))
+		{
+			textureChanged = true;
+		}
+		
+		ImGui::PushID("color");
+		if (ImGui::ColorEdit3("Color", &color[0]))
+		{
+			colorChanged = true;
 		}
 		ImGui::PopID();
 		ImGui::Text("Tiling: "); ImGui::SameLine();

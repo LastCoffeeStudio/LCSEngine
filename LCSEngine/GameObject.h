@@ -34,6 +34,7 @@ public:
 	void setStaticValueToChildrens();
 	void setStaticFlag(bool flag);
 	vector<Component*> getComponents(TypeComponent type);
+	Component* getComponent(TypeComponent type);
 
 public:
 	string name = "GameObject";
@@ -59,11 +60,13 @@ private:
 	GLuint sizeNormalVBO = 0;
 	GLuint sizeIdxVAO = 0;
 	GLuint texCoordsID = 0;
+	GLuint texID = 0;
+	GLuint colorID = 0;
 	std::string texPath = "";
 
 	bool staticHasChanged = false;
 	bool staticPreviousValue = false;
-	bool hasMaterial = false;
+	bool hasTexture = false;
 };
 
 #endif // __GAMEOBJECT_H__

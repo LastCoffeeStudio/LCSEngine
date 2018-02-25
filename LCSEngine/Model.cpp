@@ -16,7 +16,7 @@ Model::~Model() {}
 void Model::Load(const char* file)
 {
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
-	App->textures->loadModelTextures(scene);
+	//App->textures->loadModelTextures(scene);
 }
 
 void Model::Clear()

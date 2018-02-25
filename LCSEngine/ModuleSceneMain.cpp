@@ -41,9 +41,9 @@ ModuleSceneMain::~ModuleSceneMain() {}
 bool ModuleSceneMain::init()
 {
 	checkers = App->textures->loadCheckers();
-	lenna = App->textures->loadTexture(IL_PNG, "Assets/Images/Lenna.png");
-	chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
-	beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
+	//lenna = App->textures->loadTexture(IL_PNG, "Assets/Images/Lenna.png");
+	//chocobo = App->textures->loadTexture(IL_JPG, "Assets/Images/chocobo.jpg");
+	//beer = App->textures->loadTexture(IL_DDS, "Assets/Images/beer.dds");
 	actual = checkers;
 	shader = new Shader();
 	quadtree = new QuadTree();

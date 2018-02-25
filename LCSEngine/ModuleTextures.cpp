@@ -5,6 +5,7 @@
 #include "AssetTexture.h"
 #include "SDL/include/SDL.h"
 #include "DevIL/include/IL/il.h"
+#include "DevIL/include/IL/ilu.h"
 #include "DevIL/include/IL/ilut.h"
 #include <stdlib.h> 
 #include <stdio.h> 
@@ -48,8 +49,9 @@ bool ModuleTextures::cleanUp()
 	return true;
 }
 
-AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
+bool const ModuleTextures::loadTexture(ILenum type, const char* path)
 {
+	bool ret = true;
 	AssetTexture* asset = nullptr;
 	ILuint imageID;
 	GLuint textureID;
@@ -73,37 +75,38 @@ AssetTexture* const ModuleTextures::loadTexture(ILenum type, const char* path)
 		if (!success)
 		{
 			error = ilGetError();
-			printf("Image conversion failed - IL reports error: %s\n", iluErrorString(error));
-			return asset;
+			printf("Image load failed - IL reports error: %u\n", error);
+			ret = false;
 		}
+		else
+		{
+			glGenTextures(1, &textureID);
+			glBindTexture(GL_TEXTURE_2D, textureID);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+			glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),
+				ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
+			glBindTexture(GL_TEXTURE_2D, 0);
 
-		glGenTextures(1, &textureID);
-		glBindTexture(GL_TEXTURE_2D, textureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, ilGetInteger(IL_IMAGE_FORMAT), ilGetInteger(IL_IMAGE_WIDTH),
-			ilGetInteger(IL_IMAGE_HEIGHT), 0, ilGetInteger(IL_IMAGE_FORMAT), GL_UNSIGNED_BYTE, ilGetData());
-		glBindTexture(GL_TEXTURE_2D, 0);
+			asset = new AssetTexture(ImageInfo);
+			asset->ID = textureID;
+			asset->name = path;
 
-		asset = new AssetTexture(ImageInfo);
-		asset->ID = textureID;
-		asset->name = path;
-
-		//Delete file from memory
-		ilDeleteImages(1, &imageID);
+			textures[path] = asset;
+		}
 	}
 	else
 	{
 		error = ilGetError();
-		printf("Image load failed - IL reports error: %s\n", iluErrorString(error));
-		return asset;
+		printf("Image load failed - IL reports error: %u\n", error);
+		ret = false;
 	}
 
 	ilDeleteImages(1, &imageID);
 	
-	return asset;
+	return ret;
 }
 
 void const ModuleTextures::loadModelTextures(const aiScene* scene)
@@ -125,6 +128,9 @@ void const ModuleTextures::loadModelTextures(const aiScene* scene)
 			char p[100];
 			strcpy_s(p, 100, "Assets/Models/");
 			strcat_s(p, 100, path.data);
+
+			//std::map<std::string, AssetTexture*>::iterator it = textures.find(p);
+			//if (it != textures.end())
 			//success = ilLoadImage(path.data);
 			success = ilLoad(IL_PNG, p);
 			if (success)

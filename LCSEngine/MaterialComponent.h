@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "Glew/include/glew.h"
+#include "MathGeoLib/src/Math/float3.h"
 #include <string>
 
 class AssetTexture;
@@ -16,10 +17,13 @@ public:
 
 public:
 	GLuint program = 0;
-	std::string textureName = "";
+	char textureName[128] = "None";
+	float3 color = {1.f, 1.f, 1.f};
+	bool textureChanged = false;
+	bool colorChanged = false;
 
 private:
-	AssetTexture * texture = nullptr;
+	AssetTexture* texture = nullptr;
 	std::string shaderName = "Default Shader";
 	float texTiling[2] = { 1.f, 1.f };
 	float texOffset[2] = { 0.f, 0.f };
