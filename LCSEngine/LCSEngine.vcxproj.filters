@@ -339,6 +339,7 @@
     <ClInclude Include="ImGuizmo.h">
       <Filter>Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -533,6 +534,7 @@
     <ClCompile Include="ImGuizmo.cpp">
       <Filter>Imgui</Filter>
     </ClCompile>
+    <ClCompile Include="SceneManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl">

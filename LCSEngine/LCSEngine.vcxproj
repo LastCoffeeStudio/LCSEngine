@@ -236,6 +236,7 @@
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitive.h" />
     <ClInclude Include="QuadTree.h" />
+    <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereShape.h" />
     <ClInclude Include="TransformComponent.h" />
@@ -303,6 +304,7 @@
     <ClCompile Include="PhysRaycast.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="QuadTree.cpp" />
+    <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SphereShape.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
