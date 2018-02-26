@@ -56,6 +56,9 @@ bool ModuleSceneMain::init()
 
 bool ModuleSceneMain::start()
 {
+	sceneManager = new SceneManager();
+	//sceneManager->load("Assets/Models/street/Street.obj");
+	
 	return true;
 }
 

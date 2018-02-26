@@ -4,6 +4,7 @@
 #include "Module.h"
 #include "MathGeoLib/src/Geometry/AABB.h"
 #include <map>
+#include "SceneManager.h"
 
 class Shader;
 class AssetTexture;
@@ -41,6 +42,7 @@ public:
 	AssetTexture* chocobo = nullptr;
 	AssetTexture* beer = nullptr;
 	AssetTexture* actual = nullptr;
+	SceneManager* sceneManager;
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
 	GameObject* currentObject = nullptr;

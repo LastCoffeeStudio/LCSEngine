@@ -21,11 +21,6 @@ void TransformComponent::updateTransform()
 	transform = matrixTranslate*matrixRotate*matrixScale;
 }
 
-void TransformComponent::updateTransform(float* trans)
-{
-	//transform = trans;
-}
-
 void TransformComponent::updateTranslate()
 {
 	matrixTranslate.SetIdentity();

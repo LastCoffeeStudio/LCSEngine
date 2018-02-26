@@ -339,6 +339,9 @@
     <ClInclude Include="ImGuizmo.h">
       <Filter>Imgui</Filter>
     </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -532,6 +535,9 @@
     </ClCompile>
     <ClCompile Include="ImGuizmo.cpp">
       <Filter>Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

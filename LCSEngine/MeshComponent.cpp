@@ -71,14 +71,16 @@ void MeshComponent::loadPreset()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(idTexCoords));
-	glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
-
+	if (texCoordsVBO.size() > 0)
+	{
+		glGenBuffers(1, (GLuint*) &(idTexCoords));
+		glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
+		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
+	}
 	colorsVBO.clear();
 	for (unsigned int i = 0; i < verticesVBO.size(); ++i)
 	{
-		colorsVBO.push_back(float3(1.f,1.f,1.f));
+		colorsVBO.push_back(float3(1.f, 1.f, 1.f));
 	}
 
 	glGenBuffers(1, (GLuint*) &(idColors));
