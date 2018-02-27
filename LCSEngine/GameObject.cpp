@@ -195,7 +195,7 @@ void GameObject::addComponent(Component* component)
 	}
 }
 
-void GameObject::deleteComponent(Component* component)
+vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 {
 	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
 	{
@@ -228,7 +228,7 @@ void GameObject::deleteComponent(Component* component)
 
 			RELEASE(*it);
 			it = components.erase(it);
-			return;
+			return it;
 		}
 		else
 		{

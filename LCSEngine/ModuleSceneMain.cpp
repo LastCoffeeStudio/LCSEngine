@@ -57,7 +57,7 @@ bool ModuleSceneMain::init()
 bool ModuleSceneMain::start()
 {
 	sceneManager = new SceneManager();
-	sceneManager->load("Assets/Models/street/Street.obj");
+	//sceneManager->load("Assets/Models/street/Street.obj");
 	
 	return true;
 }
@@ -132,7 +132,7 @@ void ModuleSceneMain::clearGameObjects()
 			GameObject* gameObject = (GameObject*)*it;
 			for (vector<Component*>::iterator itComponents = gameObject->components.begin(); itComponents != gameObject->components.end();)
 			{
-				gameObject->deleteComponent((*itComponents));
+				itComponents = gameObject->deleteComponent((*itComponents));
 			}
 			RELEASE(*it);
 		}

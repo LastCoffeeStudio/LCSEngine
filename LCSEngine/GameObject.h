@@ -24,7 +24,7 @@ public:
 	void preUpdate();
 	void postUpdate();
 	void addComponent(Component* component);
-	void deleteComponent(Component* component);
+	vector<Component*>::iterator deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
 	void drawComponentsGui();
 	void draw();
