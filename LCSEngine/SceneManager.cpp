@@ -44,7 +44,7 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 
 
 		aiMesh* currentMesh = scene->mMeshes[meshNum];
-
+        mesh->verticesVBO.clear();
 		for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
 		{
 			mesh->verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
@@ -68,6 +68,8 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 				mesh->indicesVAO.push_back(index);
 			}
 		}
+        
+        mesh->generateIDs();
 		gameObject->addComponent(mesh);
 
 		transformAiScene4x4ToFloat4x4(node->mTransformation, ((TransformComponent*)gameObject->components[0])->transform);
@@ -82,21 +84,22 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 
 void SceneManager::transformAiScene4x4ToFloat4x4(const aiMatrix4x4 & matAiScene, float4x4 & matDest)
 {
-	matDest[0][0] = matAiScene[0][0];
-	matDest[0][1] = matAiScene[0][1];
-	matDest[0][2] = matAiScene[0][2];
-	matDest[0][3] = matAiScene[0][3];
-	matDest[1][0] = matAiScene[1][0];
-	matDest[1][1] = matAiScene[1][1];
-	matDest[1][2] = matAiScene[1][2];
-	matDest[1][3] = matAiScene[1][3];
-	matDest[2][0] = matAiScene[2][0];
-	matDest[2][1] = matAiScene[2][1];
-	matDest[2][2] = matAiScene[2][2];
-	matDest[2][3] = matAiScene[2][3];
-	matDest[3][0] = matAiScene[3][0];
-	matDest[3][1] = matAiScene[3][1];
-	matDest[3][2] = matAiScene[3][2];
-	matDest[3][3] = matAiScene[3][3];
+    //Copy and Transpose.
+    matDest[0][0] = matAiScene[0][0];
+    matDest[1][0] = matAiScene[0][1];
+    matDest[2][0] = matAiScene[0][2];
+    matDest[3][0] = matAiScene[0][3];
+    matDest[0][1] = matAiScene[1][0];
+    matDest[1][1] = matAiScene[1][1];
+    matDest[2][1] = matAiScene[1][2];
+    matDest[3][1] = matAiScene[1][3];
+    matDest[0][2] = matAiScene[2][0];
+    matDest[1][2] = matAiScene[2][1];
+    matDest[2][2] = matAiScene[2][2];
+    matDest[3][2] = matAiScene[2][3];
+    matDest[0][3] = matAiScene[3][0];
+    matDest[1][3] = matAiScene[3][1];
+    matDest[2][3] = matAiScene[3][2];
+    matDest[3][3] = matAiScene[3][3];
 }
 

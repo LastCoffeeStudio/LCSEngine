@@ -56,40 +56,44 @@ void MeshComponent::loadPreset()
 		}
 	}
 
-	//Clean buffers
-	glDeleteBuffers(1, (GLuint*) &(idVertVBO));
-	glDeleteBuffers(1, (GLuint*) &(idIdxVAO));
-	glDeleteBuffers(1, (GLuint*) &(idTexCoords));
-	glDeleteBuffers(1, (GLuint*) &(idColors));
-	//glDeleteBuffers(1, (GLuint*) &(idNormVBO));
+    generateIDs();
+}
+void MeshComponent::generateIDs()
+{
+    //Clean buffers
+    glDeleteBuffers(1, (GLuint*) &(idVertVBO));
+    glDeleteBuffers(1, (GLuint*) &(idIdxVAO));
+    glDeleteBuffers(1, (GLuint*) &(idTexCoords));
+    glDeleteBuffers(1, (GLuint*) &(idColors));
+    //glDeleteBuffers(1, (GLuint*) &(idNormVBO));
 
-	glGenBuffers(1, (GLuint*) &(idVertVBO));
-	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
+    glGenBuffers(1, (GLuint*) &(idVertVBO));
+    glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(idIdxVAO));
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
+    glGenBuffers(1, (GLuint*) &(idIdxVAO));
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
 
-	if (texCoordsVBO.size() > 0)
-	{
-		glGenBuffers(1, (GLuint*) &(idTexCoords));
-		glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
-		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
-	}
-	colorsVBO.clear();
-	for (unsigned int i = 0; i < verticesVBO.size(); ++i)
-	{
-		colorsVBO.push_back(float3(1.f, 1.f, 1.f));
-	}
+    if (texCoordsVBO.size() > 0)
+    {
+        glGenBuffers(1, (GLuint*) &(idTexCoords));
+        glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
+    }
+    colorsVBO.clear();
+    for (unsigned int i = 0; i < verticesVBO.size(); ++i)
+    {
+        colorsVBO.push_back(float3(1.f, 1.f, 1.f));
+    }
 
-	glGenBuffers(1, (GLuint*) &(idColors));
-	glBindBuffer(GL_ARRAY_BUFFER, idColors);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_STATIC_DRAW);
+    glGenBuffers(1, (GLuint*) &(idColors));
+    glBindBuffer(GL_ARRAY_BUFFER, idColors);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_STATIC_DRAW);
 
-	/*glGenBuffers(1, (GLuint*) &(idNormVBO));
-	glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);*/
+    /*glGenBuffers(1, (GLuint*) &(idNormVBO));
+    glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);*/
 }
 
 void MeshComponent::drawGUI()

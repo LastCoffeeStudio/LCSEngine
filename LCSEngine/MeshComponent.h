@@ -39,13 +39,13 @@ public:
 	float lengthX, lengthY, lengthZ;
 	void setPreset(PresetType type);
 	void updateColor(const float3& color);
-
+    void generateIDs();
+    void loadPreset();
 public:
 	PresetType currentPreset = CUBE;
 	Model* model = nullptr;
 
 private:
-	void loadPreset();
 	void loadModel();
 	void loadSphere();
 	void loadCube();
