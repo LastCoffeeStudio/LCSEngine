@@ -13,7 +13,7 @@ const char* presets[] = { "House", "Cube", "Sphere" };
 MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = MESH;
-	loadPreset();
+	//loadPreset();
 }
 
 MeshComponent::~MeshComponent() {}

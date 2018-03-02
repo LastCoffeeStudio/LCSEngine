@@ -49,7 +49,7 @@ bool ModuleTextures::cleanUp()
 	return true;
 }
 
-bool const ModuleTextures::loadTexture(ILenum type, const char* path)
+bool const ModuleTextures::loadTexture(const char* path)
 {
 	bool ret = true;
 	AssetTexture* asset = nullptr;
@@ -59,7 +59,7 @@ bool const ModuleTextures::loadTexture(ILenum type, const char* path)
 	ILenum error;
 	ilGenImages(1, &imageID);
 	ilBindImage(imageID);
-	success = ilLoad(type,path);
+	success = iluLoadImage(path);
 
 	if (success)
 	{

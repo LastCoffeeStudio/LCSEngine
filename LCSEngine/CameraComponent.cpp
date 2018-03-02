@@ -13,7 +13,7 @@ CameraComponent::CameraComponent(GameObject* gameObject, bool isEnable, bool isU
 	frustum.verticalFov = DegToRad(60.0f);
 	frustum.horizontalFov = DegToRad(36.0f);
 	frustum.nearPlaneDistance = 0.1f;
-	frustum.farPlaneDistance = 100.f;
+	frustum.farPlaneDistance = 1000.f;
 	frustum.pos = float3::zero;
 	frustum.front = -float3::unitZ;
 	frustum.up = float3::unitY;

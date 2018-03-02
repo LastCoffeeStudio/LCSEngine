@@ -23,7 +23,7 @@ public:
 	bool init();
 	bool cleanUp();
 
-	bool const loadTexture(ILenum type, const char* path);
+	bool const loadTexture(const char* path);
 	void const loadModelTextures(const aiScene* scene);
 	AssetTexture* const loadCheckers();
 

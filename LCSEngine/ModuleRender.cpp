@@ -147,17 +147,20 @@ void ModuleRender::renderObjects()
 		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasTexture);
 
 		//Order matters!
-		glActiveTexture(GL_TEXTURE0);
-		glBindTexture(GL_TEXTURE_2D, (*it).second.textureID);
-		glUniform1i(glGetUniformLocation(program, "text"), 0);
+		if ((*it).second.hasTexture)
+		{
+			glActiveTexture(GL_TEXTURE0);
+			glBindTexture(GL_TEXTURE_2D, (*it).second.textureID);
+			glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, (*it).second.textureCoordsID);
+			glEnableVertexAttribArray(1);
+			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+		}
 
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.textureCoordsID);
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.colorID);
 		glEnableVertexAttribArray(2);

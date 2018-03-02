@@ -113,7 +113,7 @@ void GameObject::preUpdate()
 						hasTexture = true;
 						(*itNewTexture).second->numberUsages++;
 					}
-					else if (App->textures->loadTexture(IL_PNG,texPath.c_str()))
+					else if (App->textures->loadTexture(texPath.c_str()))
 					{
 						texID = App->textures->textures[texPath]->ID;
 						hasTexture = true;

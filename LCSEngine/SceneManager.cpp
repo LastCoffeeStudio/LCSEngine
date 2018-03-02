@@ -44,9 +44,10 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 		ComponentFactory* factory = ComponentFactory::getInstance();
 		MeshComponent* mesh = (MeshComponent*)(factory->getComponent(MESH, parent));
 
-
 		aiMesh* currentMesh = scene->mMeshes[meshNum];
-        mesh->verticesVBO.clear();
+		mesh->verticesVBO.reserve(currentMesh->mNumVertices);
+		mesh->normalsVBO.reserve(currentMesh->mNumVertices);
+
 		for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
 		{
 			mesh->verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
@@ -56,7 +57,7 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 			mesh->normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
 				currentMesh->mNormals[l].y,
 				currentMesh->mNormals[l].z));
-			if (currentMesh->HasTextureCoords(meshNum))
+			if (currentMesh->HasTextureCoords(0))
 			{
 				mesh->texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y));
 			}
