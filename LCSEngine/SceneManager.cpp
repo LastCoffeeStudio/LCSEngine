@@ -11,6 +11,8 @@
 #include "ComponentFactory.h"
 #include "MeshComponent.h"
 #include "TransformComponent.h"
+#include "MaterialComponent.h"
+#include <string.h>
 
 SceneManager::SceneManager()
 {
@@ -72,7 +74,19 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
         mesh->generateIDs();
 		gameObject->addComponent(mesh);
 
+		//Create texture
+		MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, parent));
+		aiMaterial* currentMaterial = scene->mMaterials[currentMesh->mMaterialIndex];
+		unsigned int index;
+		aiString path;
+		currentMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+		material->textureChanged = true;
+		string texturePathName = path.C_Str();
+		material->setNameTexture("Assets/Models/street/"+ texturePathName);
+		gameObject->addComponent(material);
+
 		transformAiScene4x4ToFloat4x4(node->mTransformation, ((TransformComponent*)gameObject->components[0])->transform);
+		
 	}
 
 	parent->addGameObject(gameObject);

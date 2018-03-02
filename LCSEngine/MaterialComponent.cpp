@@ -96,3 +96,8 @@ void MaterialComponent::drawGUI()
 		}
 	}
 }
+
+void MaterialComponent::setNameTexture(string name)
+{
+	strcpy_s(textureName, name.c_str());
+}

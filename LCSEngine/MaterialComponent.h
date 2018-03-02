@@ -13,6 +13,7 @@ class MaterialComponent : public Component
 public:
 	MaterialComponent(GameObject* gameObject, bool isEnable = true);
 	~MaterialComponent();
+	void setNameTexture(std::string name);
 	void drawGUI();
 
 public:
