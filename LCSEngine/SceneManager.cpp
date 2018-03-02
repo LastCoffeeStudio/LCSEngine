@@ -36,58 +36,63 @@ void SceneManager::load(const char* file)
 void SceneManager::createObject(GameObject* parent, aiNode* node) 
 {
 	GameObject* gameObject = new GameObject(parent, node->mName.C_Str());
-	
+
 	if (node->mNumMeshes > 0)
 	{
-		unsigned int meshNum = node->mMeshes[0];
-
-		ComponentFactory* factory = ComponentFactory::getInstance();
-		MeshComponent* mesh = (MeshComponent*)(factory->getComponent(MESH, parent));
-
-		aiMesh* currentMesh = scene->mMeshes[meshNum];
-		mesh->verticesVBO.reserve(currentMesh->mNumVertices);
-		mesh->normalsVBO.reserve(currentMesh->mNumVertices);
-
-		for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
+		for (int i = 0; i < node->mNumMeshes; ++i)
 		{
-			mesh->verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
-				currentMesh->mVertices[l].y,
-				currentMesh->mVertices[l].z));
+			GameObject* gameObjectMesh = new GameObject(gameObject, node->mName.C_Str());
 
-			mesh->normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
-				currentMesh->mNormals[l].y,
-				currentMesh->mNormals[l].z));
-			if (currentMesh->HasTextureCoords(0))
-			{
-				mesh->texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y));
-			}
-		}
+			unsigned int meshNum = node->mMeshes[i];
 
-		for (unsigned k = 0; k < currentMesh->mNumFaces; ++k)
-		{
-			for (unsigned j = 0; j < currentMesh->mFaces[k].mNumIndices; ++j)
+			ComponentFactory* factory = ComponentFactory::getInstance();
+			MeshComponent* mesh = (MeshComponent*)(factory->getComponent(MESH, parent));
+
+			aiMesh* currentMesh = scene->mMeshes[meshNum];
+			mesh->verticesVBO.reserve(currentMesh->mNumVertices);
+			mesh->normalsVBO.reserve(currentMesh->mNumVertices);
+
+			for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
 			{
-				unsigned int index = currentMesh->mFaces[k].mIndices[j];
-				mesh->indicesVAO.push_back(index);
+				mesh->verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
+					currentMesh->mVertices[l].y,
+					currentMesh->mVertices[l].z));
+
+				mesh->normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
+					currentMesh->mNormals[l].y,
+					currentMesh->mNormals[l].z));
+				if (currentMesh->HasTextureCoords(0))
+				{
+					mesh->texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y));
+				}
 			}
-		}
+
+			for (unsigned k = 0; k < currentMesh->mNumFaces; ++k)
+			{
+				for (unsigned j = 0; j < currentMesh->mFaces[k].mNumIndices; ++j)
+				{
+					unsigned int index = currentMesh->mFaces[k].mIndices[j];
+					mesh->indicesVAO.push_back(index);
+				}
+			}
         
-        mesh->generateIDs();
-		gameObject->addComponent(mesh);
+			mesh->generateIDs();
+			gameObjectMesh->addComponent(mesh);
 
-		//Create texture
-		MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, parent));
-		aiMaterial* currentMaterial = scene->mMaterials[currentMesh->mMaterialIndex];
-		unsigned int index;
-		aiString path;
-		currentMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
-		material->textureChanged = true;
-		string texturePathName = path.C_Str();
-		material->setNameTexture("Assets/Models/street/"+ texturePathName);
-		gameObject->addComponent(material);
+			//Create texture
+			MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, parent));
+			aiMaterial* currentMaterial = scene->mMaterials[currentMesh->mMaterialIndex];
+			unsigned int index;
+			aiString path;
+			currentMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
+			material->textureChanged = true;
+			string texturePathName = path.C_Str();
+			material->setNameTexture("Assets/Models/street/"+ texturePathName);
+			gameObjectMesh->addComponent(material);
 
-		transformAiScene4x4ToFloat4x4(node->mTransformation, ((TransformComponent*)gameObject->components[0])->transform);
-		
+			transformAiScene4x4ToFloat4x4(node->mTransformation, ((TransformComponent*)gameObjectMesh->components[0])->transform);
+			gameObject->addGameObject(gameObjectMesh);
+		}
 	}
 
 	parent->addGameObject(gameObject);
@@ -96,6 +101,7 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 		createObject(gameObject, node->mChildren[i]);
 	}
 }
+
 
 void SceneManager::transformAiScene4x4ToFloat4x4(const aiMatrix4x4 & matAiScene, float4x4 & matDest)
 {

@@ -57,7 +57,7 @@ bool ModuleSceneMain::init()
 bool ModuleSceneMain::start()
 {
 	sceneManager = new SceneManager();
-	sceneManager->load("Assets/Models/street/Street.obj");
+	sceneManager->load("Assets/Models/ArmyPilot/ArmyPilot.dae");
 	
 	return true;
 }
