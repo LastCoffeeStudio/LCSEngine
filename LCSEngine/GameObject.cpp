@@ -7,6 +7,7 @@
 #include "MaterialComponent.h"
 #include "CameraComponent.h"
 #include "TransformComponent.h"
+#include "AnimationComponent.h"
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
@@ -350,6 +351,7 @@ void GameObject::draw()
 		//data.hasMaterial = hasMaterial;
 		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
+		data.mode = GL_TRIANGLES;
 		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
 		//drawAABB();
@@ -360,10 +362,21 @@ void GameObject::draw()
 	//TODO: AABB, OBB and Frustum data must be passed as VBO data, so we can add them to the render queue
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		if ((*it)->typeComponent == CAMERA && (*it)->isEnable)
+		switch ((*it)->typeComponent)
 		{
-			drawFrustum(((CameraComponent*)(*it))->frustum);
+		case CAMERA:
+			if ((*it)->isEnable)
+			{
+				drawFrustum(((CameraComponent*)(*it))->frustum);
+			}
+			break;
+		case ANIMATION:
+			((AnimationComponent*)(*it))->drawHierarchy();
+			break;
+		default:
+			break;
 		}
+
 	}
 }
 

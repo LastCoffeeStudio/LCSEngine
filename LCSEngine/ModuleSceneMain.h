@@ -51,6 +51,7 @@ public:
 	bool rebuildQuadTree = false;
 	std::list<GameObject*> garbageCollector;
 	std::list<Component*> garbageCollectorComponent;
+	std::vector<GameObject*> rootBones;
 
 private:
 	void drawAABB(const AABB& aabb);

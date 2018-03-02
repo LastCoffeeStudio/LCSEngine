@@ -5,6 +5,7 @@
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "MathGeoLib/src/Math/Quat.h"
+#include "assimp/include/scene.h"
 
 class TransformComponent : public Component
 {
@@ -20,8 +21,8 @@ public:
 	float3 rotation = { 0.0f, 0.0f, 0.0f };
 	Quat rotationQad = Quat({ 0.0f, 0.0f, 1.0f }, 0.0f);
 	float4x4 transform;
+	void setTransform(const aiMatrix4x4 & matAiScene);
 	void updateTransform();
-	void updateTransform(float* trans);
 
 private:
 

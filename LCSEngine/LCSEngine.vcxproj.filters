@@ -342,6 +342,9 @@
     <ClInclude Include="SceneManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="AnimationComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -538,6 +541,9 @@
     </ClCompile>
     <ClCompile Include="SceneManager.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="AnimationComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

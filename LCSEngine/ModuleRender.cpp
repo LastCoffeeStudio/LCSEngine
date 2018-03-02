@@ -168,7 +168,7 @@ void ModuleRender::renderObjects()
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
 
-		glDrawElements(GL_TRIANGLES, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);
+		glDrawElements((*it).second.mode, (*it).second.sizeIdxVAO, GL_UNSIGNED_INT, NULL);
 	}
 
 	renderQueue.clear();

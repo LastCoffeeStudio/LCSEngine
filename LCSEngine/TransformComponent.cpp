@@ -16,6 +16,22 @@ TransformComponent::TransformComponent(GameObject* gameObject) : Component(gameO
 
 TransformComponent::~TransformComponent() {}
 
+void TransformComponent::setTransform(const aiMatrix4x4& matAiScene)
+{
+	for (unsigned int i = 0; i < 3; ++i)
+	{
+		position[i] = matAiScene[i][3];
+		scale[i] = sqrt(pow(matAiScene[i][0], 2.f) + pow(matAiScene[i][1], 2.f) + pow(matAiScene[i][2], 2.f));
+	}
+	float3x3 rotMat = { matAiScene[0][0], matAiScene[0][1], matAiScene[0][2],
+					    matAiScene[1][0], matAiScene[1][1], matAiScene[1][2],
+					    matAiScene[2][0], matAiScene[2][1], matAiScene[2][2] };
+	rotation = rotMat.ToEulerXYZ() * 180.f / pi;
+	updateTranslate();
+	updateScale();
+	updateRotate();
+}
+
 void TransformComponent::updateTransform()
 {
 	transform = matrixTranslate*matrixRotate*matrixScale;

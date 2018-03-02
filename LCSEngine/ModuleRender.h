@@ -7,6 +7,7 @@
 #include <list>
 
 typedef unsigned int GLuint;
+typedef unsigned int GLenum;
 typedef int GLint;
 
 struct SDL_Texture;
@@ -27,6 +28,7 @@ struct renderData
 	GLuint colorID;
 	bool hasMaterial;
 	bool hasTexture;
+	GLenum mode;
 };
 
 class ModuleRender : public Module

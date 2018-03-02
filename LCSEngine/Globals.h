@@ -23,7 +23,8 @@ enum TypeComponent
 	TRANSFORM,
 	MATERIAL,
 	MESH,
-	CAMERA
+	CAMERA,
+	ANIMATION
 };
 
 // Deletes a buffer

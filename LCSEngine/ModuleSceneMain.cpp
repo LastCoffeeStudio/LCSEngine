@@ -270,6 +270,7 @@ void ModuleSceneMain::checkVisibleItems()
 
 void ModuleSceneMain::draw()
 {
+	drawGrid();
 	BROFILER_CATEGORY("DrawSceneMain", Profiler::Color::Orchid)
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{
@@ -278,7 +279,6 @@ void ModuleSceneMain::draw()
 			drawGameObjects((*it));
 		}
 	}
-	drawGrid();
 	drawQuadTree();
 
 }

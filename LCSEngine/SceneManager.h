@@ -12,7 +12,6 @@ typedef unsigned int GLuint;
 class GameObject;
 class AssetTexture;
 
-
 class SceneManager
 {
 public:
@@ -20,14 +19,11 @@ public:
 	~SceneManager();
 
 	void load(const char* file);
-	void createObject(GameObject * gameobject, aiNode* parentNode);
+	GameObject* createObject(GameObject * gameobject, aiNode* parentNode);
 	void clear();
 
 public:
 	const aiScene* scene = 0;
-	void transformAiScene4x4ToFloat4x4(const aiMatrix4x4 &matAiScene, float4x4 &matDest);
-
-
 
 public:
 	std::vector<Model> models;

@@ -12,6 +12,7 @@
 #include "MeshComponent.h"
 #include "TransformComponent.h"
 #include "MaterialComponent.h"
+#include "AnimationComponent.h"
 #include <string.h>
 
 SceneManager::SceneManager()
@@ -19,21 +20,25 @@ SceneManager::SceneManager()
 	filesPath.reserve(0);
 }
 
-
-SceneManager::~SceneManager()
-{
-}
-
+SceneManager::~SceneManager() {}
 
 void SceneManager::load(const char* file)
 {
 	scene = aiImportFile(file, aiProcessPreset_TargetRealtime_MaxQuality);
 	int meshNum = 0;
 
-	createObject(App->sceneMain->root, scene->mRootNode);
+	GameObject* root = createObject(App->sceneMain->root, scene->mRootNode);
+
+	if (scene->HasAnimations())
+	{
+		ComponentFactory* factory = ComponentFactory::getInstance();
+		AnimationComponent* anim = (AnimationComponent*)(factory->getComponent(ANIMATION, root));
+		anim->rootBone = root;
+		root->addComponent(anim);
+	}
 }
 
-void SceneManager::createObject(GameObject* parent, aiNode* node) 
+GameObject* SceneManager::createObject(GameObject* parent, aiNode* node) 
 {
 	GameObject* gameObject = new GameObject(parent, node->mName.C_Str());
 
@@ -46,24 +51,25 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 			unsigned int meshNum = node->mMeshes[i];
 
 			ComponentFactory* factory = ComponentFactory::getInstance();
-			MeshComponent* mesh = (MeshComponent*)(factory->getComponent(MESH, parent));
+			MeshComponent* mesh = (MeshComponent*)(factory->getComponent(MESH, gameObjectMesh));
 
 			aiMesh* currentMesh = scene->mMeshes[meshNum];
-			mesh->verticesVBO.reserve(currentMesh->mNumVertices);
-			mesh->normalsVBO.reserve(currentMesh->mNumVertices);
+			mesh->verticesVBO = vector<float3>(currentMesh->mNumVertices, float3(0.f, 0.f, 0.f));
+			mesh->normalsVBO = vector<float3>(currentMesh->mNumVertices, float3(0.f,0.f,0.f));
+			mesh->texCoordsVBO = vector<float2>(currentMesh->mNumVertices, float2(0.f, 0.f));
 
 			for (unsigned int l = 0; l < currentMesh->mNumVertices; ++l)
 			{
-				mesh->verticesVBO.push_back(float3(currentMesh->mVertices[l].x,
+				mesh->verticesVBO[l] = float3(currentMesh->mVertices[l].x,
 					currentMesh->mVertices[l].y,
-					currentMesh->mVertices[l].z));
+					currentMesh->mVertices[l].z);
 
-				mesh->normalsVBO.push_back(float3(currentMesh->mNormals[l].x,
+				mesh->normalsVBO[l] = float3(currentMesh->mNormals[l].x,
 					currentMesh->mNormals[l].y,
-					currentMesh->mNormals[l].z));
+					currentMesh->mNormals[l].z);
 				if (currentMesh->HasTextureCoords(0))
 				{
-					mesh->texCoordsVBO.push_back(float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y));
+					mesh->texCoordsVBO[l] = float2(currentMesh->mTextureCoords[0][l].x, currentMesh->mTextureCoords[0][l].y);
 				}
 			}
 
@@ -80,47 +86,27 @@ void SceneManager::createObject(GameObject* parent, aiNode* node)
 			gameObjectMesh->addComponent(mesh);
 
 			//Create texture
-			MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, parent));
+			MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, gameObjectMesh));
 			aiMaterial* currentMaterial = scene->mMaterials[currentMesh->mMaterialIndex];
 			unsigned int index;
 			aiString path;
 			currentMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			material->textureChanged = true;
 			string texturePathName = path.C_Str();
-			material->setNameTexture("Assets/Models/street/"+ texturePathName);
+			material->setNameTexture("Assets/Models/ArmyPilot/"+ texturePathName);
 			gameObjectMesh->addComponent(material);
 
-			transformAiScene4x4ToFloat4x4(node->mTransformation, ((TransformComponent*)gameObjectMesh->components[0])->transform);
 			gameObject->addGameObject(gameObjectMesh);
 		}
 	}
+
+	((TransformComponent*)gameObject->components[0])->setTransform(node->mTransformation);
 
 	parent->addGameObject(gameObject);
 	for (unsigned int i = 0; i < node->mNumChildren; ++i)
 	{
 		createObject(gameObject, node->mChildren[i]);
 	}
+
+	return gameObject;
 }
-
-
-void SceneManager::transformAiScene4x4ToFloat4x4(const aiMatrix4x4 & matAiScene, float4x4 & matDest)
-{
-    //Copy and Transpose.
-    matDest[0][0] = matAiScene[0][0];
-    matDest[1][0] = matAiScene[0][1];
-    matDest[2][0] = matAiScene[0][2];
-    matDest[3][0] = matAiScene[0][3];
-    matDest[0][1] = matAiScene[1][0];
-    matDest[1][1] = matAiScene[1][1];
-    matDest[2][1] = matAiScene[1][2];
-    matDest[3][1] = matAiScene[1][3];
-    matDest[0][2] = matAiScene[2][0];
-    matDest[1][2] = matAiScene[2][1];
-    matDest[2][2] = matAiScene[2][2];
-    matDest[3][2] = matAiScene[2][3];
-    matDest[0][3] = matAiScene[3][0];
-    matDest[1][3] = matAiScene[3][1];
-    matDest[2][3] = matAiScene[3][2];
-    matDest[3][3] = matAiScene[3][3];
-}
-
