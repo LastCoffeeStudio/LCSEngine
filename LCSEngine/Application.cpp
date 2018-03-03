@@ -10,6 +10,7 @@
 #include "ModuleFadeToBlack.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "ModuleAnimation.h"
 
 using namespace std;
 
@@ -25,6 +26,7 @@ Application::Application()
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(fade = new ModuleFadeToBlack());
+	modules.push_back(animations = new ModuleAnimation());
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	
 	timer = 0;

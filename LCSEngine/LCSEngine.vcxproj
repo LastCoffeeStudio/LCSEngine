@@ -223,6 +223,7 @@
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="Model.h" />
     <ClInclude Include="Module.h" />
+    <ClInclude Include="ModuleAnimation.h" />
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleFadeToBlack.h" />
@@ -293,6 +294,7 @@
     <ClCompile Include="MathGeoLib\src\Time\Clock.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="Model.cpp" />
+    <ClCompile Include="ModuleAnimation.cpp" />
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />
