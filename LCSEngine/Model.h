@@ -4,7 +4,7 @@
 #include <map>
 
 typedef unsigned int GLuint;
-class aiScene;
+struct aiScene;
 class AssetTexture;
 struct aiMesh;
 

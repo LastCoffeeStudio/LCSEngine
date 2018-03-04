@@ -32,6 +32,7 @@ the specific language governing permissions and limitations under the License.
 #include <AK/Tools/Common/AkAssert.h>
 #include <AK/SoundEngine/Common/AkTypes.h>
 #include <windows.h>
+#include <stdio.h>
 //#define AK_ENABLE_PERF_RECORDING
 #if defined(AK_ENABLE_PERF_RECORDING)
 #include <stdio.h>

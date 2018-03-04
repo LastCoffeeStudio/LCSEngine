@@ -12,7 +12,7 @@ typedef unsigned char GLubyte;
 typedef unsigned int GLuint;
 struct SDL_Texture;
 class AssetTexture;
-class aiScene;
+struct aiScene;
 
 class ModuleTextures : public Module
 {
