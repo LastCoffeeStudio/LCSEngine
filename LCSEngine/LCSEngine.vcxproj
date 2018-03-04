@@ -71,11 +71,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <IncludePath>$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Wwise\libx86\Debug;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)Wwise\libx86\libDebug;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Wwise\libx86\Release;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)Wwise\libx86\libRelease;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
