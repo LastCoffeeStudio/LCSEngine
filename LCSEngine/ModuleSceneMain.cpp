@@ -4,6 +4,7 @@
 #include "ModuleInput.h"
 #include "ModuleCamera.h"
 #include "ModuleTextures.h"
+#include "ModuleAnimation.h"
 #include "Component.h"
 #include "CameraComponent.h"
 #include "GameObject.h"
@@ -58,6 +59,9 @@ bool ModuleSceneMain::start()
 {
 	sceneManager = new SceneManager();
 	sceneManager->load("Assets/Models/ArmyPilot/ArmyPilot.dae");
+	App->animations->load("Idle","Assets/Models/ArmyPilot/Animations/ArmyPilot_Idle.fbx");
+	App->animations->load("Run", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Run_Forwards.fbx");
+	App->animations->load("Walk", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Walk.fbx");
 	
 	return true;
 }

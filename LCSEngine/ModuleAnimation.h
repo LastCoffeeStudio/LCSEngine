@@ -4,11 +4,14 @@
 #include "Module.h"
 #include "MathGeoLib/src/Math/float3.h"
 #include "MathGeoLib/src/Math/Quat.h"
+#include "assimp/include/scene.h"
+#include "assimp/include/cimport.h"
+#include "assimp/include/postprocess.h" 
 #include <map>
 #include <vector>
 #include <string>
 
-struct Frame
+struct Bone
 {
 	std::string name = "";
 	std::vector<float3> positions;
@@ -18,7 +21,7 @@ struct Frame
 struct Animation
 {
 	unsigned int duration = 0;
-	std::vector<Frame*> frames;
+	std::vector<Bone*> bones;
 };
 
 struct AnimationInstance
@@ -46,6 +49,7 @@ public:
 	std::map<std::string, Animation*> animations;
 	std::vector<AnimationInstance*> instances;
 	std::vector<unsigned int> unusedIDs;
+	const aiScene* scene = 0;
 };
 
 #endif //__MODULEANIMATION_H__
