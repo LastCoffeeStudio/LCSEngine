@@ -43,13 +43,17 @@ public:
 	update_status update(float deltaTime);
 	unsigned int play(const char* name);
 	void stop(unsigned int id);
-	bool getTransform(unsigned int id, const char* frameName, float3& position, Quat& rotation);
+	bool getTransform(unsigned int id, const char* boneName, float3& position, Quat& rotation);
 
 public:
 	std::map<std::string, Animation*> animations;
 	std::vector<AnimationInstance*> instances;
 	std::vector<unsigned int> unusedIDs;
 	const aiScene* scene = 0;
+
+private:
+	float3 calculatePosition(const float3& iniPos, const float3& endPos, float time) const;
+	Quat calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const;
 };
 
 #endif //__MODULEANIMATION_H__

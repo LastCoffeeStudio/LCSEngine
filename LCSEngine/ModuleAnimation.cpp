@@ -19,7 +19,7 @@ bool ModuleAnimation::load(const char* name, const char* path)
 	}
 
 	Animation* anim = new Animation();
-	anim->duration = scene->mAnimations[0]->mDuration;
+	anim->duration = unsigned int((scene->mAnimations[0]->mDuration / scene->mAnimations[0]->mTicksPerSecond) * 1000);
 	for (unsigned int i = 0; i < scene->mAnimations[0]->mNumChannels; ++i)
 	{
 		aiNodeAnim* nodeAnim = scene->mAnimations[0]->mChannels[i];
@@ -48,7 +48,11 @@ update_status ModuleAnimation::update(float deltaTime)
 	{
 		if ((*it) != nullptr)
 		{
-			(*it)->localTime += deltaTime;
+			(*it)->localTime += unsigned int(deltaTime*1000);	//ms
+			if ((*it)->localTime > (*it)->animation->duration)
+			{
+				(*it)->localTime -= (*it)->animation->duration;
+			}
 		}
 	}
 	return UPDATE_CONTINUE;
@@ -98,8 +102,25 @@ void ModuleAnimation::stop(unsigned int id)
 	}
 }
 
-bool ModuleAnimation::getTransform(unsigned int id, const char* frameName, float3& position, Quat& rotation)
+bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3& position, Quat& rotation)
 {
 	bool success = false;
+	if (id != 0 && id <= instances.size() && instances[id - 1] != nullptr)
+	{
+		Animation* anim = instances[id - 1]->animation;
+		for (unsigned int i = 0; i < anim->bones.size() && !success; ++i)
+		{
+			if (anim->bones[i]->name == boneName)
+			{
+				//position = calculatePosition();
+				//rotation = calculateRotation();
+				success = true;
+			}
+		}
+	}
 	return success;
 }
+
+float3 ModuleAnimation::calculatePosition(const float3& iniPos, const float3& endPos, float time) const {}
+
+Quat ModuleAnimation::calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const {}

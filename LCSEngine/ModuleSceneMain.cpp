@@ -69,7 +69,7 @@ bool ModuleSceneMain::start()
 	unsigned int c = App->animations->play("a");
 	App->animations->stop(a);
 	unsigned int d = App->animations->play("Walk");
-	App->animations->stop(b);
+	//App->animations->stop(b);
 	App->animations->stop(c);
 	App->animations->stop(d);
 	/*END DEBUG*/
