@@ -62,6 +62,17 @@ bool ModuleSceneMain::start()
 	App->animations->load("Idle","Assets/Models/ArmyPilot/Animations/ArmyPilot_Idle.fbx");
 	App->animations->load("Run", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Run_Forwards.fbx");
 	App->animations->load("Walk", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Walk.fbx");
+
+	/*DEBUG*/
+	unsigned int a = App->animations->play("Run");
+	unsigned int b = App->animations->play("Idle");
+	unsigned int c = App->animations->play("a");
+	App->animations->stop(a);
+	unsigned int d = App->animations->play("Walk");
+	App->animations->stop(b);
+	App->animations->stop(c);
+	App->animations->stop(d);
+	/*END DEBUG*/
 	
 	return true;
 }

@@ -37,23 +37,66 @@ bool ModuleAnimation::load(const char* name, const char* path)
 		anim->bones.push_back(bone);
 	}
 
-	animations[scene->mAnimations[0]->mName.C_Str()] = anim;
+	animations[name] = anim;
 
 	return true;
 }
 
 update_status ModuleAnimation::update(float deltaTime)
 {
+	for (std::vector<AnimationInstance*>::iterator it = instances.begin(); it != instances.end(); ++it)
+	{
+		if ((*it) != nullptr)
+		{
+			(*it)->localTime += deltaTime;
+		}
+	}
 	return UPDATE_CONTINUE;
 }
 
+/*Ids goes from 1 to the number of actual instances. If ID 0 is returned, failed to play the animation*/
 unsigned int ModuleAnimation::play(const char* name)
 {
-	unsigned int id = -1;
+	unsigned int id = 0;
+	std::map<std::string, Animation*>::iterator it = animations.find(name);
+	if (it != animations.end())
+	{
+		AnimationInstance* animInstance = new AnimationInstance();
+		animInstance->animation = (*it).second;
+
+		if (unusedIDs.size() > 0)
+		{
+			id = unusedIDs.back();
+			unusedIDs.pop_back();
+			instances[id-1] = animInstance;
+		}
+		else
+		{
+			instances.push_back(animInstance);
+			id = instances.size();
+		}
+	}
+	else
+	{
+		LOG("Doesn't exist this animation");
+	}
+	
 	return id;
 }
 
-void ModuleAnimation::stop(unsigned int id) {}
+void ModuleAnimation::stop(unsigned int id)
+{
+	if (id != 0 && id <= instances.size() && instances[id-1] != nullptr)
+	{
+		instances[id-1]->animation = nullptr;
+		instances[id-1] = nullptr;
+		unusedIDs.push_back(id);
+	}
+	else
+	{
+		LOG("No instance of animation with id: %u", id);
+	}
+}
 
 bool ModuleAnimation::getTransform(unsigned int id, const char* frameName, float3& position, Quat& rotation)
 {
