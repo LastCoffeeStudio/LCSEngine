@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="128">
+	<RootPaths>
+		<ProjectRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\</ProjectRoot>
+		<SourceFilesRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ExternalSourcesInputFile></ExternalSourcesInputFile>
+		<ExternalSourcesOutputRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</ExternalSourcesOutputRoot>
+	</RootPaths>
+	<DialogueEvents/>
+	<StreamedFiles/>
+	<MediaFilesNotInAnyBank/>
+	<SoundBanks>
+		<SoundBank Id="1171752636" Language="SFX">
+			<ObjectPath>\SoundBanks\Default Work Unit\Init_Bank</ObjectPath>
+			<ShortName>Init_Bank</ShortName>
+			<Path>Init_Bank.bnk</Path>
+			<IncludedEvents>
+				<Event Id="3955959628" Name="Play_Gunshot" ObjectPath="\Events\Default Work Unit\Play_Gunshot"/>
+			</IncludedEvents>
+			<IncludedMemoryFiles>
+				<File Id="250084518" Language="SFX">
+					<ShortName>9_mm_gunshot.wav</ShortName>
+					<Path>SFX\9_mm_gunshot_1C9C67B2.wem</Path>
+				</File>
+			</IncludedMemoryFiles>
+		</SoundBank>
+		<SoundBank Id="1355168291" Language="SFX">
+			<ObjectPath>Init</ObjectPath>
+			<ShortName>Init</ShortName>
+			<Path>Init.bnk</Path>
+		</SoundBank>
+	</SoundBanks>
+</SoundBanksInfo>

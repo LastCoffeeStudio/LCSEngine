@@ -18,6 +18,7 @@ public:
 	~ModuleAudio();
 
 	bool init();
+	update_status update(float deltaTime);
 	bool cleanUp();
 
 	// Play a music file

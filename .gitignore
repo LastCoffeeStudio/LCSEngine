@@ -292,3 +292,10 @@ __pycache__/
 LCSEngine/ProjectDir/imgui.ini
 LCSEngine/enc_temp_folder/f29158dcfdac72a7a4d157ba2ef51a28/ModuleRender.h
 !Street.obj
+
+#Wwise
+*/Wwise/.backup
+*/Wwise/WwiseProject/LCSEngineWwise/.cache/
+*/Wwise/WwiseProject/LCSEngineWwise/*.validationcache
+*/Wwise/WwiseProject/LCSEngineWwise/*.wsettings
+*/Wwise/*.wproj_migration.log

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<WwiseDocument Type="WorkUnit" ID="{03E429A1-CD45-40E2-B63B-00890962DE19}" SchemaVersion="85">
+	<Events>
+		<WorkUnit Name="Default Work Unit" ID="{03E429A1-CD45-40E2-B63B-00890962DE19}" PersistMode="Standalone">
+			<ChildrenList>
+				<Event Name="Play_Gunshot" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}">
+					<ChildrenList>
+						<Action Name="" ID="{F44C2897-06A6-40AF-BC08-E09AC7480DC1}" ShortID="551247740">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="9_mm_gunshot" ID="{DCE10021-D401-45FF-A38A-FCD4084D32BC}" WorkUnitID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+			</ChildrenList>
+		</WorkUnit>
+	</Events>
+</WwiseDocument>
