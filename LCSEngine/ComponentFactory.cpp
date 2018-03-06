@@ -8,6 +8,7 @@
 #include "AnimationComponent.h"
 #include "GameObject.h"
 #include "ListenerComponent.h"
+#include "AudioSourceComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -43,6 +44,9 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 		break;
     case TypeComponent::LISTENER:
         return new ListenerComponent(parentObject);
+        break;
+    case TypeComponent::AUDIOSOURCE:
+        return new AudioSourceComponent(parentObject);
         break;
 	default:
 		return nullptr;

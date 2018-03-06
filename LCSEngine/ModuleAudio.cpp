@@ -139,3 +139,28 @@ void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4
 
     AK::SoundEngine::SetPosition(objectId, listenerTransform);
 }
+
+void ModuleAudio::updatePositionAudioSource(AkGameObjectID objectId, const math::float4x4& transform)
+{
+    AkSoundPosition soundPos;
+
+    AkVector vecPosition;
+    vecPosition.X = transform[3][0];
+    vecPosition.Y = transform[3][1];
+    vecPosition.Z = transform[3][2];
+
+    AkVector vecUp;
+    vecUp.X = transform[1][0];
+    vecUp.Y = transform[1][1];
+    vecUp.Z = transform[1][2];
+
+    AkVector vecFront;
+    vecFront.X = transform[0][0];
+    vecFront.Y = transform[1][0];
+    vecFront.Z = transform[2][0];
+
+    soundPos.SetPosition(vecPosition);
+    soundPos.SetOrientation(vecFront, vecUp);
+
+    AK::SoundEngine::SetPosition(100, soundPos);
+}

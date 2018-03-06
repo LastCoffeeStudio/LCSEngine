@@ -25,6 +25,7 @@
 #include "AssetTexture.h"
 #include "ListenerComponent.h"
 #include "ModuleAudio.h"
+#include "AudioSourceComponent.h"
 
 GameObject::GameObject() {}
 
@@ -141,6 +142,10 @@ void GameObject::preUpdate()
                 break;
             case LISTENER:
                 App->audio->updatePositionListener(((ListenerComponent*)(*it))->idAudioGameObj, id);
+                break;
+            case AUDIOSOURCE:
+                App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
+
 			}
                
 		}
@@ -331,7 +336,10 @@ void GameObject::drawComponentsGui()
         {
             addComponent(factory->getComponent(LISTENER, this));
         }
-
+        else if (ImGui::MenuItem("AudioSource"))
+        {
+            addComponent(factory->getComponent(AUDIOSOURCE, this));
+        }
 		ImGui::EndPopup();
 	}
 }

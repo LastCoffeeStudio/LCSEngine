@@ -1,8 +1,6 @@
 #include "ListenerComponent.h"
 #include "ModuleAudio.h"
 #include "GameObject.h"
-#include <AK/SoundEngine/Common/AkTypes.h>
-#include <AK/SoundEngine/Common/AkSoundEngine.h>
 #include "Application.h"
 #include "Globals.h"
 

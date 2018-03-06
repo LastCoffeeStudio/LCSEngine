@@ -351,6 +351,9 @@
     <ClInclude Include="ListenerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="AudioSourceComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -555,6 +558,9 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="ListenerComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioSourceComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
