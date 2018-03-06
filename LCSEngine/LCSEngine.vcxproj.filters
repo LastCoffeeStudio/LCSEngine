@@ -348,6 +348,9 @@
     <ClInclude Include="ModuleAnimation.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ListenerComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -550,6 +553,9 @@
     </ClCompile>
     <ClCompile Include="ModuleAnimation.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ListenerComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

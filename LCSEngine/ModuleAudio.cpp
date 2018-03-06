@@ -1,18 +1,21 @@
 #include "Globals.h"
 #include "Application.h"
 #include "ModuleAudio.h"
+#include "ModuleCamera.h"
+#include "CameraComponent.h"
 #include "SDL/include/SDL.h"
 #include "ModuleInput.h"
 
 #include "Wwise/include/SoundEngine.h"
 #include "Wwise/WwiseProject/LCSEngineWwise/GeneratedSoundBanks/Wwise_IDs.h"
+#include "TransformComponent.h"
 
 using namespace std;
 
 #define BANKNAME_INIT L"Init.bnk"
 #define BANKNAME_SHOTGUN L"Init_Bank.bnk"
 
-AkGameObjectID MY_DEFAULT_LISTENER = 0;
+
 AkGameObjectID GAME_OBJ = 100;
 
 ModuleAudio::ModuleAudio(bool start_enabled) : Module(start_enabled) {}
@@ -54,17 +57,9 @@ bool ModuleAudio::init()
 	eResult = AK::SoundEngine::LoadBank(BANKNAME_SHOTGUN, AK_DEFAULT_POOL_ID, bankID);
 	if (eResult != AK_Success)
 	{
-		LOG("Cannot load the shotgun bank");
+		LOG("Cannot load the shotgun bank")
 	}
-
-	// Register the main listener.
-	AK::SoundEngine::RegisterGameObj(MY_DEFAULT_LISTENER, "My Default Listener");
-
-	// Set one listener as the default.
-	AK::SoundEngine::SetDefaultListeners(&MY_DEFAULT_LISTENER, 1);
-
-	AK::SoundEngine::RegisterGameObj(GAME_OBJ, "Gun");
-
+    AK::SoundEngine::RegisterGameObj(GAME_OBJ, "Gun");
 	return true;
 }
 
@@ -99,29 +94,48 @@ bool ModuleAudio::cleanUp()
 	return true;
 }
 
-// Play a music file
-bool ModuleAudio::playMusic(const char* path, float fade_time)
+AkGameObjectID ModuleAudio::registerGameObj(const char* name)
 {
-	bool ret = true;
-
-
-	return ret;
+    AK::SoundEngine::RegisterGameObj(nextIdGameObjSound, name);
+    ++nextIdGameObjSound;
+    return (nextIdGameObjSound -1);
 }
 
-// Load WAV
-unsigned int ModuleAudio::loadFx(const char* path)
+void ModuleAudio::setListener(AkGameObjectID listenerId)
 {
-	unsigned int ret = 0;
-	
-
-	return ret;
+    if(currentAudioListener < 0)
+    {
+        AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
+    }else
+    {
+       AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
+    }
+    currentAudioListener = listenerId;
 }
 
-// Play WAV
-bool ModuleAudio::playFx(unsigned int id, int repeat)
+
+void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4& transform)
 {
-	bool ret = true;
 
+    AkTransform listenerTransform;
 
-	return ret;
+    AkVector vecPosition;
+    vecPosition.X = transform[3][0];
+    vecPosition.Y = transform[3][1];
+    vecPosition.Z = transform[3][2];
+   
+    AkVector vecUp;
+    vecUp.X = transform[1][0];
+    vecUp.Y = transform[1][1];
+    vecUp.Z = transform[1][2];
+
+    AkVector vecFront;
+    vecFront.X = transform[0][0];
+    vecFront.Y = transform[1][0];
+    vecFront.Z = transform[2][0];
+
+    listenerTransform.SetPosition(vecPosition);
+    listenerTransform.SetOrientation(vecFront, vecUp);
+
+    AK::SoundEngine::SetPosition(objectId, listenerTransform);
 }

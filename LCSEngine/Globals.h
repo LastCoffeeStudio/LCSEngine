@@ -24,7 +24,8 @@ enum TypeComponent
 	MATERIAL,
 	MESH,
 	CAMERA,
-	ANIMATION
+	ANIMATION,
+    LISTENER
 };
 
 // Deletes a buffer

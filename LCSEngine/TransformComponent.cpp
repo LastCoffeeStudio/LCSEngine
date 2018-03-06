@@ -63,6 +63,18 @@ void TransformComponent::updateRotate()
 	updateTransform();
 }
 
+
+float3 TransformComponent::up()
+{
+   return rotationQad * float3::unitY;
+}
+
+float3 TransformComponent::front()
+{
+    return rotationQad * float3::unitZ.Neg();
+}
+
+
 void TransformComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Transform"))

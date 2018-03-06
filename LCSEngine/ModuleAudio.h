@@ -3,11 +3,17 @@
 
 #include <vector>
 #include "Module.h"
+#include <AK/Tools/Common/AkObject.h>
 
 #define DEFAULT_MUSIC_FADE_TIME 2.0f
 
+namespace math {
+    class float4x4;
+}
+
 struct _Mix_Music;
 struct Mix_Chunk;
+class TransformComponent;
 typedef struct _Mix_Music Mix_Music;
 
 class ModuleAudio : public Module
@@ -20,20 +26,13 @@ public:
 	bool init();
 	update_status update(float deltaTime);
 	bool cleanUp();
-
-	// Play a music file
-	bool playMusic(const char* path, float fade_time = DEFAULT_MUSIC_FADE_TIME);
-
-	// Load a WAV in memory
-	unsigned int loadFx(const char* path);
-
-	// Play a previously loaded WAV
-	bool playFx(unsigned int fx, int repeat = 0);
+    AkGameObjectID registerGameObj(const char* name);
+    void setListener(AkGameObjectID listenerId);
+    void updatePositionListener(AkGameObjectID objectId, const math::float4x4& transform);
 
 private:
-
-	Mix_Music*	music = nullptr;
-	std::vector<Mix_Chunk*>	fx;
+    AkGameObjectID nextIdGameObjSound = 0;
+    AkGameObjectID currentAudioListener = -1;
 };
 
 #endif // __MODULEAUDIO_H__

@@ -23,6 +23,8 @@
 #include <queue>
 #include "Model.h"
 #include "AssetTexture.h"
+#include "ListenerComponent.h"
+#include "ModuleAudio.h"
 
 GameObject::GameObject() {}
 
@@ -136,7 +138,11 @@ void GameObject::preUpdate()
 					}
 					((MaterialComponent*)(*it))->colorChanged = false;
 				}
+                break;
+            case LISTENER:
+                App->audio->updatePositionListener(((ListenerComponent*)(*it))->idAudioGameObj, id);
 			}
+               
 		}
 	}
 	
@@ -321,6 +327,10 @@ void GameObject::drawComponentsGui()
 		{
 			addComponent(factory->getComponent(CAMERA, this));
 		}
+        else if (ImGui::MenuItem("Listener"))
+        {
+            addComponent(factory->getComponent(LISTENER, this));
+        }
 
 		ImGui::EndPopup();
 	}
