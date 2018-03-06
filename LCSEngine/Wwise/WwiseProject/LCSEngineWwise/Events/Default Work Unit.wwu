@@ -3,7 +3,7 @@
 	<Events>
 		<WorkUnit Name="Default Work Unit" ID="{03E429A1-CD45-40E2-B63B-00890962DE19}" PersistMode="Standalone">
 			<ChildrenList>
-				<Event Name="Play_Gunshot" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}">
+				<Event Name="Play_Farmac" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}">
 					<ChildrenList>
 						<Action Name="" ID="{86E71098-6772-44BA-AB95-67A11027D6AB}" ShortID="795773023">
 							<PropertyList>
@@ -12,6 +12,20 @@
 							<ReferenceList>
 								<Reference Name="Target">
 									<ObjectRef Name="instr_far" ID="{C88433A8-4974-4A53-8996-6F536CB7AFB9}" WorkUnitID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}"/>
+								</Reference>
+							</ReferenceList>
+						</Action>
+					</ChildrenList>
+				</Event>
+				<Event Name="Play_Gunshot" ID="{C12D9820-BB74-4F5C-A5A0-410C188584BE}">
+					<ChildrenList>
+						<Action Name="" ID="{DD13D15C-AE2F-48FA-B883-98CB17F489DC}" ShortID="90957795">
+							<PropertyList>
+								<Property Name="ActionType" Type="int16" Value="1"/>
+							</PropertyList>
+							<ReferenceList>
+								<Reference Name="Target">
+									<ObjectRef Name="9_mm_gunshot" ID="{DCE10021-D401-45FF-A38A-FCD4084D32BC}" WorkUnitID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>
