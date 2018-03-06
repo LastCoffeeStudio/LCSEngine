@@ -130,6 +130,13 @@ update_status ModuleGUI::update(float deltaTime)
 		showGizmo();
 	}
 
+	if (show_audio_settings)
+	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
+		ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
+		showAudioSettings();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -243,6 +250,7 @@ void ModuleGUI::showMainWindow()
 			{
 				App->sceneMain->swapDefaultShader();
 			}
+			ImGui::MenuItem("Audio", nullptr, &show_audio_settings);
 
 			ImGui::EndMenu();
 		}
@@ -597,4 +605,17 @@ void ModuleGUI::putHyperlink(const char * link)
 	{
 		ShellExecute(NULL, TEXT("open"), TEXT(link), NULL, NULL, 0);
 	}
+}
+
+void ModuleGUI::showAudioSettings()
+{
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
+	ImGui::Begin("Audio", &show_audio_settings, window_flags);
+
+	ImGui::DragFloat("Global Volume", &audio_volume, 0.005f, 0.f, 1.f);
+	ImGui::DragFloat("Volume RollOff Scale", &audio_rolloff, 0.01f, 0.f, 10.f);
+	ImGui::DragFloat("Doppler Factor", &audio_doppler, 0.01f, 0.f, 10.f);
+
+	ImGui::End();
 }

@@ -121,6 +121,14 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 	return success;
 }
 
-float3 ModuleAnimation::calculatePosition(const float3& iniPos, const float3& endPos, float time) const {}
+float3 ModuleAnimation::calculatePosition(const float3& iniPos, const float3& endPos, float time) const
+{
+	float3 position = { 0.f, 0.f, 0.f };
+	return position;
+}
 
-Quat ModuleAnimation::calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const {}
+Quat ModuleAnimation::calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const
+{
+	Quat rotation = { 0.f, 0.f, 0.f, 0.f };
+	return rotation;
+}

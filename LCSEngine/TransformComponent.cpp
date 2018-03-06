@@ -61,6 +61,8 @@ void TransformComponent::updateRotate()
 	rotationQad = Quat::FromEulerXYZ(rotationRad.x, rotationRad.y, rotationRad.z);
 	matrixRotate = rotationQad.ToFloat4x4();
 	updateTransform();
+
+	float3 up = rotationQad * float3::unitY;
 }
 
 void TransformComponent::drawGUI()

@@ -32,6 +32,7 @@ public:
 	bool show_gl = true;
 	bool show_hierarchy = true;
 	bool show_static_popup = false;
+	bool show_audio_settings = false;
 	ImVec4 clear_color;
 
 private:
@@ -44,6 +45,7 @@ private:
 	void showStaticChildernPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 	void showGizmo();
+	void showAudioSettings();
 
 	void putHyperlink(const char* link);
 
@@ -58,6 +60,9 @@ private:
 	GLfloat fogColor[3] = { 1.0f, 1.0f, 1.0f };
 	GLfloat fogIntensity = 1.0f;
 	bool checkbox_aliasing = false;
+	float audio_volume = 1;
+	float audio_rolloff = 1;
+	float audio_doppler = 1;
 	
 };
 

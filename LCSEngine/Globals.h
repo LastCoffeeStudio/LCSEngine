@@ -71,4 +71,7 @@ enum TypeComponent
 #define SCREEN_ROWS 5
 #define MENU_TOP_BAR_HEIGHT 20
 
+#define SCREEN_COLUMNS_SETTINGS 5
+#define SCREEN_ROWS_SETTINGS 2
+
 #endif //__GLOBALS_H__
