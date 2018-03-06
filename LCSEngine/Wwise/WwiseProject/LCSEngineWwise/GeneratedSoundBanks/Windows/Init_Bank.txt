@@ -1,6 +1,8 @@
 Event	ID	Name			Wwise Object Path	Notes
+	478385426	Play_Farmac			\Default Work Unit\Play_Farmac	
 	3955959628	Play_Gunshot			\Default Work Unit\Play_Gunshot	
 
 In Memory Audio	ID	Name	Audio source file		Wwise Object Path	Notes	Data Size
-	999097568	instr_far	F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\SFX\instr_far_1C9C67B2.wem		\Actor-Mixer Hierarchy\Default Work Unit\instr_far		700480
+	250084518	9_mm_gunshot	D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\SFX\9_mm_gunshot_1C9C67B2.wem		\Actor-Mixer Hierarchy\Default Work Unit\9_mm_gunshot		306404
+	999097568	instr_far	D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\SFX\instr_far_1C9C67B2.wem		\Actor-Mixer Hierarchy\Default Work Unit\instr_far		700480
 

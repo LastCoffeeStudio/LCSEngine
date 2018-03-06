@@ -31,6 +31,9 @@ public:
     void updatePositionListener(AkGameObjectID objectId, const math::float4x4& transform);
     void updatePositionAudioSource(AkGameObjectID objectId, const math::float4x4& transform);
 
+public:
+    AkGameObjectID eventAudio;
+
 private:
     AkGameObjectID nextIdGameObjSound = 0;
     AkGameObjectID currentAudioListener = -1;

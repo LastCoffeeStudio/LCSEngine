@@ -46,7 +46,7 @@ bool ModuleAudio::init()
 
 	AK::SOUNDENGINE_DLL::SetBasePath(AKTEXT("../Wwise/WwiseProject/LCSEngineWwise/GeneratedSoundBanks/Windows/"));
 	AK::StreamMgr::SetCurrentLanguage(AKTEXT("English(US)"));
-
+    
 	AkBankID bankID; // Not used. These banks can be unloaded with their file name.
 	AKRESULT eResult = AK::SoundEngine::LoadBank(BANKNAME_INIT, AK_DEFAULT_POOL_ID, bankID);
 	if (eResult != AK_Success)
@@ -58,7 +58,7 @@ bool ModuleAudio::init()
 	{
 		LOG("Cannot load the shotgun bank")
 	}
-
+    eventAudio = AK::EVENTS::PLAY_GUNSHOT;
     AK::SoundEngine::RegisterGameObj(GAME_OBJ, "Gun");
 	reverb = false;
 
@@ -72,7 +72,7 @@ update_status ModuleAudio::update(float deltaTime)
 	if (App->input->getKey(SDL_SCANCODE_L) == KEY_DOWN)
 	{
 		AkPlayingID id = AK::SoundEngine::PostEvent(
-			AK::EVENTS::PLAY_GUNSHOT,      // Unique ID of the event
+            eventAudio,      // Unique ID of the event
 			GAME_OBJ               // Associated game object ID
 		);
 

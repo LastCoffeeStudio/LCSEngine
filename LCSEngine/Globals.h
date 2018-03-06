@@ -25,7 +25,7 @@ enum TypeComponent
 	MESH,
 	CAMERA,
 	ANIMATION,
-    LISTENER,
+    AUDIOLISTENER,
     AUDIOSOURCE
 };
 

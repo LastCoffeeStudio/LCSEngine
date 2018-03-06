@@ -348,10 +348,10 @@
     <ClInclude Include="ModuleAnimation.h">
       <Filter>Core</Filter>
     </ClInclude>
-    <ClInclude Include="ListenerComponent.h">
+    <ClInclude Include="AudioSourceComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
-    <ClInclude Include="AudioSourceComponent.h">
+    <ClInclude Include="AudioListenerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
   </ItemGroup>
@@ -557,10 +557,10 @@
     <ClCompile Include="ModuleAnimation.cpp">
       <Filter>Core</Filter>
     </ClCompile>
-    <ClCompile Include="ListenerComponent.cpp">
+    <ClCompile Include="AudioSourceComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
-    <ClCompile Include="AudioSourceComponent.cpp">
+    <ClCompile Include="AudioListenerComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
