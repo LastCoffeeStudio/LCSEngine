@@ -30,9 +30,11 @@ public:
     void setListener(AkGameObjectID listenerId);
     void updatePositionListener(AkGameObjectID objectId, const math::float4x4& transform);
     void updatePositionAudioSource(AkGameObjectID objectId, const math::float4x4& transform);
+
 private:
     AkGameObjectID nextIdGameObjSound = 0;
     AkGameObjectID currentAudioListener = -1;
+	bool reverb;
 };
 
 #endif // __MODULEAUDIO_H__

@@ -5,13 +5,13 @@
 			<ChildrenList>
 				<Event Name="Play_Gunshot" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}">
 					<ChildrenList>
-						<Action Name="" ID="{F44C2897-06A6-40AF-BC08-E09AC7480DC1}" ShortID="551247740">
+						<Action Name="" ID="{86E71098-6772-44BA-AB95-67A11027D6AB}" ShortID="795773023">
 							<PropertyList>
 								<Property Name="ActionType" Type="int16" Value="1"/>
 							</PropertyList>
 							<ReferenceList>
 								<Reference Name="Target">
-									<ObjectRef Name="9_mm_gunshot" ID="{DCE10021-D401-45FF-A38A-FCD4084D32BC}" WorkUnitID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}"/>
+									<ObjectRef Name="instr_far" ID="{C88433A8-4974-4A53-8996-6F536CB7AFB9}" WorkUnitID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}"/>
 								</Reference>
 							</ReferenceList>
 						</Action>

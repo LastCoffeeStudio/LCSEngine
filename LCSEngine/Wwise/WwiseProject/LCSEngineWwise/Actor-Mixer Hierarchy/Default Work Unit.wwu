@@ -137,6 +137,33 @@
 						<ActiveSource Name="9_mm_gunshot" ID="{3D358A0D-D3D2-43AB-ACCA-86C0D62F1031}" Platform="Linked"/>
 					</ActiveSourceList>
 				</Sound>
+				<Sound Name="instr_far" ID="{C88433A8-4974-4A53-8996-6F536CB7AFB9}" ShortID="454501695">
+					<PropertyList>
+						<Property Name="UseGameAuxSends" Type="bool" Value="True"/>
+						<Property Name="Volume" Type="Real64">
+							<ValueList>
+								<Value>12</Value>
+							</ValueList>
+						</Property>
+					</PropertyList>
+					<ReferenceList>
+						<Reference Name="Conversion">
+							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{EFDD40AF-6FE3-4CDC-9255-ACBFFC6C6538}"/>
+						</Reference>
+						<Reference Name="OutputBus">
+							<ObjectRef Name="Master Audio Bus" ID="{1514A4D8-1DA6-412A-A17E-75CA0C2149F3}" WorkUnitID="{9BE7D9F7-D8C7-4057-9C28-C84EC2675E78}"/>
+						</Reference>
+					</ReferenceList>
+					<ChildrenList>
+						<AudioFileSource Name="instr_far" ID="{E711B578-DBB5-4616-9A4C-E5AA8DEB1ED5}" ShortID="999097568">
+							<Language>SFX</Language>
+							<AudioFile>instr_far.wav</AudioFile>
+						</AudioFileSource>
+					</ChildrenList>
+					<ActiveSourceList>
+						<ActiveSource Name="instr_far" ID="{E711B578-DBB5-4616-9A4C-E5AA8DEB1ED5}" Platform="Linked"/>
+					</ActiveSourceList>
+				</Sound>
 			</ChildrenList>
 		</WorkUnit>
 	</AudioObjects>

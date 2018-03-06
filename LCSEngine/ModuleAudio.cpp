@@ -7,7 +7,7 @@
 #include "ModuleInput.h"
 
 #include "Wwise/include/SoundEngine.h"
-#include "Wwise/WwiseProject/LCSEngineWwise/GeneratedSoundBanks/Wwise_IDs.h"
+#include "Wwise/WwiseProject/LCSEngineWwise/GeneratedSoundBanks/Wwise_IDs.h" 
 #include "TransformComponent.h"
 
 using namespace std;
@@ -59,7 +59,9 @@ bool ModuleAudio::init()
 	{
 		LOG("Cannot load the shotgun bank")
 	}
+
     AK::SoundEngine::RegisterGameObj(GAME_OBJ, "Gun");
+	reverb = false;
 
 	return true;
 }
@@ -78,6 +80,25 @@ update_status ModuleAudio::update(float deltaTime)
 		if (id == AK_INVALID_PLAYING_ID)
 		{
 			LOG("Me cago en mi puta madre (con cariño)");
+		}
+	}
+
+	if (App->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
+	{
+		if (reverb)
+		{
+
+		}
+		else
+		{
+			AkAuxSendValue aEnvs[1];
+			aEnvs[0].listenerID = currentAudioListener; // Use the same set of listeners assigned via the SetListeners/SetDefaultListeners API.
+			aEnvs[0].auxBusID = AK::AUX_BUSSES::REVERB_EFFECT;
+			aEnvs[0].fControlValue = 1.0f;
+
+			AK::SoundEngine::SetGameObjectAuxSendValues(GAME_OBJ, aEnvs, 2);
+
+			reverb = true;
 		}
 	}
 
@@ -106,14 +127,13 @@ void ModuleAudio::setListener(AkGameObjectID listenerId)
 {
     if(currentAudioListener < 0)
     {
-        AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
+       AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
     }else
     {
        AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
     }
     currentAudioListener = listenerId;
 }
-
 
 void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4& transform)
 {

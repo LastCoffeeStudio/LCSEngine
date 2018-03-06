@@ -19,9 +19,9 @@
 				<Event Id="3955959628" Name="Play_Gunshot" ObjectPath="\Events\Default Work Unit\Play_Gunshot"/>
 			</IncludedEvents>
 			<IncludedMemoryFiles>
-				<File Id="250084518" Language="SFX">
-					<ShortName>9_mm_gunshot.wav</ShortName>
-					<Path>SFX\9_mm_gunshot_1C9C67B2.wem</Path>
+				<File Id="999097568" Language="SFX">
+					<ShortName>instr_far.wav</ShortName>
+					<Path>SFX\instr_far_1C9C67B2.wem</Path>
 				</File>
 			</IncludedMemoryFiles>
 		</SoundBank>
