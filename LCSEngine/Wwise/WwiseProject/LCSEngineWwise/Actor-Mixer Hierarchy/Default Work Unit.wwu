@@ -4,6 +4,9 @@
 		<WorkUnit Name="Default Work Unit" ID="{EDAD8687-B5B7-450B-BCD5-3DB91A5E7752}" PersistMode="Standalone">
 			<ChildrenList>
 				<Sound Name="9_mm_gunshot" ID="{DCE10021-D401-45FF-A38A-FCD4084D32BC}" ShortID="320516966">
+					<PropertyList>
+						<Property Name="PositioningType" Type="int16" Value="1"/>
+					</PropertyList>
 					<ReferenceList>
 						<Reference Name="Conversion">
 							<ObjectRef Name="Default Conversion Settings" ID="{6D1B890C-9826-4384-BF07-C15223E9FB56}" WorkUnitID="{EFDD40AF-6FE3-4CDC-9255-ACBFFC6C6538}"/>

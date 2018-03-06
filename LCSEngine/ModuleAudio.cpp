@@ -60,6 +60,7 @@ bool ModuleAudio::init()
 		LOG("Cannot load the shotgun bank")
 	}
     AK::SoundEngine::RegisterGameObj(GAME_OBJ, "Gun");
+
 	return true;
 }
 
@@ -116,8 +117,7 @@ void ModuleAudio::setListener(AkGameObjectID listenerId)
 
 void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4& transform)
 {
-
-    AkTransform listenerTransform;
+	AkListenerPosition listenerTransform;
 
     AkVector vecPosition;
     vecPosition.X = transform[3][0];
@@ -130,9 +130,9 @@ void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4
     vecUp.Z = transform[1][2];
 
     AkVector vecFront;
-    vecFront.X = transform[0][0];
-    vecFront.Y = transform[1][0];
-    vecFront.Z = transform[2][0];
+    vecFront.X = transform[2][0]*-1;
+	vecFront.Y = transform[2][1]*-1;
+	vecFront.Z = transform[2][2]*-1;
 
     listenerTransform.SetPosition(vecPosition);
     listenerTransform.SetOrientation(vecFront, vecUp);
@@ -155,12 +155,12 @@ void ModuleAudio::updatePositionAudioSource(AkGameObjectID objectId, const math:
     vecUp.Z = transform[1][2];
 
     AkVector vecFront;
-    vecFront.X = transform[0][0];
-    vecFront.Y = transform[1][0];
-    vecFront.Z = transform[2][0];
+    vecFront.X = transform[2][0]*-1;
+    vecFront.Y = transform[2][1]*-1;
+    vecFront.Z = transform[2][2]*-1;
 
     soundPos.SetPosition(vecPosition);
     soundPos.SetOrientation(vecFront, vecUp);
 
-    AK::SoundEngine::SetPosition(100, soundPos);
+    AK::SoundEngine::SetPosition(GAME_OBJ, soundPos);
 }
