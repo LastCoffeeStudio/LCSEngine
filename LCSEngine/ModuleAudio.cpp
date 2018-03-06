@@ -9,7 +9,6 @@
 #include "Wwise/include/SoundEngine.h"
 #include "Wwise/WwiseProject/LCSEngineWwise/GeneratedSoundBanks/Wwise_IDs.h" 
 #include "TransformComponent.h"
-
 using namespace std;
 
 #define BANKNAME_INIT L"Init.bnk"
