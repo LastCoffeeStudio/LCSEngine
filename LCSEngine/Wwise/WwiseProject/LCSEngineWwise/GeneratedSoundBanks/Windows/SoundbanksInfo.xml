@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <SoundBanksInfo Platform="Windows" BasePlatform="Windows" SchemaVersion="11" SoundbankVersion="128">
 	<RootPaths>
-		<ProjectRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\</ProjectRoot>
-		<SourceFilesRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\</SourceFilesRoot>
-		<SoundBanksRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</SoundBanksRoot>
+		<ProjectRoot>D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\</ProjectRoot>
+		<SourceFilesRoot>D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\.cache\Windows\</SourceFilesRoot>
+		<SoundBanksRoot>D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</SoundBanksRoot>
 		<ExternalSourcesInputFile></ExternalSourcesInputFile>
-		<ExternalSourcesOutputRoot>F:\Master videojuegos\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</ExternalSourcesOutputRoot>
+		<ExternalSourcesOutputRoot>D:\Proyectos\CPP\LCSEngine\LCSEngine\Wwise\WwiseProject\LCSEngineWwise\GeneratedSoundBanks\Windows\</ExternalSourcesOutputRoot>
 	</RootPaths>
 	<DialogueEvents/>
 	<StreamedFiles/>
@@ -16,12 +16,17 @@
 			<ShortName>Init_Bank</ShortName>
 			<Path>Init_Bank.bnk</Path>
 			<IncludedEvents>
+				<Event Id="478385426" Name="Play_Farmac" ObjectPath="\Events\Default Work Unit\Play_Farmac"/>
 				<Event Id="3955959628" Name="Play_Gunshot" ObjectPath="\Events\Default Work Unit\Play_Gunshot"/>
 			</IncludedEvents>
 			<IncludedMemoryFiles>
 				<File Id="250084518" Language="SFX">
 					<ShortName>9_mm_gunshot.wav</ShortName>
 					<Path>SFX\9_mm_gunshot_1C9C67B2.wem</Path>
+				</File>
+				<File Id="999097568" Language="SFX">
+					<ShortName>instr_far.wav</ShortName>
+					<Path>SFX\instr_far_1C9C67B2.wem</Path>
 				</File>
 			</IncludedMemoryFiles>
 		</SoundBank>

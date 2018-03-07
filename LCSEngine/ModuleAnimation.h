@@ -20,14 +20,14 @@ struct Bone
 
 struct Animation
 {
-	unsigned int duration = 0;
+	double duration = 0;
 	std::vector<Bone*> bones;
 };
 
 struct AnimationInstance
 {
 	Animation* animation = nullptr;
-	unsigned int localTime = 0;	//ms
+	double localTime = 0;	//ms
 	bool loop = true;
 };
 

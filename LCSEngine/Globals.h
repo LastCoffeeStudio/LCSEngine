@@ -24,7 +24,17 @@ enum TypeComponent
 	MATERIAL,
 	MESH,
 	CAMERA,
-	ANIMATION
+	ANIMATION,
+    AUDIOLISTENER,
+    AUDIOSOURCE
+};
+
+enum TypeElemeneGametUI
+{
+	IMAGE,
+	LABEL,
+	BUTTON,
+	EDITTEXT
 };
 
 // Deletes a buffer

@@ -23,6 +23,9 @@
 #include <queue>
 #include "Model.h"
 #include "AssetTexture.h"
+#include "AudioListenerComponent.h"
+#include "ModuleAudio.h"
+#include "AudioSourceComponent.h"
 
 GameObject::GameObject() {}
 
@@ -136,7 +139,15 @@ void GameObject::preUpdate()
 					}
 					((MaterialComponent*)(*it))->colorChanged = false;
 				}
+                break;
+            case AUDIOLISTENER:
+                App->audio->updatePositionListener(((AudioListenerComponent*)(*it))->idAudioGameObj, id);
+                break;
+            case AUDIOSOURCE:
+                App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
+
 			}
+               
 		}
 	}
 	
@@ -198,7 +209,8 @@ void GameObject::addComponent(Component* component)
 
 vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 {
-	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
+	vector<Component*>::iterator it = components.begin();
+	for (it; it != components.end();)
 	{
 		if (*it == component)
 		{
@@ -236,6 +248,7 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 			++it;
 		}
 	}
+	return it;
 }
 
 void GameObject::addGameObject(GameObject* gameObject)
@@ -321,7 +334,14 @@ void GameObject::drawComponentsGui()
 		{
 			addComponent(factory->getComponent(CAMERA, this));
 		}
-
+        else if (ImGui::MenuItem("AudioListener"))
+        {
+            addComponent(factory->getComponent(AUDIOLISTENER, this));
+        }
+        else if (ImGui::MenuItem("AudioSource"))
+        {
+            addComponent(factory->getComponent(AUDIOSOURCE, this));
+        }
 		ImGui::EndPopup();
 	}
 }

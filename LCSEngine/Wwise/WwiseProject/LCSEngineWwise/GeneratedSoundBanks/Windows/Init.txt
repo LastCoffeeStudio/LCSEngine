@@ -17,6 +17,12 @@ Game Parameter	ID	Name			Wwise Object Path	Notes
 Audio Bus	ID	Name			Wwise Object Path	Notes
 	3803692087	Master Audio Bus			\Default Work Unit\Master Audio Bus	
 
+Auxiliary Bus	ID	Name			Wwise Object Path	Notes
+	1784606267	Reverb_effect			\Default Work Unit\Master Audio Bus\Reverb_effect	
+
+Effect plug-ins	ID	Name	Type				Notes
+	602546716	Room_Large	Wwise RoomVerb			
+
 Audio Devices	ID	Name	Type				Notes
 	289592396	Microsoft_Spatial_Sound_Platform_Output	Microsoft Spatial Sound Platform Output			
 	530303819	Communication	Communication			

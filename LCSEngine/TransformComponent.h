@@ -21,19 +21,21 @@ public:
 	float3 rotation = { 0.0f, 0.0f, 0.0f };
 	Quat rotationQad = Quat({ 0.0f, 0.0f, 1.0f }, 0.0f);
 	float4x4 transform;
-	void setTransform(const aiMatrix4x4 & matAiScene);
-	void updateTransform();
-
-private:
+	
 
 public:
 	float4x4 matrixTranslate;
 	float4x4 matrixScale;
 	float4x4 matrixRotate;
 
+    void setTransform(const aiMatrix4x4 & matAiScene);
+    void updateTransform();
+
 	void updateTranslate();
 	void updateScale();
 	void updateRotate();
+    float3 up();
+    float3 front();
 };
 
 #endif //__TRANSFORMCOMPONENT_H__

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PluginInfo Project="LCSEngineWwise" Platform="Windows" BasePlatform="Windows">
 	<Plugins>
+		<Plugin Name="Wwise RoomVerb" ID="7733251" DLL="AkRoomVerb"/>
 		<Plugin Name="Microsoft Spatial Sound Platform Output" ID="11145527" DLL="MSSpatial"/>
 		<Plugin Name="System" ID="11403271" DLL="DefaultSink"/>
 		<Plugin Name="Communication" ID="11534343" DLL="DefaultSink"/>

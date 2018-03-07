@@ -5,7 +5,8 @@
 			<ChildrenList>
 				<SoundBank Name="Init_Bank" ID="{B74F693F-7675-45DC-B640-12952FBB0722}">
 					<ObjectInclusionList>
-						<ObjectRef Name="Play_Gunshot" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}" WorkUnitID="{03E429A1-CD45-40E2-B63B-00890962DE19}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Play_Farmac" ID="{2F645C32-BDEF-492E-B68C-3F31CD3E6841}" WorkUnitID="{03E429A1-CD45-40E2-B63B-00890962DE19}" Filter="7" Origin="Manual"/>
+						<ObjectRef Name="Play_Gunshot" ID="{C12D9820-BB74-4F5C-A5A0-410C188584BE}" WorkUnitID="{03E429A1-CD45-40E2-B63B-00890962DE19}" Filter="7" Origin="Manual"/>
 					</ObjectInclusionList>
 					<ObjectExclusionList/>
 					<GameSyncExclusionList/>

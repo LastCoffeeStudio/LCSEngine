@@ -7,6 +7,8 @@
 #include "CameraComponent.h"
 #include "AnimationComponent.h"
 #include "GameObject.h"
+#include "AudioListenerComponent.h"
+#include "AudioSourceComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -40,6 +42,12 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 	case TypeComponent::ANIMATION:
 		return new AnimationComponent(parentObject);
 		break;
+    case TypeComponent::AUDIOLISTENER:
+        return new AudioListenerComponent(parentObject);
+        break;
+    case TypeComponent::AUDIOSOURCE:
+        return new AudioSourceComponent(parentObject);
+        break;
 	default:
 		return nullptr;
 		break;

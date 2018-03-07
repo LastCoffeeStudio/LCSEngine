@@ -44,7 +44,7 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 
 	if (node->mNumMeshes > 0)
 	{
-		for (int i = 0; i < node->mNumMeshes; ++i)
+		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
 			GameObject* gameObjectMesh = new GameObject(gameObject, node->mName.C_Str());
 
@@ -88,7 +88,6 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 			//Create texture
 			MaterialComponent* material = (MaterialComponent*)(factory->getComponent(MATERIAL, gameObjectMesh));
 			aiMaterial* currentMaterial = scene->mMaterials[currentMesh->mMaterialIndex];
-			unsigned int index;
 			aiString path;
 			currentMaterial->GetTexture(aiTextureType_DIFFUSE, 0, &path);
 			material->textureChanged = true;

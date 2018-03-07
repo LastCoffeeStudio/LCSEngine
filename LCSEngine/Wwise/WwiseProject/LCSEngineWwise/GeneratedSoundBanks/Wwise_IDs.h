@@ -13,6 +13,7 @@ namespace AK
 {
     namespace EVENTS
     {
+        static const AkUniqueID PLAY_FARMAC = 478385426U;
         static const AkUniqueID PLAY_GUNSHOT = 3955959628U;
     } // namespace EVENTS
 
@@ -40,6 +41,11 @@ namespace AK
     {
         static const AkUniqueID MASTER_AUDIO_BUS = 3803692087U;
     } // namespace BUSSES
+
+    namespace AUX_BUSSES
+    {
+        static const AkUniqueID REVERB_EFFECT = 1784606267U;
+    } // namespace AUX_BUSSES
 
     namespace AUDIO_DEVICES
     {
