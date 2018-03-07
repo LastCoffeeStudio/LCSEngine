@@ -13,8 +13,8 @@
 ModuleGameUI::ModuleGameUI() 
 {
 	//TO_DEBUG
-	ElementGameUI* element = new ElementGameUI(BUTTON, 0, 0, 200, 200);
-	elements.push_back(element);
+	ElementGameUI* element = new ElementGameUI(BUTTON, 0, 0, 10, 10);
+	//elements.push_back(element);
 	//END_DEBUG
 }
 
@@ -28,15 +28,12 @@ update_status ModuleGameUI::update(float deltaTime)
 
 void ModuleGameUI::printGameUI() 
 {
-	//TODO: Not working yet
-	glOrtho(-1.0, 1.0, -1.0, 1.0, 5, 100);
-	glMatrixMode(GL_MODELVIEW);
 
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 		if ((*it)->visible)
 		{
-			/*GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+			GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 			glUseProgram(program);
 
 			float4x4 identity = float4x4::identity;
@@ -45,17 +42,15 @@ void ModuleGameUI::printGameUI()
 			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
 
 			GLint viewLoc = glGetUniformLocation(program, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, App->camera->getViewMatrix());
+			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &identity[0][0]);
 
 			GLint projectLoc = glGetUniformLocation(program, "projection");
-			glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+			glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
-			float3 cameraPos = App->camera->currentCamera->frustum.pos;*/
-
-			float x1 = (float)((*it)->rect.x);
-			float x2 = (float)((*it)->rect.x + (*it)->rect.w);
-			float y1 = (float)((*it)->rect.y);
-			float y2 = (float)((*it)->rect.y + (*it)->rect.h);
+			float x1 = (float)((*it)->rect.x)/100;
+			float x2 = (float)(x1 + (*it)->rect.w)/100;
+			float y1 = (float)((*it)->rect.y)/100;
+			float y2 = (float)(y1 + (*it)->rect.h)/100;
 
 			glBegin(GL_POLYGON);
 				glVertex2f(x1, y1);
