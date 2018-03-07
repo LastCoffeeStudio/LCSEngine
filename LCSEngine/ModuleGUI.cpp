@@ -5,6 +5,7 @@
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
+#include "ModuleAnimation.h"
 #include "AssetTexture.h"
 #include "GameObject.h"
 #include "QuadTree.h"
@@ -137,6 +138,13 @@ update_status ModuleGUI::update(float deltaTime)
 		showAudioSettings();
 	}
 
+	if (show_animation_window)
+	{
+		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
+		ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
+		showAnimationWindow();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -259,6 +267,7 @@ void ModuleGUI::showMainWindow()
 			ImGui::MenuItem("Inspector", "Ctrl+I", &show_inspector);
 			ImGui::MenuItem("Hierarchy", "Ctrl+H", &show_hierarchy);
 			ImGui::MenuItem("Console", "Ctrl+C", &show_console);
+			ImGui::MenuItem("Animation", nullptr, &show_animation_window);
 			ImGui::MenuItem("Demo Window", nullptr, &show_demo_window);
 
 			ImGui::EndMenu();
@@ -616,6 +625,37 @@ void ModuleGUI::showAudioSettings()
 	ImGui::DragFloat("Global Volume", &audio_volume, 0.005f, 0.f, 1.f);
 	ImGui::DragFloat("Volume RollOff Scale", &audio_rolloff, 0.01f, 0.f, 10.f);
 	ImGui::DragFloat("Doppler Factor", &audio_doppler, 0.01f, 0.f, 10.f);
+
+	ImGui::End();
+}
+
+void ModuleGUI::showAnimationWindow()
+{
+	ImGuiWindowFlags window_flags = ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse;
+
+	ImGui::Begin("Animation", &show_animation_window, window_flags);
+
+	ImGui::Text("Name: "); ImGui::SameLine(0);
+	ImGui::PushID("AnimationName");
+	ImGui::InputText("", &animationName[0], IM_ARRAYSIZE(animationName));
+	ImGui::PopID();
+	
+	ImGui::Text("Path: "); ImGui::SameLine(0);
+	ImGui::PushID("AnimationPath");
+	ImGui::InputText("", &animationPath[0], IM_ARRAYSIZE(animationPath));
+	ImGui::PopID();
+
+	if (ImGui::Button("Set texture"))
+	{
+		if (App->animations->load(animationName, animationPath))
+		{
+			LOG("Animation load successful");
+		}
+		else
+		{
+			LOG("Animation load failed");
+		}
+	}
 
 	ImGui::End();
 }

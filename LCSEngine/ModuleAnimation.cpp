@@ -12,9 +12,9 @@ bool ModuleAnimation::cleanUp()
 bool ModuleAnimation::load(const char* name, const char* path)
 {
 	scene = aiImportFile(path, aiProcessPreset_TargetRealtime_MaxQuality);
-	if (!scene->HasAnimations())
+	if (scene == nullptr || !scene->HasAnimations())
 	{
-		LOG("Imported file has no animations");
+		LOG("File invalid or has no animations");
 		return false;
 	}
 

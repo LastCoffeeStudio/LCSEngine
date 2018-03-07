@@ -59,21 +59,6 @@ bool ModuleSceneMain::start()
 {
 	sceneManager = new SceneManager();
 	sceneManager->load("Assets/Models/ArmyPilot/ArmyPilot.dae");
-	App->animations->load("Idle","Assets/Models/ArmyPilot/Animations/ArmyPilot_Idle.fbx");
-	App->animations->load("Run", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Run_Forwards.fbx");
-	App->animations->load("Walk", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Walk.fbx");
-
-	/*DEBUG*/
-	unsigned int a = App->animations->play("Run");
-	unsigned int b = App->animations->play("Idle");
-	unsigned int c = App->animations->play("a");
-	App->animations->stop(a);
-	unsigned int d = App->animations->play("Walk");
-	//App->animations->stop(b);
-	App->animations->stop(c);
-	App->animations->stop(d);
-	/*END DEBUG*/
-	
 	return true;
 }
 
@@ -356,10 +341,6 @@ void ModuleSceneMain::drawGrid()
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, POS_LINES_GRID + floor(cameraPos.z));
 	}
 	glEnd();
-
-
-	//glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
 }
 
 void ModuleSceneMain::swapDefaultShader()

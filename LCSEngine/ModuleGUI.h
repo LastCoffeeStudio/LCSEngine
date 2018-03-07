@@ -28,6 +28,7 @@ public:
 	bool show_main_window = true;
 	bool show_engine_about = false;
 	bool show_inspector = true;
+	bool show_animation_window = false;
 	bool show_console = true;
 	bool show_gl = true;
 	bool show_hierarchy = true;
@@ -46,6 +47,7 @@ private:
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 	void showGizmo();
 	void showAudioSettings();
+	void showAnimationWindow();
 
 	void putHyperlink(const char* link);
 
@@ -63,6 +65,8 @@ private:
 	float audio_volume = 1;
 	float audio_rolloff = 1;
 	float audio_doppler = 1;
+	char animationName[128] = "";
+	char animationPath[128] = "";
 	
 };
 
