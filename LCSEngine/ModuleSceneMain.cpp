@@ -326,6 +326,8 @@ void ModuleSceneMain::drawGrid()
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
 
+	glUniform1i(glGetUniformLocation(program, "useText"), false);
+
 	float3 cameraPos = App->camera->currentCamera->frustum.pos;
 
 	glBegin(GL_LINES);
@@ -334,31 +336,30 @@ void ModuleSceneMain::drawGrid()
 	if (Distance(float2(cameraPos.x, cameraPos.z), float2(0.0f, 0.0f)) < sqrt(pow(POS_LINES_GRID, 2) + pow(POS_LINES_GRID, 2)))
 	{
 		// draw line for x axis
-		glColor3f(1.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(1.0, 0.0, 0.0);
 		// draw line for y axis
-		glColor3f(0.0, 1.0, 0.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(0.0, 1.0, 0.0);
 		// draw line for Z axis
-		glColor3f(0.0, 0.0, 1.0);
 		glVertex3f(0.0, 0.0, 0.0);
 		glVertex3f(0.0, 0.0, 1.0);
 	}
 	
 	for (unsigned int i = 0; i <= COUNT_LINES_GRID; i += DIST_BTW_LINES_GRID)
 	{
-		glColor3f(1.0f, 1.0f, 1.0f);
 		//Linies en X
 		glVertex3f(-POS_LINES_GRID + floor(cameraPos.x), 0.0f, (float)i - POS_LINES_GRID + floor(cameraPos.z));
 		glVertex3f(POS_LINES_GRID + floor(cameraPos.x), 0.0f, (float)i - POS_LINES_GRID + floor(cameraPos.z));
-		glColor3f(1.0f, 1.0f, 1.0f);
 		//Linies en Y
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, -POS_LINES_GRID + floor(cameraPos.z));
 		glVertex3f((float)i - POS_LINES_GRID + floor(cameraPos.x), 0.0f, POS_LINES_GRID + floor(cameraPos.z));
 	}
 	glEnd();
+
+
+	//glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+	//glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
 }
 
 void ModuleSceneMain::swapDefaultShader()

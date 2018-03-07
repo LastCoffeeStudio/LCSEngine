@@ -8,24 +8,25 @@
 #include "CameraComponent.h"
 #include "TransformComponent.h"
 #include "AnimationComponent.h"
+#include "AudioListenerComponent.h"
+#include "AudioSourceComponent.h"
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
 #include "ModuleRender.h"
 #include "ModuleTextures.h"
+#include "ModuleAnimation.h"
+#include "ModuleAudio.h"
 #include "ModuleGUI.h"
 #include "Shader.h"
 #include "QuadTree.h"
+#include "Model.h"
+#include "AssetTexture.h"
 #include "Imgui/imgui.h"
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
 #include "DevIL/include/IL/il.h"
 #include <queue>
-#include "Model.h"
-#include "AssetTexture.h"
-#include "AudioListenerComponent.h"
-#include "ModuleAudio.h"
-#include "AudioSourceComponent.h"
 
 GameObject::GameObject() {}
 
@@ -61,7 +62,6 @@ void GameObject::preUpdate()
 			switch ((*it)->typeComponent)
 			{
 			case TRANSFORM:
-				//Check if the element is static, in that case the transform is the identity
 				if (staticFlag)
 				{
 					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
@@ -80,8 +80,6 @@ void GameObject::preUpdate()
 				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
 				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
 				colorID = ((MeshComponent*)(*it))->idColors;
-
-				//TODO: set textureID and texCoordsID for renderer
 
 				break;
 			case MATERIAL:
@@ -145,7 +143,12 @@ void GameObject::preUpdate()
                 break;
             case AUDIOSOURCE:
                 App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
-
+				break;
+			case ANIMATION:
+				
+				break;
+			default:
+				break;
 			}
                
 		}

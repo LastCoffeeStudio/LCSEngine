@@ -20,14 +20,14 @@ struct Bone
 
 struct Animation
 {
-	double duration = 0;
+	unsigned int duration = 0;
 	std::vector<Bone*> bones;
 };
 
 struct AnimationInstance
 {
 	Animation* animation = nullptr;
-	double localTime = 0;	//ms
+	unsigned int localTime = 0;	//ms
 	bool loop = true;
 };
 
@@ -52,8 +52,8 @@ public:
 	const aiScene* scene = 0;
 
 private:
-	float3 calculatePosition(const float3& iniPos, const float3& endPos, float time) const;
-	Quat calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const;
+	float3 linearInterpolationPosition(const float3& iniPos, const float3& endPos, float time) const;
+	Quat linearInterpolationRotation(const Quat& iniRot, const Quat& endRot, float time) const;
 };
 
 #endif //__MODULEANIMATION_H__

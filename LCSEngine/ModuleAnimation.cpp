@@ -90,7 +90,7 @@ unsigned int ModuleAnimation::play(const char* name)
 
 void ModuleAnimation::stop(unsigned int id)
 {
-	if (id != 0 && id <= instances.size() && instances[id-1] != nullptr)
+	if (id != 0 && id <= instances.size() && instances[id - 1] != nullptr)
 	{
 		instances[id-1]->animation = nullptr;
 		instances[id-1] = nullptr;
@@ -112,8 +112,20 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 		{
 			if (anim->bones[i]->name == boneName)
 			{
-				//position = calculatePosition();
-				//rotation = calculateRotation();
+				float pos = (float)(instances[id - 1]->localTime * anim->bones[i]->positions.size() - 1) / (float)anim->duration;
+				float rot = (float)(instances[id - 1]->localTime * anim->bones[i]->rotations.size() - 1) / (float)anim->duration;
+
+				unsigned int posEndIndex, rotEndIndex;
+				(pos == anim->bones[i]->positions.size() - 1) ? posEndIndex = 0 : posEndIndex = (unsigned int)(pos + 1);
+				(rot == anim->bones[i]->rotations.size() - 1) ? rotEndIndex = 0 : rotEndIndex = (unsigned int)(rot + 1);
+
+				float3 iniPos = anim->bones[i]->positions[(unsigned int)pos];
+				float3 endPos = anim->bones[i]->positions[posEndIndex];
+				Quat iniRot = anim->bones[i]->rotations[(unsigned int)rot];
+				Quat endRot = anim->bones[i]->rotations[rotEndIndex];
+
+				position = linearInterpolationPosition(iniPos, endPos, pos-floor(pos));
+				rotation = linearInterpolationRotation(iniRot, endRot, rot-floor(rot));
 				success = true;
 			}
 		}
@@ -121,14 +133,26 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 	return success;
 }
 
-float3 ModuleAnimation::calculatePosition(const float3& iniPos, const float3& endPos, float time) const
+float3 ModuleAnimation::linearInterpolationPosition(const float3& iniPos, const float3& endPos, float time) const
 {
-	float3 position = { 0.f, 0.f, 0.f };
-	return position;
+	return iniPos*(1.f-time)+endPos*time;
 }
 
-Quat ModuleAnimation::calculateRotation(const Quat& iniRot, const Quat& endRot, float time) const
+Quat ModuleAnimation::linearInterpolationRotation(const Quat& iniRot, const Quat& endRot, float time) const
 {
 	Quat rotation = { 0.f, 0.f, 0.f, 0.f };
+	float dot = iniRot.Dot(endRot);
+	float scalar = time;
+
+	if (dot < 0.f)
+	{
+		scalar = -scalar;
+	}
+
+	rotation.x = iniRot.x*(1.f - time) + endRot.x*scalar;
+	rotation.y = iniRot.y*(1.f - time) + endRot.y*scalar;
+	rotation.z = iniRot.z*(1.f - time) + endRot.z*scalar;
+	rotation.w = iniRot.w*(1.f - time) + endRot.w*scalar;
+
 	return rotation;
 }
