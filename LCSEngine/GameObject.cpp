@@ -209,7 +209,8 @@ void GameObject::addComponent(Component* component)
 
 vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 {
-	for (vector<Component*>::iterator it = components.begin(); it != components.end();)
+	vector<Component*>::iterator it = components.begin();
+	for (it; it != components.end();)
 	{
 		if (*it == component)
 		{
@@ -247,6 +248,7 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 			++it;
 		}
 	}
+	return it;
 }
 
 void GameObject::addGameObject(GameObject* gameObject)

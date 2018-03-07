@@ -154,6 +154,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="CubeShape.h" />
+    <ClInclude Include="ElementGameUI.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
     <ClInclude Include="ImGuizmo.h" />
@@ -232,6 +233,7 @@
     <ClInclude Include="ModuleAudio.h" />
     <ClInclude Include="ModuleCamera.h" />
     <ClInclude Include="ModuleFadeToBlack.h" />
+    <ClInclude Include="ModuleGameUI.h" />
     <ClInclude Include="ModuleGUI.h" />
     <ClInclude Include="ModuleInput.h" />
     <ClInclude Include="ModuleSceneMain.h" />
@@ -258,6 +260,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="CubeShape.cpp" />
+    <ClCompile Include="ElementGameUI.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGuizmo.cpp" />
     <ClCompile Include="Imgui\imgui.cpp" />
@@ -305,6 +308,7 @@
     <ClCompile Include="ModuleAudio.cpp" />
     <ClCompile Include="ModuleCamera.cpp" />
     <ClCompile Include="ModuleFadeToBlack.cpp" />
+    <ClCompile Include="ModuleGameUI.cpp" />
     <ClCompile Include="ModuleGUI.cpp" />
     <ClCompile Include="ModuleInput.cpp" />
     <ClCompile Include="ModuleSceneMain.cpp" />

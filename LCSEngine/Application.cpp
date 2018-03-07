@@ -11,6 +11,7 @@
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
 #include "ModuleAnimation.h"
+#include "ModuleGameUI.h"
 
 using namespace std;
 
@@ -28,7 +29,8 @@ Application::Application()
 	modules.push_back(fade = new ModuleFadeToBlack());
 	modules.push_back(animations = new ModuleAnimation());
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
-	
+	modules.push_back(gameUI = new ModuleGameUI());
+
 	timer = 0;
 	deltaTime = 0;
 }

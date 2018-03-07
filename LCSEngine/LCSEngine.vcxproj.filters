@@ -43,6 +43,9 @@
     <Filter Include="Physics">
       <UniqueIdentifier>{10a460ff-d374-4d42-aafd-62e7a830c645}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Components\GameUIComponents">
+      <UniqueIdentifier>{501161e4-a8a6-4c95-b4cd-f20186decc93}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Animation.h">
@@ -354,6 +357,12 @@
     <ClInclude Include="AudioListenerComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleGameUI.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementGameUI.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -562,6 +571,12 @@
     </ClCompile>
     <ClCompile Include="AudioListenerComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleGameUI.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementGameUI.cpp">
+      <Filter>Components\GameUIComponents</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

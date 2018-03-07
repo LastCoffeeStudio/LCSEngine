@@ -29,6 +29,14 @@ enum TypeComponent
     AUDIOSOURCE
 };
 
+enum TypeElemeneGametUI
+{
+	IMAGE,
+	LABEL,
+	BUTTON,
+	EDITTEXT
+};
+
 // Deletes a buffer
 #define RELEASE( x ) \
     {\
