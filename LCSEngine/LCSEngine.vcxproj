@@ -154,6 +154,7 @@
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
     <ClInclude Include="CubeShape.h" />
+    <ClInclude Include="ElementFactory.h" />
     <ClInclude Include="ElementGameUI.h" />
     <ClInclude Include="GameObject.h" />
     <ClInclude Include="Globals.h" />
@@ -249,6 +250,10 @@
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereShape.h" />
     <ClInclude Include="TransformComponent.h" />
+    <ClInclude Include="UIButton.h" />
+    <ClInclude Include="UIEditText.h" />
+    <ClInclude Include="UIImage.h" />
+    <ClInclude Include="UILabel.h" />
     <ClInclude Include="Utils.h" />
   </ItemGroup>
   <ItemGroup>
@@ -260,6 +265,7 @@
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
     <ClCompile Include="CubeShape.cpp" />
+    <ClCompile Include="ElementFactory.cpp" />
     <ClCompile Include="ElementGameUI.cpp" />
     <ClCompile Include="GameObject.cpp" />
     <ClCompile Include="ImGuizmo.cpp" />
@@ -323,6 +329,10 @@
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SphereShape.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="UIButton.cpp" />
+    <ClCompile Include="UIEditText.cpp" />
+    <ClCompile Include="UIImage.cpp" />
+    <ClCompile Include="UILabel.cpp" />
   </ItemGroup>
   <ItemGroup>
     <None Include="MathGeoLib\src\Geometry\KDTree.inl" />

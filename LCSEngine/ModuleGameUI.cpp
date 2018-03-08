@@ -9,13 +9,12 @@
 #include "Shader.h"
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/Math/float4x4.h"
+#include "ElementFactory.h"
 
 ModuleGameUI::ModuleGameUI() 
 {
-	//TO_DEBUG
-	ElementGameUI* element = new ElementGameUI(BUTTON, 0, 0, 10, 10);
-	//elements.push_back(element);
-	//END_DEBUG
+	static ElementFactory* factory = ElementFactory::getInstance();
+	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 10, 10, true));
 }
 
 ModuleGameUI::~ModuleGameUI() {}
@@ -28,25 +27,24 @@ update_status ModuleGameUI::update(float deltaTime)
 
 void ModuleGameUI::printGameUI() 
 {
+	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
+	glUseProgram(program);
+
+	float4x4 identity = float4x4::identity;
+
+	GLint modelLoc = glGetUniformLocation(program, "model_matrix");
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
+
+	GLint viewLoc = glGetUniformLocation(program, "view");
+	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &identity[0][0]);
+
+	GLint projectLoc = glGetUniformLocation(program, "projection");
+	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 		if ((*it)->visible)
 		{
-			GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
-			glUseProgram(program);
-
-			float4x4 identity = float4x4::identity;
-
-			GLint modelLoc = glGetUniformLocation(program, "model_matrix");
-			glUniformMatrix4fv(modelLoc, 1, GL_FALSE, &identity[0][0]);
-
-			GLint viewLoc = glGetUniformLocation(program, "view");
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, &identity[0][0]);
-
-			GLint projectLoc = glGetUniformLocation(program, "projection");
-			glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
-
 			float x1 = (float)((*it)->rect.x)/100;
 			float x2 = (float)(x1 + (*it)->rect.w)/100;
 			float y1 = (float)((*it)->rect.y)/100;
