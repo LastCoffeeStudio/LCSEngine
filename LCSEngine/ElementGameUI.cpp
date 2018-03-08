@@ -1,10 +1,11 @@
 #include "Globals.h"
 #include "Application.h"
+#include "GameObject.h"
 #include "ElementGameUI.h"
 
-ElementGameUI::ElementGameUI(TypeElemeneGametUI typeElement, int x, int y, int h, int w, bool isVisible)
+ElementGameUI::ElementGameUI(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 {
-	type = typeElement;
+	gameObject = parent;
 	visible = isVisible;
 	rect.x = x;
 	rect.y = y;

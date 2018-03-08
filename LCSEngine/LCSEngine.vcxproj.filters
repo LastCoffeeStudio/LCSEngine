@@ -363,6 +363,21 @@
     <ClInclude Include="ElementGameUI.h">
       <Filter>Components\GameUIComponents</Filter>
     </ClInclude>
+    <ClInclude Include="UIButton.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="UILabel.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="UIImage.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="UIEditText.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="ElementFactory.h">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -576,6 +591,21 @@
       <Filter>Core</Filter>
     </ClCompile>
     <ClCompile Include="ElementGameUI.cpp">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="UIButton.cpp">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="UILabel.cpp">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="UIImage.cpp">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="UIEditText.cpp">
+      <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="ElementFactory.cpp">
       <Filter>Components\GameUIComponents</Filter>
     </ClCompile>
   </ItemGroup>
