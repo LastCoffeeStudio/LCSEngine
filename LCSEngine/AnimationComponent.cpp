@@ -112,8 +112,9 @@ void AnimationComponent::stopAnimation()
 
 void AnimationComponent::blendAnimation()
 {
-	if (!App->animations->isBlending(idAnim))
+	if (animationName != currentAnimationName && !App->animations->isBlending(idAnim))
 	{
 		App->animations->blendTo(idAnim, animationName.c_str(), unsigned int(blendTime*1000));
+		currentAnimationName = animationName;
 	}
 }

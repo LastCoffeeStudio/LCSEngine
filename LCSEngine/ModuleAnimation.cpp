@@ -58,9 +58,14 @@ update_status ModuleAnimation::update(float deltaTime)
 			{
 				//Update also localTime from blending animation??
 				(*it)->blendingAnim->localTime += unsigned int(deltaTime*1000);
+				while ((*it)->blendingAnim->localTime > (*it)->blendingAnim->animation->duration)
+				{
+					(*it)->blendingAnim->localTime -= (*it)->blendingAnim->animation->duration;
+				}
 				(*it)->blendTime += unsigned int(deltaTime * 1000);
 				if ((*it)->blendTime > (*it)->blendDuration)
 				{
+					(*it)->blendTime = 0;
 					(*it) = (*it)->blendingAnim;
 				}
 			}
@@ -205,6 +210,10 @@ void ModuleAnimation::blendTo(unsigned int id, const char* name, unsigned int bl
 			blendAnim->animation = (*it).second;
 			anim->blendingAnim = blendAnim;
 			anim->blendDuration = blendTime;
+			if (anim->blendDuration < 0)
+			{
+				anim->blendDuration = 0;
+			}
 		}
 	}
 }
