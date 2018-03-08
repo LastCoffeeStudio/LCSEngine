@@ -363,6 +363,9 @@
     <ClInclude Include="ElementGameUI.h">
       <Filter>Components\GameUIComponents</Filter>
     </ClInclude>
+    <ClInclude Include="AudioReverbComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -577,6 +580,9 @@
     </ClCompile>
     <ClCompile Include="ElementGameUI.cpp">
       <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="AudioReverbComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
