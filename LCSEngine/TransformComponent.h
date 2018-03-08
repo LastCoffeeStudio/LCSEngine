@@ -14,6 +14,16 @@ public:
 	~TransformComponent();
 
 	void drawGUI() override;
+	void setTransform(const aiMatrix4x4 & matAiScene);
+	void updateTransform();
+	void updateTranslate();
+	void updateScale();
+	void updateRotate();
+	void setTranslate(const float3& positionVec);
+	void setScale(const float3& scaleVec);
+	void setRotate(const Quat& rotationQuat);
+	float3 up();
+	float3 front();
 
 public:
 	float3 position = { 0.0f, 0.0f, 0.0f };
@@ -21,21 +31,10 @@ public:
 	float3 rotation = { 0.0f, 0.0f, 0.0f };
 	Quat rotationQad = Quat({ 0.0f, 0.0f, 1.0f }, 0.0f);
 	float4x4 transform;
-	
-
-public:
 	float4x4 matrixTranslate;
 	float4x4 matrixScale;
 	float4x4 matrixRotate;
-
-    void setTransform(const aiMatrix4x4 & matAiScene);
-    void updateTransform();
-
-	void updateTranslate();
-	void updateScale();
-	void updateRotate();
-    float3 up();
-    float3 front();
+	
 };
 
 #endif //__TRANSFORMCOMPONENT_H__

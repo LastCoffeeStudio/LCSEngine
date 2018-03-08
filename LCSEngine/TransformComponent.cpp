@@ -65,6 +65,25 @@ void TransformComponent::updateRotate()
 	float3 up = rotationQad * float3::unitY;
 }
 
+void TransformComponent::setTranslate(const float3& positionVec)
+{
+	position = positionVec;
+	updateTranslate();
+
+}
+void TransformComponent::setScale(const float3& scaleVec)
+{
+	scale = scaleVec;
+	updateScale();
+}
+
+void TransformComponent::setRotate(const Quat& rotationQuat)
+{
+	float3 rotationRad = rotationQuat.ToEulerXYZ();
+	rotation = rotationRad * 180.0f / pi;
+	//rotation = rotationQuat.ToEulerXYZ();
+	updateRotate();
+}
 
 float3 TransformComponent::up()
 {

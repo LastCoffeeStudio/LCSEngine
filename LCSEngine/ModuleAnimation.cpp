@@ -49,7 +49,7 @@ update_status ModuleAnimation::update(float deltaTime)
 		if ((*it) != nullptr)
 		{
 			(*it)->localTime += unsigned int(deltaTime*1000);	//ms
-			if ((*it)->localTime > (*it)->animation->duration)
+			while ((*it)->localTime > (*it)->animation->duration)
 			{
 				(*it)->localTime -= (*it)->animation->duration;
 			}
@@ -116,8 +116,8 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 				float rot = (float)(instances[id - 1]->localTime * anim->bones[i]->rotations.size() - 1) / (float)anim->duration;
 
 				unsigned int posEndIndex, rotEndIndex;
-				(pos == anim->bones[i]->positions.size() - 1) ? posEndIndex = 0 : posEndIndex = (unsigned int)(pos + 1);
-				(rot == anim->bones[i]->rotations.size() - 1) ? rotEndIndex = 0 : rotEndIndex = (unsigned int)(rot + 1);
+				(pos >= anim->bones[i]->positions.size() - 1) ? posEndIndex = 0 : posEndIndex = (unsigned int)(pos + 1);
+				(rot >= anim->bones[i]->rotations.size() - 1) ? rotEndIndex = 0 : rotEndIndex = (unsigned int)(rot + 1);
 
 				float3 iniPos = anim->bones[i]->positions[(unsigned int)pos];
 				float3 endPos = anim->bones[i]->positions[posEndIndex];

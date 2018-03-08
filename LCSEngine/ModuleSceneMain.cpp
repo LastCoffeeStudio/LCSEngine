@@ -59,6 +59,13 @@ bool ModuleSceneMain::start()
 {
 	sceneManager = new SceneManager();
 	sceneManager->load("Assets/Models/ArmyPilot/ArmyPilot.dae");
+
+	/*DEBUG*/
+	/*App->animations->load("Idle","Assets/Models/ArmyPilot/Animations/ArmyPilot_Idle.fbx");
+	App->animations->load("Run", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Run_Forwards.fbx");
+	App->animations->load("Walk", "Assets/Models/ArmyPilot/Animations/ArmyPilot_Walk.fbx");*/
+	/*END DEBUG*/
+	
 	return true;
 }
 

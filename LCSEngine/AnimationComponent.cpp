@@ -1,6 +1,9 @@
+#include "Globals.h"
+#include "Application.h"
 #include "AnimationComponent.h"
 #include "TransformComponent.h"
 #include "GameObject.h"
+#include "ModuleAnimation.h"
 #include "Glew/include/glew.h"
 #include "Imgui/imgui.h"
 #include <queue>
@@ -16,7 +19,31 @@ void AnimationComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Animation"))
 	{
-		ImGui::Checkbox("Active", &isEnable); ImGui::SameLine(0);
+		ImGui::Checkbox("Active", &isEnable);
+		ImGui::Text("Animation: "); ImGui::SameLine(0);
+		if (ImGui::BeginMenu(animationName.c_str()))
+		{
+			for (map<string, Animation*>::iterator it = App->animations->animations.begin(); it != App->animations->animations.end(); ++it)
+			{
+				if (ImGui::MenuItem((*it).first.c_str()))
+				{
+					animationName = (*it).first;
+				}
+			}
+
+			ImGui::EndMenu();
+		}
+		if (ImGui::Button("Play"))
+		{
+			stopAnimation();
+			playAnimation();
+		}
+		ImGui::SameLine(0);
+		if (ImGui::Button("Stop"))
+		{
+			stopAnimation();
+		}
+		ImGui::Text("Current Animation: %s", currentAnimationName.c_str());
 	}
 }
 
@@ -51,4 +78,27 @@ void AnimationComponent::drawLine(const float4x4& idParent, const float4x4& idCh
 	glVertex3f(idParent[0][3], idParent[1][3], idParent[2][3]);
 	glVertex3f(idChild[0][3], idChild[1][3], idChild[2][3]);
 	glEnd();
+}
+
+void AnimationComponent::playAnimation()
+{
+	idAnim = App->animations->play(animationName.c_str());
+	if (idAnim > 0)
+	{
+		currentAnimationName = animationName;
+	}
+	else
+	{
+		LOG("Couldn't play the animation");
+	}
+}
+
+void AnimationComponent::stopAnimation()
+{
+	if (idAnim > 0)
+	{
+		App->animations->stop(idAnim);
+		idAnim = 0;
+		currentAnimationName = "";
+	}
 }

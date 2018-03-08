@@ -645,7 +645,7 @@ void ModuleGUI::showAnimationWindow()
 	ImGui::InputText("", &animationPath[0], IM_ARRAYSIZE(animationPath));
 	ImGui::PopID();
 
-	if (ImGui::Button("Set texture"))
+	if (ImGui::Button("Load Animation"))
 	{
 		if (App->animations->load(animationName, animationPath))
 		{

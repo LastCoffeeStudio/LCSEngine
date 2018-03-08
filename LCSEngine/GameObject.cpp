@@ -57,6 +57,21 @@ void GameObject::preUpdate()
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
+		switch ((*it)->typeComponent)
+		{
+		case ANIMATION:
+			if (((AnimationComponent*)(*it))->idAnim != 0)
+			{
+				updateBones(((AnimationComponent*)(*it)));
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
 		if ((*it)->isEnable)
 		{
 			switch ((*it)->typeComponent)
@@ -144,9 +159,6 @@ void GameObject::preUpdate()
             case AUDIOSOURCE:
                 App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
 				break;
-			case ANIMATION:
-				
-				break;
 			default:
 				break;
 			}
@@ -172,7 +184,6 @@ void GameObject::preUpdate()
 				break;
 		}
 	}
-	
 }
 
 void GameObject::postUpdate() {}
@@ -361,7 +372,7 @@ void GameObject::draw()
 			}
 		}*/
 		
-		renderData data;
+		/*renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
@@ -375,7 +386,7 @@ void GameObject::draw()
 		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
 		data.mode = GL_TRIANGLES;
-		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
+		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));*/
 
 		//drawAABB();
 		//drawOBB();
@@ -607,4 +618,33 @@ Component* GameObject::getComponent(TypeComponent type)
 	}
 
 	return nullptr;
+}
+
+void GameObject::updateBones(const AnimationComponent* anim)
+{
+	GameObject* root = anim->gameObject;
+
+	queue<GameObject*> children;
+	children.push(root);
+
+	while (!children.empty())
+	{
+		GameObject* node = children.front();
+		children.pop();
+
+		float3 position = { 0.f, 0.f, 0.f };
+		Quat rotation = { 0.f, 0.f, 0.f, 0.f };
+
+		if (App->animations->getTransform(anim->idAnim, node->name.c_str(), position, rotation))
+		{
+			TransformComponent* transform = (TransformComponent*)(node->getComponent(TRANSFORM));
+			transform->setTranslate(position);
+			transform->setRotate(rotation);
+		}
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			children.push(*it);
+		}
+	}
 }

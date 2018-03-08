@@ -11,6 +11,7 @@
 using namespace std;
 
 class Component;
+class AnimationComponent;
 class Transform;
 class Model;
 
@@ -51,6 +52,9 @@ public:
 
 private:
 	string getFinalName(string name);
+	void updateBones(const AnimationComponent* anim);
+
+private:
 	string initialName;
 	GLint idVertVBO = -1;
 	GLint idNormalVBO = -1;

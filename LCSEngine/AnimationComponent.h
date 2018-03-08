@@ -18,9 +18,14 @@ public:
 
 public:
 	GameObject* rootBone = nullptr;
+	std::string animationName = "";
+	std::string currentAnimationName = "";
+	unsigned int idAnim = 0;
 
 private:
 	void drawLine(const float4x4& idParent, const float4x4& idChild);
+	void playAnimation();
+	void stopAnimation();
 };
 
 #endif //__ANIMATIONCOMPONENT_H__
