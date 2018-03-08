@@ -11,7 +11,7 @@
 #include <vector>
 #include <string>
 
-struct Bone
+struct Joint
 {
 	std::string name = "";
 	std::vector<float3> positions;
@@ -21,7 +21,7 @@ struct Bone
 struct Animation
 {
 	unsigned int duration = 0;
-	std::vector<Bone*> bones;
+	std::vector<Joint*> joints;
 };
 
 struct AnimationInstance

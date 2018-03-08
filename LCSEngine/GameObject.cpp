@@ -99,17 +99,6 @@ void GameObject::preUpdate()
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;
-				/*map<std::string, AssetTexture*>::iterator it = App->textures->textures.find(texPath);
-				if (it != App->textures->textures.end())
-				{
-					texID = (*it).second->ID;
-					hasTexture = true;
-				}
-				else
-				{
-					texID = 0;
-					hasTexture = false;
-				}*/
 				if (((MaterialComponent*)(*it))->textureChanged && ((MaterialComponent*)(*it))->textureName != texPath)
 				{
 					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
@@ -162,7 +151,6 @@ void GameObject::preUpdate()
 			default:
 				break;
 			}
-               
 		}
 	}
 	
