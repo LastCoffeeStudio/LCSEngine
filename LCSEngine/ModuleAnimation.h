@@ -29,6 +29,10 @@ struct AnimationInstance
 	Animation* animation = nullptr;
 	unsigned int localTime = 0;	//ms
 	bool loop = true;
+
+	AnimationInstance* blendingAnim = nullptr;
+	unsigned int blendDuration = 0;
+	unsigned int blendTime = 0;
 };
 
 class ModuleAnimation : public Module
@@ -44,6 +48,10 @@ public:
 	unsigned int play(const char* name);
 	void stop(unsigned int id);
 	bool getTransform(unsigned int id, const char* boneName, float3& position, Quat& rotation);
+	bool getTransformBlend(const AnimationInstance* anim, const char* boneName, float3& position, Quat& rotation);
+	void blendTo(unsigned int id, const char* name, unsigned int blendTime);
+
+	bool isBlending(unsigned int id);
 
 public:
 	std::map<std::string, Animation*> animations;

@@ -35,8 +35,14 @@ void AnimationComponent::drawGUI()
 		}
 		if (ImGui::Button("Play"))
 		{
-			stopAnimation();
-			playAnimation();
+			if (idAnim != 0)
+			{
+				blendAnimation();
+			}
+			else
+			{
+				playAnimation();
+			}
 		}
 		ImGui::SameLine(0);
 		if (ImGui::Button("Stop"))
@@ -44,6 +50,7 @@ void AnimationComponent::drawGUI()
 			stopAnimation();
 		}
 		ImGui::Text("Current Animation: %s", currentAnimationName.c_str());
+		ImGui::DragFloat("Blend time", &blendTime, 0.05f, 0.f, 100.f);
 	}
 }
 
@@ -100,5 +107,13 @@ void AnimationComponent::stopAnimation()
 		App->animations->stop(idAnim);
 		idAnim = 0;
 		currentAnimationName = "";
+	}
+}
+
+void AnimationComponent::blendAnimation()
+{
+	if (!App->animations->isBlending(idAnim))
+	{
+		App->animations->blendTo(idAnim, animationName.c_str(), unsigned int(blendTime*1000));
 	}
 }

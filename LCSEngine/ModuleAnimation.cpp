@@ -53,6 +53,17 @@ update_status ModuleAnimation::update(float deltaTime)
 			{
 				(*it)->localTime -= (*it)->animation->duration;
 			}
+
+			if ((*it)->blendingAnim != nullptr)
+			{
+				//Update also localTime from blending animation??
+				(*it)->blendingAnim->localTime += unsigned int(deltaTime*1000);
+				(*it)->blendTime += unsigned int(deltaTime * 1000);
+				if ((*it)->blendTime > (*it)->blendDuration)
+				{
+					(*it) = (*it)->blendingAnim;
+				}
+			}
 		}
 	}
 	return UPDATE_CONTINUE;
@@ -92,8 +103,9 @@ void ModuleAnimation::stop(unsigned int id)
 {
 	if (id != 0 && id <= instances.size() && instances[id - 1] != nullptr)
 	{
-		instances[id-1]->animation = nullptr;
-		instances[id-1] = nullptr;
+		instances[id - 1]->animation = nullptr;
+		instances[id - 1]->blendingAnim = nullptr;
+		instances[id - 1] = nullptr;
 		unusedIDs.push_back(id);
 	}
 	else
@@ -112,6 +124,10 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 		{
 			if (anim->bones[i]->name == boneName)
 			{
+				/*float3 iniPos, endPos;
+				Quat iniRot, endRot;
+				getAnimationsData(instances[id - 1], anim->bones[i], iniPos, endPos, iniRot, endRot);*/
+
 				float pos = (float)(instances[id - 1]->localTime * anim->bones[i]->positions.size() - 1) / (float)anim->duration;
 				float rot = (float)(instances[id - 1]->localTime * anim->bones[i]->rotations.size() - 1) / (float)anim->duration;
 
@@ -126,11 +142,71 @@ bool ModuleAnimation::getTransform(unsigned int id, const char* boneName, float3
 
 				position = linearInterpolationPosition(iniPos, endPos, pos-floor(pos));
 				rotation = linearInterpolationRotation(iniRot, endRot, rot-floor(rot));
+
+				//If it's blending, add the second animation
+				if (instances[id - 1]->blendingAnim != nullptr)
+				{
+					float3 positionBlend;
+					Quat rotationBlend;
+					if (getTransformBlend(instances[id - 1]->blendingAnim, boneName, positionBlend, rotationBlend))
+					{
+						float time = (float)instances[id - 1]->blendTime / (float)instances[id - 1]->blendDuration;
+
+						position = linearInterpolationPosition(position, positionBlend, time);
+						rotation = linearInterpolationRotation(rotation, rotationBlend, time);
+					}
+				}
+
 				success = true;
 			}
 		}
 	}
 	return success;
+}
+
+bool ModuleAnimation::getTransformBlend(const AnimationInstance* anim, const char* boneName, float3& position, Quat& rotation)
+{
+	bool success = false;
+	Animation* blendAnim = anim->animation;
+	for (unsigned int j = 0; j < blendAnim->bones.size() && !success; ++j)
+	{
+		if (blendAnim->bones[j]->name == boneName)
+		{
+			float pos = (float)(anim->localTime * blendAnim->bones[j]->positions.size() - 1) / (float)blendAnim->duration;
+			float rot = (float)(anim->localTime * blendAnim->bones[j]->rotations.size() - 1) / (float)blendAnim->duration;
+
+			unsigned int posEndIndex, rotEndIndex;
+			(pos >= blendAnim->bones[j]->positions.size() - 1) ? posEndIndex = 0 : posEndIndex = (unsigned int)(pos + 1);
+			(rot >= blendAnim->bones[j]->rotations.size() - 1) ? rotEndIndex = 0 : rotEndIndex = (unsigned int)(rot + 1);
+
+			float3 iniPos = blendAnim->bones[j]->positions[(unsigned int)pos];
+			float3 endPos = blendAnim->bones[j]->positions[posEndIndex];
+			Quat iniRot = blendAnim->bones[j]->rotations[(unsigned int)rot];
+			Quat endRot = blendAnim->bones[j]->rotations[rotEndIndex];
+
+			position = linearInterpolationPosition(iniPos, endPos, pos - floor(pos));
+			rotation = linearInterpolationRotation(iniRot, endRot, rot - floor(rot));
+
+			success = true;
+		}
+	}
+	return success;
+}
+
+void ModuleAnimation::blendTo(unsigned int id, const char* name, unsigned int blendTime)
+{
+	if (id != 0 && id <= instances.size() && instances[id - 1] != nullptr)
+	{
+		AnimationInstance* anim = instances[id - 1];
+		std::map<std::string, Animation*>::iterator it = animations.find(name);
+		if (it != animations.end())
+		{
+			AnimationInstance* blendAnim = new AnimationInstance();
+			blendAnim->animation = (*it).second;
+			anim->blendingAnim = blendAnim;
+			anim->blendDuration = blendTime;
+		}
+	}
 }
 
 float3 ModuleAnimation::linearInterpolationPosition(const float3& iniPos, const float3& endPos, float time) const
@@ -155,4 +231,9 @@ Quat ModuleAnimation::linearInterpolationRotation(const Quat& iniRot, const Quat
 	rotation.w = iniRot.w*(1.f - time) + endRot.w*scalar;
 
 	return rotation;
+}
+
+bool ModuleAnimation::isBlending(unsigned int id)
+{
+	return instances[id - 1]->blendingAnim != nullptr;
 }
