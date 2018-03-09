@@ -20,8 +20,6 @@ ModuleGameUI::~ModuleGameUI() {}
 
 update_status ModuleGameUI::update(float deltaTime)
 {
-	static ElementFactory* factory = ElementFactory::getInstance();
-	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 100, 100, true));
 	printGameUI();
 	return UPDATE_CONTINUE;
 }
@@ -62,5 +60,5 @@ void ModuleGameUI::printGameUI()
 			glEnd();
 		}
 	}
-	elements.clear();
+	//elements.clear();
 }

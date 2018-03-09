@@ -18,6 +18,8 @@
 #include "ModuleAnimation.h"
 #include "ModuleAudio.h"
 #include "ModuleGUI.h"
+#include "ModuleGameUI.h"
+#include "ElementFactory.h"
 #include "Shader.h"
 #include "QuadTree.h"
 #include "Model.h"
@@ -323,7 +325,8 @@ void GameObject::drawComponentsGui()
 	if (ImGui::BeginPopup("Add Component Popup"))
 	{
 		static ComponentFactory* factory = ComponentFactory::getInstance();
-
+		static ElementFactory* factoryElements = ElementFactory::getInstance();
+		
 		if (ImGui::MenuItem("Mesh"))
 		{
 			addComponent(factory->getComponent(MESH, this));
@@ -344,6 +347,23 @@ void GameObject::drawComponentsGui()
         {
             addComponent(factory->getComponent(AUDIOSOURCE, this));
         }
+		//Change all this and make same as components
+		else if (ImGui::MenuItem("UI Image"))
+		{
+			App->gameUI->elements.push_back(factoryElements->getComponent(IMAGE, this, 0, 0, 100, 100, true));
+		}
+		else if (ImGui::MenuItem("UI Label"))
+		{
+			App->gameUI->elements.push_back(factoryElements->getComponent(LABEL, this, 0, 0, 100, 100, true));
+		}
+		else if (ImGui::MenuItem("UI Button"))
+		{
+			App->gameUI->elements.push_back(factoryElements->getComponent(BUTTON, this, 0, 0, 100, 100, true));
+		}
+		else if (ImGui::MenuItem("UI EditText"))
+		{
+			App->gameUI->elements.push_back(factoryElements->getComponent(EDITTEXT, this, 0, 0, 100, 100, true));
+		}
 		ImGui::EndPopup();
 	}
 }
