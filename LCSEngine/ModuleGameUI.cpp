@@ -21,7 +21,7 @@ ModuleGameUI::~ModuleGameUI() {}
 update_status ModuleGameUI::update(float deltaTime)
 {
 	static ElementFactory* factory = ElementFactory::getInstance();
-	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 1000, 800, true));
+	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 100, 100, true));
 	printGameUI();
 	return UPDATE_CONTINUE;
 }
@@ -51,14 +51,14 @@ void ModuleGameUI::printGameUI()
 		{
 			float x1 = (float)((((*it)->rect.x) / screenWidth) * 2) - 1;
 			float x2 = (float)(x1 + ((*it)->rect.h) / (screenWidth / 2));
-			float y1 = (float)((((*it)->rect.y) / screenHeight) * 2) - 1;
-			float y2 = (float)(y1 + ((*it)->rect.w) / (screenHeight / 2));
+			float y1 = (float)(2 - ((((*it)->rect.y) / screenHeight) * 2) - 1);
+			float y2 = (float)(2 - (y1 + ((*it)->rect.w) / (screenHeight / 2)));
 
 			glBegin(GL_POLYGON);
 				glVertex2f(x1, y1);
-				glVertex2f(x2, y1);
-				glVertex2f(x2, y2);
 				glVertex2f(x1, y2);
+				glVertex2f(x2, y2);
+				glVertex2f(x2, y1);
 			glEnd();
 		}
 	}
