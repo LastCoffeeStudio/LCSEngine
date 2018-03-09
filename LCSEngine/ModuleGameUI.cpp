@@ -13,14 +13,15 @@
 
 ModuleGameUI::ModuleGameUI() 
 {
-	static ElementFactory* factory = ElementFactory::getInstance();
-	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 10, 10, true));
+	
 }
 
 ModuleGameUI::~ModuleGameUI() {}
 
 update_status ModuleGameUI::update(float deltaTime)
 {
+	static ElementFactory* factory = ElementFactory::getInstance();
+	elements.push_back(factory->getComponent(BUTTON, nullptr, 0, 0, 1000, 800, true));
 	printGameUI();
 	return UPDATE_CONTINUE;
 }
@@ -41,14 +42,17 @@ void ModuleGameUI::printGameUI()
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
+	float screenWidth = App->window->width;
+	float screenHeight = App->window->height;
+
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 		if ((*it)->visible)
 		{
-			float x1 = (float)((*it)->rect.x)/100;
-			float x2 = (float)(x1 + (*it)->rect.w)/100;
-			float y1 = (float)((*it)->rect.y)/100;
-			float y2 = (float)(y1 + (*it)->rect.h)/100;
+			float x1 = (float)((((*it)->rect.x) / screenWidth) * 2) - 1;
+			float x2 = (float)(x1 + ((*it)->rect.h) / (screenWidth / 2));
+			float y1 = (float)((((*it)->rect.y) / screenHeight) * 2) - 1;
+			float y2 = (float)(y1 + ((*it)->rect.w) / (screenHeight / 2));
 
 			glBegin(GL_POLYGON);
 				glVertex2f(x1, y1);
@@ -58,4 +62,5 @@ void ModuleGameUI::printGameUI()
 			glEnd();
 		}
 	}
+	elements.clear();
 }
