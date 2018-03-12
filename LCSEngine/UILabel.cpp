@@ -6,6 +6,7 @@
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/float3x4.h"
 #include "Imgui/imgui.h"
+#include "GameObject.h"
 
 UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {

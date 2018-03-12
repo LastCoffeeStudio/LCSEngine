@@ -27,6 +27,7 @@ public:
 	bool cleanUp() override;
 	void clearGameObjects(); 
 	void clearComponents();
+	void clearElements();
 	void preUpdateGameObjects();
 	void postUpdateGameObjects();
 	void draw();

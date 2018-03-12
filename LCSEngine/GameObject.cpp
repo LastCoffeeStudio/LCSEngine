@@ -262,6 +262,25 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 	return it;
 }
 
+vector<ElementGameUI*>::iterator GameObject::deleteElement(ElementGameUI* element) 
+{
+	vector<ElementGameUI*>::iterator it = elements.begin();
+	for (it; it != elements.end();)
+	{
+		if (*it == element)
+		{
+			RELEASE(*it);
+			it = elements.erase(it);
+			return it;
+		}
+		else
+		{
+			++it;
+		}
+	}
+	return it;
+}
+
 void GameObject::addGameObject(GameObject* gameObject)
 {
 	children.push_back(gameObject);

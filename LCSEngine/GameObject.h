@@ -28,6 +28,7 @@ public:
 	void addComponent(Component* component);
 	void addElement(ElementGameUI* component);
 	vector<Component*>::iterator deleteComponent(Component* component);
+	vector<ElementGameUI*>::iterator deleteElement(ElementGameUI* element);
 	void addGameObject(GameObject* gameObject);
 	void drawComponentsElementsGui();
 	void draw();
