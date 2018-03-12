@@ -13,7 +13,7 @@ public:
 
 public:
 	std::string text;
-
+	std::string fontPath;
 };
 
 #endif //__UILABEL_H__

@@ -7,11 +7,14 @@
 #include "MathGeoLib/src/Math/float3x4.h"
 #include "Imgui/imgui.h"
 #include "GameObject.h"
+#include "ModuleType.h"
 
 UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = LABEL;
 	text = "New Label";
+	fontPath = "Assets/Fonts/Roboto-Regular.ttf";
+	App->type->loadFont("Assets/Fonts/Roboto-Regular.ttf");
 }
 
 UILabel::~UILabel() {}
@@ -45,13 +48,22 @@ void UILabel::drawGUI()
 
 void UILabel::fillGUI()
 {
-	char aux[64];
-	strcpy_s(aux, 64, text.c_str());
+	char aux1[64];
+	strcpy_s(aux1, 64, text.c_str());
 
 	ImGui::PushID("Text");
-	if (ImGui::InputText("", aux, 64))
+	if (ImGui::InputText("", aux1, 64))
 	{
-		text = aux;
+		text = aux1;
+	}
+	ImGui::PopID();
+
+	char aux2[128];
+	strcpy_s(aux2, 128, fontPath.c_str());
+	ImGui::PushID("FontPath");
+	if (ImGui::InputText("", aux2, 128))
+	{
+		fontPath = aux2;
 	}
 	ImGui::PopID();
 }
