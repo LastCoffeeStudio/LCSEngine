@@ -19,5 +19,21 @@ void UIImage::drawGUI()
 	if (ImGui::CollapsingHeader("Image"))
 	{
 		ImGui::Checkbox("Visible", &visible);
+
+		ImGui::Text("Position");
+		ImGui::SameLine(78);
+		ImGui::PushID("position");
+		ImGui::NewLine();
+		ImGui::DragInt("X", &rect.x, 1);
+		ImGui::DragInt("Y", &rect.y, 1);
+		ImGui::PopID();
+
+		ImGui::Text("Size");
+		ImGui::SameLine(70);
+		ImGui::PushID("size");
+		ImGui::NewLine();
+		ImGui::DragInt("Height", &rect.h, 1);
+		ImGui::DragInt("Width", &rect.w, 1);
+		ImGui::PopID();
 	}
 }
