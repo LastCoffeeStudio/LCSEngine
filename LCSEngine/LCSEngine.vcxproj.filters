@@ -378,6 +378,9 @@
     <ClInclude Include="ElementFactory.h">
       <Filter>Components\GameUIComponents</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleType.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -607,6 +610,9 @@
     </ClCompile>
     <ClCompile Include="ElementFactory.cpp">
       <Filter>Components\GameUIComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleType.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -12,6 +12,7 @@
 #include "ModuleCamera.h"
 #include "ModuleAnimation.h"
 #include "ModuleGameUI.h"
+#include "ModuleType.h"
 
 using namespace std;
 
@@ -30,6 +31,7 @@ Application::Application()
 	modules.push_back(animations = new ModuleAnimation());
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	modules.push_back(gameUI = new ModuleGameUI());
+	modules.push_back(type = new ModuleType());
 
 	timer = 0;
 	deltaTime = 0;
