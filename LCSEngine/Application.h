@@ -18,6 +18,7 @@ class ModuleGUI;
 class ModuleCamera;
 class ModuleAnimation;
 class ModuleGameUI;
+class ModuleType;
 
 class Application
 {
@@ -42,6 +43,7 @@ public:
 	ModuleCamera* camera;
 	ModuleAnimation* animations;
 	ModuleGameUI* gameUI;
+	ModuleType* type;
 
 private:
 	std::list<Module*> modules;

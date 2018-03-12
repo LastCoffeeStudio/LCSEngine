@@ -70,12 +70,12 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Wwise\libx86\libDebug;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)Freetype\include;$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)Wwise\libx86\libDebug;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(ProjectDir)Freetype\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)Wwise\libx86\libRelease;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(LibraryPath)</LibraryPath>
+    <IncludePath>$(ProjectDir)Freetype\include;$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)Wwise\libx86\libRelease;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(ProjectDir)Freetype\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <IncludePath>$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);</IncludePath>
@@ -92,7 +92,7 @@
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86;$(ProjectDir)Wwise\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>CommunicationCentral.lib;AkSoundEngineDLL.lib;AkRecorderFX.lib;AkRoomVerbFX.lib;AkSpatialAudio.lib;AkFlangerFX.lib;AkDelayFX.lib;AkToneSource.lib;AkCompressorFX.lib;AkAudioInputSource.lib;AkMatrixReverbFX.lib;AkTremoloFX.lib;AkMemoryMgr.lib;AkMusicEngine.lib;AkPeakLimiterFX.lib;AkMotionSink.lib;AkTimeStretchFX.lib;AkPitchShifterFX.lib;AkSineSource.lib;AkSynthOneSource.lib;AkStereoDelayFX.lib;AkGuitarDistortionFX.lib;AkVorbisDecoder.lib;AkMeterFX.lib;AkGainFX.lib;AkSoundEngine.lib;AkSilenceSource.lib;AkParametricEQFX.lib;AkStreamMgr.lib;AkHarmonizerFX.lib;AkMotionGeneratorSource.lib;AkExpanderFX.lib;McDSPLimiterFX.lib;McDSPFutzBoxFX.lib;MSSpatialSink.lib;SFLib.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;IrrXML.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;CommunicationCentral.lib;AkSoundEngineDLL.lib;AkRecorderFX.lib;AkRoomVerbFX.lib;AkSpatialAudio.lib;AkFlangerFX.lib;AkDelayFX.lib;AkToneSource.lib;AkCompressorFX.lib;AkAudioInputSource.lib;AkMatrixReverbFX.lib;AkTremoloFX.lib;AkMemoryMgr.lib;AkMusicEngine.lib;AkPeakLimiterFX.lib;AkMotionSink.lib;AkTimeStretchFX.lib;AkPitchShifterFX.lib;AkSineSource.lib;AkSynthOneSource.lib;AkStereoDelayFX.lib;AkGuitarDistortionFX.lib;AkVorbisDecoder.lib;AkMeterFX.lib;AkGainFX.lib;AkSoundEngine.lib;AkSilenceSource.lib;AkParametricEQFX.lib;AkStreamMgr.lib;AkHarmonizerFX.lib;AkMotionGeneratorSource.lib;AkExpanderFX.lib;McDSPLimiterFX.lib;McDSPFutzBoxFX.lib;MSSpatialSink.lib;SFLib.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;IrrXML.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -124,7 +124,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <AdditionalLibraryDirectories>$(ProjectDir)Glew\libx86;$(ProjectDir)Json\libx86;$(ProjectDir)SDL\libx86;$(ProjectDir)SDL_image\libx86;$(ProjectDir)SDL_mixer\libx86;$(ProjectDir)Wwise\libx86</AdditionalLibraryDirectories>
-      <AdditionalDependencies>AkAudioInputSource.lib;AkSoundEngineDLL.lib;AkAutobahn.lib;AkCompressorFX.lib;AkConvolutionReverbFX.lib;AkDelayFX.lib;AkExpanderFX.lib;AkFlangerFX.lib;AkGainFX.lib;AkGuitarDistortionFX.lib;AkHarmonizerFX.lib;AkMatrixReverbFX.lib;AkMemoryMgr.lib;AkMeterFX.lib;AkMotionGeneratorSource.lib;AkMotionSink.lib;AkMusicEngine.lib;AkParametricEQFX.lib;AkPeakLimiterFX.lib;AkPitchShifterFX.lib;AkRecorderFX.lib;AkRoomVerbFX.lib;AkReflectFX.lib;AkSilenceSource.lib;AkSineSource.lib;AkSoundEngine.lib;AkSoundSeedImpactFX.lib;AkSoundSeedWindSource.lib;AkSoundSeedWooshSource.lib;AkSpatialAudio.lib;AkStereoDelayFX.lib;AkStreamMgr.lib;AkSynthOneSource.lib;AkTimeStretchFX.lib;AkToneSource.lib;AkTremoloFX.lib;AkVorbisDecoder.lib;Dbghelp.lib;dinput8.lib;dsound.lib;dxguid.lib;Msacm32.lib;Winmm.lib;xinput.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;IrrXML.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>freetype.lib;AkAudioInputSource.lib;AkSoundEngineDLL.lib;AkAutobahn.lib;AkCompressorFX.lib;AkConvolutionReverbFX.lib;AkDelayFX.lib;AkExpanderFX.lib;AkFlangerFX.lib;AkGainFX.lib;AkGuitarDistortionFX.lib;AkHarmonizerFX.lib;AkMatrixReverbFX.lib;AkMemoryMgr.lib;AkMeterFX.lib;AkMotionGeneratorSource.lib;AkMotionSink.lib;AkMusicEngine.lib;AkParametricEQFX.lib;AkPeakLimiterFX.lib;AkPitchShifterFX.lib;AkRecorderFX.lib;AkRoomVerbFX.lib;AkReflectFX.lib;AkSilenceSource.lib;AkSineSource.lib;AkSoundEngine.lib;AkSoundSeedImpactFX.lib;AkSoundSeedWindSource.lib;AkSoundSeedWooshSource.lib;AkSpatialAudio.lib;AkStereoDelayFX.lib;AkStreamMgr.lib;AkSynthOneSource.lib;AkTimeStretchFX.lib;AkToneSource.lib;AkTremoloFX.lib;AkVorbisDecoder.lib;Dbghelp.lib;dinput8.lib;dsound.lib;dxguid.lib;Msacm32.lib;Winmm.lib;xinput.lib;DevIL.lib;ILU.lib;ILUT.lib;glew32.lib;opengl32.lib;DynamicLibJson.lib;SDL2_image.lib;SDL2_mixer.lib;SDL2.lib;SDL2main.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;IrrXML.lib;zlib.lib;zlibstatic.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <SubSystem>Windows</SubSystem>
     </Link>
   </ItemDefinitionGroup>
@@ -241,6 +241,7 @@
     <ClInclude Include="ModuleJson.h" />
     <ClInclude Include="ModuleRender.h" />
     <ClInclude Include="ModuleTextures.h" />
+    <ClInclude Include="ModuleType.h" />
     <ClInclude Include="ModuleWindow.h" />
     <ClInclude Include="PhysRaycast.h" />
     <ClInclude Include="Point.h" />
@@ -321,6 +322,7 @@
     <ClCompile Include="ModuleJson.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
+    <ClCompile Include="ModuleType.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
     <ClCompile Include="PhysRaycast.cpp" />
     <ClCompile Include="Primitive.cpp" />
