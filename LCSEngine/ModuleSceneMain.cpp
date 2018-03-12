@@ -143,6 +143,10 @@ void ModuleSceneMain::clearGameObjects()
 			{
 				itComponents = gameObject->deleteComponent((*itComponents));
 			}
+			for (vector<ElementGameUI*>::iterator itElements = gameObject->elements.begin(); itElements != gameObject->elements.end();)
+			{
+				itElements = gameObject->deleteElement((*itElements));
+			}
 			RELEASE(*it);
 		}
 		garbageCollector.clear();
