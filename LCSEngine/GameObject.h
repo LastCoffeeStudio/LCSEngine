@@ -11,6 +11,7 @@
 using namespace std;
 
 class Component;
+class ElementGameUI;
 class AnimationComponent;
 class Transform;
 class Model;
@@ -25,9 +26,10 @@ public:
 	void preUpdate();
 	void postUpdate();
 	void addComponent(Component* component);
+	void addElement(ElementGameUI* component);
 	vector<Component*>::iterator deleteComponent(Component* component);
 	void addGameObject(GameObject* gameObject);
-	void drawComponentsGui();
+	void drawComponentsElementsGui();
 	void draw();
 	void drawAABB();
 	void drawOBB();
@@ -42,6 +44,7 @@ public:
 	bool enable = true;
 	bool staticFlag = false;
 	vector<Component*> components;
+	vector<ElementGameUI*> elements;
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;
 	int nameNumber = 0;

@@ -13,3 +13,11 @@ UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 }
 
 UILabel::~UILabel() {}
+
+void UILabel::drawGUI()
+{
+	if (ImGui::CollapsingHeader("Label"))
+	{
+		ImGui::Checkbox("Visible", &visible);
+	}
+}

@@ -8,6 +8,7 @@ class UIImage : public ElementGameUI
 public:
 	UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UIImage();
+	void drawGUI() override;
 
 };
 

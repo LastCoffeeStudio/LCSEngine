@@ -20,6 +20,8 @@
 #include "ModuleGUI.h"
 #include "ModuleGameUI.h"
 #include "ElementFactory.h"
+#include "ElementGameUI.h"
+#include "ModuleWindow.h"
 #include "Shader.h"
 #include "QuadTree.h"
 #include "Model.h"
@@ -211,6 +213,11 @@ void GameObject::addComponent(Component* component)
 	}
 }
 
+void GameObject::addElement(ElementGameUI* element)
+{
+	elements.push_back(element);
+}
+
 vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 {
 	vector<Component*>::iterator it = components.begin();
@@ -288,7 +295,7 @@ void GameObject::setStaticFlag(bool flag) {
 	staticPreviousValue = flag;
 }
 
-void GameObject::drawComponentsGui()
+void GameObject::drawComponentsElementsGui()
 {
 	ImGui::PushID("ActiveGameObject");
 	ImGui::Checkbox("", &enable); ImGui::SameLine(0);
@@ -311,6 +318,12 @@ void GameObject::drawComponentsGui()
 	};
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		(*it)->drawGUI();
+		ImGui::Separator();
+	}
+
+	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 		(*it)->drawGUI();
 		ImGui::Separator();
@@ -350,19 +363,19 @@ void GameObject::drawComponentsGui()
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))
 		{
-			App->gameUI->elements.push_back(factoryElements->getComponent(IMAGE, this, 0, 0, 100, 100, true));
+			addElement(factoryElements->getComponent(IMAGE, this, App->window->width/2 - BASIC_ELEMENT_GUI_SIZE/2, App->window->height / 2 - BASIC_ELEMENT_GUI_SIZE / 2, BASIC_ELEMENT_GUI_SIZE, BASIC_ELEMENT_GUI_SIZE, true));
 		}
 		else if (ImGui::MenuItem("UI Label"))
 		{
-			App->gameUI->elements.push_back(factoryElements->getComponent(LABEL, this, 0, 0, 100, 100, true));
+			addElement(factoryElements->getComponent(LABEL, this, App->window->width / 2 - BASIC_ELEMENT_GUI_SIZE / 2, App->window->height / 2 - BASIC_ELEMENT_GUI_SIZE / 2, BASIC_ELEMENT_GUI_SIZE, BASIC_ELEMENT_GUI_SIZE, true));
 		}
 		else if (ImGui::MenuItem("UI Button"))
 		{
-			App->gameUI->elements.push_back(factoryElements->getComponent(BUTTON, this, 0, 0, 100, 100, true));
+			addElement(factoryElements->getComponent(BUTTON, this, App->window->width / 2 - BASIC_ELEMENT_GUI_SIZE / 2, App->window->height / 2 - BASIC_ELEMENT_GUI_SIZE / 2, BASIC_ELEMENT_GUI_SIZE, BASIC_ELEMENT_GUI_SIZE, true));
 		}
 		else if (ImGui::MenuItem("UI EditText"))
 		{
-			App->gameUI->elements.push_back(factoryElements->getComponent(EDITTEXT, this, 0, 0, 100, 100, true));
+			addElement(factoryElements->getComponent(EDITTEXT, this, App->window->width / 2 - BASIC_ELEMENT_GUI_SIZE / 2, App->window->height / 2 - BASIC_ELEMENT_GUI_SIZE / 2, BASIC_ELEMENT_GUI_SIZE, BASIC_ELEMENT_GUI_SIZE, true));
 		}
 		ImGui::EndPopup();
 	}
@@ -418,7 +431,10 @@ void GameObject::draw()
 		default:
 			break;
 		}
-
+	}
+	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+	{
+		App->gameUI->elements.push_back((*it));
 	}
 }
 

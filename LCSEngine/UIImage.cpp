@@ -13,3 +13,11 @@ UIImage::UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 }
 
 UIImage::~UIImage() {}
+
+void UIImage::drawGUI()
+{
+	if (ImGui::CollapsingHeader("Image"))
+	{
+		ImGui::Checkbox("Visible", &visible);
+	}
+}

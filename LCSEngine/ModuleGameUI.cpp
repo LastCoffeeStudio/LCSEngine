@@ -48,10 +48,10 @@ void ModuleGameUI::printGameUI()
 		if ((*it)->visible)
 		{
 			float x1 = (float)((((*it)->rect.x) / screenWidth) * 2) - 1;
-			float x2 = (float)(x1 + ((*it)->rect.h) / (screenWidth / 2));
+			float x2 = (float)(x1 + (((*it)->rect.w) / screenWidth) * 2);
 			float y1 = (float)(2 - ((((*it)->rect.y) / screenHeight) * 2) - 1);
-			float y2 = (float)(2 - (y1 + ((*it)->rect.w) / (screenHeight / 2)));
-
+			//float y2 = (float)(2 - (y1 + ((*it)->rect.h) / (screenHeight / 2)));
+			float y2 = (float)(y1 - ((*it)->rect.h / screenHeight) * 2);
 			glBegin(GL_POLYGON);
 				glVertex2f(x1, y1);
 				glVertex2f(x1, y2);

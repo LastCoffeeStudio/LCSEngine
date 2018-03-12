@@ -306,7 +306,7 @@ void ModuleGUI::showInspector()
 
 	if (App->sceneMain->currentObject->parent != nullptr)
 	{
-		App->sceneMain->currentObject->drawComponentsGui();
+		App->sceneMain->currentObject->drawComponentsElementsGui();
 	}
 
 	if (ImGui::CollapsingHeader("QuadTree Minimap"))

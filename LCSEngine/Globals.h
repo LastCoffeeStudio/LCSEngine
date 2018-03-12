@@ -84,4 +84,6 @@ enum TypeElemeneGametUI
 #define SCREEN_COLUMNS_SETTINGS 5
 #define SCREEN_ROWS_SETTINGS 2
 
+#define BASIC_ELEMENT_GUI_SIZE 100
+
 #endif //__GLOBALS_H__

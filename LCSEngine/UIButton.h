@@ -8,6 +8,7 @@ class UIButton : public ElementGameUI
 public:
 	UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UIButton();
+	void drawGUI() override;
 
 };
 

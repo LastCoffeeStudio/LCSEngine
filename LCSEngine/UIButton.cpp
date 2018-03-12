@@ -13,3 +13,11 @@ UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisibl
 }
 
 UIButton::~UIButton() {}
+
+void UIButton::drawGUI()
+{
+	if (ImGui::CollapsingHeader("Button"))
+	{
+		ImGui::Checkbox("Visible", &visible);
+	}
+}

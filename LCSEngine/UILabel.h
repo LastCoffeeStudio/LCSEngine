@@ -8,6 +8,7 @@ class UILabel : public ElementGameUI
 public:
 	UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UILabel();
+	void drawGUI() override;
 
 };
 

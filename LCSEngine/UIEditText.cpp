@@ -13,3 +13,11 @@ UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVi
 }
 
 UIEditText::~UIEditText() {}
+
+void UIEditText::drawGUI()
+{
+	if (ImGui::CollapsingHeader("EditText"))
+	{
+		ImGui::Checkbox("Visible", &visible);
+	}
+}
