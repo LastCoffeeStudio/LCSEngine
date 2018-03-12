@@ -9,6 +9,10 @@ public:
 	UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UILabel();
 	void drawGUI() override;
+	void fillGUI();
+
+public:
+	std::string text;
 
 };
 

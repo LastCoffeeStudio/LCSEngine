@@ -11,6 +11,7 @@
 UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = LABEL;
+	text = "New Label";
 }
 
 UILabel::~UILabel() {}
@@ -37,5 +38,20 @@ void UILabel::drawGUI()
 		ImGui::DragInt("Height", &rect.h, 1);
 		ImGui::DragInt("Width", &rect.w, 1);
 		ImGui::PopID();
+
+		fillGUI();
 	}
+}
+
+void UILabel::fillGUI()
+{
+	char aux[64];
+	strcpy_s(aux, 64, text.c_str());
+
+	ImGui::PushID("Text");
+	if (ImGui::InputText("", aux, 64))
+	{
+		text = aux;
+	}
+	ImGui::PopID();
 }

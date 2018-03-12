@@ -10,6 +10,9 @@ public:
 	ElementGameUI(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~ElementGameUI();
 	virtual void drawGUI() = 0;
+	void startGUI();
+	void endGUI();
+
 
 public:
 	TypeElemeneGametUI type;

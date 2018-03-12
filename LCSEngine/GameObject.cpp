@@ -21,6 +21,7 @@
 #include "ModuleGameUI.h"
 #include "ElementFactory.h"
 #include "ElementGameUI.h"
+#include "UIButton.h"
 #include "ModuleWindow.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -269,6 +270,14 @@ vector<ElementGameUI*>::iterator GameObject::deleteElement(ElementGameUI* elemen
 	{
 		if (*it == element)
 		{
+			switch ((*it)->type)
+			{
+				case BUTTON:
+					UIButton* element = (UIButton*)(*it);
+					element->deleteElementButton();
+					break;
+			}
+
 			RELEASE(*it);
 			it = elements.erase(it);
 			return it;

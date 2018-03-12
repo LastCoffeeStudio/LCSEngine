@@ -14,3 +14,11 @@ ElementGameUI::ElementGameUI(GameObject* parent, int x, int y, int h, int w, boo
 }
 
 ElementGameUI::~ElementGameUI() {}
+
+void ElementGameUI::startGUI()
+{
+}
+
+void ElementGameUI::endGUI()
+{
+}
