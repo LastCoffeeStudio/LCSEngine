@@ -10,6 +10,7 @@ class Shader;
 class AssetTexture;
 class GameObject;
 class Component;
+class ElementGameUI;
 class QuadTree;
 
 class ModuleSceneMain : public Module
@@ -51,6 +52,7 @@ public:
 	bool rebuildQuadTree = false;
 	std::list<GameObject*> garbageCollector;
 	std::list<Component*> garbageCollectorComponent;
+	std::list<ElementGameUI*> garbageCollectorElements;
 	std::vector<GameObject*> rootBones;
 
 private:
