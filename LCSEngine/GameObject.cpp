@@ -22,6 +22,7 @@
 #include "ElementFactory.h"
 #include "ElementGameUI.h"
 #include "UIButton.h"
+#include "UIImage.h"
 #include "ModuleWindow.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -60,123 +61,8 @@ void GameObject::preUpdate()
 		staticPreviousValue = staticFlag;
 	}
 
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		switch ((*it)->typeComponent)
-		{
-		case ANIMATION:
-			if (((AnimationComponent*)(*it))->idAnim != 0)
-			{
-				updateBones(((AnimationComponent*)(*it)));
-			}
-			break;
-		default:
-			break;
-		}
-	}
-
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		if ((*it)->isEnable)
-		{
-			switch ((*it)->typeComponent)
-			{
-			case TRANSFORM:
-				if (staticFlag)
-				{
-					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
-				}
-				else
-				{
-					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
-				}
-				break;
-			case MESH:
-				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
-				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
-				idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
-				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
-				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
-				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
-				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
-				colorID = ((MeshComponent*)(*it))->idColors;
-
-				break;
-			case MATERIAL:
-				program = ((MaterialComponent*)(*it))->program;
-				if (((MaterialComponent*)(*it))->textureChanged && ((MaterialComponent*)(*it))->textureName != texPath)
-				{
-					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
-					if (itTexture != App->textures->textures.end())
-					{
-						(*itTexture).second->numberUsages--;
-						if ((*itTexture).second->numberUsages <= 0)
-						{
-							App->textures->textures.erase(itTexture);
-						}
-					}
-
-					texPath = ((MaterialComponent*)(*it))->textureName;
-					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((MaterialComponent*)(*it))->textureName);
-					if (itNewTexture != App->textures->textures.end())
-					{
-						texID = (*itNewTexture).second->ID;
-						hasTexture = true;
-						(*itNewTexture).second->numberUsages++;
-					}
-					else if (App->textures->loadTexture(texPath.c_str()))
-					{
-						texID = App->textures->textures[texPath]->ID;
-						hasTexture = true;
-					}
-					else
-					{
-						texID = 0;
-						hasTexture = false;
-					}
-					((MaterialComponent*)(*it))->textureChanged = false;
-				}
-
-				if (((MaterialComponent*)(*it))->colorChanged)
-				{
-					MeshComponent* mesh = (MeshComponent*)getComponent(MESH);
-					if (mesh != nullptr)
-					{
-						mesh->updateColor(((MaterialComponent*)(*it))->color);
-					}
-					((MaterialComponent*)(*it))->colorChanged = false;
-				}
-                break;
-            case AUDIOLISTENER:
-                App->audio->updatePositionListener(((AudioListenerComponent*)(*it))->idAudioGameObj, id);
-                break;
-            case AUDIOSOURCE:
-                App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		switch ((*it)->typeComponent)
-		{
-			case MESH:
-				aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
-				obb = aabb.ToOBB();
-				obb.Transform(id.Transposed());
-				break;
-			case CAMERA:
-				((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
-				((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
-				((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
-				break;
-			default:
-				break;
-		}
-	}
+	updateComponents();
+	updateElements();
 }
 
 void GameObject::postUpdate() {}
@@ -421,7 +307,7 @@ void GameObject::draw()
 			}
 		}*/
 		
-		/*renderData data;
+		renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
@@ -435,7 +321,7 @@ void GameObject::draw()
 		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
 		data.mode = GL_TRIANGLES;
-		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));*/
+		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
 		//drawAABB();
 		//drawOBB();
@@ -697,6 +583,180 @@ void GameObject::updateBones(const AnimationComponent* anim)
 		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
 		{
 			children.push(*it);
+		}
+	}
+}
+
+void GameObject::updateComponents()
+{
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		switch ((*it)->typeComponent)
+		{
+		case ANIMATION:
+			if (((AnimationComponent*)(*it))->idAnim != 0)
+			{
+				updateBones(((AnimationComponent*)(*it)));
+			}
+			break;
+		default:
+			break;
+		}
+	}
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		if ((*it)->isEnable)
+		{
+			switch ((*it)->typeComponent)
+			{
+			case TRANSFORM:
+				if (staticFlag)
+				{
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				}
+				else
+				{
+					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+				}
+				break;
+			case MESH:
+				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
+				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
+				idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
+				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
+				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
+				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
+				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
+				colorID = ((MeshComponent*)(*it))->idColors;
+
+				break;
+			case MATERIAL:
+				program = ((MaterialComponent*)(*it))->program;
+				if (((MaterialComponent*)(*it))->textureChanged && ((MaterialComponent*)(*it))->textureName != texPath)
+				{
+					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
+					if (itTexture != App->textures->textures.end())
+					{
+						(*itTexture).second->numberUsages--;
+						if ((*itTexture).second->numberUsages <= 0)
+						{
+							App->textures->textures.erase(itTexture);
+						}
+					}
+
+					texPath = ((MaterialComponent*)(*it))->textureName;
+					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((MaterialComponent*)(*it))->textureName);
+					if (itNewTexture != App->textures->textures.end())
+					{
+						texID = (*itNewTexture).second->ID;
+						hasTexture = true;
+						(*itNewTexture).second->numberUsages++;
+					}
+					else if (App->textures->loadTexture(texPath.c_str()))
+					{
+						texID = App->textures->textures[texPath]->ID;
+						hasTexture = true;
+					}
+					else
+					{
+						texID = 0;
+						hasTexture = false;
+					}
+					((MaterialComponent*)(*it))->textureChanged = false;
+				}
+
+				if (((MaterialComponent*)(*it))->colorChanged)
+				{
+					MeshComponent* mesh = (MeshComponent*)getComponent(MESH);
+					if (mesh != nullptr)
+					{
+						mesh->updateColor(((MaterialComponent*)(*it))->color);
+					}
+					((MaterialComponent*)(*it))->colorChanged = false;
+				}
+				break;
+			case AUDIOLISTENER:
+				App->audio->updatePositionListener(((AudioListenerComponent*)(*it))->idAudioGameObj, id);
+				break;
+			case AUDIOSOURCE:
+				App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		switch ((*it)->typeComponent)
+		{
+		case MESH:
+			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
+			obb = aabb.ToOBB();
+			obb.Transform(id.Transposed());
+			break;
+		case CAMERA:
+			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
+			((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
+			((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void GameObject::updateElements()
+{
+	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+	{
+		switch ((*it)->type)
+		{
+			case LABEL:
+				break;
+			case BUTTON:
+				break;
+			case IMAGE:
+				if (((UIImage*)(*it))->textureChanged)
+				{
+					string texName = ((UIImage*)(*it))->texName;
+					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texName);
+					if (itTexture != App->textures->textures.end())
+					{
+						(*itTexture).second->numberUsages--;
+						if ((*itTexture).second->numberUsages <= 0)
+						{
+							App->textures->textures.erase(itTexture);
+						}
+					}
+
+					((UIImage*)(*it))->texName = ((UIImage*)(*it))->textureName;
+					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((UIImage*)(*it))->texName);
+					if (itNewTexture != App->textures->textures.end())
+					{
+						((UIImage*)(*it))->texID = (*itNewTexture).second->ID;
+						((UIImage*)(*it))->hasTexture = true;
+						(*itNewTexture).second->numberUsages++;
+					}
+					else if (App->textures->loadTexture(((UIImage*)(*it))->texName.c_str()))
+					{
+						((UIImage*)(*it))->texID = App->textures->textures[((UIImage*)(*it))->texName]->ID;
+						((UIImage*)(*it))->hasTexture = true;
+					}
+					else
+					{
+						((UIImage*)(*it))->texID = 0;
+						((UIImage*)(*it))->hasTexture = false;
+					}
+					((UIImage*)(*it))->textureChanged = false;
+				}
+				break;
+			case EDITTEXT:
+				break;
+			default:
+				break;
 		}
 	}
 }

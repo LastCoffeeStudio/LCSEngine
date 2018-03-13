@@ -57,6 +57,8 @@ public:
 private:
 	string getFinalName(string name);
 	void updateBones(const AnimationComponent* anim);
+	void updateComponents();
+	void updateElements();
 
 private:
 	string initialName;

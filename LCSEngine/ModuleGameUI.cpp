@@ -6,15 +6,13 @@
 #include "ModuleCamera.h"
 #include "CameraComponent.h"
 #include "ElementGameUI.h"
+#include "UIImage.h"
 #include "Shader.h"
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "ElementFactory.h"
 
-ModuleGameUI::ModuleGameUI() 
-{
-	
-}
+ModuleGameUI::ModuleGameUI() {}
 
 ModuleGameUI::~ModuleGameUI() {}
 
@@ -26,6 +24,7 @@ update_status ModuleGameUI::update(float deltaTime)
 
 void ModuleGameUI::printGameUI() 
 {
+
 	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 	glUseProgram(program);
 
@@ -40,25 +39,37 @@ void ModuleGameUI::printGameUI()
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
-	float screenWidth = App->window->width;
-	float screenHeight = App->window->height;
-
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
-		if ((*it)->visible)
+		if ((*it)->visible && (*it)->type == IMAGE)
 		{
-			float x1 = (float)((((*it)->rect.x) / screenWidth) * 2) - 1;
-			float x2 = (float)(x1 + (((*it)->rect.w) / screenWidth) * 2);
-			float y1 = (float)(2 - ((((*it)->rect.y) / screenHeight) * 2) - 1);
-			//float y2 = (float)(2 - (y1 + ((*it)->rect.h) / (screenHeight / 2)));
-			float y2 = (float)(y1 - ((*it)->rect.h / screenHeight) * 2);
-			glBegin(GL_POLYGON);
-				glVertex2f(x1, y1);
-				glVertex2f(x1, y2);
-				glVertex2f(x2, y2);
-				glVertex2f(x2, y1);
-			glEnd();
+			glUniform1i(glGetUniformLocation(program, "useText"), ((UIImage*)(*it))->hasTexture);
+
+			//Order matters!
+			if (((UIImage*)(*it))->hasTexture)
+			{
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, ((UIImage*)(*it))->texID);
+				glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+				glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idTexCoords);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+			}
+
+			glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idVertVBO);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idColors);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((UIImage*)(*it))->idIdxVAO);
+
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 		}
 	}
+
 	//elements.clear();
 }
