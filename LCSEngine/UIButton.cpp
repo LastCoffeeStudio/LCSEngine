@@ -17,6 +17,9 @@ UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisibl
 	static ElementFactory* factoryElements = ElementFactory::getInstance();
 	label = (UILabel*)(factoryElements->getComponent(LABEL, nullptr, x, y, h, w, true));
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	hover = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	pressed = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	dissabled = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 }
 
 UIButton::~UIButton() {}
@@ -46,6 +49,14 @@ void UIButton::drawGUI()
 		ImGui::PopID();
 
 		label->fillGUI();
+		ImGui::Text("Background:");
+		background->fillGUI();
+		ImGui::Text("Hover:");
+		hover->fillGUI();
+		ImGui::Text("Pressed:");
+		pressed->fillGUI();
+		ImGui::Text("Dissabled:");
+		dissabled->fillGUI();
 	}
 }
 
@@ -53,4 +64,7 @@ void UIButton::deleteElementButton()
 {
 	RELEASE(label);
 	RELEASE(background);
+	RELEASE(hover);
+	RELEASE(pressed);
+	RELEASE(dissabled);
 }

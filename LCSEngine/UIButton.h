@@ -17,6 +17,9 @@ public:
 private:
 	UILabel* label = nullptr;
 	UIImage* background = nullptr;
+	UIImage* hover = nullptr;
+	UIImage* pressed = nullptr;
+	UIImage* dissabled = nullptr;
 };
 
 #endif //__UIBUTTON_H__

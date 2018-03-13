@@ -13,6 +13,7 @@ public:
 	UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UIImage();
 	void drawGUI() override;
+	void fillGUI();
 
 public:
 	GLuint texID = 0;

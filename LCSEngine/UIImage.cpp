@@ -53,14 +53,19 @@ void UIImage::drawGUI()
 		}
 		ImGui::PopID();
 
-		ImGui::PushID("texture");
-		ImGui::Text("Texture:"); ImGui::SameLine(0);
-		ImGui::PopID();
-		ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
-		if (ImGui::Button("Set texture") && textureName != texName)
-		{
-			textureChanged = true;
-		}
+		fillGUI();
+	}
+}
+
+void UIImage::fillGUI()
+{
+	ImGui::PushID("texture");
+	ImGui::Text("Texture:"); ImGui::SameLine(0);
+	ImGui::PopID();
+	ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
+	if (ImGui::Button("Set texture") && textureName != texName)
+	{
+		textureChanged = true;
 	}
 }
 
