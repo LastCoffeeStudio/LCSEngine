@@ -19,7 +19,8 @@ UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisibl
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 	hover = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 	pressed = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
-	dissabled = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	disabled = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	activeImage = background;
 }
 
 UIButton::~UIButton() {}
@@ -49,14 +50,29 @@ void UIButton::drawGUI()
 		ImGui::PopID();
 
 		label->fillGUI();
-		ImGui::Text("Background:");
-		background->fillGUI();
-		ImGui::Text("Hover:");
-		hover->fillGUI();
-		ImGui::Text("Pressed:");
-		pressed->fillGUI();
-		ImGui::Text("Dissabled:");
-		dissabled->fillGUI();
+		ImGui::InputText("Background", &background->textureName[0], IM_ARRAYSIZE(background->textureName));
+		if (ImGui::Button("Set texture") && background->textureName != background->texName)
+		{
+			background->textureChanged = true;
+		}
+
+		ImGui::InputText("Hover", &hover->textureName[0], IM_ARRAYSIZE(hover->textureName));
+		if (ImGui::Button("Set texture") && hover->textureName != hover->texName)
+		{
+			hover->textureChanged = true;
+		}
+
+		ImGui::InputText("Click", &pressed->textureName[0], IM_ARRAYSIZE(pressed->textureName));
+		if (ImGui::Button("Set texture") && pressed->textureName != pressed->texName)
+		{
+			pressed->textureChanged = true;
+		}
+
+		ImGui::InputText("Disabled", &disabled->textureName[0], IM_ARRAYSIZE(disabled->textureName));
+		if (ImGui::Button("Set texture") && disabled->textureName != disabled->texName)
+		{
+			disabled->textureChanged = true;
+		}
 	}
 }
 
@@ -66,5 +82,17 @@ void UIButton::deleteElementButton()
 	RELEASE(background);
 	RELEASE(hover);
 	RELEASE(pressed);
-	RELEASE(dissabled);
+	RELEASE(disabled);
+}
+
+void UIButton::update()
+{
+	background->rect = rect;
+	hover->rect = rect;
+	pressed->rect = rect;
+	disabled->rect = rect;
+	background->updateCoords();
+	hover->updateCoords();
+	pressed->updateCoords();
+	disabled->updateCoords();
 }

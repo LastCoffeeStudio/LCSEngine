@@ -6,6 +6,14 @@
 class UILabel;
 class UIImage;
 
+enum State
+{
+	IDLE,
+	HOVER,
+	CLICK,
+	DISABLED
+};
+
 class UIButton : public ElementGameUI
 {
 public:
@@ -13,13 +21,18 @@ public:
 	~UIButton();
 	void drawGUI() override;
 	void deleteElementButton();
+	void update();
+
+public:
+	State state = IDLE;
+	UIImage* activeImage = nullptr;
 
 private:
 	UILabel* label = nullptr;
 	UIImage* background = nullptr;
 	UIImage* hover = nullptr;
 	UIImage* pressed = nullptr;
-	UIImage* dissabled = nullptr;
+	UIImage* disabled = nullptr;
 };
 
 #endif //__UIBUTTON_H__

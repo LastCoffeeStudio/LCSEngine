@@ -686,6 +686,49 @@ void GameObject::updateComponents()
 				break;
 			}
 		}
+
+		for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+		{
+			switch ((*it)->type)
+			{
+			case BUTTON:
+				UIImage* image = ((UIButton*)(*it))->activeImage;
+				if (image->textureChanged)
+				{
+					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
+					if (itTexture != App->textures->textures.end())
+					{
+						(*itTexture).second->numberUsages--;
+						if ((*itTexture).second->numberUsages <= 0)
+						{
+							App->textures->textures.erase(itTexture);
+						}
+					}
+
+					texPath = image->textureName;
+					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(image->textureName);
+					if (itNewTexture != App->textures->textures.end())
+					{
+						image->texID = (*itNewTexture).second->ID;
+						image->hasTexture = true;
+						(*itNewTexture).second->numberUsages++;
+					}
+					else if (App->textures->loadTexture(texPath.c_str()))
+					{
+						image->texID = App->textures->textures[texPath]->ID;
+						image->hasTexture = true;
+					}
+					else
+					{
+						image->texID = 0;
+						image->hasTexture = false;
+					}
+					image->textureChanged = false;
+				}
+				((UIButton*)(*it))->update();
+				break;
+			}
+		}
 	}
 
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)

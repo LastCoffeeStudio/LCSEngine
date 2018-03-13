@@ -62,7 +62,7 @@ void UIImage::fillGUI()
 	ImGui::PushID("texture");
 	ImGui::Text("Texture:"); ImGui::SameLine(0);
 	ImGui::PopID();
-	ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
+	ImGui::InputText("texture", &textureName[0], IM_ARRAYSIZE(textureName));
 	if (ImGui::Button("Set texture") && textureName != texName)
 	{
 		textureChanged = true;

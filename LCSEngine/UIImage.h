@@ -14,6 +14,7 @@ public:
 	~UIImage();
 	void drawGUI() override;
 	void fillGUI();
+	void updateCoords();
 
 public:
 	GLuint texID = 0;
@@ -35,7 +36,6 @@ private:
 private:
 	void init();
 	void generateIDs();
-	void updateCoords();
 
 };
 
