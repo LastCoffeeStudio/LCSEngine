@@ -22,7 +22,6 @@ public:
 private:
 	void printGameUI();
 
-
 };
 
 #endif // __MODULEGAMEUI_H__

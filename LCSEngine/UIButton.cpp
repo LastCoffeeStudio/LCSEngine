@@ -26,25 +26,7 @@ void UIButton::drawGUI()
 	
 	if (ImGui::CollapsingHeader("Button"))
 	{
-		ImGui::Checkbox("Visible", &visible);
-
-		if (ImGui::Button("Delete Component"))
-		{
-			App->sceneMain->garbageCollectorElements.push_back(this);
-		}
-
-		ImGui::Text("Position");
-		ImGui::PushID("position");
-		ImGui::DragInt("X", &rect.x, 1);
-		ImGui::DragInt("Y", &rect.y, 1);
-		ImGui::PopID();
-
-		ImGui::Text("Size");
-		ImGui::PushID("size");
-		ImGui::DragInt("Height", &rect.h, 1);
-		ImGui::DragInt("Width", &rect.w, 1);
-		ImGui::PopID();
-
+		ElementGameUI::drawGUI();
 		label->fillGUI();
 	}
 }

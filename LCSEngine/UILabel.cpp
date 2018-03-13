@@ -3,18 +3,23 @@
 #include "ModuleSceneMain.h"
 #include "ElementGameUI.h"
 #include "UILabel.h"
+#include "UIImage.h"
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include "MathGeoLib/src/Math/float3x4.h"
 #include "Imgui/imgui.h"
 #include "GameObject.h"
 #include "ModuleType.h"
+#include "ElementFactory.h"
 
 UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = LABEL;
 	text = "New Label";
-	fontPath = "Assets/Fonts/Roboto-Regular.ttf";
-	App->type->loadFont("Assets/Fonts/Roboto-Regular.ttf");
+	fontPath = "Assets/Fonts/MORPHEUS.ttf";
+	App->type->loadFont(fontPath.c_str());
+
+	static ElementFactory* factoryElements = ElementFactory::getInstance();
+	textImage = (UIImage*)factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true);
 }
 
 UILabel::~UILabel() {}
@@ -23,25 +28,7 @@ void UILabel::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Label"))
 	{
-		ImGui::Checkbox("Visible", &visible);
-
-		if (ImGui::Button("Delete Component"))
-		{
-			App->sceneMain->garbageCollectorElements.push_back(this);
-		}
-
-		ImGui::Text("Position");
-		ImGui::PushID("position");
-		ImGui::DragInt("X", &rect.x, 1);
-		ImGui::DragInt("Y", &rect.y, 1);
-		ImGui::PopID();
-
-		ImGui::Text("Size");
-		ImGui::PushID("size");
-		ImGui::DragInt("Height", &rect.h, 1);
-		ImGui::DragInt("Width", &rect.w, 1);
-		ImGui::PopID();
-
+		ElementGameUI::drawGUI();
 		fillGUI();
 	}
 }
@@ -55,6 +42,13 @@ void UILabel::fillGUI()
 	if (ImGui::InputText("", aux1, 64))
 	{
 		text = aux1;
+		fontData = App->type->renderFont(text.c_str(), fontPath.c_str());
+
+		glGenTextures(1, &fontData->idTexture);
+		glBindTexture(GL_TEXTURE_2D, fontData->idTexture);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fontData->width, fontData->height, 0,
+			GL_RGBA, GL_UNSIGNED_BYTE, fontData->data);
+		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	ImGui::PopID();
 
@@ -66,4 +60,5 @@ void UILabel::fillGUI()
 		fontPath = aux2;
 	}
 	ImGui::PopID();
+
 }

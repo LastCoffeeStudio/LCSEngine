@@ -65,6 +65,8 @@ bool ModuleRender::init()
 	glEnable(GL_TEXTURE_2D);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
+	glEnable(GL_BLEND);
+
 	return ret;
 }
 

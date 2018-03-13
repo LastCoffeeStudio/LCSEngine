@@ -3,6 +3,9 @@
 
 #include "ElementGameUI.h"
 
+struct FontData;
+class UIImage;
+
 class UILabel : public ElementGameUI
 {
 public:
@@ -14,6 +17,8 @@ public:
 public:
 	std::string text;
 	std::string fontPath;
+	FontData* fontData = nullptr;
+	UIImage* textImage = nullptr;
 };
 
 #endif //__UILABEL_H__

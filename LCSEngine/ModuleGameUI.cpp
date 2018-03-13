@@ -7,7 +7,9 @@
 #include "CameraComponent.h"
 #include "ElementGameUI.h"
 #include "UIImage.h"
+#include "UILabel.h"
 #include "Shader.h"
+#include "ModuleType.h"
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "ElementFactory.h"
@@ -24,7 +26,6 @@ update_status ModuleGameUI::update(float deltaTime)
 
 void ModuleGameUI::printGameUI() 
 {
-
 	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 	glUseProgram(program);
 
@@ -68,6 +69,40 @@ void ModuleGameUI::printGameUI()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((UIImage*)(*it))->idIdxVAO);
 
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
+		}
+		else if ((*it)->visible && (*it)->type == LABEL)
+		{
+			UILabel* label = (UILabel*)(*it);
+			UIImage* image = (UIImage*)label->textImage;
+
+			glUniform1i(glGetUniformLocation(program, "useText"), true);
+
+			if (label->fontData != nullptr)
+			{
+				{
+					glActiveTexture(GL_TEXTURE0);
+					glBindTexture(GL_TEXTURE_2D, label->fontData->idTexture);
+					glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, image->idTexCoords);
+					glEnableVertexAttribArray(1);
+					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+				}
+			}
+			
+			glBindBuffer(GL_ARRAY_BUFFER, image->idVertVBO);
+			glEnableVertexAttribArray(0);
+			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+			glBindBuffer(GL_ARRAY_BUFFER, image->idColors);
+			glEnableVertexAttribArray(2);
+			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, image->idIdxVAO);
+
+			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 	}
 
