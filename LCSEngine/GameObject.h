@@ -59,6 +59,7 @@ private:
 	void updateBones(const AnimationComponent* anim);
 	void updateComponents();
 	void updateElements();
+	void updateTexture(string& lastPath, const char* newPath, GLuint& id, bool& hasTexture);
 
 private:
 	string initialName;
