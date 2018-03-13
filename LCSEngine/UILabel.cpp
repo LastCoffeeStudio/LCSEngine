@@ -15,7 +15,7 @@ UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 {
 	type = LABEL;
 	text = "New Label";
-	fontPath = "Assets/Fonts/MORPHEUS.ttf";
+	fontPath = "Assets/Fonts/Roboto-Regular.ttf";
 	App->type->loadFont(fontPath.c_str());
 
 	static ElementFactory* factoryElements = ElementFactory::getInstance();
@@ -46,8 +46,10 @@ void UILabel::fillGUI()
 
 		glGenTextures(1, &fontData->idTexture);
 		glBindTexture(GL_TEXTURE_2D, fontData->idTexture);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fontData->width, fontData->height, 0,
-			GL_RGBA, GL_UNSIGNED_BYTE, fontData->data);
+			GL_BGRA, GL_UNSIGNED_BYTE, fontData->data);
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 	ImGui::PopID();

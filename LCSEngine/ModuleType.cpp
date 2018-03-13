@@ -91,7 +91,7 @@ void ModuleType::loadFont(const char * path)
 FontData* ModuleType::renderFont( const char * text, const char * path)
 {
 	AssetFont* fontAsset = fonts[path];
-	SDL_Surface *surface = TTF_RenderUTF8_Shaded(fontAsset->font, text, {255,0,255,155}, {255,0,0,155});
+	SDL_Surface *surface = TTF_RenderUTF8_Blended(fontAsset->font, text, {255,0,0,155});
 
 	FontData* fontData = new FontData();
 	fontData->width = surface->w;
