@@ -686,12 +686,39 @@ void GameObject::updateComponents()
 				break;
 			}
 		}
+	}
 
-		for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		switch ((*it)->typeComponent)
 		{
-			switch ((*it)->type)
-			{
+		case MESH:
+			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
+			obb = aabb.ToOBB();
+			obb.Transform(id.Transposed());
+			break;
+		case CAMERA:
+			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
+			((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
+			((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
+			break;
+		default:
+			break;
+		}
+	}
+}
+
+void GameObject::updateElements()
+{
+	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+	{
+		switch ((*it)->type)
+		{
+			case LABEL:
+				break;
 			case BUTTON:
+			{
+				((UIButton*)(*it))->update();
 				UIImage* image = ((UIButton*)(*it))->activeImage;
 				if (image->textureChanged)
 				{
@@ -725,42 +752,8 @@ void GameObject::updateComponents()
 					}
 					image->textureChanged = false;
 				}
-				((UIButton*)(*it))->update();
 				break;
 			}
-		}
-	}
-
-	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-	{
-		switch ((*it)->typeComponent)
-		{
-		case MESH:
-			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
-			obb = aabb.ToOBB();
-			obb.Transform(id.Transposed());
-			break;
-		case CAMERA:
-			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
-			((CameraComponent*)(*it))->frustum.up = id.Transposed().WorldY();
-			((CameraComponent*)(*it))->frustum.front = id.Transposed().WorldZ();
-			break;
-		default:
-			break;
-		}
-	}
-}
-
-void GameObject::updateElements()
-{
-	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
-	{
-		switch ((*it)->type)
-		{
-			case LABEL:
-				break;
-			case BUTTON:
-				break;
 			case IMAGE:
 				if (((UIImage*)(*it))->textureChanged)
 				{
@@ -798,7 +791,7 @@ void GameObject::updateElements()
 				break;
 			case EDITTEXT:
 				break;
-			default:
+			default: 
 				break;
 		}
 	}
