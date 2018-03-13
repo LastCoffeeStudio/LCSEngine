@@ -11,14 +11,8 @@ ElementGameUI::ElementGameUI(GameObject* parent, int x, int y, int h, int w, boo
 	rect.y = y;
 	rect.h = h;
 	rect.w = w;
+	enable = true;
 }
 
 ElementGameUI::~ElementGameUI() {}
 
-void ElementGameUI::startGUI()
-{
-}
-
-void ElementGameUI::endGUI()
-{
-}

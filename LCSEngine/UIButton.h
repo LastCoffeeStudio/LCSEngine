@@ -28,6 +28,10 @@ public:
 	UIImage* activeImage = nullptr;
 
 private:
+	void updateState();
+	bool isHover();
+
+private:
 	UILabel* label = nullptr;
 	UIImage* background = nullptr;
 	UIImage* hover = nullptr;

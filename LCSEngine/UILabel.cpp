@@ -24,6 +24,7 @@ void UILabel::drawGUI()
 	if (ImGui::CollapsingHeader("Label"))
 	{
 		ImGui::Checkbox("Visible", &visible);
+		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
 		{

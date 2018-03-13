@@ -10,6 +10,7 @@
 #include "UIImage.h"
 #include "UILabel.h"
 #include "ElementFactory.h"
+#include "ModuleInput.h"
 
 UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
@@ -31,6 +32,7 @@ void UIButton::drawGUI()
 	if (ImGui::CollapsingHeader("Button"))
 	{
 		ImGui::Checkbox("Visible", &visible);
+		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
 		{
@@ -51,25 +53,25 @@ void UIButton::drawGUI()
 
 		label->fillGUI();
 		ImGui::InputText("Background", &background->textureName[0], IM_ARRAYSIZE(background->textureName));
-		if (ImGui::Button("Set texture") && background->textureName != background->texName)
+		if (ImGui::Button("Set background") && background->textureName != background->texName)
 		{
 			background->textureChanged = true;
 		}
 
 		ImGui::InputText("Hover", &hover->textureName[0], IM_ARRAYSIZE(hover->textureName));
-		if (ImGui::Button("Set texture") && hover->textureName != hover->texName)
+		if (ImGui::Button("Set hover") && hover->textureName != hover->texName)
 		{
 			hover->textureChanged = true;
 		}
 
 		ImGui::InputText("Click", &pressed->textureName[0], IM_ARRAYSIZE(pressed->textureName));
-		if (ImGui::Button("Set texture") && pressed->textureName != pressed->texName)
+		if (ImGui::Button("Set pressed") && pressed->textureName != pressed->texName)
 		{
 			pressed->textureChanged = true;
 		}
 
 		ImGui::InputText("Disabled", &disabled->textureName[0], IM_ARRAYSIZE(disabled->textureName));
-		if (ImGui::Button("Set texture") && disabled->textureName != disabled->texName)
+		if (ImGui::Button("Set disabled") && disabled->textureName != disabled->texName)
 		{
 			disabled->textureChanged = true;
 		}
@@ -95,4 +97,43 @@ void UIButton::update()
 	hover->updateCoords();
 	pressed->updateCoords();
 	disabled->updateCoords();
+
+	updateState();
+	
+
+}
+
+void UIButton::updateState()
+{
+	KeyState click = App->input->getMouseButtonDown(1);
+	bool mouseHoverButton = isHover();
+	if (!enable)
+	{
+		activeImage = disabled;
+	}
+	else if ((click == KEY_DOWN && mouseHoverButton) || (click == KEY_REPEAT && activeImage == pressed && mouseHoverButton))
+	{
+		activeImage = pressed;
+	}
+	else if (mouseHoverButton)
+	{
+		activeImage = hover;
+	}
+	else
+	{
+		activeImage = background;
+	}
+}
+
+bool UIButton::isHover()
+{
+	iPoint mousePosition = App->input->getMousePosition();
+	if (mousePosition.x > rect.x && mousePosition.x < rect.x + rect.w)
+	{
+		if (mousePosition.y > rect.y && mousePosition.y < rect.y + rect.h)
+		{
+			return true;
+		}
+	}
+	return false;
 }

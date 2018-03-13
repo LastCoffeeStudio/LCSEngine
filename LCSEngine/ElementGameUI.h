@@ -10,8 +10,6 @@ public:
 	ElementGameUI(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~ElementGameUI();
 	virtual void drawGUI() = 0;
-	void startGUI();
-	void endGUI();
 
 
 public:
@@ -19,6 +17,7 @@ public:
 	GameObject* gameObject = nullptr;
 	SDL_Rect rect;
 	bool visible;
+	bool enable;
 };
 
 #endif // __ELEMENTGAMEUI_H__
