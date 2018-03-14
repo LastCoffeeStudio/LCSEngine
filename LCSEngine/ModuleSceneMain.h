@@ -44,6 +44,8 @@ public:
 	AssetTexture* chocobo = nullptr;
 	AssetTexture* beer = nullptr;
 	AssetTexture* actual = nullptr;
+	AssetTexture* play = nullptr;
+	AssetTexture* pause = nullptr;
 	SceneManager* sceneManager;
 	Shader* shader = nullptr;
 	GameObject* root = nullptr;
