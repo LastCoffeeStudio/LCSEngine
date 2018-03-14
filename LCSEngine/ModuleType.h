@@ -2,9 +2,10 @@
 #include "Module.h"
 #include <ft2build.h>
 #include <map>
+#include "SDL_ttf/include/SDL_ttf.h"
 
 #include FT_FREETYPE_H
-typedef struct _TTF_Font TTF_Font;
+//typedef struct _TTF_Font TTF_Font;
 
 typedef unsigned char GLubyte;
 typedef unsigned int GLuint;
@@ -38,9 +39,6 @@ public:
 public:
 	FT_Library library;
 	std::map<std::string, AssetFont*> fonts;
-
-private:
-	void gen_bitmap(FT_Bitmap* bitmap, int posx, int posy);
 
 
 };

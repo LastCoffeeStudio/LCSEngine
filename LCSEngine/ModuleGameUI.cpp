@@ -69,7 +69,6 @@ void ModuleGameUI::printGameUI()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((UIImage*)(*it))->idIdxVAO);
 
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 		else if ((*it)->visible && (*it)->type == LABEL)
 		{
@@ -80,15 +79,13 @@ void ModuleGameUI::printGameUI()
 
 			if (label->fontData != nullptr)
 			{
-				{
-					glActiveTexture(GL_TEXTURE0);
-					glBindTexture(GL_TEXTURE_2D, label->fontData->idTexture);
-					glUniform1i(glGetUniformLocation(program, "text"), 0);
+				glActiveTexture(GL_TEXTURE0);
+				glBindTexture(GL_TEXTURE_2D, label->fontData->idTexture);
+				glUniform1i(glGetUniformLocation(program, "text"), 0);
 
-					glBindBuffer(GL_ARRAY_BUFFER, image->idTexCoords);
-					glEnableVertexAttribArray(1);
-					glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
-				}
+				glBindBuffer(GL_ARRAY_BUFFER, image->idTexCoords);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
 			}
 			
 			glBindBuffer(GL_ARRAY_BUFFER, image->idVertVBO);
@@ -102,7 +99,6 @@ void ModuleGameUI::printGameUI()
 			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, image->idIdxVAO);
 
 			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-			glBindTexture(GL_TEXTURE_2D, 0);
 		}
 	}
 
