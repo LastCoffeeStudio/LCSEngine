@@ -233,6 +233,18 @@ void ModuleGUI::showMainWindow()
 	// Menu
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Load"))
+			{
+				//LoadScene code
+			}
+			if (ImGui::MenuItem("Save"))
+			{
+				//SaveScene code
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("GameObject"))
 		{
 			if (ImGui::MenuItem("Create Empty"))
