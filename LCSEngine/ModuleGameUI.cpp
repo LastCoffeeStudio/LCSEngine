@@ -19,12 +19,6 @@ ModuleGameUI::ModuleGameUI() {}
 
 ModuleGameUI::~ModuleGameUI() {}
 
-update_status ModuleGameUI::update(float deltaTime)
-{
-	printGameUI();
-	return UPDATE_CONTINUE;
-}
-
 void ModuleGameUI::printGameUI()
 {
 	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];

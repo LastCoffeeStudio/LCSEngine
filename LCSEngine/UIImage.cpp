@@ -77,7 +77,6 @@ void UIImage::init()
 	float x1 = (float)((rect.x / screenWidth) * 2) - 1;
 	float x2 = (float)(x1 + (rect.w / screenWidth) * 2);
 	float y1 = (float)(2 - ((rect.y / screenHeight) * 2) - 1);
-	//float y2 = (float)(2 - (y1 + ((*it)->rect.h) / (screenHeight / 2)));
 	float y2 = (float)(y1 - (rect.h / screenHeight) * 2);
 
 	verticesVBO.push_back(float3(x1, y1, 0.f));
@@ -94,18 +93,6 @@ void UIImage::init()
 	texCoordsVBO.push_back(float2(0.f, 0.f));
 	texCoordsVBO.push_back(float2(1.f, 0.f));
 	texCoordsVBO.push_back(float2(1.f, 1.f));
-
-	/*verticesVBO = { float3(-1 / 2.f, 1 / 2.f, 1 / 2.f), float3(1 / 2.f, 1 / 2.f, 1 / 2.f),
-		float3(1 / 2.f, -1 / 2.f, 1 / 2.f), float3(-1 / 2.f, -1 / 2.f, 1 / 2.f),
-		float3(-1 / 2.f, 1 / 2.f, -1 / 2.f), float3(1 / 2.f, 1 / 2.f, -1 / 2.f),
-		float3(1 / 2.f, -1 / 2.f, -1 / 2.f), float3(-1 / 2.f, -1 / 2.f, -1 / 2.f) };
-
-	indicesVAO = { 1, 3, 2, 1, 0, 3,
-		0, 7, 3, 0, 4, 7,
-		5, 2, 6, 5, 1, 2,
-		5, 0, 1, 5, 4, 0,
-		2, 7, 6, 2, 3, 7,
-		4, 6, 7, 4, 5, 6 };*/
 }
 
 void UIImage::generateIDs()
@@ -142,7 +129,6 @@ void UIImage::updateCoords()
 	float x1 = (float)((rect.x / screenWidth) * 2) - 1;
 	float x2 = (float)(x1 + (rect.w / screenWidth) * 2);
 	float y1 = (float)(2 - ((rect.y / screenHeight) * 2) - 1);
-	//float y2 = (float)(2 - (y1 + ((*it)->rect.h) / (screenHeight / 2)));
 	float y2 = (float)(y1 - (rect.h / screenHeight) * 2);
 
 	verticesVBO.clear();

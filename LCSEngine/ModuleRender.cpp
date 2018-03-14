@@ -5,6 +5,7 @@
 #include "ModuleGUI.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
+#include "ModuleGameUI.h"
 #include "Shader.h"
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
@@ -56,12 +57,12 @@ bool ModuleRender::init()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearDepth(1.0f);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
 	//glEnable(GL_LIGHTING);
 	//glEnable(GL_LIGHT0);
-	glEnable(GL_COLOR_MATERIAL);
 	glEnable(GL_TEXTURE_2D);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
@@ -95,9 +96,8 @@ update_status ModuleRender::postUpdate(float deltaTime)
 	renderObjects();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 	App->gui->draw();
+	App->gameUI->printGameUI();
 	//SDL_GL_SwapWindow(App->window->window);
-
-
 	swap();
 	return UPDATE_CONTINUE;
 }

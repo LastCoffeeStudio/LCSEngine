@@ -13,15 +13,10 @@ class ModuleGameUI : public Module
 public:
 	ModuleGameUI();
 	~ModuleGameUI();
-	update_status update(float deltaTime) override;
-	
+	void printGameUI();
 
 public:
 	vector<ElementGameUI*> elements;
-
-private:
-	void printGameUI();
-
 
 };
 
