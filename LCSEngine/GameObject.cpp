@@ -23,6 +23,7 @@
 #include "ElementGameUI.h"
 #include "UIButton.h"
 #include "UIImage.h"
+#include "UIEditText.h"
 #include "ModuleWindow.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -708,7 +709,22 @@ void GameObject::updateElements()
 				}
 				break;
 			case EDITTEXT:
+			{
+				((UIEditText*)(*it))->update();
+				UIImage* background = ((UIEditText*)(*it))->background;
+				UIImage* selected = ((UIEditText*)(*it))->selected;
+				if (background->textureChanged)
+				{
+					updateTexture(background->texName, background->textureName, background->texID, background->hasTexture);
+					background->textureChanged = false;
+				}
+				if (selected->textureChanged)
+				{
+					updateTexture(selected->texName, selected->textureName, selected->texID, selected->hasTexture);
+					selected->textureChanged = false;
+				}
 				break;
+			}
 			default: 
 				break;
 		}

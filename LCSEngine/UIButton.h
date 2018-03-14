@@ -6,14 +6,6 @@
 class UILabel;
 class UIImage;
 
-enum State
-{
-	IDLE,
-	HOVER,
-	CLICK,
-	DISABLED
-};
-
 class UIButton : public ElementGameUI
 {
 public:
@@ -24,7 +16,6 @@ public:
 	void update();
 
 public:
-	State state = IDLE;
 	UIImage* activeImage = nullptr;
 
 private:
