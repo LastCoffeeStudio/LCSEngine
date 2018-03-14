@@ -65,12 +65,34 @@ FontData* ModuleType::renderFont( const char * text, const char * path)
 		AssetFont* fontAsset = fonts[path];
 		TTF_Font * fontTtf = fontAsset->font;
 		SDL_Surface *surface = TTF_RenderUTF8_Blended(fontAsset->font, text, { 255, 255 ,255 });
+		SDL_Surface *flipSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w, surface->h, surface->format->BitsPerPixel, surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
+		
+		if (SDL_MUSTLOCK(surface))
+		{
+			SDL_LockSurface(surface);
+		}
+
+		Uint32 *pixels = (Uint32 *)surface->pixels;
+		Uint32 *pixelsFlip = (Uint32 *)flipSurface->pixels;
+		for (int x = 0; x < flipSurface->w; x++)
+		{
+			for (int y = 0, ry = flipSurface->h - 1; y < flipSurface->h; y++, ry--)
+			{
+				Uint32 pixel = ((Uint32 *)surface->pixels)[(y * surface->w) + x];
+				pixelsFlip[(ry * flipSurface->w) + x] = pixel;
+			}
+		}
+
+		if (SDL_MUSTLOCK(surface))
+		{
+			SDL_UnlockSurface(surface);
+		}
 
 		FontData* fontData = new FontData();
-		fontData->width = surface->w;
-		fontData->height = surface->h;
-		fontData->data = surface->pixels;
-		fontData->colors = surface->format->BytesPerPixel;
+		fontData->width = flipSurface->w;
+		fontData->height = flipSurface->h;
+		fontData->data = flipSurface->pixels;
+		fontData->colors = flipSurface->format->BytesPerPixel;
 
 		return fontData;
 	} 
