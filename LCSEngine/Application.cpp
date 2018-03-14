@@ -24,13 +24,13 @@ Application::Application()
 	modules.push_back(json = new ModuleJson());
 	modules.push_back(camera = new ModuleCamera());
 	modules.push_back(renderer = new ModuleRender());
+	modules.push_back(gameUI = new ModuleGameUI());
 	modules.push_back(gui = new ModuleGUI());
 	modules.push_back(textures = new ModuleTextures());
 	modules.push_back(audio = new ModuleAudio());
 	modules.push_back(fade = new ModuleFadeToBlack());
 	modules.push_back(animations = new ModuleAnimation());
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
-	modules.push_back(gameUI = new ModuleGameUI());
 	modules.push_back(type = new ModuleType());
 
 	timer = 0;

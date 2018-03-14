@@ -13,6 +13,8 @@ public:
 	UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
 	~UIImage();
 	void drawGUI() override;
+	void fillGUI();
+	void updateCoords();
 
 public:
 	GLuint texID = 0;
@@ -34,7 +36,6 @@ private:
 private:
 	void init();
 	void generateIDs();
-	void updateCoords();
 
 };
 

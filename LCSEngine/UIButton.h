@@ -13,10 +13,21 @@ public:
 	~UIButton();
 	void drawGUI() override;
 	void deleteElementButton();
+	void update();
+
+public:
+	UIImage* activeImage = nullptr;
+
+private:
+	void updateState();
+	bool isHover();
 
 private:
 	UILabel* label = nullptr;
 	UIImage* background = nullptr;
+	UIImage* hover = nullptr;
+	UIImage* pressed = nullptr;
+	UIImage* disabled = nullptr;
 };
 
 #endif //__UIBUTTON_H__

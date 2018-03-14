@@ -8,21 +8,18 @@
 #include "ElementGameUI.h"
 #include "UIImage.h"
 #include "UILabel.h"
+#include "UIButton.h"
+#include "UIEditText.h"
 #include "Shader.h"
 #include "ModuleType.h"
 #include "Glew/include/glew.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "ElementFactory.h"
+#include "ModuleTextures.h"
 
 ModuleGameUI::ModuleGameUI() {}
 
 ModuleGameUI::~ModuleGameUI() {}
-
-update_status ModuleGameUI::update(float deltaTime)
-{
-	printGameUI();
-	return UPDATE_CONTINUE;
-}
 
 void ModuleGameUI::printGameUI() 
 {
@@ -42,33 +39,101 @@ void ModuleGameUI::printGameUI()
 
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
-		if ((*it)->visible && (*it)->type == IMAGE)
+
+		if ((*it)->visible)
 		{
-			glUniform1i(glGetUniformLocation(program, "useText"), ((UIImage*)(*it))->hasTexture);
-
-			//Order matters!
-			if (((UIImage*)(*it))->hasTexture)
+			switch ((*it)->type)
 			{
-				glActiveTexture(GL_TEXTURE0);
-				glBindTexture(GL_TEXTURE_2D, ((UIImage*)(*it))->texID);
-				glUniform1i(glGetUniformLocation(program, "text"), 0);
+				case IMAGE:
+				{
+					glUniform1i(glGetUniformLocation(program, "useText"), ((UIImage*)(*it))->hasTexture);
 
-				glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idTexCoords);
-				glEnableVertexAttribArray(1);
-				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+					//Order matters!
+					if (((UIImage*)(*it))->hasTexture)
+					{
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, ((UIImage*)(*it))->texID);
+						glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+						glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idTexCoords);
+						glEnableVertexAttribArray(1);
+						glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+					}
+
+					glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idVertVBO);
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idColors);
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((UIImage*)(*it))->idIdxVAO);
+
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					break;
+				}
+				case BUTTON:
+				{
+					UIImage* image = ((UIButton*)(*it))->activeImage;
+					glUniform1i(glGetUniformLocation(program, "useText"), image->hasTexture);
+
+					//Order matters!
+					if (image->hasTexture)
+					{
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, image->texID);
+						glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+						glBindBuffer(GL_ARRAY_BUFFER, image->idTexCoords);
+						glEnableVertexAttribArray(1);
+						glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+					}
+
+					glBindBuffer(GL_ARRAY_BUFFER, image->idVertVBO);
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, image->idColors);
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, image->idIdxVAO);
+
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					break;
+				}
+				case EDITTEXT:
+				{
+					UIImage* background = ((UIEditText*)(*it))->background;
+					glUniform1i(glGetUniformLocation(program, "useText"), background->hasTexture);
+
+					//Order matters!
+					if (background->hasTexture)
+					{
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, background->texID);
+						glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+						glBindBuffer(GL_ARRAY_BUFFER, background->idTexCoords);
+						glEnableVertexAttribArray(1);
+						glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+					}
+
+					glBindBuffer(GL_ARRAY_BUFFER, background->idVertVBO);
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, background->idColors);
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, background->idIdxVAO);
+
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					break;
+				}
 			}
-
-			glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idVertVBO);
-			glEnableVertexAttribArray(0);
-			glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-			glBindBuffer(GL_ARRAY_BUFFER, ((UIImage*)(*it))->idColors);
-			glEnableVertexAttribArray(2);
-			glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
-
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ((UIImage*)(*it))->idIdxVAO);
-
-			glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 		}
 		else if ((*it)->visible && (*it)->type == LABEL)
 		{

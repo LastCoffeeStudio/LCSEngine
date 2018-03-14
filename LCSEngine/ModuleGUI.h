@@ -34,6 +34,7 @@ public:
 	bool show_hierarchy = true;
 	bool show_static_popup = false;
 	bool show_audio_settings = false;
+	bool show_play_pause = true;
 	ImVec4 clear_color;
 
 private:
@@ -48,6 +49,7 @@ private:
 	void showGizmo();
 	void showAudioSettings();
 	void showAnimationWindow();
+	void showPlayPause();
 
 	void putHyperlink(const char* link);
 

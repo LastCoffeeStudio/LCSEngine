@@ -23,6 +23,7 @@
 #include "ElementGameUI.h"
 #include "UIButton.h"
 #include "UIImage.h"
+#include "UIEditText.h"
 #include "ModuleWindow.h"
 #include "Shader.h"
 #include "QuadTree.h"
@@ -635,34 +636,7 @@ void GameObject::updateComponents()
 				program = ((MaterialComponent*)(*it))->program;
 				if (((MaterialComponent*)(*it))->textureChanged && ((MaterialComponent*)(*it))->textureName != texPath)
 				{
-					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texPath);
-					if (itTexture != App->textures->textures.end())
-					{
-						(*itTexture).second->numberUsages--;
-						if ((*itTexture).second->numberUsages <= 0)
-						{
-							App->textures->textures.erase(itTexture);
-						}
-					}
-
-					texPath = ((MaterialComponent*)(*it))->textureName;
-					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((MaterialComponent*)(*it))->textureName);
-					if (itNewTexture != App->textures->textures.end())
-					{
-						texID = (*itNewTexture).second->ID;
-						hasTexture = true;
-						(*itNewTexture).second->numberUsages++;
-					}
-					else if (App->textures->loadTexture(texPath.c_str()))
-					{
-						texID = App->textures->textures[texPath]->ID;
-						hasTexture = true;
-					}
-					else
-					{
-						texID = 0;
-						hasTexture = false;
-					}
+					updateTexture(texPath, ((MaterialComponent*)(*it))->textureName, texID, hasTexture);
 					((MaterialComponent*)(*it))->textureChanged = false;
 				}
 
@@ -717,46 +691,74 @@ void GameObject::updateElements()
 			case LABEL:
 				break;
 			case BUTTON:
+			{
+				((UIButton*)(*it))->update();
+				UIImage* image = ((UIButton*)(*it))->activeImage;
+				if (image->textureChanged)
+				{
+					updateTexture(image->texName, image->textureName, image->texID, image->hasTexture);
+					image->textureChanged = false;
+				}
 				break;
+			}
 			case IMAGE:
 				if (((UIImage*)(*it))->textureChanged)
 				{
-					string texName = ((UIImage*)(*it))->texName;
-					map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(texName);
-					if (itTexture != App->textures->textures.end())
-					{
-						(*itTexture).second->numberUsages--;
-						if ((*itTexture).second->numberUsages <= 0)
-						{
-							App->textures->textures.erase(itTexture);
-						}
-					}
-
-					((UIImage*)(*it))->texName = ((UIImage*)(*it))->textureName;
-					map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(((UIImage*)(*it))->texName);
-					if (itNewTexture != App->textures->textures.end())
-					{
-						((UIImage*)(*it))->texID = (*itNewTexture).second->ID;
-						((UIImage*)(*it))->hasTexture = true;
-						(*itNewTexture).second->numberUsages++;
-					}
-					else if (App->textures->loadTexture(((UIImage*)(*it))->texName.c_str()))
-					{
-						((UIImage*)(*it))->texID = App->textures->textures[((UIImage*)(*it))->texName]->ID;
-						((UIImage*)(*it))->hasTexture = true;
-					}
-					else
-					{
-						((UIImage*)(*it))->texID = 0;
-						((UIImage*)(*it))->hasTexture = false;
-					}
+					updateTexture(((UIImage*)(*it))->texName, ((UIImage*)(*it))->textureName, ((UIImage*)(*it))->texID, ((UIImage*)(*it))->hasTexture);
 					((UIImage*)(*it))->textureChanged = false;
 				}
 				break;
 			case EDITTEXT:
+			{
+				((UIEditText*)(*it))->update();
+				UIImage* background = ((UIEditText*)(*it))->background;
+				UIImage* selected = ((UIEditText*)(*it))->selected;
+				if (background->textureChanged)
+				{
+					updateTexture(background->texName, background->textureName, background->texID, background->hasTexture);
+					background->textureChanged = false;
+				}
+				if (selected->textureChanged)
+				{
+					updateTexture(selected->texName, selected->textureName, selected->texID, selected->hasTexture);
+					selected->textureChanged = false;
+				}
 				break;
-			default:
+			}
+			default: 
 				break;
 		}
+	}
+}
+
+void GameObject::updateTexture(string& lastPath, const char* newPath, GLuint& id, bool& hasText)
+{
+	map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(lastPath);
+	if (itTexture != App->textures->textures.end())
+	{
+		(*itTexture).second->numberUsages--;
+		if ((*itTexture).second->numberUsages <= 0)
+		{
+			App->textures->textures.erase(itTexture);
+		}
+	}
+
+	lastPath = newPath;
+	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(lastPath);
+	if (itNewTexture != App->textures->textures.end())
+	{
+		id = (*itNewTexture).second->ID;
+		hasText = true;
+		(*itNewTexture).second->numberUsages++;
+	}
+	else if (App->textures->loadTexture(lastPath.c_str()))
+	{
+		id = App->textures->textures[lastPath]->ID;
+		hasText = true;
+	}
+	else
+	{
+		id = 0;
+		hasText = false;
 	}
 }

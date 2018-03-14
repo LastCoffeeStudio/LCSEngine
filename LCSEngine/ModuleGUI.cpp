@@ -14,6 +14,7 @@
 #include "ComponentFactory.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "windows.h"
+#include "ModuleTextures.h"
 #include "SDL_assert.h"
 #include "SDL\include\SDL.h"
 #include "ModuleInput.h"
@@ -145,6 +146,13 @@ update_status ModuleGUI::update(float deltaTime)
 		showAnimationWindow();
 	}
 
+	if (show_play_pause)
+	{
+		ImGui::SetNextWindowSize(ImVec2(PLAY_PAUSE_SIZE * 3.5, PLAY_PAUSE_SIZE * 2.5));
+		ImGui::SetNextWindowPos(ImVec2(App->window->width/2 - PLAY_PAUSE_SIZE, 0), ImGuiSetCond_Always);
+		showPlayPause();
+	}
+
 	return UPDATE_CONTINUE;
 }
 
@@ -225,6 +233,18 @@ void ModuleGUI::showMainWindow()
 	// Menu
 	if (ImGui::BeginMainMenuBar())
 	{
+		if (ImGui::BeginMenu("File"))
+		{
+			if (ImGui::MenuItem("Load"))
+			{
+				//LoadScene code
+			}
+			if (ImGui::MenuItem("Save"))
+			{
+				//SaveScene code
+			}
+			ImGui::EndMenu();
+		}
 		if (ImGui::BeginMenu("GameObject"))
 		{
 			if (ImGui::MenuItem("Create Empty"))
@@ -298,6 +318,15 @@ void ModuleGUI::showMainWindow()
 	}
 
 	//ImGui::End();
+}
+
+void ModuleGUI::showPlayPause()
+{
+	ImGui::Begin("", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+	ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/play_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE));
+	ImGui::SameLine(0);
+	ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/stop_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE));
+	ImGui::End();
 }
 
 void ModuleGUI::showInspector()
