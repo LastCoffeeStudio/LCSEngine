@@ -38,7 +38,7 @@
 
 GameObject::GameObject() {}
 
-GameObject::GameObject(GameObject* parent, string name) : parent(parent), initialName(name)
+GameObject::GameObject(GameObject* parent, string name, unsigned int UUID) : parent(parent), initialName(name), UUID(UUID)
 {
 	GameObject::name = getFinalName(name);
 	addComponent(new TransformComponent(this));

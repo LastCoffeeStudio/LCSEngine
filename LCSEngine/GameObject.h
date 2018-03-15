@@ -20,7 +20,7 @@ class GameObject
 {
 public:
 	GameObject();
-	GameObject(GameObject* parent, string name);
+	GameObject(GameObject* parent, string name, unsigned int UUID);
 	~GameObject();
 
 	void preUpdate();
@@ -42,6 +42,7 @@ public:
 
 public:
 	string name = "GameObject";
+    unsigned int UUID;
 	bool enable = true;
 	bool staticFlag = false;
 	vector<Component*> components;

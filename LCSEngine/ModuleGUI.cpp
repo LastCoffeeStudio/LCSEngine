@@ -251,20 +251,20 @@ void ModuleGUI::showMainWindow()
 		{
 			if (ImGui::MenuItem("Create Empty"))
 			{
-				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
 			}
 			ImGui::Separator();
 			if (ImGui::MenuItem("Cube"))
 			{
 				ComponentFactory* factory = ComponentFactory::getInstance();
-				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Cube");
+				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Cube", uuid());
 				gameobject->addComponent(factory->getComponent(MESH, gameobject));
 				App->sceneMain->currentObject->addGameObject(gameobject);
 			}
 			if (ImGui::MenuItem("Sphere"))
 			{
 				ComponentFactory* factory = ComponentFactory::getInstance();
-				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Sphere");
+				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "Sphere", uuid());
 				MeshComponent* component = (MeshComponent*)factory->getComponent(MESH, gameobject);
 				component->setPreset(SPHERE);
 
@@ -429,7 +429,7 @@ void ModuleGUI::showHierarchy()
 		{
 			if (ImGui::MenuItem("New GameObject"))
 			{
-				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
 
 				/*ComponentFactory* factory = ComponentFactory::getInstance();
 				GameObject* gameobject = new GameObject(App->sceneMain->currentObject, "a");
@@ -516,7 +516,7 @@ void ModuleGUI::showHierarchyChildren(GameObject* gameObject, bool enabled)
 		{
 			if (ImGui::MenuItem("New GameObject"))
 			{
-				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject"));
+				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
 			}
 			if (ImGui::MenuItem("Delete GameObject"))
 			{
