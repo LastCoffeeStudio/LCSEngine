@@ -23,8 +23,6 @@ ModuleGameUI::~ModuleGameUI() {}
 
 void ModuleGameUI::printGameUI() 
 {
-	glDisable(GL_DEPTH_TEST);
-	
 	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 	glUseProgram(program);
 
@@ -77,6 +75,8 @@ void ModuleGameUI::printGameUI()
 				}
 				case BUTTON:
 				{
+					
+					
 					UIImage* image = ((UIButton*)(*it))->activeImage;
 					glUniform1i(glGetUniformLocation(program, "useText"), image->hasTexture);
 
@@ -103,7 +103,8 @@ void ModuleGameUI::printGameUI()
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, image->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-
+					
+					glDisable(GL_DEPTH_TEST);
 					UILabel* label = (UILabel*)((UIButton*)(*it))->label;
 					UIImage* imageLabel = (UIImage*)label->textImage;
 
@@ -131,6 +132,8 @@ void ModuleGameUI::printGameUI()
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, imageLabel->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					glEnable(GL_DEPTH_TEST);
+
 					break;
 				}
 				case EDITTEXT:
@@ -198,6 +201,6 @@ void ModuleGameUI::printGameUI()
 			}
 		}
 	}
-	glEnable(GL_DEPTH_TEST);
-	//elements.clear();
+
+	elements.clear();
 }

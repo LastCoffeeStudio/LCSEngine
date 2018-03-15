@@ -20,6 +20,8 @@ UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 
 	static ElementFactory* factoryElements = ElementFactory::getInstance();
 	textImage = (UIImage*)factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true);
+
+	glGenTextures(1, &idTexture);
 }
 
 UILabel::~UILabel() {}
@@ -48,6 +50,15 @@ void UILabel::drawGUI()
 		ImGui::DragInt("Width", &rect.w, 1);
 		ImGui::PopID();
 
+		if (ImGui::ColorEdit4("color 2", textColor))
+		{
+			color.r = textColor[0] * 255;
+			color.g = textColor[1] * 255;
+			color.b = textColor[2] * 255;
+			color.a = textColor[3] * 255;
+			fillBufferData();
+		}
+
 		fillGUI();
 	}
 }
@@ -61,15 +72,7 @@ void UILabel::fillGUI()
 	if (ImGui::InputText("", aux1, 64))
 	{
 		text = aux1;
-		fontData = App->type->renderFont(text.c_str(), fontPath.c_str());
-
-		glGenTextures(1, &fontData->idTexture);
-		glBindTexture(GL_TEXTURE_2D, fontData->idTexture);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fontData->width, fontData->height, 0,
-			GL_BGRA, GL_UNSIGNED_BYTE, fontData->data);
-		glBindTexture(GL_TEXTURE_2D, 0);
+		fillBufferData();
 	}
 	ImGui::PopID();
 
@@ -82,6 +85,19 @@ void UILabel::fillGUI()
 	}
 	ImGui::PopID();
 
+}
+
+void UILabel::fillBufferData()
+{
+	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+
+	fontData->idTexture = idTexture;
+	glBindTexture(GL_TEXTURE_2D, fontData->idTexture);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, fontData->width, fontData->height, 0,
+		GL_BGRA, GL_UNSIGNED_BYTE, fontData->data);
+	glBindTexture(GL_TEXTURE_2D, 0);
 }
 
 void UILabel::update()

@@ -34,7 +34,7 @@ public:
 	bool cleanUp() override;
 	update_status update(float deltaTime) override;
 	void loadFont(const char* path);
-	FontData* renderFont(const char* text, const char* path);
+	FontData* renderFont(const char* text, const char* path, SDL_Color color);
 
 public:
 	FT_Library library;
