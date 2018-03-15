@@ -45,10 +45,10 @@ update_status ModuleType::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleType::loadFont(const char * path)
+void ModuleType::loadFont(const char * path, int size)
 {
 	AssetFont* fontAsset = new AssetFont();
-	fontAsset->font = TTF_OpenFont(path, 28);
+	fontAsset->font = TTF_OpenFont(path, size);
 	if (fontAsset->font == nullptr) {
 		LOG("Error: %s", TTF_GetError());
 	}

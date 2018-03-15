@@ -33,7 +33,7 @@ public:
 	bool init() override;
 	bool cleanUp() override;
 	update_status update(float deltaTime) override;
-	void loadFont(const char* path);
+	void loadFont(const char* path, int size);
 	FontData* renderFont(const char* text, const char* path, SDL_Color color);
 
 public:
