@@ -20,6 +20,18 @@ void AnimationComponent::drawGUI()
 	if (ImGui::CollapsingHeader("Animation"))
 	{
 		ImGui::Checkbox("Active", &isEnable);
+
+		ImGui::PushID("RootNode");
+		ImGui::InputText("", &rootNodeBones[0], IM_ARRAYSIZE(rootNodeBones));
+		ImGui::PopID();
+		ImGui::PushID("Button RootNode");
+		if (ImGui::Button("Set Root Node Bones"))
+		{
+			setRootNodeBones();
+			fillJoints();
+		}
+		ImGui::PopID();
+
 		ImGui::Text("Animation: "); ImGui::SameLine(0);
 		if (ImGui::BeginMenu(animationName.c_str()))
 		{
@@ -116,5 +128,55 @@ void AnimationComponent::blendAnimation()
 	{
 		App->animations->blendTo(idAnim, animationName.c_str(), unsigned int(blendTime*1000));
 		currentAnimationName = animationName;
+	}
+}
+
+void AnimationComponent::setRootNodeBones()
+{
+	rootBone = nullptr;
+	queue<GameObject*> nodes;
+
+	for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+	{
+		nodes.push(*it);
+	}
+
+	while (!nodes.empty())
+	{
+		GameObject* node = nodes.front();
+		nodes.pop();
+
+		if (node->name == rootNodeBones)
+		{
+			rootBone = node;
+			return;
+		}
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			nodes.push(*it);
+		}
+	}
+}
+
+void AnimationComponent::fillJoints()
+{
+	queue<GameObject*> gameObjects;
+	for (vector<GameObject*>::const_iterator it = rootBone->children.begin(); it != rootBone->children.end(); ++it)
+	{
+		gameObjects.push(*it);
+	}
+
+	while (!gameObjects.empty())
+	{
+		GameObject* node = gameObjects.front();
+		gameObjects.pop();
+
+		joints[node->name] = node;
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			gameObjects.push(*it);
+		}
 	}
 }
