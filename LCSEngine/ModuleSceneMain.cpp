@@ -300,7 +300,10 @@ void ModuleSceneMain::checkVisibleItems()
 
 void ModuleSceneMain::draw()
 {
-	drawGrid();
+	if (!isPlaying)
+	{
+		drawGrid();
+	}
 	BROFILER_CATEGORY("DrawSceneMain", Profiler::Color::Orchid)
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
 	{

@@ -94,10 +94,14 @@ void UIButton::update()
 	hover->rect = rect;
 	pressed->rect = rect;
 	disabled->rect = rect;
+
+	label->rect = rect;
 	background->updateCoords();
 	hover->updateCoords();
 	pressed->updateCoords();
 	disabled->updateCoords();
+
+	label->update();
 
 	updateState();
 	
