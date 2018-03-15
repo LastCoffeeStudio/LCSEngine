@@ -57,6 +57,7 @@ public:
 private:
 	string getFinalName(string name);
 	void updateBones(const AnimationComponent* anim);
+	void updateVertices(const AnimationComponent* anim);
 	void updateComponents();
 	void updateElements();
 	void updateTexture(string& lastPath, const char* newPath, GLuint& id, bool& hasTexture);

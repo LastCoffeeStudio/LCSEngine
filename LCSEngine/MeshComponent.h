@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "MathGeoLib/src/Math/float2.h"
 #include "MathGeoLib/src/Math/float3.h"
+#include "MathGeoLib/src/Math/float4x4.h"
 #include <vector>
 #include <glew.h>
 
@@ -13,6 +14,19 @@ enum PresetType
 	CUBE,
 	SPHERE,
 	MODEL
+};
+
+struct Weight
+{
+	unsigned int vertex = 0;
+	float weight = 0.f;
+};
+
+struct Bone
+{
+	std::string name = "";
+	std::vector<Weight*> weights;
+	float4x4 bind;
 };
 
 class Model;
@@ -25,11 +39,20 @@ public:
 
 	void drawGUI() override;
 	bool update() override;
+	void setPreset(PresetType type);
+	void updateColor(const float3& color);
+	void generateIDs();
+	void loadPreset();
+	void updateVerticesBuffer();
+
+public:
 	std::vector<float3> verticesVBO;
 	std::vector<float3> colorsVBO;
 	std::vector<float3> normalsVBO;
 	std::vector<float2> texCoordsVBO;
 	std::vector<unsigned int> indicesVAO;
+	std::vector<Bone*> bones;
+	std::vector<float3> originalVertices;
 	GLuint idVertVBO = 0;
 	GLuint idNormVBO = 0;
 	GLuint idIdxVAO = 0;
@@ -37,11 +60,6 @@ public:
 	GLuint idColors = 0;
 	//TODO: save textureID from model
 	float lengthX, lengthY, lengthZ;
-	void setPreset(PresetType type);
-	void updateColor(const float3& color);
-    void generateIDs();
-    void loadPreset();
-public:
 	PresetType currentPreset = CUBE;
 	Model* model = nullptr;
 

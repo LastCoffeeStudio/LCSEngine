@@ -69,7 +69,7 @@ void MeshComponent::generateIDs()
 
     glGenBuffers(1, (GLuint*) &(idVertVBO));
     glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_DYNAMIC_DRAW);
 
     glGenBuffers(1, (GLuint*) &(idIdxVAO));
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
@@ -274,4 +274,10 @@ void MeshComponent::updateColor(const float3& color)
 
 	glBindBuffer(GL_ARRAY_BUFFER, idColors);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_STATIC_DRAW);
+}
+
+void MeshComponent::updateVerticesBuffer()
+{
+	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_DYNAMIC_DRAW);
 }

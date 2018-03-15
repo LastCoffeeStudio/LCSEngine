@@ -13,7 +13,8 @@
 #include "TransformComponent.h"
 #include "MaterialComponent.h"
 #include "AnimationComponent.h"
-#include <string.h>
+#include <string>
+#include <queue>
 
 SceneManager::SceneManager()
 {
@@ -34,6 +35,7 @@ void SceneManager::load(const char* file)
 		ComponentFactory* factory = ComponentFactory::getInstance();
 		AnimationComponent* anim = (AnimationComponent*)(factory->getComponent(ANIMATION, root));
 		anim->rootBone = root;
+		fillJoints(root, anim->joints);
 		root->addComponent(anim);
 	}
 }
@@ -81,6 +83,32 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 					mesh->indicesVAO.push_back(index);
 				}
 			}
+			if (currentMesh->HasBones())
+			{
+				for (unsigned int m = 0; m < currentMesh->mNumBones; ++m)
+				{
+					Bone* bone = new Bone();
+					bone->name = currentMesh->mBones[m]->mName.C_Str();
+					aiMatrix4x4 mat = currentMesh->mBones[m]->mOffsetMatrix;
+					bone->bind = float4x4(mat.a1, mat.a2, mat.a3, mat.a4,
+										  mat.b1, mat.b2, mat.b3, mat.b4,
+										  mat.c1, mat.c2, mat.c3, mat.c4,
+										  mat.d1, mat.d2, mat.d3, mat.d4);
+
+					for (unsigned int n = 0; n < currentMesh->mBones[m]->mNumWeights; ++n)
+					{
+						Weight* weight = new Weight();
+						weight->vertex = currentMesh->mBones[m]->mWeights[n].mVertexId;
+						weight->weight = currentMesh->mBones[m]->mWeights[n].mWeight;
+						bone->weights.push_back(weight);
+					}
+
+					mesh->bones.push_back(bone);
+				}
+
+				//Copy original vertices for skinning later
+				mesh->originalVertices = mesh->verticesVBO;
+			}
         
 			mesh->generateIDs();
 			gameObjectMesh->addComponent(mesh);
@@ -108,4 +136,26 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 	}
 
 	return gameObject;
+}
+
+void SceneManager::fillJoints(const GameObject* root, std::map<std::string, GameObject*>& joints)
+{
+	queue<GameObject*> gameObjects;
+	for (vector<GameObject*>::const_iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		gameObjects.push(*it);
+	}
+
+	while (!gameObjects.empty())
+	{
+		GameObject* node = gameObjects.front();
+		gameObjects.pop();
+
+		joints[node->name] = node;
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			gameObjects.push(*it);
+		}
+	}
 }

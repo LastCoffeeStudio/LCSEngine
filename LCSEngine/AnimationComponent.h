@@ -3,6 +3,7 @@
 
 #include "Component.h"
 #include "MathGeoLib/src/Math/float4x4.h"
+#include <map>
 
 class GameObject;
 class TransformComponent;
@@ -18,6 +19,7 @@ public:
 
 public:
 	GameObject* rootBone = nullptr;
+	std::map<std::string, GameObject*> joints;
 	std::string animationName = "";
 	std::string currentAnimationName = "";
 	unsigned int idAnim = 0;

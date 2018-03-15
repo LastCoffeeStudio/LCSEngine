@@ -1,11 +1,13 @@
 #ifndef _SCENEMANAGER_H_
 #define _SCENEMANAGER_H_
-#include <vector>
+
 #include "MathGeoLib/src/Math/float3.h"
 #include "Model.h"
 #include "assimp/include/scene.h"
 #include "assimp/include/cimport.h"
 #include "assimp/include/postprocess.h" 
+#include <vector>
+#include <map>
 
 typedef unsigned int GLuint;
 
@@ -24,10 +26,12 @@ public:
 
 public:
 	const aiScene* scene = 0;
-
-public:
 	std::vector<Model> models;
 	std::vector<std::string> filesPath;
+
+private:
+	void fillJoints(const GameObject* root, std::map<std::string, GameObject*>& joints);
+
 };
 
 #endif //_SCENEMANAGER_H_

@@ -33,6 +33,7 @@
 #include "SDL/include/SDL_assert.h"
 #include "Glew/include/glew.h"
 #include "DevIL/include/IL/il.h"
+#include "MathGeoLib/src/Math/float4.h"
 #include <queue>
 
 GameObject::GameObject() {}
@@ -563,13 +564,13 @@ void GameObject::updateBones(const AnimationComponent* anim)
 {
 	GameObject* root = anim->gameObject;
 
-	queue<GameObject*> children;
-	children.push(root);
+	queue<GameObject*> gameObjects;
+	gameObjects.push(root);
 
-	while (!children.empty())
+	while (!gameObjects.empty())
 	{
-		GameObject* node = children.front();
-		children.pop();
+		GameObject* node = gameObjects.front();
+		gameObjects.pop();
 
 		float3 position = { 0.f, 0.f, 0.f };
 		Quat rotation = { 0.f, 0.f, 0.f, 0.f };
@@ -583,7 +584,48 @@ void GameObject::updateBones(const AnimationComponent* anim)
 
 		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
 		{
-			children.push(*it);
+			gameObjects.push(*it);
+		}
+	}
+}
+
+void GameObject::updateVertices(const AnimationComponent* anim)
+{
+	queue<GameObject*> gameObjects;
+	
+	for (vector<GameObject*>::iterator it = children.begin(); it != children.end(); ++it)
+	{
+		gameObjects.push(*it);
+	}
+
+	while (!gameObjects.empty())
+	{
+		GameObject* node = gameObjects.front();
+		gameObjects.pop();
+
+		MeshComponent* mesh = (MeshComponent*)node->getComponent(MESH);
+
+		if (mesh != nullptr && mesh->bones.size() > 0)
+		{
+			std::fill(mesh->verticesVBO.begin(), mesh->verticesVBO.end(), float3(0.f,0.f,0.f));
+			for (vector<Bone*>::iterator it = mesh->bones.begin(); it != mesh->bones.end(); ++it)
+			{
+				for (vector<Weight*>::iterator itW = (*it)->weights.begin(); itW != (*it)->weights.end(); ++itW)
+				{
+					GameObject* object = anim->joints.find((*it)->name)->second;
+					float4x4 transform = ((TransformComponent*)object->getComponent(TRANSFORM))->transform;
+					float4 finalPos = (*itW)->weight * (transform * (*it)->bind * float4(mesh->originalVertices[(*itW)->vertex], 1.f));
+					mesh->verticesVBO[(*itW)->vertex] += float3(finalPos.x,finalPos.y,finalPos.z);
+				}
+			}
+
+			mesh->updateVerticesBuffer();
+			//At the end, update buffer of vertices on gpu
+		}
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			gameObjects.push(*it);
 		}
 	}
 }
@@ -598,6 +640,7 @@ void GameObject::updateComponents()
 			if (((AnimationComponent*)(*it))->idAnim != 0)
 			{
 				updateBones(((AnimationComponent*)(*it)));
+				updateVertices(((AnimationComponent*)(*it)));
 			}
 			break;
 		default:
