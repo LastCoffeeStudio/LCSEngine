@@ -3,14 +3,13 @@
 #include "ModuleSceneMain.h"
 #include "ElementGameUI.h"
 #include "UIButton.h"
-#include "MathGeoLib/src/Math/MathFunc.h"
-#include "MathGeoLib/src/Math/float3x4.h"
 #include "Imgui/imgui.h"
 #include "GameObject.h"
 #include "UIImage.h"
 #include "UILabel.h"
 #include "ElementFactory.h"
 #include "ModuleInput.h"
+
 
 UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
@@ -104,23 +103,21 @@ void UIButton::update()
 	label->update();
 
 	updateState();
-	
-
 }
 
 void UIButton::updateState()
 {
 	KeyState click = App->input->getMouseButtonDown(1);
 	bool mouseHoverButton = isHover();
-	if (disabled->textureName != "" && !enable)
+	if (disabled->textureName[0] != '\0' && !enable)
 	{
 		activeImage = disabled;
 	}
-	else if (pressed->textureName != "" && ((click == KEY_DOWN && mouseHoverButton) || (click == KEY_REPEAT && activeImage == pressed && mouseHoverButton)))
+	else if (pressed->textureName[0] != '\0' && ((click == KEY_DOWN && mouseHoverButton) || (click == KEY_REPEAT && activeImage == pressed && mouseHoverButton)))
 	{
 		activeImage = pressed;
 	}
-	else if (mouseHoverButton && hover->textureName != "")
+	else if (mouseHoverButton && hover->textureName[0] != '\0')
 	{
 		activeImage = hover;
 	}
@@ -130,15 +127,3 @@ void UIButton::updateState()
 	}
 }
 
-bool UIButton::isHover()
-{
-	iPoint mousePosition = App->input->getMousePosition();
-	if (mousePosition.x > rect.x && mousePosition.x < rect.x + rect.w)
-	{
-		if (mousePosition.y > rect.y && mousePosition.y < rect.y + rect.h)
-		{
-			return true;
-		}
-	}
-	return false;
-}

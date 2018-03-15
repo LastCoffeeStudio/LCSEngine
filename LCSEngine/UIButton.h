@@ -21,7 +21,6 @@ public:
 
 private:
 	void updateState();
-	bool isHover();
 
 private:
 	UIImage* background = nullptr;

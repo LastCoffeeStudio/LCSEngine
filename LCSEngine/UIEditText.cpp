@@ -10,6 +10,7 @@
 #include "ElementFactory.h"
 #include "UIImage.h"
 #include "UILabel.h"
+#include "ModuleInput.h"
 
 UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
@@ -55,7 +56,7 @@ void UIEditText::drawGUI()
 		}
 
 		ImGui::InputText("Selected", &selected->textureName[0], IM_ARRAYSIZE(selected->textureName));
-		if (ImGui::Button("Set hover") && selected->textureName != selected->texName)
+		if (ImGui::Button("Set selected") && selected->textureName != selected->texName)
 		{
 			selected->textureChanged = true;
 		}
@@ -68,4 +69,15 @@ void UIEditText::update()
 	selected->rect = rect;
 	background->updateCoords();
 	selected->updateCoords();
+
+	KeyState click = App->input->getMouseButtonDown(1);
+	bool mouseHoverButton = isHover();
+	if (mouseHoverButton && click == KEY_DOWN)
+	{
+		focus = true;
+	}
+	else if (!mouseHoverButton && click == KEY_DOWN)
+	{
+		focus = false;
+	}
 }
