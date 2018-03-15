@@ -22,6 +22,7 @@ UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 	textImage = (UIImage*)factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true);
 
 	glGenTextures(1, &idTexture);
+	fillBufferData();
 }
 
 UILabel::~UILabel() {}

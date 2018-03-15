@@ -112,15 +112,15 @@ void UIButton::updateState()
 {
 	KeyState click = App->input->getMouseButtonDown(1);
 	bool mouseHoverButton = isHover();
-	if (!enable)
+	if (disabled->textureName != "" && !enable)
 	{
 		activeImage = disabled;
 	}
-	else if ((click == KEY_DOWN && mouseHoverButton) || (click == KEY_REPEAT && activeImage == pressed && mouseHoverButton))
+	else if (pressed->textureName != "" && ((click == KEY_DOWN && mouseHoverButton) || (click == KEY_REPEAT && activeImage == pressed && mouseHoverButton)))
 	{
 		activeImage = pressed;
 	}
-	else if (mouseHoverButton)
+	else if (mouseHoverButton && hover->textureName != "")
 	{
 		activeImage = hover;
 	}

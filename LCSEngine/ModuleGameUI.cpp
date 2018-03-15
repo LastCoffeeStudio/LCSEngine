@@ -37,6 +37,8 @@ void ModuleGameUI::printGameUI()
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
+	glDisable(GL_DEPTH_TEST);
+
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 
@@ -75,8 +77,6 @@ void ModuleGameUI::printGameUI()
 				}
 				case BUTTON:
 				{
-					
-					
 					UIImage* image = ((UIButton*)(*it))->activeImage;
 					glUniform1i(glGetUniformLocation(program, "useText"), image->hasTexture);
 
@@ -104,7 +104,6 @@ void ModuleGameUI::printGameUI()
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 					
-					glDisable(GL_DEPTH_TEST);
 					UILabel* label = (UILabel*)((UIButton*)(*it))->label;
 					UIImage* imageLabel = (UIImage*)label->textImage;
 
@@ -201,6 +200,6 @@ void ModuleGameUI::printGameUI()
 			}
 		}
 	}
-
+	glEnable(GL_DEPTH_TEST);
 	elements.clear();
 }

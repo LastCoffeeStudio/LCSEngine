@@ -19,7 +19,7 @@ public:
 public:
 	std::string text;
 	std::string fontPath;
-	float textColor[4] = { 1.0f, 1.0f, 1.0f, 1.5f };
+	float textColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
 	SDL_Color color = {255, 255, 255, 255};
 	GLuint idTexture;
 	FontData* fontData = nullptr;
