@@ -199,5 +199,5 @@ void ModuleGameUI::printGameUI()
 		}
 	}
 	glEnable(GL_DEPTH_TEST);
-	//elements.clear();
+	elements.clear();
 }
