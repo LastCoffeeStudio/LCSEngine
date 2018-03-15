@@ -23,6 +23,7 @@
 #include "ElementGameUI.h"
 #include "UIButton.h"
 #include "UIImage.h"
+#include "UILabel.h"
 #include "UIEditText.h"
 #include "ModuleWindow.h"
 #include "Shader.h"
@@ -689,7 +690,10 @@ void GameObject::updateElements()
 		switch ((*it)->type)
 		{
 			case LABEL:
+			{
+				((UILabel*)(*it))->update();
 				break;
+			}
 			case BUTTON:
 			{
 				((UIButton*)(*it))->update();

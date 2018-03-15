@@ -83,3 +83,9 @@ void UILabel::fillGUI()
 	ImGui::PopID();
 
 }
+
+void UILabel::update()
+{
+	textImage->rect = rect;
+	textImage->updateCoords();
+}

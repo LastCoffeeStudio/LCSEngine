@@ -13,6 +13,7 @@ public:
 	~UILabel();
 	void drawGUI() override;
 	void fillGUI();
+	void update();
 
 public:
 	std::string text;
