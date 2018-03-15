@@ -310,7 +310,7 @@ void GameObject::draw()
 			}
 		}*/
 		
-		/*renderData data;
+		renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
@@ -324,7 +324,7 @@ void GameObject::draw()
 		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
 		data.mode = GL_TRIANGLES;
-		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));*/
+		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 
 		//drawAABB();
 		//drawOBB();
@@ -606,7 +606,7 @@ void GameObject::updateTransformBones(const AnimationComponent* anim)
 		GameObject* node = gameObjects.front();
 		gameObjects.pop();
 
-		node->idBone = ((TransformComponent*)node->getComponent(TRANSFORM))->transform*node->parent->idBone;
+		node->idBone = node->parent->idBone*((TransformComponent*)node->getComponent(TRANSFORM))->transform;
 
 		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
 		{
