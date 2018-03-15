@@ -18,6 +18,9 @@ public:
 	UILabel* label = nullptr;
 	UIImage* background = nullptr;
 	UIImage* selected = nullptr;
+	bool focus = false;
+
+
 };
 
 #endif //__UIEDITTEXT_H__

@@ -45,10 +45,10 @@ update_status ModuleType::update(float deltaTime)
 	return UPDATE_CONTINUE;
 }
 
-void ModuleType::loadFont(const char * path)
+void ModuleType::loadFont(const char * path, int size)
 {
 	AssetFont* fontAsset = new AssetFont();
-	fontAsset->font = TTF_OpenFont(path, 28);
+	fontAsset->font = TTF_OpenFont(path, size);
 	if (fontAsset->font == nullptr) {
 		LOG("Error: %s", TTF_GetError());
 	}
@@ -58,13 +58,13 @@ void ModuleType::loadFont(const char * path)
 	}
 }
 
-FontData* ModuleType::renderFont( const char * text, const char * path)
+FontData* ModuleType::renderFont( const char * text, const char * path, SDL_Color color)
 {
 	if (fonts.count(path))
 	{
 		AssetFont* fontAsset = fonts[path];
 		TTF_Font * fontTtf = fontAsset->font;
-		SDL_Surface *surface = TTF_RenderUTF8_Blended(fontAsset->font, text, { 255, 255 ,255 });
+		SDL_Surface *surface = TTF_RenderUTF8_Blended(fontAsset->font, text, color);
 		SDL_Surface *flipSurface = SDL_CreateRGBSurface(SDL_SWSURFACE, surface->w, surface->h, surface->format->BitsPerPixel, surface->format->Rmask, surface->format->Gmask, surface->format->Bmask, surface->format->Amask);
 		
 		if (SDL_MUSTLOCK(surface))

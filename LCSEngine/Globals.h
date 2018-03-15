@@ -2,7 +2,7 @@
 #define __GLOBALS_H__
 
 #include "SDL_rect.h"
-
+#include "MathGeoLib\src\Algorithm\Random\LCG.h"
 #define LOG(format, ...) log(__FILE__, __LINE__, format, __VA_ARGS__);
 
 void log(const char file[], int line, const char* format, ...);
@@ -87,4 +87,8 @@ enum TypeElemeneGametUI
 #define BASIC_ELEMENT_GUI_SIZE 100
 #define PLAY_PAUSE_SIZE 30
 
+
+static unsigned int uuid() {
+    return LCG().Int();
+}
 #endif //__GLOBALS_H__

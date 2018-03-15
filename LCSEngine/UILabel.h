@@ -13,11 +13,16 @@ public:
 	~UILabel();
 	void drawGUI() override;
 	void fillGUI();
+	void fillBufferData();
 	void update();
 
 public:
 	std::string text;
 	std::string fontPath;
+	int fontSize;
+	float textColor[4] = { 1.0f, 1.0f, 1.0f, 1.0f };
+	SDL_Color color = {255, 255, 255, 255};
+	GLuint idTexture;
 	FontData* fontData = nullptr;
 	UIImage* textImage = nullptr;
 };

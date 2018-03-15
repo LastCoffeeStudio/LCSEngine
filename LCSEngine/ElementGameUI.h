@@ -12,6 +12,7 @@ public:
 	virtual void drawGUI() = 0;
 	void startGUI();
 	void endGUI();
+	bool isHover();
 
 public:
 	TypeElemeneGametUI type;

@@ -37,6 +37,8 @@ void ModuleGameUI::printGameUI()
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
 
+	glDisable(GL_DEPTH_TEST);
+
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
 
@@ -103,7 +105,7 @@ void ModuleGameUI::printGameUI()
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 					
 					UILabel* label = (UILabel*)((UIButton*)(*it))->label;
-					/*UIImage* imageLabel = (UIImage*)label->textImage;
+					UIImage* imageLabel = (UIImage*)label->textImage;
 
 					glUniform1i(glGetUniformLocation(program, "useText"), true);
 
@@ -128,7 +130,9 @@ void ModuleGameUI::printGameUI()
 
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, imageLabel->idIdxVAO);
 
-					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);*/
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					glEnable(GL_DEPTH_TEST);
+
 					break;
 				}
 				case EDITTEXT:
@@ -157,6 +161,34 @@ void ModuleGameUI::printGameUI()
 					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, background->idIdxVAO);
+
+					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+
+					UILabel* label = (UILabel*)((UIEditText*)(*it))->label;
+					UIImage* imageLabel = (UIImage*)label->textImage;
+
+					glUniform1i(glGetUniformLocation(program, "useText"), true);
+
+					if (label->fontData != nullptr)
+					{
+						glActiveTexture(GL_TEXTURE0);
+						glBindTexture(GL_TEXTURE_2D, label->fontData->idTexture);
+						glUniform1i(glGetUniformLocation(program, "text"), 0);
+
+						glBindBuffer(GL_ARRAY_BUFFER, imageLabel->idTexCoords);
+						glEnableVertexAttribArray(1);
+						glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+					}
+
+					glBindBuffer(GL_ARRAY_BUFFER, imageLabel->idVertVBO);
+					glEnableVertexAttribArray(0);
+					glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ARRAY_BUFFER, imageLabel->idColors);
+					glEnableVertexAttribArray(2);
+					glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, imageLabel->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 					break;
@@ -196,6 +228,6 @@ void ModuleGameUI::printGameUI()
 			}
 		}
 	}
-
-	//elements.clear();
+	glEnable(GL_DEPTH_TEST);
+	elements.clear();
 }

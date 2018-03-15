@@ -41,13 +41,13 @@ void SceneManager::load(const char* file)
 
 GameObject* SceneManager::createObject(GameObject* parent, aiNode* node) 
 {
-	GameObject* gameObject = new GameObject(parent, node->mName.C_Str());
+	GameObject* gameObject = new GameObject(parent, node->mName.C_Str(), uuid());
 
 	if (node->mNumMeshes > 0)
 	{
 		for (unsigned int i = 0; i < node->mNumMeshes; ++i)
 		{
-			GameObject* gameObjectMesh = new GameObject(gameObject, node->mName.C_Str());
+			GameObject* gameObjectMesh = new GameObject(gameObject, node->mName.C_Str(), uuid());
 
 			unsigned int meshNum = node->mMeshes[i];
 
