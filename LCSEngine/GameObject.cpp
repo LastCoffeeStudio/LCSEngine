@@ -309,7 +309,7 @@ void GameObject::draw()
 			}
 		}*/
 		
-		renderData data;
+		/*renderData data;
 		data.id = id;
 		data.idVertVBO = idVertVBO;
 		data.sizeVertVBO = sizeVertVBO;
@@ -323,7 +323,7 @@ void GameObject::draw()
 		data.hasTexture = hasTexture;
 		data.textureCoordsID = texCoordsID;
 		data.mode = GL_TRIANGLES;
-		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
+		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));*/
 
 		//drawAABB();
 		//drawOBB();
@@ -562,7 +562,7 @@ Component* GameObject::getComponent(TypeComponent type)
 
 void GameObject::updateBones(const AnimationComponent* anim)
 {
-	GameObject* root = anim->gameObject;
+	GameObject* root = anim->rootBone;
 
 	queue<GameObject*> gameObjects;
 	gameObjects.push(root);
@@ -581,6 +581,31 @@ void GameObject::updateBones(const AnimationComponent* anim)
 			transform->setTranslate(position);
 			transform->setRotate(rotation);
 		}
+
+		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+		{
+			gameObjects.push(*it);
+		}
+	}
+}
+
+void GameObject::updateTransformBones(const AnimationComponent* anim)
+{
+	GameObject* rootBone = anim->rootBone;
+
+	queue<GameObject*> gameObjects;
+	
+	for (vector<GameObject*>::iterator it = rootBone->children.begin(); it != rootBone->children.end(); ++it)
+	{
+		gameObjects.push(*it);
+	}
+
+	while (!gameObjects.empty())
+	{
+		GameObject* node = gameObjects.front();
+		gameObjects.pop();
+
+		node->idBone = ((TransformComponent*)node->getComponent(TRANSFORM))->transform*node->parent->idBone;
 
 		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
 		{
@@ -612,8 +637,7 @@ void GameObject::updateVertices(const AnimationComponent* anim)
 			{
 				for (vector<Weight*>::iterator itW = (*it)->weights.begin(); itW != (*it)->weights.end(); ++itW)
 				{
-					GameObject* object = anim->joints.find((*it)->name)->second;
-					float4x4 transform = ((TransformComponent*)object->getComponent(TRANSFORM))->transform;
+					float4x4 transform = anim->joints.find((*it)->name)->second->idBone;
 					float4 finalPos = (*itW)->weight * (transform * (*it)->bind * float4(mesh->originalVertices[(*itW)->vertex], 1.f));
 					mesh->verticesVBO[(*itW)->vertex] += float3(finalPos.x,finalPos.y,finalPos.z);
 				}
@@ -639,8 +663,9 @@ void GameObject::updateComponents()
 		case ANIMATION:
 			if (((AnimationComponent*)(*it))->idAnim != 0)
 			{
-				updateBones(((AnimationComponent*)(*it)));
-				updateVertices(((AnimationComponent*)(*it)));
+				updateBones((AnimationComponent*)(*it));
+				updateTransformBones((AnimationComponent*)(*it));
+				updateVertices((AnimationComponent*)(*it));
 			}
 			break;
 		default:

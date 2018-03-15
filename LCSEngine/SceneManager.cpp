@@ -34,8 +34,7 @@ void SceneManager::load(const char* file)
 	{
 		ComponentFactory* factory = ComponentFactory::getInstance();
 		AnimationComponent* anim = (AnimationComponent*)(factory->getComponent(ANIMATION, root));
-		anim->rootBone = root;
-		fillJoints(root, anim->joints);
+		anim->rootBone = nullptr;
 		root->addComponent(anim);
 	}
 }
@@ -136,26 +135,4 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 	}
 
 	return gameObject;
-}
-
-void SceneManager::fillJoints(const GameObject* root, std::map<std::string, GameObject*>& joints)
-{
-	queue<GameObject*> gameObjects;
-	for (vector<GameObject*>::const_iterator it = root->children.begin(); it != root->children.end(); ++it)
-	{
-		gameObjects.push(*it);
-	}
-
-	while (!gameObjects.empty())
-	{
-		GameObject* node = gameObjects.front();
-		gameObjects.pop();
-
-		joints[node->name] = node;
-
-		for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
-		{
-			gameObjects.push(*it);
-		}
-	}
 }

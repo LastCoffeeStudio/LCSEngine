@@ -22,6 +22,7 @@ public:
 	std::map<std::string, GameObject*> joints;
 	std::string animationName = "";
 	std::string currentAnimationName = "";
+	char rootNodeBones[128] = "";
 	unsigned int idAnim = 0;
 	float blendTime = 0.f;
 
@@ -30,6 +31,8 @@ private:
 	void playAnimation();
 	void stopAnimation();
 	void blendAnimation();
+	void setRootNodeBones();
+	void fillJoints();
 };
 
 #endif //__ANIMATIONCOMPONENT_H__

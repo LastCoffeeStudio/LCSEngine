@@ -49,7 +49,8 @@ public:
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;
 	int nameNumber = 0;
-	float4x4 id;
+	float4x4 id = float4x4::identity;
+	float4x4 idBone = float4x4::identity;
 	AABB aabb;
 	OBB obb;
 	bool visible = true;
@@ -57,6 +58,7 @@ public:
 private:
 	string getFinalName(string name);
 	void updateBones(const AnimationComponent* anim);
+	void updateTransformBones(const AnimationComponent* anim);
 	void updateVertices(const AnimationComponent* anim);
 	void updateComponents();
 	void updateElements();
