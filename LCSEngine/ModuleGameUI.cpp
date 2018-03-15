@@ -23,8 +23,6 @@ ModuleGameUI::~ModuleGameUI() {}
 
 void ModuleGameUI::printGameUI() 
 {
-	glDisable(GL_DEPTH_TEST);
-	
 	GLuint program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 	glUseProgram(program);
 
@@ -38,6 +36,8 @@ void ModuleGameUI::printGameUI()
 
 	GLint projectLoc = glGetUniformLocation(program, "projection");
 	glUniformMatrix4fv(projectLoc, 1, GL_FALSE, &identity[0][0]);
+
+	glDisable(GL_DEPTH_TEST);
 
 	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
 	{
@@ -103,7 +103,7 @@ void ModuleGameUI::printGameUI()
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, image->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-
+					
 					UILabel* label = (UILabel*)((UIButton*)(*it))->label;
 					UIImage* imageLabel = (UIImage*)label->textImage;
 
@@ -131,6 +131,8 @@ void ModuleGameUI::printGameUI()
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, imageLabel->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
+					glEnable(GL_DEPTH_TEST);
+
 					break;
 				}
 				case EDITTEXT:
