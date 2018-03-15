@@ -17,13 +17,13 @@ public:
 
 public:
 	UIImage* activeImage = nullptr;
+	UILabel* label = nullptr;
 
 private:
 	void updateState();
 	bool isHover();
 
 private:
-	UILabel* label = nullptr;
 	UIImage* background = nullptr;
 	UIImage* hover = nullptr;
 	UIImage* pressed = nullptr;

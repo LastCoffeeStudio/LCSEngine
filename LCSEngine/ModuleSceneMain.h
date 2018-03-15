@@ -57,6 +57,7 @@ public:
 	std::list<Component*> garbageCollectorComponent;
 	std::list<ElementGameUI*> garbageCollectorElements;
 	std::vector<GameObject*> rootBones;
+	bool isPlaying = false;
 
 private:
 	void drawAABB(const AABB& aabb);

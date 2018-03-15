@@ -87,71 +87,73 @@ update_status ModuleGUI::update(float deltaTime)
 
 	ImGui::SetNextWindowPos(ImVec2(0, 0), ImGuiSetCond_Always);
 	showMainWindow();
-
-	if (show_engine_about)
+	if (!App->sceneMain->isPlaying)
 	{
-		showAboutWindow();
-	}
+		if (show_engine_about)
+		{
+			showAboutWindow();
+		}
 
-	if (show_demo_window)
-	{
-		ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
-		ImGui::ShowTestWindow();
-	}
+		if (show_demo_window)
+		{
+			ImGui::SetNextWindowPos(ImVec2(650, 20), ImGuiSetCond_FirstUseEver);
+			ImGui::ShowTestWindow();
+		}
 
-	if (show_inspector)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
-		ImGui::SetNextWindowPos(ImVec2((float)(App->window->width - (App->window->width / SCREEN_COLUMNS)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
-		showInspector();
-	}
+		if (show_inspector)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT)));
+			ImGui::SetNextWindowPos(ImVec2((float)(App->window->width - (App->window->width / SCREEN_COLUMNS)), (float)MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+			showInspector();
+		}
 
-	if (show_hierarchy)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT - (float)(App->window->height / SCREEN_ROWS))));
-		ImGui::SetNextWindowPos(ImVec2(0, MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
-		showHierarchy();
-	}
+		if (show_hierarchy)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS), (float)(App->window->height - MENU_TOP_BAR_HEIGHT - (float)(App->window->height / SCREEN_ROWS))));
+			ImGui::SetNextWindowPos(ImVec2(0, MENU_TOP_BAR_HEIGHT), ImGuiSetCond_Always);
+			showHierarchy();
+		}
 
-	if (show_console)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 4.f, (float)(App->window->height / SCREEN_ROWS)));
-		ImGui::SetNextWindowPos(ImVec2(0.f, (float)((App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1))), ImGuiSetCond_Always);
-		showConsole();
-	}
+		if (show_console)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 4.f, (float)(App->window->height / SCREEN_ROWS)));
+			ImGui::SetNextWindowPos(ImVec2(0.f, (float)((App->window->height / SCREEN_ROWS) * (SCREEN_ROWS - 1))), ImGuiSetCond_Always);
+			showConsole();
+		}
 
-	if (show_static_popup)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 2, (float)(App->window->height / SCREEN_ROWS)));
-		ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - (((float)(App->window->width / SCREEN_COLUMNS))), (App->window->height / 2) - (((float)(App->window->height / SCREEN_ROWS))/2)), ImGuiSetCond_Always);
-		showStaticChildernPopUp();
-	}
+		if (show_static_popup)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 2, (float)(App->window->height / SCREEN_ROWS)));
+			ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - (((float)(App->window->width / SCREEN_COLUMNS))), (App->window->height / 2) - (((float)(App->window->height / SCREEN_ROWS)) / 2)), ImGuiSetCond_Always);
+			showStaticChildernPopUp();
+		}
 
-	if (App->sceneMain->currentObject != App->sceneMain->root)
-	{
-		showGizmo();
-	}
+		if (App->sceneMain->currentObject != App->sceneMain->root)
+		{
+			showGizmo();
+		}
 
-	if (show_audio_settings)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
-		ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
-		showAudioSettings();
-	}
+		if (show_audio_settings)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
+			ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
+			showAudioSettings();
+		}
 
-	if (show_animation_window)
-	{
-		ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
-		ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
-		showAnimationWindow();
+		if (show_animation_window)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS_SETTINGS), (float)(App->window->height / SCREEN_ROWS_SETTINGS)));
+			ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
+			showAnimationWindow();
+		}
 	}
-
 	if (show_play_pause)
 	{
 		ImGui::SetNextWindowSize(ImVec2(PLAY_PAUSE_SIZE * 3.5, PLAY_PAUSE_SIZE * 2.5));
-		ImGui::SetNextWindowPos(ImVec2(App->window->width/2 - PLAY_PAUSE_SIZE, 0), ImGuiSetCond_Always);
+		ImGui::SetNextWindowPos(ImVec2(App->window->width / 2 - PLAY_PAUSE_SIZE, 0), ImGuiSetCond_Always);
 		showPlayPause();
 	}
+	
 
 	return UPDATE_CONTINUE;
 }
@@ -323,9 +325,15 @@ void ModuleGUI::showMainWindow()
 void ModuleGUI::showPlayPause()
 {
 	ImGui::Begin("", nullptr, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
-	ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/play_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE));
+	if (ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/play_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE)))
+	{
+		App->sceneMain->isPlaying = true;
+	}
 	ImGui::SameLine(0);
-	ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/stop_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE));
+	if(ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/stop_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE)))
+	{
+		App->sceneMain->isPlaying = false;
+	}
 	ImGui::End();
 }
 
