@@ -1,11 +1,15 @@
 #include "Component.h"
+#include "GameObject.h"
 #include <list>
 
 Component::Component() {}
 
 Component::Component(GameObject* gameObject, bool isEnable, bool isUnique) : gameObject(gameObject), isEnable(isEnable), isUnique(isUnique)
 {
-	//TODO Set Checker in UI
+    if(gameObject != nullptr)
+    {
+        UUIDparent = gameObject->UUID;
+    }
 }
 
 Component::~Component()

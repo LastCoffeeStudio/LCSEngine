@@ -41,6 +41,10 @@ GameObject::GameObject() {}
 
 GameObject::GameObject(GameObject* parent, string name, unsigned int UUID) : parent(parent), initialName(name), UUID(UUID)
 {
+    if(parent != nullptr)
+    {
+        UUIDparent = parent->UUID;
+    }
 	GameObject::name = getFinalName(name);
 	addComponent(new TransformComponent(this));
 	aabb.SetNegativeInfinity();

@@ -20,6 +20,7 @@ public:
 	SDL_Rect rect;
 	bool visible;
 	bool enable;
+    unsigned int UUIDparent = NULL;
 };
 
 #endif // __ELEMENTGAMEUI_H__

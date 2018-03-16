@@ -19,6 +19,7 @@ public:
 public:
 	bool isEnable = false;
 	bool isUnique = false;
+    unsigned int UUIDparent = NULL;
 	TypeComponent typeComponent = COMPONENT;
 	GameObject* gameObject = nullptr;
 

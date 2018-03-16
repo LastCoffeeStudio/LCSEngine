@@ -12,6 +12,10 @@
 ElementGameUI::ElementGameUI(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 {
 	gameObject = parent;
+    if (gameObject != nullptr)
+    {
+        UUIDparent = parent->UUID;
+    }
 	visible = isVisible;
 	rect.x = x;
 	rect.y = y;

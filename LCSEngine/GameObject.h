@@ -49,6 +49,7 @@ public:
 	vector<ElementGameUI*> elements;
 	vector<GameObject*> children;
 	GameObject* parent = nullptr;
+    unsigned int UUIDparent = NULL;
 	int nameNumber = 0;
 	float4x4 id = float4x4::identity;
 	float4x4 idBone = float4x4::identity;
