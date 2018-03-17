@@ -64,6 +64,9 @@ public:
 	const iPoint& getMousePosition() const;
 	int mouse_wheel;
 
+public:
+	char keyPresed = '\0';
+
 private:
 	bool		windowEvents[WE_COUNT];
 	KeyState*	keyboard;

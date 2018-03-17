@@ -7,6 +7,8 @@
 #include "SDL/include/SDL.h"
 #include "Brofiler.h"
 #include <string>
+#include <conio.h>  
+#include <stdio.h>  
 
 #define MAX_KEYS 300
 
@@ -56,6 +58,7 @@ update_status ModuleInput::preUpdate(float deltaTime)
 
 	const Uint8* keys = SDL_GetKeyboardState(NULL);
 
+	if (keyPresed != '\0')
 	for (int i = 0; i < MAX_KEYS; ++i)
 	{
 		if (keys[i] == 1)
@@ -144,6 +147,8 @@ update_status ModuleInput::preUpdate(float deltaTime)
 			break;
 		case SDL_MOUSEWHEEL:
 			mouse_wheel = event.wheel.y;
+		case SDL_KEYDOWN:
+			keyPresed = event.key.keysym.sym;
 		}
 	}
 

@@ -20,7 +20,8 @@ public:
 	UIImage* selected = nullptr;
 	bool focus = false;
 
-
+private:
+	std::string text = "";
 };
 
 #endif //__UIEDITTEXT_H__
