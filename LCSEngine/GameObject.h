@@ -7,6 +7,7 @@
 #include "MathGeoLib/src/Geometry/OBB.h"
 #include <vector>
 #include <string>
+#include <json.hpp>
 
 using namespace std;
 
@@ -37,6 +38,7 @@ public:
 	void drawFrustum(Frustum frustum);
 	void setStaticValueToChildrens();
 	void setStaticFlag(bool flag);
+	void save(nlohmann::json& conf);
 	vector<Component*> getComponents(TypeComponent type);
 	Component* getComponent(TypeComponent type);
 

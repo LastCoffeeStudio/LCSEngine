@@ -36,6 +36,7 @@
 #include "DevIL/include/IL/il.h"
 #include "MathGeoLib/src/Math/float4.h"
 #include <queue>
+#include <json.hpp>
 
 GameObject::GameObject() {}
 
@@ -214,6 +215,27 @@ void GameObject::setStaticValueToChildrens()
 void GameObject::setStaticFlag(bool flag) {
 	staticFlag = flag;
 	staticPreviousValue = flag;
+}
+
+void GameObject::save(nlohmann::json& conf) {
+	conf["name"] = name;
+	conf["UUID"] = UUID;
+	conf["enable"] = enable;
+	conf["staticFlag"] = staticFlag;
+	conf["UUIDparent"] = UUIDparent;
+	conf["nameNumber"] = nameNumber;
+	conf["visible"] = visible;
+	conf["enable"] = enable;
+	conf["id"] = {	id[0][0], id[0][1],	id[0][2], id[0][3],
+					id[1][0], id[1][1],	id[1][2], id[1][3],
+					id[2][0], id[2][1],	id[2][2], id[2][3],
+					id[3][0], id[3][1],	id[3][2], id[3][3]};
+	conf["idBone"] = { idBone[0][0], idBone[0][1],	idBone[0][2], idBone[0][3],
+		idBone[1][0], idBone[1][1],	idBone[1][2], idBone[1][3],
+		idBone[2][0], idBone[2][1],	idBone[2][2], idBone[2][3],
+		idBone[3][0], idBone[3][1],	idBone[3][2], idBone[3][3] };
+
+	//conf["aabb"] = { aabb.maxPoint, aabb.minPoint };
 }
 
 void GameObject::drawComponentsElementsGui()

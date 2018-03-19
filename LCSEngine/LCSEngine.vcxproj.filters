@@ -381,6 +381,9 @@
     <ClInclude Include="ModuleType.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="SaveLoadManager.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -613,6 +616,9 @@
     </ClCompile>
     <ClCompile Include="ModuleType.cpp">
       <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveLoadManager.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
