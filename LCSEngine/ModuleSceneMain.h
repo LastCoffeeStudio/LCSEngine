@@ -37,6 +37,7 @@ public:
 	void checkVisibleItems();
 	void drawQuadTree();
 	void makeQuadTree();
+	void saveScene();
 
 public:
 	AssetTexture * checkers = nullptr;

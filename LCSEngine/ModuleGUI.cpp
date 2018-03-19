@@ -243,7 +243,7 @@ void ModuleGUI::showMainWindow()
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				//SaveScene code
+				App->sceneMain->saveScene();
 			}
 			ImGui::EndMenu();
 		}

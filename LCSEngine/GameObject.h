@@ -2,6 +2,7 @@
 #define __GAMEOBJECT_H__
 
 #include "glew.h"
+#include "Globals.h"
 #include "MathGeoLib/src/Math/float4x4.h"
 #include "MathGeoLib/src/Geometry/AABB.h"
 #include "MathGeoLib/src/Geometry/OBB.h"

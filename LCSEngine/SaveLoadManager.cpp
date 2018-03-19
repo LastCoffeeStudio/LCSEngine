@@ -1,4 +1,8 @@
 #include "SaveLoadManager.h"
+#include "GameObject.h"
+#include "Globals.h"
+#include <queue>
+#include <list>
 #include <fstream>
 #include <json.hpp>
 
@@ -13,12 +17,37 @@ void SaveLoadManager::loadScene(const char* path)
 	
 }
 
-void SaveLoadManager::saveScene(const char* path)
+void SaveLoadManager::saveScene(const char* path, GameObject* root)
 {
+	if (root == nullptr) {
+		LOG("Empty root for save");
+	}
 	nlohmann::json scenejson;
-	//Get List of game objects
-	//scenejson ["GameObjects"] =  mainScene.getGameObjectJSON()
+	list<nlohmann::json> gameObjectsJSON;
+	if (root != nullptr)
+	{
+		std::queue<GameObject*> children;
 
-	std::ofstream out("pretty.json");
+		for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+		{
+			children.push(*it);
+		}
+
+		while (!children.empty())
+		{
+			GameObject* node = children.front();
+			children.pop();
+			for (vector<GameObject*>::iterator it = node->children.begin(); it != node->children.end(); ++it)
+			{
+				children.push(*it);
+			}
+			nlohmann::json gameObjJSON;
+			node->save(gameObjJSON);
+			gameObjectsJSON.push_back(gameObjJSON);
+		}
+	}
+	scenejson["GameObjects"] = gameObjectsJSON;
+
+	std::ofstream out("Assets/Json/Scene.json");
 	out << std::setw(4) << scenejson << std::endl;
 }

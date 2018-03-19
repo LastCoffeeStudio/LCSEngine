@@ -26,6 +26,7 @@
 #include "ComponentFactory.h"
 #include "TransformComponent.h"
 #include "ElementGameUI.h"
+#include "SaveLoadManager.h"
 
 using namespace std;
 
@@ -489,4 +490,10 @@ void ModuleSceneMain::makeQuadTree()
 		}
 	}
 	quadtree->insertAll(listStaticMeshObjects);
+}
+
+void ModuleSceneMain::saveScene()
+{
+	SaveLoadManager saveLoadManager;
+	saveLoadManager.saveScene("sceneJSON.json", root);
 }
