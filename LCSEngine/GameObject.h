@@ -40,6 +40,7 @@ public:
 	void setStaticValueToChildrens();
 	void setStaticFlag(bool flag);
 	void save(nlohmann::json& conf);
+	void load(nlohmann::json& conf);
 	vector<Component*> getComponents(TypeComponent type);
 	Component* getComponent(TypeComponent type);
 

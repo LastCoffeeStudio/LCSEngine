@@ -38,6 +38,7 @@ public:
 	void drawQuadTree();
 	void makeQuadTree();
 	void saveScene();
+	void loadScene();
 
 public:
 	AssetTexture * checkers = nullptr;

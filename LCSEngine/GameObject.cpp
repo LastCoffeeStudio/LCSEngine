@@ -37,6 +37,7 @@
 #include "MathGeoLib/src/Math/float4.h"
 #include <queue>
 #include <json.hpp>
+#include "SaveLoadManager.h"
 
 GameObject::GameObject() {}
 
@@ -226,16 +227,30 @@ void GameObject::save(nlohmann::json& conf) {
 	conf["nameNumber"] = nameNumber;
 	conf["visible"] = visible;
 	conf["enable"] = enable;
-	conf["id"] = {	id[0][0], id[0][1],	id[0][2], id[0][3],
-					id[1][0], id[1][1],	id[1][2], id[1][3],
-					id[2][0], id[2][1],	id[2][2], id[2][3],
-					id[3][0], id[3][1],	id[3][2], id[3][3]};
-	conf["idBone"] = { idBone[0][0], idBone[0][1],	idBone[0][2], idBone[0][3],
-		idBone[1][0], idBone[1][1],	idBone[1][2], idBone[1][3],
-		idBone[2][0], idBone[2][1],	idBone[2][2], idBone[2][3],
-		idBone[3][0], idBone[3][1],	idBone[3][2], idBone[3][3] };
+	nlohmann::json customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(id, customJsont);
+	conf["id"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(idBone, customJsont);
+	conf["idBone"] = customJsont;
+	SaveLoadManager::convertFloat3ToMyJSON(aabb.maxPoint, customJsont);
+	conf["aabbMax"] = customJsont;
+	SaveLoadManager::convertFloat3ToMyJSON(aabb.minPoint, customJsont);
+	conf["aabbMin"] = customJsont;
+}
 
-	//conf["aabb"] = { aabb.maxPoint, aabb.minPoint };
+void GameObject::load(nlohmann::json& conf) {
+	name = conf.at("name").get<std::string>();
+	UUID = conf.at("UUID").get<unsigned int>();
+	enable = conf.at("enable").get<bool>();
+	staticFlag = conf.at("staticFlag").get<bool>();
+	UUIDparent = conf.at("UUIDparent").get<unsigned int>();
+	nameNumber = conf.at("nameNumber").get<int>();
+	visible = conf.at("visible").get<bool>();
+	enable = conf.at("enable").get<bool>();
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["id"], id);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["idBone"], idBone);
+	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMax"], aabb.maxPoint);
+	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMin"], aabb.minPoint);
 }
 
 void GameObject::drawComponentsElementsGui()

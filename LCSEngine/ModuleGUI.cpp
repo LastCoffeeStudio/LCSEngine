@@ -239,7 +239,7 @@ void ModuleGUI::showMainWindow()
 		{
 			if (ImGui::MenuItem("Load"))
 			{
-				//LoadScene code
+				App->sceneMain->loadScene();
 			}
 			if (ImGui::MenuItem("Save"))
 			{

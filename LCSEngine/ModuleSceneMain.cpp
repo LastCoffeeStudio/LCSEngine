@@ -497,3 +497,15 @@ void ModuleSceneMain::saveScene()
 	SaveLoadManager saveLoadManager;
 	saveLoadManager.saveScene("sceneJSON.json", root);
 }
+
+void ModuleSceneMain::loadScene()
+{
+	SaveLoadManager saveLoadManager;
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		App->sceneMain->garbageCollector.push_back(*it);
+	}
+	root = new GameObject();
+	saveLoadManager.loadScene("sceneJSON.json", root);
+	currentObject = root;
+}
