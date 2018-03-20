@@ -236,6 +236,15 @@ void GameObject::save(nlohmann::json& conf) {
 	conf["aabbMax"] = customJsont;
 	SaveLoadManager::convertFloat3ToMyJSON(aabb.minPoint, customJsont);
 	conf["aabbMin"] = customJsont;
+
+	list<nlohmann::json> componentsJson;
+	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
+	{
+		nlohmann::json compJson;
+		(*it)->save(compJson);
+		componentsJson.push_back(compJson);
+	}
+	conf["components"] = componentsJson;
 }
 
 void GameObject::load(nlohmann::json& conf) {

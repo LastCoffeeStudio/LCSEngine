@@ -4,6 +4,7 @@
 #include "MathGeoLib/src/Math/MathFunc.h"
 #include <limits.h>
 #include "GameObject.h"
+#include "SaveLoadManager.h"
 
 TransformComponent::TransformComponent(GameObject* gameObject) : Component(gameObject, true, true)
 {
@@ -150,4 +151,25 @@ void TransformComponent::drawGUI()
 			ImGui::PopID();
 		}
 	}
+}
+
+void TransformComponent::save(nlohmann::json& conf)
+{
+	
+	Component::save(conf);
+	nlohmann::json customJsont;
+	SaveLoadManager::convertFloat3ToMyJSON(position, customJsont);
+	conf["position"] = customJsont;
+	SaveLoadManager::convertFloat3ToMyJSON(scale, customJsont);
+	conf["scale"] = customJsont;
+	SaveLoadManager::convertFloat3ToMyJSON(rotation, customJsont);
+	conf["rotation"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(transform, customJsont);
+	conf["transform"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(matrixTranslate, customJsont);
+	conf["matrixTranslate"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(matrixScale, customJsont);
+	conf["matrixScale"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(matrixRotate, customJsont);
+	conf["matrixRotate"] = customJsont;
 }

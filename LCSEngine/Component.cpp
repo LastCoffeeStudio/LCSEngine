@@ -32,3 +32,15 @@ void Component::disable()
 	//TODO Set Checker UI false and other commond thinks
 }
 
+void Component::load(nlohmann::json& conf)
+{
+	
+}
+
+void Component::save(nlohmann::json& conf)
+{
+	conf["isEnable"] = isEnable;
+	conf["isUnique"] = isUnique;
+	conf["typeComponent"] = typeComponent;
+}
+

@@ -24,6 +24,7 @@ public:
 	void setRotate(const Quat& rotationQuat);
 	float3 up();
 	float3 front();
+	virtual void save(nlohmann::json& conf);
 
 public:
 	float3 position = { 0.0f, 0.0f, 0.0f };
