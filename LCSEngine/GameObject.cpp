@@ -266,50 +266,54 @@ void GameObject::load(nlohmann::json& conf) {
 	{
 		switch ((*it).at("typeComponent").get<int>())
 		{
-			//Se lo que piensas... mira al final del switch...
 			case TRANSFORM:
 			{
-				TransformComponent transformComp(this);
-				transformComp.typeComponent = TRANSFORM;
-				transformComp.load(*it);
+				TransformComponent* transformComp = new TransformComponent(this);
+				transformComp->typeComponent = TRANSFORM;
+				transformComp->load(*it);
+				addComponent(transformComp);
 			}
 			break;
 			case MATERIAL:
 			{
-				MaterialComponent materialComp(this);
-				materialComp.typeComponent = MATERIAL;
-				materialComp.load(*it);
+				MaterialComponent* materialComp = new MaterialComponent(this);
+				materialComp->typeComponent = MATERIAL;
+				materialComp->load(*it);
+				addComponent(materialComp);
 			}
 				break;
 			case MESH:
 			{
-				MeshComponent meshComp(this);
-				meshComp.typeComponent = MESH;
-				meshComp.load(*it);
+				MeshComponent* meshComp = new MeshComponent(this);
+				meshComp->typeComponent = MESH;
+				meshComp->load(*it);
+				addComponent(meshComp);
 			}
 				break;
 			case ANIMATION:
 			{
-				AnimationComponent animationComp(this);
-				animationComp.typeComponent = ANIMATION;
-				animationComp.load(*it);
+				AnimationComponent* animationComp = new AnimationComponent(this);
+				animationComp->typeComponent = ANIMATION;
+				animationComp->load(*it);
+				addComponent(animationComp);
 			}
 				break;
 			case AUDIOLISTENER:
 			{
-				AudioListenerComponent audioListenerComp(this);
-				audioListenerComp.typeComponent = AUDIOLISTENER;
-				audioListenerComp.load(*it);
+				AudioListenerComponent* audioListenerComp = new AudioListenerComponent(this);
+				audioListenerComp->typeComponent = AUDIOLISTENER;
+				audioListenerComp->load(*it);
+				addComponent(audioListenerComp);
 			}
 				break;
 			case AUDIOSOURCE:
 			{
-				AudioSourceComponent audioSourceComp(this);
-				audioSourceComp.typeComponent = AUDIOSOURCE;
-				audioSourceComp.load(*it);
+				AudioSourceComponent* audioSourceComp = new AudioSourceComponent(this);
+				audioSourceComp->typeComponent = AUDIOSOURCE;
+				audioSourceComp->load(*it);
+				addComponent(audioSourceComp);
 			}
 				break;
-			//Las llaves del case si tienes huevos las quitas ¬¬
 		}
 	}
 }
