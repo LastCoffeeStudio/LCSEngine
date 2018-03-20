@@ -173,3 +173,16 @@ void TransformComponent::save(nlohmann::json& conf)
 	SaveLoadManager::convertFloat4x4ToMyJSON(matrixRotate, customJsont);
 	conf["matrixRotate"] = customJsont;
 }
+
+void TransformComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	SaveLoadManager::convertMyJSONtoFloat3(conf["position"], position);
+	SaveLoadManager::convertMyJSONtoFloat3(conf["scale"], scale);
+	SaveLoadManager::convertMyJSONtoFloat3(conf["rotation"], position);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["transform"], transform);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixTranslate"], matrixTranslate);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixScale"], matrixScale);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixRotate"], matrixRotate);
+}
+

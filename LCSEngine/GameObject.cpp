@@ -260,6 +260,58 @@ void GameObject::load(nlohmann::json& conf) {
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["idBone"], idBone);
 	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMax"], aabb.maxPoint);
 	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMin"], aabb.minPoint);
+
+	list<nlohmann::json> componentsJson = conf["components"];
+	for (list<nlohmann::json>::iterator it = componentsJson.begin(); it != componentsJson.end(); ++it)
+	{
+		switch ((*it).at("typeComponent").get<int>())
+		{
+			//Se lo que piensas... mira al final del switch...
+			case TRANSFORM:
+			{
+				TransformComponent transformComp(this);
+				transformComp.typeComponent = TRANSFORM;
+				transformComp.load(*it);
+			}
+			break;
+			case MATERIAL:
+			{
+				MaterialComponent materialComp(this);
+				materialComp.typeComponent = MATERIAL;
+				materialComp.load(*it);
+			}
+				break;
+			case MESH:
+			{
+				MeshComponent meshComp(this);
+				meshComp.typeComponent = MESH;
+				meshComp.load(*it);
+			}
+				break;
+			case ANIMATION:
+			{
+				AnimationComponent animationComp(this);
+				animationComp.typeComponent = ANIMATION;
+				animationComp.load(*it);
+			}
+				break;
+			case AUDIOLISTENER:
+			{
+				AudioListenerComponent audioListenerComp(this);
+				audioListenerComp.typeComponent = AUDIOLISTENER;
+				audioListenerComp.load(*it);
+			}
+				break;
+			case AUDIOSOURCE:
+			{
+				AudioSourceComponent audioSourceComp(this);
+				audioSourceComp.typeComponent = AUDIOSOURCE;
+				audioSourceComp.load(*it);
+			}
+				break;
+			//Las llaves del case si tienes huevos las quitas ¬¬
+		}
+	}
 }
 
 void GameObject::drawComponentsElementsGui()

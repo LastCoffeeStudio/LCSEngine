@@ -34,7 +34,8 @@ void Component::disable()
 
 void Component::load(nlohmann::json& conf)
 {
-	
+	isEnable = conf.at("isEnable").get<bool>();
+	isUnique = conf.at("isUnique").get<bool>();
 }
 
 void Component::save(nlohmann::json& conf)
