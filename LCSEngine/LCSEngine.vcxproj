@@ -150,6 +150,8 @@
     <ClInclude Include="Application.h" />
     <ClInclude Include="AssetTexture.h" />
     <ClInclude Include="AudioSourceComponent.h" />
+    <ClInclude Include="Billboard.h" />
+    <ClInclude Include="BillboardGridComponent.h" />
     <ClInclude Include="CameraComponent.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="ComponentFactory.h" />
@@ -263,6 +265,8 @@
     <ClCompile Include="Application.cpp" />
     <ClCompile Include="AssetTexture.cpp" />
     <ClCompile Include="AudioSourceComponent.cpp" />
+    <ClCompile Include="Billboard.cpp" />
+    <ClCompile Include="BillboardGridComponent.cpp" />
     <ClCompile Include="CameraComponent.cpp" />
     <ClCompile Include="Component.cpp" />
     <ClCompile Include="ComponentFactory.cpp" />
