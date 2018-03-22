@@ -28,6 +28,8 @@ UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 	fillBufferData();
 }
 
+UILabel::UILabel(GameObject* parent) : ElementGameUI(parent) {}
+
 UILabel::~UILabel() {}
 
 void UILabel::drawGUI()

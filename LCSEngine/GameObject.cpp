@@ -238,6 +238,7 @@ void GameObject::save(nlohmann::json& conf) {
 	SaveLoadManager::convertFloat3ToMyJSON(aabb.minPoint, customJsont);
 	conf["aabbMin"] = customJsont;
 
+	//Save Components
 	list<nlohmann::json> componentsJson;
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
@@ -246,6 +247,16 @@ void GameObject::save(nlohmann::json& conf) {
 		componentsJson.push_back(compJson);
 	}
 	conf["components"] = componentsJson;
+
+	//Save elementes
+	list<nlohmann::json> elementsJson;
+	for (vector<ElementGameUI*>::iterator it = elements.begin(); it != elements.end(); ++it)
+	{
+		nlohmann::json compJson;
+		(*it)->save(compJson);
+		elementsJson.push_back(compJson);
+	}
+	conf["elements"] = elementsJson;
 }
 
 void GameObject::load(nlohmann::json& conf) {
@@ -315,6 +326,46 @@ void GameObject::load(nlohmann::json& conf) {
 				//addComponent(audioSourceComp);
 			}
 				break;
+		}
+	}
+
+	list<nlohmann::json> elementsJson = conf["elements"];
+	for (list<nlohmann::json>::iterator it = elementsJson.begin(); it != elementsJson.end(); ++it)
+	{
+		switch ((*it).at("TypeElemeneGametUI").get<int>())
+		{
+			case BUTTON:
+			{
+				UIButton* butonElem = new UIButton(this);
+				butonElem->type = BUTTON;
+				butonElem->load(*it);
+				addElement(butonElem);
+			}
+			break;
+			case LABEL:
+			{
+				UILabel* labelElem = new UILabel(this);
+				labelElem->type = LABEL;
+				labelElem->load(*it);
+				addElement(labelElem);
+			}
+			break;
+			case IMAGE:
+			{
+				UIImage * imageElem = new UIImage(this);
+				imageElem->type = IMAGE;
+				imageElem->load(*it);
+				addElement(imageElem);
+			}
+			break;
+			case EDITTEXT:
+			{
+				UIEditText* editTextElem = new UIEditText(this);
+				editTextElem->type = BUTTON;
+				editTextElem->load(*it);
+				addElement(editTextElem);
+			}
+			break;
 		}
 	}
 }
