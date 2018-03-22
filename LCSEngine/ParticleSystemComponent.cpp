@@ -1,9 +1,8 @@
 #include "ParticleSystemComponent.h"
 
-
-
-ParticleSystemComponent::ParticleSystemComponent()
+ParticleSystemComponent::ParticleSystemComponent(GameObject* gameObject) : Component(gameObject, true, true)
 {
+	typeComponent = PARTICLESYSTEM;
 }
 
 

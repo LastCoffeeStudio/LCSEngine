@@ -16,7 +16,7 @@ struct Particle
 class ParticleSystemComponent : public Component
 {
 public:
-	ParticleSystemComponent();
+	ParticleSystemComponent(GameObject* gameObject);
 	~ParticleSystemComponent();
 
 public:
