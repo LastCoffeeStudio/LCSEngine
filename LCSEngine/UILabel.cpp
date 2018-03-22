@@ -54,32 +54,6 @@ void UILabel::drawGUI()
 		ImGui::DragInt("Width", &rect.w, 1);
 		ImGui::PopID();
 
-		ImGui::Text("Text color");
-		ImGui::PushID("color");
-		if (ImGui::ColorEdit4("", textColor))
-		{
-			color.r = textColor[0] * 255;
-			color.g = textColor[1] * 255;
-			color.b = textColor[2] * 255;
-			color.a = textColor[3] * 255;
-			fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
-			fillBufferData();
-		}
-		ImGui::PopID();
-
-		ImGui::Text("Font size");
-		ImGui::PushID("fontSize");
-		if (ImGui::InputInt("", &fontSize))
-		{
-			App->type->loadFont(fontPath.c_str(), fontSize);
-			fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
-			rect.w = fontData->width;
-			rect.h = fontData->height;
-			update();
-			fillBufferData();
-		}
-		ImGui::PopID();
-
 		fillGUI();
 	}
 }
@@ -89,11 +63,43 @@ void UILabel::fillGUI()
 	char aux1[64];
 	strcpy_s(aux1, 64, text.c_str());
 
+	ImGui::Text("Text color");
+	ImGui::PushID("color");
+	if (ImGui::ColorEdit4("", textColor))
+	{
+		color.r = textColor[0] * 255;
+		color.g = textColor[1] * 255;
+		color.b = textColor[2] * 255;
+		color.a = textColor[3] * 255;
+		fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+		fillBufferData();
+	}
+	ImGui::PopID();
+
+	ImGui::Text("Font size");
+	ImGui::PushID("fontSize");
+	if (ImGui::InputInt("", &fontSize))
+	{
+		App->type->loadFont(fontPath.c_str(), fontSize);
+		fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+		rect.w = fontData->width;
+		rect.h = fontData->height;
+		update();
+		fillBufferData();
+	}
+	ImGui::PopID();
+
 	ImGui::PushID("Text");
 	if (ImGui::InputText("", aux1, 64))
 	{
 		text = aux1;
 		fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+		if (fontData != nullptr)
+		{
+			rect.w = fontData->width;
+			rect.h = fontData->height;
+			update();
+		}
 		fillBufferData();
 	}
 	ImGui::PopID();

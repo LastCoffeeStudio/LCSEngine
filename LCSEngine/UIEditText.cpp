@@ -21,6 +21,8 @@ UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVi
 	label = (UILabel*)(factoryElements->getComponent(LABEL, nullptr, x, y, h, w, true));
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 	selected = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
+	originRect.h = rect.h;
+	originRect.w = rect.w;
 	text = label->text;
 }
 
@@ -40,14 +42,42 @@ void UIEditText::drawGUI()
 
 		ImGui::Text("Position");
 		ImGui::PushID("position");
-		ImGui::DragInt("X", &rect.x, 1);
-		ImGui::DragInt("Y", &rect.y, 1);
+		if (ImGui::DragInt("X", &rect.x, 1))
+		{
+			label->rect.x = rect.x + paddingX;
+			label->update();
+			label->fillBufferData();
+		}
+		if (ImGui::DragInt("Y", &rect.y, 1))
+		{
+			label->rect.y = rect.y + paddingY;
+			label->update();
+			label->fillBufferData();
+		}
+		ImGui::PopID();
+
+		ImGui::Text("Padding");
+		ImGui::PushID("padding");
+		if (ImGui::DragInt("X", &paddingX, 1))
+		{
+			rect.w = label->rect.w + paddingX * 2;
+			label->rect.x = rect.x + paddingX;
+			label->update();
+			label->fillBufferData();
+		}
+		if (ImGui::DragInt("Y", &paddingY, 1))
+		{
+			rect.h = label->rect.h + paddingY * 2;
+			label->rect.y = rect.y + paddingY;
+			label->update();
+			label->fillBufferData();
+		}
 		ImGui::PopID();
 
 		ImGui::Text("Size");
 		ImGui::PushID("size");
-		ImGui::DragInt("Height", &rect.h, 1);
-		ImGui::DragInt("Width", &rect.w, 1);
+		ImGui::DragInt("Height", &originRect.h, 1);
+		ImGui::DragInt("Width", &originRect.w, 1);
 		ImGui::PopID();
 
 		label->fillGUI();

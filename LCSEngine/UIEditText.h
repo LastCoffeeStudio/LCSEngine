@@ -22,6 +22,9 @@ public:
 
 private:
 	std::string text = "";
+	int paddingX = 0;
+	int paddingY = 0;
+	SDL_Rect originRect;
 };
 
 #endif //__UIEDITTEXT_H__
