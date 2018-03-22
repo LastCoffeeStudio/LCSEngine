@@ -32,12 +32,12 @@ public:
 	bool hasTexture = false;
 	int n = 5;
 	int m = 8;
-	float minW = 0.8f;
-	float maxW = 1.2f;
-	float minH = 0.5f;
-	float maxH = 1.5f;
-	float quadSpaceX = 1.f;
-	float quadSpaceY = 1.f;
+	float minW = 0.9f;
+	float maxW = 1.1f;
+	float minH = 0.8f;
+	float maxH = 1.2f;
+	float quadSpaceX = 0.5f;
+	float quadSpaceY = 0.5f;
 
 private:
 	void updateBillboards();
