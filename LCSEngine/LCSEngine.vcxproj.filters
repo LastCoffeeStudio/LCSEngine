@@ -390,6 +390,9 @@
     <ClInclude Include="BillboardGridComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="ParticleSystemComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -630,6 +633,9 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="BillboardGridComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ParticleSystemComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>

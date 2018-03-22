@@ -1,6 +1,7 @@
 #ifndef __PARTICLESYSTEMCOMPONENT_H__
 #define __PARTICLESYSTEMCOMPONENT_H__
 
+#include "Component.h"
 #include "MathGeoLib/src/Math/float3.h"
 
 typedef unsigned int GLuint;
@@ -12,11 +13,15 @@ struct Particle
 	float lifeTime = 0.f;
 };
 
-class ParticleSystemComponent
+class ParticleSystemComponent : public Component
 {
 public:
 	ParticleSystemComponent();
 	~ParticleSystemComponent();
+
+public:
+	std::vector<Particle*> particles;
+	unsigned int totalParticles;
 };
 
 #endif //__PARTICLESYSTEMCOMPONENT_H__
