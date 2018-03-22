@@ -279,7 +279,7 @@ void GameObject::load(nlohmann::json& conf) {
 				MaterialComponent* materialComp = new MaterialComponent(this);
 				materialComp->typeComponent = MATERIAL;
 				materialComp->load(*it);
-				addComponent(materialComp);
+				//addComponent(materialComp);
 			}
 				break;
 			case MESH:
@@ -287,7 +287,7 @@ void GameObject::load(nlohmann::json& conf) {
 				MeshComponent* meshComp = new MeshComponent(this);
 				meshComp->typeComponent = MESH;
 				meshComp->load(*it);
-				addComponent(meshComp);
+				//addComponent(meshComp);
 			}
 				break;
 			case ANIMATION:
@@ -295,7 +295,7 @@ void GameObject::load(nlohmann::json& conf) {
 				AnimationComponent* animationComp = new AnimationComponent(this);
 				animationComp->typeComponent = ANIMATION;
 				animationComp->load(*it);
-				addComponent(animationComp);
+				//addComponent(animationComp);
 			}
 				break;
 			case AUDIOLISTENER:
@@ -303,7 +303,7 @@ void GameObject::load(nlohmann::json& conf) {
 				AudioListenerComponent* audioListenerComp = new AudioListenerComponent(this);
 				audioListenerComp->typeComponent = AUDIOLISTENER;
 				audioListenerComp->load(*it);
-				addComponent(audioListenerComp);
+				//addComponent(audioListenerComp);
 			}
 				break;
 			case AUDIOSOURCE:
@@ -311,7 +311,7 @@ void GameObject::load(nlohmann::json& conf) {
 				AudioSourceComponent* audioSourceComp = new AudioSourceComponent(this);
 				audioSourceComp->typeComponent = AUDIOSOURCE;
 				audioSourceComp->load(*it);
-				addComponent(audioSourceComp);
+				//addComponent(audioSourceComp);
 			}
 				break;
 		}
