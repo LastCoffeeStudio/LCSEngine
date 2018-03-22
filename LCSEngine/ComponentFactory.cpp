@@ -10,6 +10,7 @@
 #include "AudioListenerComponent.h"
 #include "AudioSourceComponent.h"
 #include "BillboardGridComponent.h"
+#include "ParticleSystemComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -50,7 +51,7 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
         return new AudioSourceComponent(parentObject);
         break;
 	case TypeComponent::PARTICLESYSTEM:
-		return new AudioSourceComponent(parentObject);
+		return new ParticleSystemComponent(parentObject);
 		break;
 	case TypeComponent::BILLBOARDGRID:
 		return new BillboardGridComponent(parentObject);
