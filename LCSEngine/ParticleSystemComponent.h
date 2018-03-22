@@ -9,12 +9,7 @@ struct Particle
 {
 	float3 position = float3::zero;
 	float3 velocity = float3::zero;
-	float width = 0.f;
-	float height = 0.f;
 	float lifeTime = 0.f;
-	float3 color = float3(1.f,1.f,1.f);
-	GLuint sprite;
-
 };
 
 class ParticleSystemComponent
