@@ -18,6 +18,7 @@ class ParticleSystemComponent : public Component
 public:
 	ParticleSystemComponent(GameObject* gameObject);
 	~ParticleSystemComponent();
+	void drawGUI();
 
 public:
 	std::vector<Particle*> particles;

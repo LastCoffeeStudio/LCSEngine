@@ -6,6 +6,6 @@ ParticleSystemComponent::ParticleSystemComponent(GameObject* gameObject) : Compo
 }
 
 
-ParticleSystemComponent::~ParticleSystemComponent()
-{
-}
+ParticleSystemComponent::~ParticleSystemComponent(){}
+
+void ParticleSystemComponent::drawGUI(){}
