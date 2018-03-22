@@ -12,7 +12,12 @@ void main()
 {
 	if (useText)
 	{
-		color = vec4(texture(text,UV).rgb * col, texture(text,UV).a);
+		vec4 texture = texture(text,UV);
+		if (texture.a == 0.f)
+		{
+			discard;
+		}
+		color = vec4(texture.rgb * col, texture.a);
 	}
 	else
 	{

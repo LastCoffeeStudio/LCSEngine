@@ -384,6 +384,12 @@
     <ClInclude Include="SaveLoadManager.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="Billboard.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="BillboardGridComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -619,6 +625,12 @@
     </ClCompile>
     <ClCompile Include="SaveLoadManager.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="Billboard.cpp">
+      <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="BillboardGridComponent.cpp">
+      <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
