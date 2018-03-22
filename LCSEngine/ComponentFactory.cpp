@@ -9,6 +9,7 @@
 #include "GameObject.h"
 #include "AudioListenerComponent.h"
 #include "AudioSourceComponent.h"
+#include "BillboardGridComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -48,6 +49,8 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
     case TypeComponent::AUDIOSOURCE:
         return new AudioSourceComponent(parentObject);
         break;
+	case TypeComponent::BILLBOARDGRID:
+		return new BillboardGridComponent(parentObject);
 	default:
 		return nullptr;
 		break;

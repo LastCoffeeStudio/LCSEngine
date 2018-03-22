@@ -57,6 +57,7 @@ bool ModuleRender::init()
 	glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
 	glClearDepth(1.0f);
 	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glEnable(GL_ALPHA_TEST);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_DEPTH_TEST);
@@ -66,7 +67,6 @@ bool ModuleRender::init()
 	glEnable(GL_TEXTURE_2D);
 	glFrontFace(GL_CCW);
 	glCullFace(GL_BACK);
-	glEnable(GL_BLEND);
 
 	return ret;
 }

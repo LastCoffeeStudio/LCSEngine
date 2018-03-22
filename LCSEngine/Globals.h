@@ -26,7 +26,8 @@ enum TypeComponent
 	CAMERA,
 	ANIMATION,
     AUDIOLISTENER,
-    AUDIOSOURCE
+    AUDIOSOURCE,
+	BILLBOARDGRID
 };
 
 enum TypeElemeneGametUI

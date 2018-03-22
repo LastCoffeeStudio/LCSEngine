@@ -10,6 +10,7 @@
 #include "AnimationComponent.h"
 #include "AudioListenerComponent.h"
 #include "AudioSourceComponent.h"
+#include "BillboardGridComponent.h"
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
@@ -383,6 +384,10 @@ void GameObject::drawComponentsElementsGui()
         {
             addComponent(factory->getComponent(AUDIOSOURCE, this));
         }
+		else if (ImGui::MenuItem("Billboard Grid"))
+		{
+			addComponent(factory->getComponent(BILLBOARDGRID, this));
+		}
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))
 		{
@@ -451,6 +456,22 @@ void GameObject::draw()
 		case ANIMATION:
 			((AnimationComponent*)(*it))->drawHierarchy();
 			break;
+		case BILLBOARDGRID:
+		{
+			renderData data;
+			data.id = id;
+			data.idVertVBO = ((BillboardGridComponent*)(*it))->idVertVBO;
+			data.sizeVertVBO = ((BillboardGridComponent*)(*it))->verticesVBO.size();
+			data.idIdxVAO = ((BillboardGridComponent*)(*it))->idIdxVAO;
+			data.sizeIdxVAO = ((BillboardGridComponent*)(*it))->indicesVBO.size();
+			data.textureID = ((BillboardGridComponent*)(*it))->texID;
+			data.colorID = ((BillboardGridComponent*)(*it))->idColors;
+			data.hasTexture = ((BillboardGridComponent*)(*it))->hasTexture;
+			data.textureCoordsID = ((BillboardGridComponent*)(*it))->idTexCoords;
+			data.mode = GL_TRIANGLES;
+			App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
+		}
+		break;
 		default:
 			break;
 		}
@@ -830,6 +851,9 @@ void GameObject::updateComponents()
 				break;
 			case AUDIOSOURCE:
 				App->audio->updatePositionAudioSource(((AudioSourceComponent*)(*it))->idAudioGameObj, id);
+				break;
+			case BILLBOARDGRID:
+				((BillboardGridComponent*)(*it))->calculateVertexs();
 				break;
 			default:
 				break;
