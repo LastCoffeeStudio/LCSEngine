@@ -14,7 +14,11 @@ UIImage::UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible)
 	type = IMAGE;
 	init();
 	generateIDs();
+	generateBuffers();
+
 }
+
+UIImage::UIImage(GameObject* parent) : ElementGameUI(parent) {}
 
 UIImage::~UIImage() {}
 
@@ -98,26 +102,34 @@ void UIImage::init()
 void UIImage::generateIDs()
 {
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
+	glGenBuffers(1, (GLuint*) &(idIdxVAO));
+	if (texCoordsVBO.size() > 0)
+	{
+		glGenBuffers(1, (GLuint*) &(idTexCoords));
+
+	}
+	glGenBuffers(1, (GLuint*) &(idColors));
+}
+
+void UIImage::generateBuffers() {
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_DYNAMIC_DRAW);
 
-	glGenBuffers(1, (GLuint*) &(idIdxVAO));
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVAO.size(), &indicesVAO[0], GL_STATIC_DRAW);
 
 	if (texCoordsVBO.size() > 0)
 	{
-		glGenBuffers(1, (GLuint*) &(idTexCoords));
 		glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
 		glBufferData(GL_ARRAY_BUFFER, sizeof(float) * texCoordsVBO.size() * 2, texCoordsVBO[0].ptr(), GL_STATIC_DRAW);
 	}
+
 	colorsVBO.clear();
 	for (unsigned int i = 0; i < verticesVBO.size(); ++i)
 	{
-		colorsVBO.push_back(float3(1.f, 1.f, 1.f));
+	colorsVBO.push_back(float3(1.f, 1.f, 1.f));
 	}
 
-	glGenBuffers(1, (GLuint*) &(idColors));
 	glBindBuffer(GL_ARRAY_BUFFER, idColors);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_DYNAMIC_DRAW);
 }
@@ -141,4 +153,28 @@ void UIImage::updateCoords()
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_DYNAMIC_DRAW);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void UIImage::load(nlohmann::json& conf) 
+{
+	ElementGameUI::load(conf);
+	type = IMAGE;
+	init();
+	generateIDs();
+	generateBuffers();
+	hasTexture = conf.at("hasTexture").get<bool>();
+	texName = conf.at("texName").get<std::string>().c_str();
+	strcpy_s(textureName, 128, texName.c_str());
+	texName = "";
+	textureChanged = hasTexture;
+	hasTexture = false;
+}
+
+void UIImage::save(nlohmann::json& conf)
+{
+	ElementGameUI::save(conf);
+	conf["hasTexture"] = hasTexture;
+	conf["texName"] = texName;
+
+
 }

@@ -10,6 +10,7 @@ class UIEditText : public ElementGameUI
 {
 public:
 	UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
+	UIEditText(GameObject* parent);
 	~UIEditText();
 	void drawGUI() override;
 	void update();
