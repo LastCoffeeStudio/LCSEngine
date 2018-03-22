@@ -26,8 +26,7 @@ enum TypeComponent
 	CAMERA,
 	ANIMATION,
     AUDIOLISTENER,
-    AUDIOSOURCE,
-	PARTICLESYSTEM
+    AUDIOSOURCE
 };
 
 enum TypeElemeneGametUI

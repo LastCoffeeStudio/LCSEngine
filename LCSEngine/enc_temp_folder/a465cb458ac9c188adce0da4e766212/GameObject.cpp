@@ -383,10 +383,6 @@ void GameObject::drawComponentsElementsGui()
         {
             addComponent(factory->getComponent(AUDIOSOURCE, this));
         }
-		else if (ImGui::MenuItem("ParticleSystem"))
-		{
-			addComponent(factory->getComponent(PARTICLESYSTEM, this));
-		}
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))
 		{

@@ -48,9 +48,6 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
     case TypeComponent::AUDIOSOURCE:
         return new AudioSourceComponent(parentObject);
         break;
-	case TypeComponent::PARTICLESYSTEM:
-		return new AudioSourceComponent(parentObject);
-		break;
 	default:
 		return nullptr;
 		break;
