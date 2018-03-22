@@ -466,7 +466,7 @@ void GameObject::draw()
 			data.sizeIdxVAO = ((BillboardGridComponent*)(*it))->indicesVBO.size();
 			data.textureID = ((BillboardGridComponent*)(*it))->texID;
 			data.colorID = ((BillboardGridComponent*)(*it))->idColors;
-			data.hasTexture = false;
+			data.hasTexture = ((BillboardGridComponent*)(*it))->hasTexture;
 			data.textureCoordsID = ((BillboardGridComponent*)(*it))->idTexCoords;
 			data.mode = GL_TRIANGLES;
 			App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));

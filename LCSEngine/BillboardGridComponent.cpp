@@ -10,6 +10,11 @@
 #include "Imgui/imgui.h"
 #include <glew.h>
 
+/**/
+#include "ModuleTextures.h"
+#include "AssetTexture.h"
+/**/
+
 BillboardGridComponent::BillboardGridComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = BILLBOARDGRID;
@@ -26,10 +31,31 @@ BillboardGridComponent::BillboardGridComponent(GameObject* gameObject, bool isEn
 	{
 		for (unsigned int j = 0; j < m; ++j)
 		{
-			float3 position = gameObjectPos + float3(1.f, 0.f, 0.f) * (quadSpaceX * j) + float3(0.f, 0.f, 1.f) * (quadSpaceY * i);
+			float difX = -(quadSpaceX / 2.f) + float(rand() / float(RAND_MAX / quadSpaceX));
+			float difY = -(quadSpaceY / 2.f) + float(rand() / float(RAND_MAX / quadSpaceY));
+			float3 position = gameObjectPos + (float3(1.f, 0.f, 0.f) * ((quadSpaceX * j) + difX)) + float3(0.f, 0.f, 1.f) * ((quadSpaceY * i) + difY);
 			Billboard* billboard = new Billboard(position, minW + float(rand() / float(RAND_MAX / (maxW-minW))), minH + float(rand() / float(RAND_MAX / (maxH - minH))));
 			billboards.push_back(billboard);
 		}
+	}
+
+	/*TODO: set texture on GUI*/
+	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find("Assets/Images/billboardgrass.png");
+	if (itNewTexture != App->textures->textures.end())
+	{
+		texID = (*itNewTexture).second->ID;
+		(*itNewTexture).second->numberUsages++;
+		hasTexture = true;
+	}
+	else if (App->textures->loadTexture("Assets/Images/billboardgrass.png"))
+	{
+		texID = App->textures->textures["Assets/Images/billboardgrass.png"]->ID;
+		hasTexture = true;
+	}
+	else
+	{
+		texID = 0;
+		hasTexture = false;
 	}
 }
 
@@ -45,6 +71,8 @@ void BillboardGridComponent::calculateVertexs()
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, idIdxVAO);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(unsigned int) * indicesVBO.size(), &indicesVBO[0], GL_DYNAMIC_DRAW);
 
+
+
 	if (texCoordsVBO.size() > 0)
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, idTexCoords);
@@ -54,7 +82,7 @@ void BillboardGridComponent::calculateVertexs()
 	colorsVBO.clear();
 	for (unsigned int i = 0; i < verticesVBO.size(); ++i)
 	{
-		colorsVBO.push_back(float3(1.f, 0.f, 0.f));
+		colorsVBO.push_back(float3(1.f, 1.f, 1.f));
 	}
 
 	glBindBuffer(GL_ARRAY_BUFFER, idColors);
@@ -89,7 +117,6 @@ void BillboardGridComponent::updateBillboards()
 	{
 		for (unsigned int j = 0; j < m; ++j)
 		{
-			//billboards[i*m + j]->position = gameObjectPos + float3(1.f, 0.f, 0.f) * (quadSpaceX * j) + float3(0.f, 0.f, 1.f) * (quadSpaceY * i);
 			vector<float3> vertexs;
 			billboards[i*m + j]->ComputeQuad(&App->camera->currentCamera->frustum, vertexs);
 
@@ -104,6 +131,11 @@ void BillboardGridComponent::updateBillboards()
 			verticesVBO.push_back(vertexs[1]);
 			verticesVBO.push_back(vertexs[2]);
 			verticesVBO.push_back(vertexs[3]);
+
+			texCoordsVBO.push_back(float2(0.f, 1.f));
+			texCoordsVBO.push_back(float2(1.f, 1.f));
+			texCoordsVBO.push_back(float2(1.f, 0.f));
+			texCoordsVBO.push_back(float2(0.f, 0.f));
 		}
 	}
 }

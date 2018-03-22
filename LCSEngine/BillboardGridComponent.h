@@ -29,14 +29,15 @@ public:
 	GLuint idTexCoords = 0;
 	GLuint idColors = 0;
 	GLuint texID = 0;
-	int n = 4;
-	int m = 6;
-	float minW = 0.5f;
-	float maxW = 1.5f;
+	bool hasTexture = false;
+	int n = 5;
+	int m = 8;
+	float minW = 0.8f;
+	float maxW = 1.2f;
 	float minH = 0.5f;
 	float maxH = 1.5f;
-	float quadSpaceX = 2.f;
-	float quadSpaceY = 2.f;
+	float quadSpaceX = 1.f;
+	float quadSpaceY = 1.f;
 
 private:
 	void updateBillboards();
