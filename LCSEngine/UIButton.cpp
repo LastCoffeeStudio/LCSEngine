@@ -23,6 +23,8 @@ UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisibl
 	activeImage = background;
 }
 
+UIButton::UIButton(GameObject* parent) : ElementGameUI(parent) {}
+
 UIButton::~UIButton() {}
 
 void UIButton::drawGUI()

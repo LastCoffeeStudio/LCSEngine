@@ -24,6 +24,8 @@ UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVi
 	text = label->text;
 }
 
+UIEditText::UIEditText(GameObject* parent) : ElementGameUI(parent) {}
+
 UIEditText::~UIEditText() {}
 
 void UIEditText::drawGUI()

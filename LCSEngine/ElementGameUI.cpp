@@ -24,6 +24,15 @@ ElementGameUI::ElementGameUI(GameObject* parent, int x, int y, int h, int w, boo
 	enable = true;
 }
 
+ElementGameUI::ElementGameUI(GameObject * parent)
+{
+	gameObject = parent;
+	if (gameObject != nullptr)
+	{
+		UUIDparent = parent->UUID;
+	}
+}
+
 ElementGameUI::~ElementGameUI() {}
 
 void ElementGameUI::startGUI()
@@ -45,4 +54,26 @@ bool ElementGameUI::isHover()
 		}
 	}
 	return false;
+}
+
+void ElementGameUI::load(nlohmann::json& conf)
+{
+	visible = conf.at("visible").get<bool>();
+	enable = conf.at("enable").get<bool>();
+	rect.x = conf.at("x").get<int>();
+	rect.y = conf.at("y").get<int>();
+	rect.w = conf.at("h").get<int>();
+	rect.h = conf.at("w").get<int>();
+}
+
+void ElementGameUI::save(nlohmann::json& conf)
+{
+	conf["visible"] = visible;
+	conf["enable"] = enable;
+	conf["TypeElemeneGametUI"] = type;
+	conf["x"] = rect.x;
+	conf["y"] = rect.y;
+	conf["w"] = rect.w;
+	conf["h"] = rect.h;
+
 }

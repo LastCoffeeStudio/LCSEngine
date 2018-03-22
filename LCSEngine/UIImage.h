@@ -11,10 +11,13 @@ class UIImage : public ElementGameUI
 {
 public:
 	UIImage(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
+	UIImage(GameObject* parent);
 	~UIImage();
 	void drawGUI() override;
 	void fillGUI();
 	void updateCoords();
+	void load(nlohmann::json& conf);
+	void save(nlohmann::json& conf);
 
 public:
 	GLuint texID = 0;
@@ -36,6 +39,7 @@ private:
 private:
 	void init();
 	void generateIDs();
+	void generateBuffers();
 
 };
 

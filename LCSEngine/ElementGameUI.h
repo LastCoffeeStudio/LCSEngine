@@ -2,17 +2,21 @@
 #define __ELEMENTGAMEUI_H__
 
 #include "Module.h"
+#include <json.hpp>
 #include <string>
 
 class ElementGameUI
 {
 public:
 	ElementGameUI(GameObject* parent, int x, int y, int h, int w, bool isVisible = true);
+	ElementGameUI(GameObject* parent);
 	~ElementGameUI();
 	virtual void drawGUI() = 0;
 	void startGUI();
 	void endGUI();
 	bool isHover();
+	virtual void load(nlohmann::json& conf);
+	virtual void save(nlohmann::json& conf);
 
 public:
 	TypeElemeneGametUI type;
