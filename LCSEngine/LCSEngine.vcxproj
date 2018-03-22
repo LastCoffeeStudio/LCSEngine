@@ -245,6 +245,7 @@
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleType.h" />
     <ClInclude Include="ModuleWindow.h" />
+    <ClInclude Include="ParticleSystemComponent.h" />
     <ClInclude Include="PhysRaycast.h" />
     <ClInclude Include="Point.h" />
     <ClInclude Include="Primitive.h" />
@@ -329,6 +330,7 @@
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleType.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
+    <ClCompile Include="ParticleSystemComponent.cpp" />
     <ClCompile Include="PhysRaycast.cpp" />
     <ClCompile Include="Primitive.cpp" />
     <ClCompile Include="QuadTree.cpp" />
