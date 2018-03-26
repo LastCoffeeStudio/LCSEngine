@@ -16,7 +16,11 @@ public:
 	void fillGUI();
 	void fillBufferData();
 	void update();
+	void load(nlohmann::json& conf);
+	void save(nlohmann::json& conf);
 
+private: 
+	void init(int x, int y, int h, int w, bool isVisible);
 public:
 	std::string text;
 	std::string fontPath;

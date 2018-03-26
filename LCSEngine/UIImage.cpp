@@ -175,6 +175,4 @@ void UIImage::save(nlohmann::json& conf)
 	ElementGameUI::save(conf);
 	conf["hasTexture"] = hasTexture;
 	conf["texName"] = texName;
-
-
 }

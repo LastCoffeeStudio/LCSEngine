@@ -14,23 +14,28 @@
 UILabel::UILabel(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = LABEL;
-	text = "New Label";
-	fontPath = "Assets/Fonts/Roboto-Regular.ttf";
-	fontSize = 12;
-	App->type->loadFont(fontPath.c_str(), fontSize);
-
-	static ElementFactory* factoryElements = ElementFactory::getInstance();
-	textImage = (UIImage*)factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true);
-
-	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
-
-	glGenTextures(1, &idTexture);
+	init(x,y,h,w,isVisible);
 	fillBufferData();
 }
 
 UILabel::UILabel(GameObject* parent) : ElementGameUI(parent) {}
 
 UILabel::~UILabel() {}
+
+void UILabel::init(int x, int y, int h, int w, bool isVisible)
+{
+	text = "New Label";
+	fontPath = "Assets/Fonts/Roboto-Regular.ttf";
+	fontSize = 12;
+	App->type->loadFont(fontPath.c_str(), fontSize);
+
+	static ElementFactory* factoryElements = ElementFactory::getInstance();
+	textImage = (UIImage*)factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, isVisible);
+
+	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+
+	glGenTextures(1, &idTexture);
+}
 
 void UILabel::drawGUI()
 {
@@ -139,3 +144,26 @@ void UILabel::update()
 	textImage->rect = rect;
 	textImage->updateCoords();
 }
+
+void UILabel::load(nlohmann::json& conf)
+{
+	ElementGameUI::load(conf);
+	type = LABEL;
+	init(rect.x, rect.y, rect.h, rect.w, visible);
+	text = conf.at("text").get<std::string>();
+	fontPath = conf.at("fontPath").get<std::string>();
+	fontSize = conf.at("fontSize").get<int>();
+	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+	fillBufferData();
+}
+
+void UILabel::save(nlohmann::json& conf)
+{
+	ElementGameUI::save(conf);
+	conf["text"] = text;
+	conf["fontPath"] = fontPath;
+	conf["fontSize"] = fontSize;
+
+}
+
+

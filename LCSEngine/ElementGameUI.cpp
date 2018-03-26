@@ -62,8 +62,8 @@ void ElementGameUI::load(nlohmann::json& conf)
 	enable = conf.at("enable").get<bool>();
 	rect.x = conf.at("x").get<int>();
 	rect.y = conf.at("y").get<int>();
-	rect.w = conf.at("h").get<int>();
-	rect.h = conf.at("w").get<int>();
+	rect.h = conf.at("h").get<int>();
+	rect.w = conf.at("w").get<int>();
 }
 
 void ElementGameUI::save(nlohmann::json& conf)

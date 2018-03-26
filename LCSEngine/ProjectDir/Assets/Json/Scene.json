@@ -115,7 +115,7 @@
                     "hasTexture": true,
                     "texName": "Assets/Images/beer.png",
                     "visible": true,
-                    "w": 100,
+                    "w": 216,
                     "x": 804,
                     "y": 350
                 }
@@ -159,6 +159,169 @@
             ],
             "name": "GameObject",
             "nameNumber": 0,
+            "staticFlag": false,
+            "visible": true
+        },
+        {
+            "UUID": 380586098,
+            "UUIDparent": 0,
+            "aabbMax": [
+                null,
+                null,
+                null
+            ],
+            "aabbMin": [
+                null,
+                null,
+                null
+            ],
+            "components": [
+                {
+                    "isEnable": true,
+                    "isUnique": true,
+                    "matrixRotate": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "matrixScale": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "matrixTranslate": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "position": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "rotation": [
+                        0.0,
+                        0.0,
+                        0.0
+                    ],
+                    "scale": [
+                        1.0,
+                        1.0,
+                        1.0
+                    ],
+                    "transform": [
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        0.0,
+                        1.0
+                    ],
+                    "typeComponent": 1
+                }
+            ],
+            "elements": [
+                {
+                    "TypeElemeneGametUI": 1,
+                    "enable": true,
+                    "fontPath": "Assets/Fonts/Roboto-Regular.ttf",
+                    "fontSize": 17,
+                    "h": 151,
+                    "text": "hola",
+                    "visible": true,
+                    "w": 128,
+                    "x": 385,
+                    "y": 350
+                }
+            ],
+            "enable": true,
+            "id": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "idBone": [
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0,
+                0.0,
+                0.0,
+                0.0,
+                0.0,
+                1.0
+            ],
+            "name": "GameObject (1)",
+            "nameNumber": 1,
             "staticFlag": false,
             "visible": true
         }
