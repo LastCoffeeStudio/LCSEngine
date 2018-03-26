@@ -17,6 +17,15 @@
 UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = EDITTEXT;
+	init(x,y,h,w,isVisible);
+}
+
+UIEditText::UIEditText(GameObject* parent) : ElementGameUI(parent) {}
+
+UIEditText::~UIEditText() {}
+
+void UIEditText::init(int x, int y, int h, int w, bool isVisible)
+{
 	static ElementFactory* factoryElements = ElementFactory::getInstance();
 	label = (UILabel*)(factoryElements->getComponent(LABEL, nullptr, x, y, h, w, true));
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
@@ -25,10 +34,6 @@ UIEditText::UIEditText(GameObject* parent, int x, int y, int h, int w, bool isVi
 	originRect.w = rect.w;
 	text = label->text;
 }
-
-UIEditText::UIEditText(GameObject* parent) : ElementGameUI(parent) {}
-
-UIEditText::~UIEditText() {}
 
 void UIEditText::drawGUI()
 {
@@ -137,4 +142,52 @@ void UIEditText::update()
 		label->fontData = App->type->renderFont(text.c_str(), label->fontPath.c_str(), label->color);
 		label->fillBufferData();
 	}
+}
+
+void UIEditText::load(nlohmann::json& conf)
+{
+	ElementGameUI::load(conf);
+	type = EDITTEXT;
+	init(rect.x, rect.y, rect.h, rect.w, visible);
+
+	background->hasTexture = conf.at("background_hasTexture").get<bool>();
+	background->texName = conf.at("background_texName").get<std::string>().c_str();
+	strcpy_s(background->textureName, 128, background->texName.c_str());
+	background->texName = "";
+	background->textureChanged = background->hasTexture;
+	background->hasTexture = false;
+
+	selected->hasTexture = conf.at("selected_hasTexture").get<bool>();
+	selected->texName = conf.at("selected_texName").get<std::string>().c_str();
+	strcpy_s(selected->textureName, 128, selected->texName.c_str());
+	selected->texName = "";
+	selected->textureChanged = selected->hasTexture;
+	selected->hasTexture = false;
+
+	label->text = conf.at("text").get<std::string>();
+	label->fontPath = conf.at("fontPath").get<std::string>();
+	label->fontSize = conf.at("fontSize").get<int>();
+	label->fontData = App->type->renderFont(label->text.c_str(), label->fontPath.c_str(), label->color);
+
+	paddingX = conf.at("paddingX").get<int>();
+	paddingY = conf.at("paddingY").get<int>();
+
+	label->fillBufferData();
+}
+
+void UIEditText::save(nlohmann::json& conf)
+{
+	ElementGameUI::save(conf);
+	conf["background_hasTexture"] = background->hasTexture;
+	conf["background_texName"] = background->texName;
+
+	conf["selected_hasTexture"] = selected->hasTexture;
+	conf["selected_texName"] = selected->texName;
+
+	conf["text"] = label->text;
+	conf["fontPath"] = label->fontPath;
+	conf["fontSize"] = label->fontSize;
+
+	conf["paddingX"] = paddingX;
+	conf["paddingY"] = paddingY;
 }

@@ -14,6 +14,11 @@ public:
 	~UIEditText();
 	void drawGUI() override;
 	void update();
+	void load(nlohmann::json& conf);
+	void save(nlohmann::json& conf);
+
+private: 
+	void init(int x, int y, int h, int w, bool isVisible);
 
 public:
 	UILabel* label = nullptr;
