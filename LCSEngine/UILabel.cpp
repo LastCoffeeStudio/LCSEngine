@@ -163,7 +163,6 @@ void UILabel::save(nlohmann::json& conf)
 	conf["text"] = text;
 	conf["fontPath"] = fontPath;
 	conf["fontSize"] = fontSize;
-
 }
 
 

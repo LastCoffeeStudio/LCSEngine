@@ -7,6 +7,7 @@
 #include "GameObject.h"
 #include "UIImage.h"
 #include "UILabel.h"
+#include "ModuleType.h"
 #include "ElementFactory.h"
 #include "ModuleInput.h"
 
@@ -14,6 +15,15 @@
 UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisible) : ElementGameUI(parent, x, y, h, w, isVisible)
 {
 	type = BUTTON;
+	init(x,y,h,w,isVisible);
+}
+
+UIButton::UIButton(GameObject* parent) : ElementGameUI(parent) {}
+
+UIButton::~UIButton() {}
+
+void UIButton::init(int x, int y, int h, int w, bool isVisible)
+{
 	static ElementFactory* factoryElements = ElementFactory::getInstance();
 	label = (UILabel*)(factoryElements->getComponent(LABEL, nullptr, x, y, h, w, true));
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
@@ -22,10 +32,6 @@ UIButton::UIButton(GameObject* parent, int x, int y, int h, int w, bool isVisibl
 	disabled = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 	activeImage = background;
 }
-
-UIButton::UIButton(GameObject* parent) : ElementGameUI(parent) {}
-
-UIButton::~UIButton() {}
 
 void UIButton::drawGUI()
 {
@@ -127,5 +133,68 @@ void UIButton::updateState()
 	{
 		activeImage = background;
 	}
+}
+
+void UIButton::load(nlohmann::json& conf)
+{
+	ElementGameUI::load(conf);
+	type = BUTTON;
+	init(rect.x, rect.y, rect.h, rect.w, visible);
+	 
+	background->hasTexture = conf.at("background_hasTexture").get<bool>();
+	background->texName = conf.at("background_texName").get<std::string>().c_str();
+	strcpy_s(background->textureName, 128, background->texName.c_str());
+	background->texName = "";
+	background->textureChanged = background->hasTexture;
+	background->hasTexture = false;
+
+	hover->hasTexture = conf.at("hover_hasTexture").get<bool>();
+	hover->texName = conf.at("hover_texName").get<std::string>().c_str();
+	strcpy_s(hover->textureName, 128, hover->texName.c_str());
+	hover->texName = "";
+	hover->textureChanged = hover->hasTexture;
+	hover->hasTexture = false;
+
+	pressed->hasTexture = conf.at("pressed_hasTexture").get<bool>();
+	pressed->texName = conf.at("pressed_texName").get<std::string>().c_str();
+	strcpy_s(pressed->textureName, 128, pressed->texName.c_str());
+	pressed->texName = "";
+	pressed->textureChanged = pressed->hasTexture;
+	pressed->hasTexture = false;
+
+	disabled->hasTexture = conf.at("disabled_hasTexture").get<bool>();
+	disabled->texName = conf.at("disabled_texName").get<std::string>().c_str();
+	strcpy_s(disabled->textureName, 128, disabled->texName.c_str());
+	disabled->texName = "";
+	disabled->textureChanged = disabled->hasTexture;
+	disabled->hasTexture = false;
+
+	activeImage = background;
+
+	label->text = conf.at("text").get<std::string>();
+	label->fontPath = conf.at("fontPath").get<std::string>();
+	label->fontSize = conf.at("fontSize").get<int>();
+	label->fontData = App->type->renderFont(label->text.c_str(), label->fontPath.c_str(), label->color);
+	label->fillBufferData();
+}
+
+void UIButton::save(nlohmann::json& conf)
+{
+	ElementGameUI::save(conf);
+	conf["background_hasTexture"] = background->hasTexture;
+	conf["background_texName"] = background->texName;
+
+	conf["hover_hasTexture"] = hover->hasTexture;
+	conf["hover_texName"] = hover->texName;
+
+	conf["pressed_hasTexture"] = pressed->hasTexture;
+	conf["pressed_texName"] = pressed->texName;
+
+	conf["disabled_hasTexture"] = disabled->hasTexture;
+	conf["disabled_texName"] = disabled->texName;
+
+	conf["text"] = label->text;
+	conf["fontPath"] = label->fontPath;
+	conf["fontSize"] = label->fontSize;
 }
 

@@ -15,6 +15,8 @@ public:
 	void drawGUI() override;
 	void deleteElementButton();
 	void update();
+	void load(nlohmann::json& conf);
+	void save(nlohmann::json& conf);
 
 public:
 	UIImage* activeImage = nullptr;
@@ -22,6 +24,7 @@ public:
 
 private:
 	void updateState();
+	void init(int x, int y, int h, int w, bool isVisible);
 
 private:
 	UIImage* background = nullptr;
