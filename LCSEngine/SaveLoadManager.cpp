@@ -5,6 +5,7 @@
 #include <list>
 #include <fstream>
 #include <json.hpp>
+#include "MathGeoLib/src/Math/float2.h"
 
 
 SaveLoadManager::SaveLoadManager() {}
@@ -118,5 +119,68 @@ void SaveLoadManager::convertMyJSONtoFloat3(const  nlohmann::json& jsonFloat, fl
 		basicFloat.x = jsonFloat[0].get<float>();
 		basicFloat.y = jsonFloat[1].get<float>();
 		basicFloat.z = jsonFloat[2].get<float>();
+	}
+}
+
+void SaveLoadManager::convertVectorF3ToMyJSON(const vector<float3>& vectorF, nlohmann::json & structVectorF)
+{
+	for (int i = 0; i < vectorF.size(); ++i)
+	{
+		for (int j = 0; j < 3; ++j)
+		{
+			structVectorF.push_back(vectorF[i][j]);
+		}
+	}
+}
+
+void SaveLoadManager::convertMyJSONtoVectorF3(const nlohmann::json & jsonVectorF, vector<float3>& vectorF)
+{
+	for (int i = 0; i < jsonVectorF.size(); i += 3)
+	{
+		float3 vertex;
+		vertex.x = jsonVectorF[i].get<float>();
+		vertex.y = jsonVectorF[i+1].get<float>();
+		vertex.z = jsonVectorF[i+2].get<float>();
+		
+		vectorF.push_back(vertex);
+	}
+}
+
+void SaveLoadManager::convertVectorF2ToMyJSON(const vector<float2>& vectorF, nlohmann::json & structVectorF)
+{
+	for (int i = 0; i < vectorF.size(); ++i)
+	{
+		for (int j = 0; j < 2; ++j)
+		{
+			structVectorF.push_back(vectorF[i][j]);
+		}
+	}
+}
+
+void SaveLoadManager::convertMyJSONtoVectorF2(const nlohmann::json & jsonVectorF, vector<float2>& vectorF)
+{
+	for (int i = 0; i < jsonVectorF.size(); i += 2)
+	{
+		float2 vertex;
+		vertex.x = jsonVectorF[i].get<float>();
+		vertex.y = jsonVectorF[i + 1].get<float>();
+
+		vectorF.push_back(vertex);
+	}
+}
+
+void SaveLoadManager::convertVectorUIToMyJSON(const vector<unsigned int>& vectorUI, nlohmann::json & structVectorF)
+{
+	for (int i = 0; i < vectorUI.size(); ++i)
+	{
+		structVectorF.push_back(vectorUI[i]);
+	}
+}
+
+void SaveLoadManager::convertMyJSONtoVectorUI(const nlohmann::json & jsonVectorF, vector<unsigned int>& vectorUI)
+{
+	for (int i = 0; i < jsonVectorF.size(); ++i)
+	{
+		vectorUI.push_back(jsonVectorF[i]);
 	}
 }

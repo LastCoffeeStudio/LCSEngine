@@ -299,7 +299,7 @@ void GameObject::load(nlohmann::json& conf) {
 				MeshComponent* meshComp = new MeshComponent(this);
 				meshComp->typeComponent = MESH;
 				meshComp->load(*it);
-				//addComponent(meshComp);
+				addComponent(meshComp);
 			}
 				break;
 			case ANIMATION:

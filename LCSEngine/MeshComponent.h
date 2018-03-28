@@ -44,6 +44,8 @@ public:
 	void generateIDs();
 	void loadPreset();
 	void updateVerticesBuffer();
+	void load(nlohmann::json& conf) override;
+	void save(nlohmann::json& conf) override;
 
 public:
 	std::vector<float3> verticesVBO;

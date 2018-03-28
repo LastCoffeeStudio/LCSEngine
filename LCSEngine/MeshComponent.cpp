@@ -6,6 +6,7 @@
 #include "Model.h"
 #include "AssetTexture.h"
 #include "assimp/include/scene.h"
+#include "SaveLoadManager.h"
 
 static int selected_preset = 1;
 const char* presets[] = { "House", "Cube", "Sphere" };
@@ -280,4 +281,37 @@ void MeshComponent::updateVerticesBuffer()
 {
 	glBindBuffer(GL_ARRAY_BUFFER, idVertVBO);
 	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * verticesVBO.size() * 3, verticesVBO[0].ptr(), GL_DYNAMIC_DRAW);
+}
+
+void MeshComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	typeComponent = MESH;
+	SaveLoadManager::convertMyJSONtoVectorF3(conf["verticesVBO"], verticesVBO);
+	SaveLoadManager::convertMyJSONtoVectorF3(conf["colorsVBO"], colorsVBO);
+	SaveLoadManager::convertMyJSONtoVectorF3(conf["normalsVBO"], normalsVBO);
+	SaveLoadManager::convertMyJSONtoVectorUI(conf["indicesVAO"], indicesVAO);
+	//SaveLoadManager::convertMyJSONtoVectorF2(conf["texCoordsVBO"], texCoordsVBO);
+	generateIDs();
+	updateVerticesBuffer();
+}
+
+void MeshComponent::save(nlohmann::json& conf)
+{
+	Component::save(conf);
+	nlohmann::json customJsont;
+	SaveLoadManager::convertVectorF3ToMyJSON(verticesVBO, customJsont);
+	conf["verticesVBO"] = customJsont;
+	SaveLoadManager::convertVectorF3ToMyJSON(colorsVBO, customJsont);
+	conf["colorsVBO"] = customJsont;
+	SaveLoadManager::convertVectorF3ToMyJSON(normalsVBO, customJsont);
+	conf["normalsVBO"] = customJsont;
+	SaveLoadManager::convertVectorUIToMyJSON(indicesVAO, customJsont);
+	conf["indicesVAO"] = customJsont;
+	/*SaveLoadManager::convertVectorF2ToMyJSON(texCoordsVBO, customJsont);
+	conf["texCoordsVBO"] = customJsont;
+
+	conf["lengthX"] = lengthX;
+	conf["lengthY"] = lengthY;
+	conf["lengthZ"] = lengthZ;*/
 }

@@ -184,5 +184,6 @@ void TransformComponent::load(nlohmann::json& conf)
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixTranslate"], matrixTranslate);
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixScale"], matrixScale);
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["matrixRotate"], matrixRotate);
+	updateTransform();
 }
 
