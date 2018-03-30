@@ -9,6 +9,8 @@ public:
     AudioListenerComponent(GameObject* gameObject);
     ~AudioListenerComponent();
     void drawGUI() override;
+	void load(nlohmann::json& conf) override;
+	void save(nlohmann::json& conf) override;
     
 public:
     

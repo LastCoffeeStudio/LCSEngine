@@ -26,11 +26,24 @@ void AudioSourceComponent::drawGUI()
         {
             if(item2 == 0)
             {
-               App->audio->eventAudio = AK::EVENTS::PLAY_GUNSHOT;
+                App->audio->eventAudio = AK::EVENTS::PLAY_GUNSHOT;
             }else
             {
                 App->audio->eventAudio = AK::EVENTS::PLAY_FARMAC;
             }
         }
     }
+}
+
+
+void AudioSourceComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	typeComponent = AUDIOSOURCE;
+}
+
+void AudioSourceComponent::save(nlohmann::json& conf)
+{
+	Component::save(conf);
+	nlohmann::json customJsont;
 }

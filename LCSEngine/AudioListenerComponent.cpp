@@ -22,3 +22,15 @@ void AudioListenerComponent::drawGUI()
        
     }
 }
+
+void AudioListenerComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	typeComponent = AUDIOLISTENER;
+}
+
+void AudioListenerComponent::save(nlohmann::json& conf)
+{
+	Component::save(conf);
+	nlohmann::json customJsont;
+}

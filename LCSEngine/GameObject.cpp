@@ -316,7 +316,7 @@ void GameObject::load(nlohmann::json& conf) {
 				AudioListenerComponent* audioListenerComp = new AudioListenerComponent(this);
 				audioListenerComp->typeComponent = AUDIOLISTENER;
 				audioListenerComp->load(*it);
-				//addComponent(audioListenerComp);
+				addComponent(audioListenerComp);
 			}
 				break;
 			case AUDIOSOURCE:
@@ -324,7 +324,7 @@ void GameObject::load(nlohmann::json& conf) {
 				AudioSourceComponent* audioSourceComp = new AudioSourceComponent(this);
 				audioSourceComp->typeComponent = AUDIOSOURCE;
 				audioSourceComp->load(*it);
-				//addComponent(audioSourceComp);
+				addComponent(audioSourceComp);
 			}
 				break;
 			case BILLBOARDGRID:
