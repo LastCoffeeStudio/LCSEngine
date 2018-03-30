@@ -15,8 +15,12 @@ public:
 	BillboardGridComponent(GameObject* gameObject, bool isEnable = true, bool isUnique = false);
 	~BillboardGridComponent();
 
+	void init();
+
 	void calculateVertexs();
 	void drawGUI() override;
+	void load(nlohmann::json& conf) override;
+	void save(nlohmann::json& conf) override;
 
 public:
 	std::vector<Billboard*> billboards;

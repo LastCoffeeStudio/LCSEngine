@@ -9,6 +9,7 @@
 #include "ModuleSceneMain.h"
 #include "Imgui/imgui.h"
 #include <glew.h>
+#include "SaveLoadManager.h"
 
 /**/
 #include "ModuleTextures.h"
@@ -18,7 +19,11 @@
 BillboardGridComponent::BillboardGridComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
 	typeComponent = BILLBOARDGRID;
+	init();
+}
 
+void BillboardGridComponent::init()
+{
 	glGenBuffers(1, (GLuint*) &(idVertVBO));
 	glGenBuffers(1, (GLuint*) &(idIdxVAO));
 	glGenBuffers(1, (GLuint*) &(idTexCoords));
@@ -34,7 +39,7 @@ BillboardGridComponent::BillboardGridComponent(GameObject* gameObject, bool isEn
 			float difX = -(quadSpaceX / 2.f) + float(rand() / float(RAND_MAX / quadSpaceX));
 			float difY = -(quadSpaceY / 2.f) + float(rand() / float(RAND_MAX / quadSpaceY));
 			float3 position = gameObjectPos + (float3(1.f, 0.f, 0.f) * ((quadSpaceX * j) + difX)) + float3(0.f, 0.f, 1.f) * ((quadSpaceY * i) + difY);
-			Billboard* billboard = new Billboard(position, minW + float(rand() / float(RAND_MAX / (maxW-minW))), minH + float(rand() / float(RAND_MAX / (maxH - minH))));
+			Billboard* billboard = new Billboard(position, minW + float(rand() / float(RAND_MAX / (maxW - minW))), minH + float(rand() / float(RAND_MAX / (maxH - minH))));
 			billboards.push_back(billboard);
 		}
 	}
@@ -138,4 +143,47 @@ void BillboardGridComponent::updateBillboards()
 			texCoordsVBO.push_back(float2(0.f, 0.f));
 		}
 	}
+}
+
+void BillboardGridComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	typeComponent = BILLBOARDGRID;
+	SaveLoadManager::convertMyJSONtoVectorF3(conf["verticesVBO"], verticesVBO);
+	SaveLoadManager::convertMyJSONtoVectorF3(conf["colorsVBO"], colorsVBO);
+	SaveLoadManager::convertMyJSONtoVectorUI(conf["indicesVBO"], indicesVBO);
+	SaveLoadManager::convertMyJSONtoVectorF2(conf["texCoordsVBO"], texCoordsVBO);
+
+	n = conf.at("n").get<int>();
+	m = conf.at("m").get<int>();
+	minW = conf.at("minW").get<float>();
+	maxW = conf.at("maxW").get<float>();
+	minH = conf.at("minH").get<float>();
+	maxH = conf.at("maxH").get<float>();
+	quadSpaceX = conf.at("quadSpaceX").get<float>();
+	quadSpaceY = conf.at("quadSpaceY").get<float>();
+	init();
+}
+
+void BillboardGridComponent::save(nlohmann::json& conf)
+{
+	Component::save(conf);
+	nlohmann::json customJsont;
+	conf["n"] = n;
+	conf["m"] = m;
+	conf["minW"] = minW;
+	conf["maxW"] = maxW;
+	conf["minH"] = minH;
+	conf["maxH"] = maxH;
+	conf["quadSpaceX"] = quadSpaceX;
+	conf["quadSpaceY"] = quadSpaceY;
+
+	SaveLoadManager::convertVectorF3ToMyJSON(verticesVBO, customJsont);
+	conf["verticesVBO"] = customJsont;
+	SaveLoadManager::convertVectorF3ToMyJSON(colorsVBO, customJsont);
+	conf["colorsVBO"] = customJsont;
+	SaveLoadManager::convertVectorF2ToMyJSON(texCoordsVBO, customJsont);
+	conf["texCoordsVBO"] = customJsont;
+	SaveLoadManager::convertVectorUIToMyJSON(indicesVBO, customJsont);
+	conf["indicesVBO"] = customJsont;
 }

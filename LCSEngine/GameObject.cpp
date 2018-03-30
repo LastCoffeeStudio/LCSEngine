@@ -291,7 +291,8 @@ void GameObject::load(nlohmann::json& conf) {
 				MaterialComponent* materialComp = new MaterialComponent(this);
 				materialComp->typeComponent = MATERIAL;
 				materialComp->load(*it);
-				//addComponent(materialComp);
+				texPath = "";
+				addComponent(materialComp);
 			}
 				break;
 			case MESH:
@@ -326,6 +327,14 @@ void GameObject::load(nlohmann::json& conf) {
 				//addComponent(audioSourceComp);
 			}
 				break;
+			case BILLBOARDGRID:
+			{
+				BillboardGridComponent* billboardGridComponent = new BillboardGridComponent(this);
+				billboardGridComponent->typeComponent = BILLBOARDGRID;
+				billboardGridComponent->load(*it);
+				addComponent(billboardGridComponent);
+			}
+			break;
 		}
 	}
 

@@ -291,7 +291,7 @@ void MeshComponent::load(nlohmann::json& conf)
 	SaveLoadManager::convertMyJSONtoVectorF3(conf["colorsVBO"], colorsVBO);
 	SaveLoadManager::convertMyJSONtoVectorF3(conf["normalsVBO"], normalsVBO);
 	SaveLoadManager::convertMyJSONtoVectorUI(conf["indicesVAO"], indicesVAO);
-	//SaveLoadManager::convertMyJSONtoVectorF2(conf["texCoordsVBO"], texCoordsVBO);
+	SaveLoadManager::convertMyJSONtoVectorF2(conf["texCoordsVBO"], texCoordsVBO);
 	generateIDs();
 	updateVerticesBuffer();
 }
@@ -308,9 +308,9 @@ void MeshComponent::save(nlohmann::json& conf)
 	conf["normalsVBO"] = customJsont;
 	SaveLoadManager::convertVectorUIToMyJSON(indicesVAO, customJsont);
 	conf["indicesVAO"] = customJsont;
-	/*SaveLoadManager::convertVectorF2ToMyJSON(texCoordsVBO, customJsont);
+	SaveLoadManager::convertVectorF2ToMyJSON(texCoordsVBO, customJsont);
 	conf["texCoordsVBO"] = customJsont;
-
+	/*
 	conf["lengthX"] = lengthX;
 	conf["lengthY"] = lengthY;
 	conf["lengthZ"] = lengthZ;*/

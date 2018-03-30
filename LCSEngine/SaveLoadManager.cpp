@@ -150,22 +150,23 @@ void SaveLoadManager::convertVectorF2ToMyJSON(const vector<float2>& vectorF, nlo
 {
 	for (int i = 0; i < vectorF.size(); ++i)
 	{
-		for (int j = 0; j < 2; ++j)
-		{
-			structVectorF.push_back(vectorF[i][j]);
-		}
+		structVectorF.push_back(vectorF[i].x);
+		structVectorF.push_back(vectorF[i].y);
 	}
 }
 
 void SaveLoadManager::convertMyJSONtoVectorF2(const nlohmann::json & jsonVectorF, vector<float2>& vectorF)
 {
-	for (int i = 0; i < jsonVectorF.size(); i += 2)
+	if (jsonVectorF.size() % 2 == 0)
 	{
-		float2 vertex;
-		vertex.x = jsonVectorF[i].get<float>();
-		vertex.y = jsonVectorF[i + 1].get<float>();
+		for (int i = 0; i < jsonVectorF.size(); i += 2)
+		{
+			float2 vertex;
+			vertex.x = jsonVectorF[i].get<float>();
+			vertex.y = jsonVectorF[i + 1].get<float>();
 
-		vectorF.push_back(vertex);
+			vectorF.push_back(vertex);
+		}
 	}
 }
 

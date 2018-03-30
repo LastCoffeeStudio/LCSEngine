@@ -5,6 +5,7 @@
 #include "Shader.h"
 #include "Imgui/imgui.h"
 #include <filesystem>
+#include "SaveLoadManager.h"
 
 MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Component(gameObject, isEnable, true)
 {
@@ -100,4 +101,25 @@ void MaterialComponent::drawGUI()
 void MaterialComponent::setNameTexture(string name)
 {
 	strcpy_s(textureName, name.c_str());
+}
+
+void MaterialComponent::load(nlohmann::json& conf)
+{
+	Component::load(conf);
+	typeComponent = MATERIAL;
+	SaveLoadManager::convertMyJSONtoFloat3(conf["color"], color);
+	string texName = conf.at("textureName").get<std::string>().c_str();
+	strcpy_s(textureName, 128, texName.c_str());
+	textureChanged = true;
+	program = App->sceneMain->shader->programs[shaderName];
+}
+
+void MaterialComponent::save(nlohmann::json& conf)
+{
+	Component::save(conf);
+	nlohmann::json customJsont;
+	conf["textureName"] = textureName;
+	conf["shaderName"] = shaderName;
+	SaveLoadManager::convertFloat3ToMyJSON(color, customJsont);
+	conf["color"] = customJsont;
 }

@@ -15,6 +15,8 @@ public:
 	~MaterialComponent();
 	void setNameTexture(std::string name);
 	void drawGUI();
+	void load(nlohmann::json& conf) override;
+	void save(nlohmann::json& conf) override;
 
 public:
 	GLuint program = 0;
