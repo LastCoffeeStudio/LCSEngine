@@ -146,6 +146,20 @@ update_status ModuleGUI::update(float deltaTime)
 			ImGui::SetNextWindowPos(ImVec2(500, 100), ImGuiSetCond_Once);
 			showAnimationWindow();
 		}
+
+		if (show_load_popup)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 2, (float)(App->window->height / SCREEN_ROWS)));
+			ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - (((float)(App->window->width / SCREEN_COLUMNS))), (App->window->height / 2) - (((float)(App->window->height / SCREEN_ROWS)) / 2)), ImGuiSetCond_Always);
+			showLoadPopUp();
+		}
+
+		if (show_save_popup)
+		{
+			ImGui::SetNextWindowSize(ImVec2((float)(App->window->width / SCREEN_COLUMNS) * 2, (float)(App->window->height / SCREEN_ROWS)));
+			ImGui::SetNextWindowPos(ImVec2((App->window->width / 2) - (((float)(App->window->width / SCREEN_COLUMNS))), (App->window->height / 2) - (((float)(App->window->height / SCREEN_ROWS)) / 2)), ImGuiSetCond_Always);
+			showSavePopUp();
+		}
 	}
 	if (show_play_pause)
 	{
@@ -239,11 +253,11 @@ void ModuleGUI::showMainWindow()
 		{
 			if (ImGui::MenuItem("Load"))
 			{
-				App->sceneMain->loadScene();
+				show_load_popup = true;
 			}
 			if (ImGui::MenuItem("Save"))
 			{
-				App->sceneMain->saveScene();
+				show_save_popup = true;
 			}
 			ImGui::EndMenu();
 		}
@@ -409,6 +423,64 @@ void ModuleGUI::showStaticChildernPopUp()
 	{
 		App->sceneMain->rebuildQuadTree = true;
 		show_static_popup = false;
+	}
+	ImGui::End();
+}
+
+void ModuleGUI::showLoadPopUp()
+{
+	ImGui::Begin("Load", &show_static_popup, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+	ImGui::Text("Do you want to load?");
+
+	char aux[64];
+	strcpy_s(aux, 64, fileName.c_str());
+
+	ImGui::PushID("fileName");
+	if (ImGui::InputText("", aux, 64))
+	{
+		fileName = aux;
+	}
+	ImGui::PopID();
+
+	ImGui::Text("");
+	if (ImGui::Button("Yes"))
+	{
+		App->sceneMain->loadScene(fileName);
+		show_load_popup = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("No"))
+	{
+		show_load_popup = false;
+	}
+	ImGui::End();
+}
+
+void ModuleGUI::showSavePopUp()
+{
+	ImGui::Begin("Save", &show_save_popup, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse);
+	ImGui::Text("Do you want to save?");
+
+	char aux[64];
+	strcpy_s(aux, 64, fileName.c_str());
+
+	ImGui::PushID("fileName");
+	if (ImGui::InputText("", aux, 64))
+	{
+		fileName = aux;
+	}
+	ImGui::PopID();
+
+	ImGui::Text("");
+	if (ImGui::Button("Yes"))
+	{
+		App->sceneMain->saveScene(fileName);
+		show_save_popup = false;
+	}
+	ImGui::SameLine();
+	if (ImGui::Button("No"))
+	{
+		show_save_popup = false;
 	}
 	ImGui::End();
 }

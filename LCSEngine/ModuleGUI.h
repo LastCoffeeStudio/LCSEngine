@@ -33,6 +33,8 @@ public:
 	bool show_gl = true;
 	bool show_hierarchy = true;
 	bool show_static_popup = false;
+	bool show_save_popup = false;
+	bool show_load_popup = false;
 	bool show_audio_settings = false;
 	bool show_play_pause = true;
 	ImVec4 clear_color;
@@ -45,6 +47,8 @@ private:
 	void showConsole();
 	void showHierarchy();
 	void showStaticChildernPopUp();
+	void showSavePopUp();
+	void showLoadPopUp();
 	void showHierarchyChildren(GameObject* gameObject, bool enabled);
 	void showGizmo();
 	void showAudioSettings();
@@ -69,6 +73,7 @@ private:
 	float audio_doppler = 1;
 	char animationName[128] = "";
 	char animationPath[128] = "";
+	std::string fileName = "";
 	
 };
 

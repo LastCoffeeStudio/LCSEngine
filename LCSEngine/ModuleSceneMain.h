@@ -37,8 +37,8 @@ public:
 	void checkVisibleItems();
 	void drawQuadTree();
 	void makeQuadTree();
-	void saveScene();
-	void loadScene();
+	void saveScene(std::string fileName = "");
+	void loadScene(std::string fileName = "");
 
 public:
 	AssetTexture * checkers = nullptr;

@@ -492,13 +492,21 @@ void ModuleSceneMain::makeQuadTree()
 	quadtree->insertAll(listStaticMeshObjects);
 }
 
-void ModuleSceneMain::saveScene()
+void ModuleSceneMain::saveScene(std::string fileName)
 {
 	SaveLoadManager saveLoadManager;
-	saveLoadManager.saveScene("sceneJSON.json", root);
+	if (fileName != "")
+	{
+		std::string path = "Assets/Json/"+fileName+".json";
+		saveLoadManager.saveScene(path.c_str(), root);
+	}
+	else
+	{
+		saveLoadManager.saveScene("sceneJSON.json", root);
+	}
 }
 
-void ModuleSceneMain::loadScene()
+void ModuleSceneMain::loadScene(std::string fileName)
 {
 	SaveLoadManager saveLoadManager;
 	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
@@ -506,6 +514,14 @@ void ModuleSceneMain::loadScene()
 		App->sceneMain->garbageCollector.push_back(*it);
 	}
 	root = new GameObject();
-	saveLoadManager.loadScene("sceneJSON.json", root);
+	if (fileName != "")
+	{
+		std::string path = "Assets/Json/" + fileName + ".json";
+		saveLoadManager.loadScene(path.c_str(), root);
+	}
+	else
+	{
+		saveLoadManager.loadScene("sceneJSON.json", root);
+	}
 	currentObject = root;
 }

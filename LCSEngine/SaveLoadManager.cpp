@@ -15,26 +15,33 @@ SaveLoadManager::~SaveLoadManager() {}
 
 void SaveLoadManager::loadScene(const char* path, GameObject* root)
 {
-	std::ifstream input("Assets/Json/Scene.json");
-	nlohmann::json sceneJson;
-	input >> sceneJson;
-
-	list<nlohmann::json> gameObjectsJson = sceneJson["GameObjects"];
-	list<GameObject*> gameObjectsScene;
-	gameObjectsScene.push_back(root);
-	for(list<nlohmann::json>::iterator it = gameObjectsJson.begin(); it != gameObjectsJson.end(); ++it)
+	std::ifstream input(path);
+	if (input.fail())
 	{
-		GameObject* gameObj = new GameObject();
-		gameObj->load(*it);
-		gameObjectsScene.push_back(gameObj);
-		bool founded = false;
-		for (list<GameObject*>::iterator itObj = gameObjectsScene.begin(); itObj != gameObjectsScene.end() & !founded; ++itObj)
+		//file does not exists
+	}
+	else
+	{
+		nlohmann::json sceneJson;
+		input >> sceneJson;
+
+		list<nlohmann::json> gameObjectsJson = sceneJson["GameObjects"];
+		list<GameObject*> gameObjectsScene;
+		gameObjectsScene.push_back(root);
+		for (list<nlohmann::json>::iterator it = gameObjectsJson.begin(); it != gameObjectsJson.end(); ++it)
 		{
-			if(gameObj->UUIDparent == (*itObj)->UUID)
+			GameObject* gameObj = new GameObject();
+			gameObj->load(*it);
+			gameObjectsScene.push_back(gameObj);
+			bool founded = false;
+			for (list<GameObject*>::iterator itObj = gameObjectsScene.begin(); itObj != gameObjectsScene.end() & !founded; ++itObj)
 			{
-				gameObj->parent = *itObj;
-				(*itObj)->children.push_back(gameObj);
-				founded = true;
+				if (gameObj->UUIDparent == (*itObj)->UUID)
+				{
+					gameObj->parent = *itObj;
+					(*itObj)->children.push_back(gameObj);
+					founded = true;
+				}
 			}
 		}
 	}
@@ -71,7 +78,7 @@ void SaveLoadManager::saveScene(const char* path, GameObject* root)
 	}
 	scenejson["GameObjects"] = gameObjectsJSON;
 
-	std::ofstream out("Assets/Json/Scene.json");
+	std::ofstream out(path);
 	out << std::setw(4) << scenejson << std::endl;
 }
 
