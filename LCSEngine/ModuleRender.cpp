@@ -97,8 +97,8 @@ update_status ModuleRender::postUpdate(float deltaTime)
 	App->sceneMain->draw();
 	renderObjects();
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	App->gui->draw();
 	App->gameUI->printGameUI();
+	App->gui->draw();
 	//SDL_GL_SwapWindow(App->window->window);
 	swap();
 	return UPDATE_CONTINUE;

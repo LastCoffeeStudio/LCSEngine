@@ -30,8 +30,6 @@ void UIEditText::init(int x, int y, int h, int w, bool isVisible)
 	label = (UILabel*)(factoryElements->getComponent(LABEL, nullptr, x, y, h, w, true));
 	background = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
 	selected = (UIImage*)(factoryElements->getComponent(IMAGE, nullptr, x, y, h, w, true));
-	originRect.h = rect.h;
-	originRect.w = rect.w;
 	text = label->text;
 }
 
@@ -83,8 +81,8 @@ void UIEditText::drawGUI()
 
 		ImGui::Text("Size");
 		ImGui::PushID("size");
-		ImGui::DragInt("Height", &originRect.h, 1);
-		ImGui::DragInt("Width", &originRect.w, 1);
+		ImGui::DragInt("Height", &rect.h, 1);
+		ImGui::DragInt("Width", &rect.w, 1);
 		ImGui::PopID();
 
 		label->fillGUI();
