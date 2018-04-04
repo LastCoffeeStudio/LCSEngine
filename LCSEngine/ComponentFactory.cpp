@@ -11,6 +11,7 @@
 #include "AudioSourceComponent.h"
 #include "BillboardGridComponent.h"
 #include "ParticleSystemComponent.h"
+#include "LightComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -55,6 +56,9 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 		break;
 	case TypeComponent::BILLBOARDGRID:
 		return new BillboardGridComponent(parentObject);
+		break;
+	case TypeComponent::LIGHT:
+		return new LightComponent(parentObject);
 		break;
 	default:
 		return nullptr;

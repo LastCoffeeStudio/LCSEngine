@@ -39,7 +39,9 @@ void UIButton::drawGUI()
 	if (ImGui::CollapsingHeader("Button"))
 	{
 
+		ImGui::PushID("visible" + UUIDelement);
 		ImGui::Checkbox("Visible", &visible);
+		ImGui::PopID();
 		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
@@ -174,7 +176,9 @@ void UIButton::load(nlohmann::json& conf)
 	label->text = conf.at("text").get<std::string>();
 	label->fontPath = conf.at("fontPath").get<std::string>();
 	label->fontSize = conf.at("fontSize").get<int>();
+	App->type->loadFont(label->fontPath.c_str(), label->fontSize);
 	label->fontData = App->type->renderFont(label->text.c_str(), label->fontPath.c_str(), label->color);
+	label->update();
 	label->fillBufferData();
 }
 
