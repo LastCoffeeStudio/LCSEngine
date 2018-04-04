@@ -537,6 +537,22 @@ void GameObject::draw()
 			App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
 		}
 		break;
+		case PARTICLESYSTEM:
+		{
+			renderData data;
+			data.id = id;
+			data.idVertVBO = ((ParticleSystemComponent*)(*it))->idVertVBO;
+			data.sizeVertVBO = ((ParticleSystemComponent*)(*it))->verticesVBO.size();
+			data.idIdxVAO = ((ParticleSystemComponent*)(*it))->idIdxVAO;
+			data.sizeIdxVAO = ((ParticleSystemComponent*)(*it))->indicesVBO.size();
+			data.textureID = ((ParticleSystemComponent*)(*it))->texID;
+			data.colorID = ((ParticleSystemComponent*)(*it))->idColors;
+			data.hasTexture = ((ParticleSystemComponent*)(*it))->hasTexture;
+			data.textureCoordsID = ((ParticleSystemComponent*)(*it))->idTexCoords;
+			data.mode = GL_TRIANGLES;
+			App->renderer->renderQueue.insert(std::pair<GLuint, renderData>(program, data));
+		}
+		break;
 		default:
 			break;
 		}
@@ -919,8 +935,9 @@ void GameObject::updateComponents()
 				break;
 			case BILLBOARDGRID:
 				((BillboardGridComponent*)(*it))->calculateVertexs();
+				break;
 			case PARTICLESYSTEM:
-				((ParticleSystemComponent*)(*it))->calculateVertexs();
+				((ParticleSystemComponent*)(*it))->updateParticles(App->deltaTime);
 				break;
 			default:
 				break;

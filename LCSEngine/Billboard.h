@@ -7,6 +7,7 @@
 class Billboard
 {
 public:
+	Billboard();
 	Billboard(float3 position, float width, float height);
 	~Billboard();
 

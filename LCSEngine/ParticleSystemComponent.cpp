@@ -10,11 +10,13 @@
 #include "CameraComponent.h"
 #include "Imgui/imgui.h"
 #include "ModuleSceneMain.h"
+#include "MathGeoLib/src/Geometry/Circle.h"
 
 ParticleSystemComponent::ParticleSystemComponent(GameObject* gameObject) : Component(gameObject, true, true)
 {
 	typeComponent = PARTICLESYSTEM;
-	totalParticles = 20;
+	totalParticles = 1000;
+	spawnTime = App->deltaTime;
 	init();
 }
 
@@ -33,22 +35,28 @@ void ParticleSystemComponent::init()
 
 	float3 gameObjectPos = ((TransformComponent*)gameObject->getComponent(TRANSFORM))->position;
 
-	for (unsigned int i = 0; i < 5; ++i)
+	for (unsigned int i = 0; i < totalParticles; ++i)
 	{
-		for (unsigned int j = 0; j < 4; ++j)
-		{
-			float difX = -(quadSpaceX / 2.f) + float(rand() / float(RAND_MAX / quadSpaceX));
-			float difY = -(quadSpaceY / 2.f) + float(rand() / float(RAND_MAX / quadSpaceY));
-			float3 gameObjectPos = ((TransformComponent*)gameObject->getComponent(TRANSFORM))->position;
-			float3 position = gameObjectPos + (float3(1.f, 0.f, 0.f) * ((quadSpaceX * j) + difX)) + float3(0.f, 0.f, 1.f) * ((quadSpaceY * i) + difY);
-			/*Particle* partic = new Particle();
-			partic->velocity = { 0.f, -0.1f, 0.f };
-			Billboard* billboard = new Billboard({ 0.f,0.f,0.f }, minW + float(rand() / float(RAND_MAX / (maxW - minW))), minH + float(rand() / float(RAND_MAX / (maxH - minH))));
-			partic->billboard = *billboard;
-			particles.push_back(*partic);*/
-		}
-
+		Particle* partic = new Particle();
+		
+		partic->velocity = { 0.f,   (float)rand() / (float)RAND_MAX, 0.f };
+		float3 position;
+		getNewPosition(position);
+		Billboard* billboard = new Billboard(position, 1.f, 1.f);
+		partic->billboard = *billboard;
+		particles.push_back(*partic);
 	}
+
+	/**************
+	ONLY UNTIL NO WORK
+	**********/
+	for (unsigned int i = 0; i < particles.size(); ++i)
+	{
+		activeParticles.push_back(&particles[i]);
+	}
+	/****
+	 END
+	*****/
 
 	/*TODO: set texture on GUI*/
 	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find("Assets/Images/billboardgrass.png");
@@ -124,10 +132,10 @@ void ParticleSystemComponent::updateBillboards()
 	indicesVBO.clear();
 	texCoordsVBO.clear();
 
-	for (unsigned int i = 0; i < totalParticles; ++i)
+	for (std::list<Particle*>::iterator it = activeParticles.begin(); it != activeParticles.end();)
 	{
 			vector<float3> vertexs;
-			particles[i].billboard.ComputeQuad(&App->camera->currentCamera->frustum, vertexs);
+			(*it)->billboard.ComputeQuad(&App->camera->currentCamera->frustum, vertexs);
 
 			indicesVBO.push_back(1 + verticesVBO.size());
 			indicesVBO.push_back(3 + verticesVBO.size());
@@ -145,7 +153,8 @@ void ParticleSystemComponent::updateBillboards()
 			texCoordsVBO.push_back(float2(1.f, 1.f));
 			texCoordsVBO.push_back(float2(1.f, 0.f));
 			texCoordsVBO.push_back(float2(0.f, 0.f));
-		}
+			++it;
+	}
 }
 
 void ParticleSystemComponent::updateParticles(float deltaTime)
@@ -153,9 +162,20 @@ void ParticleSystemComponent::updateParticles(float deltaTime)
 	//Update Active particles
 	//if number of active particles less than total particles && timeSpawn
 		//Instantiate new particle from inactive particles
-	//updateActiveParticles(deltaTime);
-	//spawnParticle(deltaTime);
+	updateActiveParticles(deltaTime);
+	spawnParticle(deltaTime);
+	calculateVertexs();
 }
+
+void ParticleSystemComponent::getNewPosition(float3& newPosition)
+{
+	LCG lcg = LCG();
+	float2::RandomDir(lcg);
+	TransformComponent* transform = (TransformComponent*)(gameObject->getComponent(TRANSFORM));
+	Circle circle = Circle(((TransformComponent*)(gameObject->getComponent(TRANSFORM)))->position, float3::unitY, radious);
+	newPosition = circle.GetPoint(rand() % 360, (double)rand() / (double)RAND_MAX);
+}
+
 
 void ParticleSystemComponent::updateActiveParticles(float deltaTime)
 {
@@ -167,14 +187,19 @@ void ParticleSystemComponent::updateActiveParticles(float deltaTime)
 			(*it)->lifeTime = lifeTimeParticles;
 			float3 posGameObject = ((TransformComponent*)gameObject->getComponent(TRANSFORM))->position;
 			//(*it)->position =
-			inactiveParticles.push_back(*it);
-			it = activeParticles.erase(it);
+			/*inactiveParticles.push_back(*it);
+			it = activeParticles.erase(it);*/
+			float3 position;
+			getNewPosition(position);
+			(*it)->billboard.position = position;
+			(*it)->lifeTime = lifeTimeParticles;
 		}
 		else
 		{
-		//	(*it)->billboard.position += (*it)->velocity * deltaTime;
-			++it;
+			(*it)->billboard.position += (*it)->velocity * deltaTime;
+			
 		}
+		++it;
 	}
 }
 

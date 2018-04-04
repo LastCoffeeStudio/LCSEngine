@@ -1,5 +1,6 @@
 #include "Billboard.h"
 
+Billboard::Billboard() {}
 Billboard::Billboard(float3 position, float width, float height) : position(position), width(width), height(height) {}
 
 Billboard::~Billboard() {}

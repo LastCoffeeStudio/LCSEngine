@@ -44,11 +44,12 @@ public:
 	ModuleAnimation* animations;
 	ModuleGameUI* gameUI;
 	ModuleType* type;
+	float deltaTime;
 
 private:
 	std::list<Module*> modules;
 	clock_t timer;
-	float deltaTime;
+	
 };
 
 extern Application* App;
