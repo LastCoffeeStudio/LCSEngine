@@ -72,16 +72,8 @@ private:
 
 private:
 	string initialName;
-	GLint idVertVBO = -1;
-	GLint idNormalVBO = -1;
-	GLint idIdxVAO = -1;
 	GLuint program = 0;
-	GLuint sizeVertVBO = 0;
-	GLuint sizeNormalVBO = 0;
-	GLuint sizeIdxVAO = 0;
-	GLuint texCoordsID = 0;
 	GLuint texID = 0;
-	GLuint colorID = 0;
 	std::string texPath = "";
 
 	bool staticHasChanged = false;

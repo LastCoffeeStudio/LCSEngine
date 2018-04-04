@@ -61,8 +61,6 @@ GameObject::~GameObject() {}
 void GameObject::preUpdate()
 {
 	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
-	idVertVBO = -1;
-	sizeVertVBO = 0;
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 
@@ -476,42 +474,30 @@ void GameObject::drawComponentsElementsGui()
 
 void GameObject::draw()
 {
-	if (idVertVBO != -1 && visible)
-	{
-		/*for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
-		{
-			if ((*it)->typeComponent == MESH)
-			{
-				((MeshComponent*)(*it))->model->Draw();
-			}
-		}*/
-		
-		renderData data;
-		data.id = id;
-		data.idVertVBO = idVertVBO;
-		data.sizeVertVBO = sizeVertVBO;
-		data.idIdxVAO = idIdxVAO;
-		data.idNormalVBO = idNormalVBO;
-		data.sizeIdxVAO = sizeIdxVAO;
-		data.sizeNormalVBO = sizeNormalVBO;
-		data.textureID = texID;
-		data.colorID = colorID;
-		//data.hasMaterial = hasMaterial;
-		data.hasTexture = hasTexture;
-		data.textureCoordsID = texCoordsID;
-		data.mode = GL_TRIANGLES;
-		App->renderer->renderQueue.insert(std::pair<GLuint,renderData>(program,data));
-
-		//drawAABB();
-		//drawOBB();
-		
-	}
-
 	//TODO: AABB, OBB and Frustum data must be passed as VBO data, so we can add them to the render queue
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
 		switch ((*it)->typeComponent)
 		{
+		case MESH:
+			if (((MeshComponent*)(*it))->validMesh)
+			{
+				renderData data;
+				data.id = id;
+				data.idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
+				data.sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
+				data.idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
+				data.sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
+				data.idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
+				data.sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
+				data.textureCoordsID = ((MeshComponent*)(*it))->idTexCoords;
+				data.colorID = ((MeshComponent*)(*it))->idColors;
+				data.hasTexture = hasTexture;
+				data.textureID = texID;
+				data.mode = GL_TRIANGLES;
+				App->renderer->renderQueue.insert(std::pair<GLuint, renderData>(program, data));
+			}
+			break;
 		case CAMERA:
 			if ((*it)->isEnable)
 			{
@@ -899,15 +885,6 @@ void GameObject::updateComponents()
 				}
 				break;
 			case MESH:
-				idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
-				sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
-				idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
-				sizeNormalVBO = ((MeshComponent*)(*it))->normalsVBO.size() * 3;
-				idIdxVAO = ((MeshComponent*)(*it))->idIdxVAO;
-				sizeIdxVAO = ((MeshComponent*)(*it))->indicesVAO.size();
-				texCoordsID = ((MeshComponent*)(*it))->idTexCoords;
-				colorID = ((MeshComponent*)(*it))->idColors;
-
 				break;
 			case MATERIAL:
 				program = ((MaterialComponent*)(*it))->program;

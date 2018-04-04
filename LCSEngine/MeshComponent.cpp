@@ -92,9 +92,12 @@ void MeshComponent::generateIDs()
     glBindBuffer(GL_ARRAY_BUFFER, idColors);
     glBufferData(GL_ARRAY_BUFFER, sizeof(float) * colorsVBO.size() * 3, colorsVBO[0].ptr(), GL_DYNAMIC_DRAW);
 
-    /*glGenBuffers(1, (GLuint*) &(idNormVBO));
+    glGenBuffers(1, (GLuint*) &(idNormVBO));
     glBindBuffer(GL_ARRAY_BUFFER, idNormVBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);*/
+    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * normalsVBO.size() * 3, normalsVBO[0].ptr(), GL_STATIC_DRAW);
+
+	//Flag for render queue
+	validMesh = true;
 }
 
 void MeshComponent::drawGUI()

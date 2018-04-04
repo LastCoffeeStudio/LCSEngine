@@ -64,6 +64,7 @@ public:
 	float lengthX, lengthY, lengthZ;
 	PresetType currentPreset = CUBE;
 	Model* model = nullptr;
+	bool validMesh = false;
 
 private:
 	void loadModel();
