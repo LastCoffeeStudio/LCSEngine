@@ -38,7 +38,7 @@ void ParticleSystemComponent::init()
 	for (unsigned int i = 0; i < totalParticles; ++i)
 	{
 		Particle* partic = new Particle();
-		partic->velocity = { 0.f, -50.f, 0.f };
+		partic->velocity = velocity;
 		float3 position;
 		getNewPosition(position);
 		Billboard* billboard = new Billboard(position, 1.f, 1.f);
@@ -53,16 +53,21 @@ void ParticleSystemComponent::init()
 	}
 
 	/*TODO: set texture on GUI*/
-	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find("Assets/Images/billboardgrass.png");
+	setTexture();
+}
+
+void ParticleSystemComponent::setTexture()
+{
+	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(textureName);
 	if (itNewTexture != App->textures->textures.end())
 	{
 		texID = (*itNewTexture).second->ID;
 		(*itNewTexture).second->numberUsages++;
 		hasTexture = true;
 	}
-	else if (App->textures->loadTexture("Assets/Images/billboardgrass.png"))
+	else if (App->textures->loadTexture(textureName))
 	{
-		texID = App->textures->textures["Assets/Images/billboardgrass.png"]->ID;
+		texID = App->textures->textures[textureName]->ID;
 		hasTexture = true;
 	}
 	else
@@ -71,7 +76,6 @@ void ParticleSystemComponent::init()
 		hasTexture = false;
 	}
 }
-
 void ParticleSystemComponent::drawGUI()
 {
 	if (ImGui::CollapsingHeader("ParticleSystem"))
@@ -85,6 +89,60 @@ void ParticleSystemComponent::drawGUI()
 			App->sceneMain->garbageCollectorComponent.push_back(this);
 		}
 		ImGui::PopStyleColor(3);
+		ImGui::PushID("texture");
+		ImGui::Text("Texture:"); ImGui::SameLine(0);
+		ImGui::PopID();
+		ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
+		if (ImGui::Button("Set texture"))
+		{
+			setTexture();
+		}
+
+		ImGui::Text("Time life particles: "); ImGui::SameLine();
+		ImGui::PushID(3);
+		ImGui::PushItemWidth(-1);
+		ImGui::DragFloat("", &lifeTimeParticles,3.f);
+		ImGui::PopItemWidth();
+		ImGui::PopID();
+		ImGui::PushID(4);
+		ImGui::PushItemWidth(-1);
+		ImGui::Text("Radio of component: "); ImGui::SameLine();
+		ImGui::DragFloat("", &radious, 5.f);
+		ImGui::PopItemWidth();
+		ImGui::PopID();
+		ImGui::PushID(5);
+		ImGui::PushItemWidth(-1);
+		ImGui::Text("Num particles: "); ImGui::SameLine();
+		if(ImGui::DragInt("", &totalParticles, 1000))
+		{
+			particles.reserve(totalParticles);
+
+			for (unsigned int i = 0; i < totalParticles; ++i)
+			{
+				Particle* partic = new Particle();
+				partic->velocity = velocity;
+				float3 position;
+				getNewPosition(position);
+				Billboard* billboard = new Billboard(position, 1.f, 1.f);
+				partic->billboard = *billboard;
+				partic->lifeTime = lifeTimeParticles;
+				particles.push_back(*partic);
+			}
+		}
+		ImGui::PopItemWidth();
+		ImGui::PopID();
+		ImGui::PushID(6);
+		ImGui::PushItemWidth(-1);
+		ImGui::Text("Velocity: "); ImGui::SameLine();
+		if(ImGui::DragFloat3("", &velocity.x, 5.01f))
+		{
+			for (int i = 0; i < particles.size(); ++i)
+			{
+				particles[i].velocity = velocity;
+			}
+		}
+		ImGui::PopItemWidth();
+		ImGui::PopID();
 	}
 }
 
