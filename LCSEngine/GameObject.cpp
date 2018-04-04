@@ -39,6 +39,7 @@
 #include <queue>
 #include <json.hpp>
 #include "SaveLoadManager.h"
+#include "LightComponent.h"
 
 GameObject::GameObject() {}
 
@@ -334,7 +335,15 @@ void GameObject::load(nlohmann::json& conf) {
 				billboardGridComponent->load(*it);
 				addComponent(billboardGridComponent);
 			}
-			break;
+				break;
+			case LIGHT:
+			{
+				LightComponent* lightComponent = new LightComponent(this);
+				lightComponent->typeComponent = LIGHT;
+				lightComponent->load(*it);
+				addComponent(lightComponent);
+			}
+				break;
 		}
 	}
 
@@ -451,6 +460,10 @@ void GameObject::drawComponentsElementsGui()
 		else if (ImGui::MenuItem("Billboard Grid"))
 		{
 			addComponent(factory->getComponent(BILLBOARDGRID, this));
+		}
+		else if (ImGui::MenuItem("Light"))
+		{
+			addComponent(factory->getComponent(LIGHT, this));
 		}
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))

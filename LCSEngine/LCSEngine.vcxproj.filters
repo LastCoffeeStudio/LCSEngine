@@ -393,6 +393,9 @@
     <ClInclude Include="ParticleSystemComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="LightComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -636,6 +639,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ParticleSystemComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LightComponent.cpp">
       <Filter>Components</Filter>
     </ClCompile>
   </ItemGroup>
