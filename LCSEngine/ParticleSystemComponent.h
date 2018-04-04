@@ -41,7 +41,7 @@ public:
 	unsigned int totalParticles = 0;
 	float widthEmisor = 0.f;
 	float heightEmisor = 0.f;
-	float lifeTimeParticles = 10.f;
+	float lifeTimeParticles = 3.f;
 	float spawnTime = 0.f;
 	float spawnCountdown = 0.f;
 	GLuint sprite;
@@ -60,6 +60,8 @@ public:
 private:
 	void updateActiveParticles(float deltaTime);
 	void spawnParticle(float deltaTime);
+
+private:
 
 };
 

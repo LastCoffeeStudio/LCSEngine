@@ -38,25 +38,19 @@ void ParticleSystemComponent::init()
 	for (unsigned int i = 0; i < totalParticles; ++i)
 	{
 		Particle* partic = new Particle();
-		
-		partic->velocity = { 0.f,   (float)rand() / (float)RAND_MAX, 0.f };
+		partic->velocity = { 0.f, -50.f, 0.f };
 		float3 position;
 		getNewPosition(position);
 		Billboard* billboard = new Billboard(position, 1.f, 1.f);
 		partic->billboard = *billboard;
+		partic->lifeTime = lifeTimeParticles;
 		particles.push_back(*partic);
 	}
 
-	/**************
-	ONLY UNTIL NO WORK
-	**********/
 	for (unsigned int i = 0; i < particles.size(); ++i)
 	{
-		activeParticles.push_back(&particles[i]);
+		inactiveParticles.push_back(&particles[i]);
 	}
-	/****
-	 END
-	*****/
 
 	/*TODO: set texture on GUI*/
 	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find("Assets/Images/billboardgrass.png");
@@ -159,9 +153,6 @@ void ParticleSystemComponent::updateBillboards()
 
 void ParticleSystemComponent::updateParticles(float deltaTime)
 {
-	//Update Active particles
-	//if number of active particles less than total particles && timeSpawn
-		//Instantiate new particle from inactive particles
 	updateActiveParticles(deltaTime);
 	spawnParticle(deltaTime);
 	calculateVertexs();
@@ -186,9 +177,6 @@ void ParticleSystemComponent::updateActiveParticles(float deltaTime)
 		{
 			(*it)->lifeTime = lifeTimeParticles;
 			float3 posGameObject = ((TransformComponent*)gameObject->getComponent(TRANSFORM))->position;
-			//(*it)->position =
-			/*inactiveParticles.push_back(*it);
-			it = activeParticles.erase(it);*/
 			float3 position;
 			getNewPosition(position);
 			(*it)->billboard.position = position;
