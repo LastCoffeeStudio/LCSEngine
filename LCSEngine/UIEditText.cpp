@@ -37,7 +37,9 @@ void UIEditText::drawGUI()
 {
 	if (ImGui::CollapsingHeader("EditText"))
 	{
+		ImGui::PushID("visible" + UUIDelement);
 		ImGui::Checkbox("Visible", &visible);
+		ImGui::PopID();
 		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
@@ -165,11 +167,14 @@ void UIEditText::load(nlohmann::json& conf)
 	label->text = conf.at("text").get<std::string>();
 	label->fontPath = conf.at("fontPath").get<std::string>();
 	label->fontSize = conf.at("fontSize").get<int>();
+
+	App->type->loadFont(label->fontPath.c_str(), label->fontSize);
 	label->fontData = App->type->renderFont(label->text.c_str(), label->fontPath.c_str(), label->color);
 
 	paddingX = conf.at("paddingX").get<int>();
 	paddingY = conf.at("paddingY").get<int>();
 
+	label->update();
 	label->fillBufferData();
 }
 

@@ -41,7 +41,9 @@ void UILabel::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Label"))
 	{
+		ImGui::PushID("visible" + UUIDelement);
 		ImGui::Checkbox("Visible", &visible);
+		ImGui::PopID();
 		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
@@ -153,7 +155,9 @@ void UILabel::load(nlohmann::json& conf)
 	text = conf.at("text").get<std::string>();
 	fontPath = conf.at("fontPath").get<std::string>();
 	fontSize = conf.at("fontSize").get<int>();
+	App->type->loadFont(fontPath.c_str(), fontSize);
 	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
+	update();
 	fillBufferData();
 }
 
