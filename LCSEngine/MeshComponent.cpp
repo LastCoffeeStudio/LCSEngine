@@ -287,6 +287,7 @@ void MeshComponent::load(nlohmann::json& conf)
 {
 	Component::load(conf);
 	typeComponent = MESH;
+	
 	SaveLoadManager::convertMyJSONtoVectorF3(conf["verticesVBO"], verticesVBO);
 	SaveLoadManager::convertMyJSONtoVectorF3(conf["colorsVBO"], colorsVBO);
 	SaveLoadManager::convertMyJSONtoVectorF3(conf["normalsVBO"], normalsVBO);

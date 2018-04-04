@@ -39,6 +39,7 @@
 #include <queue>
 #include <json.hpp>
 #include "SaveLoadManager.h"
+#include "ParticleSystemComponent.h"
 
 GameObject::GameObject() {}
 
@@ -918,6 +919,8 @@ void GameObject::updateComponents()
 				break;
 			case BILLBOARDGRID:
 				((BillboardGridComponent*)(*it))->calculateVertexs();
+			case PARTICLESYSTEM:
+				((ParticleSystemComponent*)(*it))->calculateVertexs();
 				break;
 			default:
 				break;
