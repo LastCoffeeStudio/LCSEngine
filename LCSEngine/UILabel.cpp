@@ -154,6 +154,15 @@ void UILabel::load(nlohmann::json& conf)
 	fontPath = conf.at("fontPath").get<std::string>();
 	fontSize = conf.at("fontSize").get<int>();
 	App->type->loadFont(fontPath.c_str(), fontSize);
+	textColor[0] = conf.at("colorR").get<double>();
+	textColor[1] = conf.at("colorG").get<double>();
+	textColor[2] = conf.at("colorB").get<double>();
+	color.r = textColor[0] * 255;
+	color.g = textColor[1] * 255;
+	color.b = textColor[2] * 255;
+	color.a = textColor[3] * 255;
+
+
 	fontData = App->type->renderFont(text.c_str(), fontPath.c_str(), color);
 	update();
 	fillBufferData();
@@ -165,6 +174,9 @@ void UILabel::save(nlohmann::json& conf)
 	conf["text"] = text;
 	conf["fontPath"] = fontPath;
 	conf["fontSize"] = fontSize;
+	conf["colorR"] = textColor[0];
+	conf["colorG"] = textColor[1];
+	conf["colorB"] = textColor[2];
 }
 
 
