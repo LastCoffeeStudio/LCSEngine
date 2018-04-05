@@ -26,9 +26,7 @@ void UIImage::drawGUI()
 {
 	if (ImGui::CollapsingHeader("Image"))
 	{
-		ImGui::PushID("visible" + UUIDelement);
 		ImGui::Checkbox("Visible", &visible);
-		ImGui::PopID();
 		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))

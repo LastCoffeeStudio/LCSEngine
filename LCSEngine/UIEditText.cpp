@@ -37,9 +37,7 @@ void UIEditText::drawGUI()
 {
 	if (ImGui::CollapsingHeader("EditText"))
 	{
-		ImGui::PushID("visible" + UUIDelement);
 		ImGui::Checkbox("Visible", &visible);
-		ImGui::PopID();
 		ImGui::Checkbox("Enable", &enable);
 
 		if (ImGui::Button("Delete Component"))
