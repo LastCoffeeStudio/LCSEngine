@@ -84,9 +84,10 @@ update_status ModuleAudio::update(float deltaTime)
 
 	if (App->input->getKey(SDL_SCANCODE_P) == KEY_DOWN)
 	{
+		reverb = !reverb;
 		if (reverb)
 		{
-
+			AK::SoundEngine::SetGameObjectAuxSendValues(GAME_OBJ, nullptr, 0);
 		}
 		else
 		{
@@ -94,10 +95,7 @@ update_status ModuleAudio::update(float deltaTime)
 			aEnvs[0].listenerID = currentAudioListener; // Use the same set of listeners assigned via the SetListeners/SetDefaultListeners API.
 			aEnvs[0].auxBusID = AK::AUX_BUSSES::REVERB_EFFECT;
 			aEnvs[0].fControlValue = 1.0f;
-
 			AK::SoundEngine::SetGameObjectAuxSendValues(GAME_OBJ, aEnvs, 2);
-
-			reverb = true;
 		}
 	}
 
@@ -131,7 +129,12 @@ void ModuleAudio::setListener(AkGameObjectID listenerId)
     {
        AK::SoundEngine::SetDefaultListeners(&listenerId, 1);
     }
-    currentAudioListener = listenerId;
+	currentAudioListener = listenerId;
+}
+
+void ModuleAudio::unsetListener(AkGameObjectID listenerId)
+{
+	AK::SoundEngine::RemoveDefaultListener(listenerId);
 }
 
 void ModuleAudio::updatePositionListener(AkGameObjectID objectId, const float4x4& transform)

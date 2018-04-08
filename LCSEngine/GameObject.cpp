@@ -135,6 +135,7 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 					break;
 
 				case MATERIAL:
+				{
 					program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 					//hasMaterial = false;
 					hasTexture = false;
@@ -147,6 +148,11 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 							App->textures->textures.erase(itMap);
 						}
 					}
+				}
+					break;
+				case AUDIOLISTENER:
+					AudioListenerComponent* audioListener = (AudioListenerComponent*)(*it);
+					App->audio->unsetListener(audioListener->idAudioGameObj);
 					break;
 			}
 
