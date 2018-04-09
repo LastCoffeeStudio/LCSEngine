@@ -1,17 +1,13 @@
 #include "Application.h"
 #include "ModuleSceneMain.h"
+#include "ModuleScripts.h"
 #include "ScriptComponent.h"
 #include "Imgui/imgui.h"
-
-
-
 #include <string>
 
 ScriptComponent::ScriptComponent(GameObject* gameObject)
 {
 	typeComponent = SCRIPT;
-
-	lua.open_libraries(sol::lib::base);
 }
 
 ScriptComponent::~ScriptComponent() {}
@@ -40,20 +36,8 @@ void ScriptComponent::drawGUI()
 		ImGui::PopID();
 		if (ImGui::Button("Load"))
 		{
-			lua.script_file(scriptPath);
+			App->scripts->load_script(scriptPath);
 		}
-
 	}
-}
-
-void ScriptComponent::updateScripts()
-{
-	sol::function fx = lua["update"];
-	if (fx)
-	{
-		std::function<void()> stdfx = fx;
-		stdfx();
-	}
-	
 }
 

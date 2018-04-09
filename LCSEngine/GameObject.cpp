@@ -794,6 +794,11 @@ Component* GameObject::getComponent(TypeComponent type)
 	return nullptr;
 }
 
+void GameObject::instantiate()
+{
+	//addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
+}
+
 void GameObject::updateBones(const AnimationComponent* anim)
 {
 	GameObject* root = anim->rootBone;
@@ -903,7 +908,7 @@ void GameObject::updateComponents()
 			}
 			break;
 		case SCRIPT:
-			((ScriptComponent*)(*it))->updateScripts();
+			//((ScriptComponent*)(*it))->updateScripts();
 		default:
 			break;
 		}

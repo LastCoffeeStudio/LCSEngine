@@ -179,6 +179,11 @@ const iPoint& ModuleInput::getMousePosition() const
 	return mouse;
 }
 
+bool ModuleInput::getButtonDown()
+{
+	return App->input->getKey(SDL_SCANCODE_N) == KEY_DOWN;
+}
+
 const iPoint& ModuleInput::getMouseMotion() const
 {
 	return mouse_motion;

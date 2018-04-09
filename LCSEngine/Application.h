@@ -19,6 +19,7 @@ class ModuleCamera;
 class ModuleAnimation;
 class ModuleGameUI;
 class ModuleType;
+class ModuleScripts;
 
 class Application
 {
@@ -44,6 +45,7 @@ public:
 	ModuleAnimation* animations;
 	ModuleGameUI* gameUI;
 	ModuleType* type;
+	ModuleScripts* scripts;
 	float deltaTime;
 
 private:

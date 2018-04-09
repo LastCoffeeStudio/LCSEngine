@@ -13,6 +13,7 @@
 #include "ModuleAnimation.h"
 #include "ModuleGameUI.h"
 #include "ModuleType.h"
+#include "ModuleScripts.h"
 
 using namespace std;
 
@@ -32,6 +33,7 @@ Application::Application()
 	modules.push_back(animations = new ModuleAnimation());
 	modules.push_back(sceneMain = new ModuleSceneMain(false));
 	modules.push_back(type = new ModuleType());
+	modules.push_back(scripts = new ModuleScripts());
 
 	timer = 0;
 	deltaTime = 0;

@@ -64,6 +64,10 @@ public:
 	const iPoint& getMousePosition() const;
 	int mouse_wheel;
 
+	//Lua methods
+public:
+	static bool getButtonDown();
+
 public:
 	char keyPresed = '\0';
 

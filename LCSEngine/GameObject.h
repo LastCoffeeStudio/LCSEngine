@@ -43,6 +43,7 @@ public:
 	void load(nlohmann::json& conf);
 	vector<Component*> getComponents(TypeComponent type);
 	Component* getComponent(TypeComponent type);
+	static void instantiate();
 
 public:
 	string name = "GameObject";

@@ -243,6 +243,7 @@
     <ClInclude Include="ModuleSceneMain.h" />
     <ClInclude Include="ModuleJson.h" />
     <ClInclude Include="ModuleRender.h" />
+    <ClInclude Include="ModuleScripts.h" />
     <ClInclude Include="ModuleTextures.h" />
     <ClInclude Include="ModuleType.h" />
     <ClInclude Include="ModuleWindow.h" />
@@ -330,6 +331,7 @@
     <ClCompile Include="ModuleSceneMain.cpp" />
     <ClCompile Include="ModuleJson.cpp" />
     <ClCompile Include="ModuleRender.cpp" />
+    <ClCompile Include="ModuleScripts.cpp" />
     <ClCompile Include="ModuleTextures.cpp" />
     <ClCompile Include="ModuleType.cpp" />
     <ClCompile Include="ModuleWindow.cpp" />
