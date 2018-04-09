@@ -29,7 +29,8 @@ enum TypeComponent
     AUDIOSOURCE,
 	PARTICLESYSTEM,
 	BILLBOARDGRID,
-	LIGHT
+	LIGHT,
+	SCRIPT
 };
 
 enum TypeElemeneGametUI

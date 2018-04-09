@@ -11,6 +11,7 @@
 #include "AudioListenerComponent.h"
 #include "AudioSourceComponent.h"
 #include "BillboardGridComponent.h"
+#include "ScriptComponent.h"
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
@@ -473,6 +474,10 @@ void GameObject::drawComponentsElementsGui()
 		{
 			addComponent(factory->getComponent(LIGHT, this));
 		}
+		else if (ImGui::MenuItem("Script"))
+		{
+			addComponent(factory->getComponent(SCRIPT, this));
+		}
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))
 		{
@@ -897,6 +902,8 @@ void GameObject::updateComponents()
 				updateVertices((AnimationComponent*)(*it));
 			}
 			break;
+		case SCRIPT:
+			((ScriptComponent*)(*it))->updateScripts();
 		default:
 			break;
 		}

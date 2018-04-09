@@ -70,7 +70,7 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)SDL_ttf\include;$(ProjectDir)Freetype\include;$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)SDL_ttf\include;$(ProjectDir)Freetype\include;$(ProjectDir)Wwise\include;$(ProjectDir)Assimp\include;$(ProjectDir)DevIL\include;$(ProjectDir)Glew\include;$(ProjectDir)Json\include;$(ProjectDir)SDL_mixer\include;$(ProjectDir)SDL_image\include;$(ProjectDir)SDL\include;$(VC_IncludePath);$(WindowsSDK_IncludePath);$(ProjectDir)Lua\include;$(ProjectDir)SolLua\include</IncludePath>
     <LibraryPath>$(ProjectDir)SDL_ttf\libx86;$(ProjectDir)Wwise\libx86\libDebug;$(ProjectDir)assimp\libx86;$(ProjectDir)DevIL\libx86;$(ProjectDir)Freetype\libx86;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -253,6 +253,7 @@
     <ClInclude Include="QuadTree.h" />
     <ClInclude Include="SaveLoadManager.h" />
     <ClInclude Include="SceneManager.h" />
+    <ClInclude Include="ScriptComponent.h" />
     <ClInclude Include="Shader.h" />
     <ClInclude Include="SphereShape.h" />
     <ClInclude Include="TransformComponent.h" />
@@ -338,6 +339,7 @@
     <ClCompile Include="QuadTree.cpp" />
     <ClCompile Include="SaveLoadManager.cpp" />
     <ClCompile Include="SceneManager.cpp" />
+    <ClCompile Include="ScriptComponent.cpp" />
     <ClCompile Include="Shader.cpp" />
     <ClCompile Include="SphereShape.cpp" />
     <ClCompile Include="TransformComponent.cpp" />

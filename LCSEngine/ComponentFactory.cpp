@@ -12,6 +12,7 @@
 #include "BillboardGridComponent.h"
 #include "ParticleSystemComponent.h"
 #include "LightComponent.h"
+#include "ScriptComponent.h"
 
 ComponentFactory::~ComponentFactory() {}
 
@@ -59,6 +60,9 @@ Component* ComponentFactory::getComponent(TypeComponent typeComponent, GameObjec
 		break;
 	case TypeComponent::LIGHT:
 		return new LightComponent(parentObject);
+		break;
+	case TypeComponent::SCRIPT:
+		return new ScriptComponent(parentObject);
 		break;
 	default:
 		return nullptr;
