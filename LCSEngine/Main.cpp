@@ -16,7 +16,6 @@
 #include "Brofiler.h"
 #pragma comment( lib, "Brofiler/ProfilerCore32.lib" )
 
-
 enum main_states
 {
 	MAIN_CREATION,
