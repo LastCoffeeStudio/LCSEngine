@@ -6,6 +6,7 @@
 #include <sol.hpp>
 
 class ScriptComponent;
+class GameObject;
 
 class ModuleScripts : public Module
 {
@@ -17,6 +18,7 @@ public:
 	bool cleanUp() override;
 
 	void updateScript(std::string path);
+	void addGameObject(GameObject* gameObject);
 
 public:
 	sol::state lua;

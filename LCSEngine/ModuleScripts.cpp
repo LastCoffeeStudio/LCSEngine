@@ -12,10 +12,9 @@ ModuleScripts::ModuleScripts() {}
 
 ModuleScripts::~ModuleScripts() {}
 
-GameObject* instantiate() {
+void instantiate() {
 	GameObject* gameObject = new GameObject(App->sceneMain->currentObject, "GameObject", uuid());
 	App->sceneMain->root->addGameObject(gameObject);
-	return gameObject;
 }
 
 bool ModuleScripts::init()
@@ -52,4 +51,9 @@ void ModuleScripts::updateScript(std::string path)
 			stdfx();
 		}
 	}
+}
+
+void ModuleScripts::addGameObject(GameObject * gameObject)
+{
+	lua["gameObject"] = gameObject;
 }

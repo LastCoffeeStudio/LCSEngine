@@ -8,6 +8,7 @@
 ScriptComponent::ScriptComponent(GameObject* gameObject) : Component(gameObject, true)
 {
 	typeComponent = SCRIPT;
+	App->scripts->addGameObject(gameObject);
 }
 
 ScriptComponent::~ScriptComponent() {}
@@ -37,12 +38,6 @@ void ScriptComponent::drawGUI()
 			}
 			ImGui::EndMenu();
 		}
-		/*
-		if (ImGui::InputText("", aux2, 128))
-		{
-			scriptPath = aux2;
-		}
-		*/
 		ImGui::PopID();
 	}
 }
