@@ -14,10 +14,9 @@ public:
 	~ModuleScripts();
 
 	bool init() override;
-	update_status update(float deltaTime) override;
 	bool cleanUp() override;
 
-	void load_script(std::string path);
+	void updateScript(std::string path);
 
 public:
 	sol::state lua;

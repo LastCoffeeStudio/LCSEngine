@@ -179,9 +179,20 @@ const iPoint& ModuleInput::getMousePosition() const
 	return mouse;
 }
 
-bool ModuleInput::getButtonDown()
+bool ModuleInput::getButtonDown(std::string key)
 {
-	return App->input->getKey(SDL_SCANCODE_N) == KEY_DOWN;
+	if (key == "N")
+	{
+		return App->input->getKey(SDL_SCANCODE_N) == KEY_DOWN;
+	}
+	else if (key == "M")
+	{
+		return App->input->getKey(SDL_SCANCODE_M) == KEY_DOWN;
+	}
+	else {
+		return false;
+	}
+	
 }
 
 const iPoint& ModuleInput::getMouseMotion() const

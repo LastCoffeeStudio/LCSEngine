@@ -5,42 +5,34 @@
 #include "ModuleSceneMain.h"
 #include "ModuleInput.h"
 #include "GameObject.h"
+#include <iostream>
 #include <vector>
 
 ModuleScripts::ModuleScripts() {}
 
 ModuleScripts::~ModuleScripts() {}
 
-void instantiate() {
-	App->sceneMain->root->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
+GameObject* instantiate() {
+	GameObject* gameObject = new GameObject(App->sceneMain->currentObject, "GameObject", uuid());
+	App->sceneMain->root->addGameObject(gameObject);
+	return gameObject;
 }
 
 bool ModuleScripts::init()
 {
 	lua.open_libraries(sol::lib::base);
 	lua.set_function("instantiate", instantiate);
-	lua.set_function("getButtonDown", ModuleInput::getButtonDown);
 
 	lua.new_usertype<GameObject>("Gameobject",
-		sol::constructors<GameObject()>()
+		sol::constructors<GameObject()>(),
+		"visible", &GameObject::visible
+		);
+
+	lua.new_usertype<ModuleInput>("Input",
+		"getButtonDown", &ModuleInput::getButtonDown
 		);
 
 	return true;
-}
-
-update_status ModuleScripts::update(float deltaTime)
-{
-	//for (std::vector<ScriptComponent*>::iterator it = scripts.begin(); it != scripts.end(); ++it)
-	//{
-		sol::function fx = lua["update"];
-		if (fx)
-		{
-			std::function<void()> stdfx = fx;
-			stdfx();
-		}
-	//}
-
-	return UPDATE_CONTINUE;
 }
 
 bool ModuleScripts::cleanUp()
@@ -48,7 +40,16 @@ bool ModuleScripts::cleanUp()
 	return true;
 }
 
-void ModuleScripts::load_script(std::string path)
+void ModuleScripts::updateScript(std::string path)
 {
-	lua.script_file(path);
+	if (!path.empty())
+	{
+		lua.script_file(path);
+		sol::function fx = lua["update"];
+		if (fx)
+		{
+			std::function<void()> stdfx = fx;
+			stdfx();
+		}
+	}
 }

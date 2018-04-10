@@ -66,7 +66,7 @@ public:
 
 	//Lua methods
 public:
-	static bool getButtonDown();
+	static bool getButtonDown(std::string key);
 
 public:
 	char keyPresed = '\0';

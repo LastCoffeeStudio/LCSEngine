@@ -5,7 +5,7 @@
 #include "Imgui/imgui.h"
 #include <string>
 
-ScriptComponent::ScriptComponent(GameObject* gameObject)
+ScriptComponent::ScriptComponent(GameObject* gameObject) : Component(gameObject, true)
 {
 	typeComponent = SCRIPT;
 }
@@ -29,15 +29,25 @@ void ScriptComponent::drawGUI()
 		char aux2[128];
 		strcpy_s(aux2, 128, scriptPath.c_str());
 		ImGui::PushID("FontPath");
+		if (ImGui::BeginMenu("script")) {
+
+			if (ImGui::MenuItem("test.lua"))
+			{
+				scriptPath = "Assets/Scripts/test.lua";
+			}
+			ImGui::EndMenu();
+		}
+		/*
 		if (ImGui::InputText("", aux2, 128))
 		{
 			scriptPath = aux2;
 		}
+		*/
 		ImGui::PopID();
-		if (ImGui::Button("Load"))
-		{
-			App->scripts->load_script(scriptPath);
-		}
 	}
 }
 
+void ScriptComponent::updateScript()
+{
+	App->scripts->updateScript(scriptPath);
+}

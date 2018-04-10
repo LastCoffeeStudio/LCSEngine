@@ -12,6 +12,7 @@ public:
 
 public:
 	std::string scriptPath;
+	void updateScript();
 };
 
 #endif

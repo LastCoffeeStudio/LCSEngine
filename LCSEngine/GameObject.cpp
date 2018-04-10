@@ -897,20 +897,23 @@ void GameObject::updateComponents()
 {
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		switch ((*it)->typeComponent)
+		if ((*it)->isEnable)
 		{
-		case ANIMATION:
-			if (((AnimationComponent*)(*it))->idAnim != 0)
+			switch ((*it)->typeComponent)
 			{
-				updateBones((AnimationComponent*)(*it));
-				updateTransformBones((AnimationComponent*)(*it));
-				updateVertices((AnimationComponent*)(*it));
+			case ANIMATION:
+				if (((AnimationComponent*)(*it))->idAnim != 0)
+				{
+					updateBones((AnimationComponent*)(*it));
+					updateTransformBones((AnimationComponent*)(*it));
+					updateVertices((AnimationComponent*)(*it));
+				}
+				break;
+			case SCRIPT:
+				((ScriptComponent*)(*it))->updateScript();
+			default:
+				break;
 			}
-			break;
-		case SCRIPT:
-			//((ScriptComponent*)(*it))->updateScripts();
-		default:
-			break;
 		}
 	}
 
