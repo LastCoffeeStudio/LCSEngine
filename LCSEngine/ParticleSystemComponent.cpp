@@ -128,6 +128,7 @@ void ParticleSystemComponent::drawGUI()
 				partic->lifeTime = lifeTimeParticles;
 				particles.push_back(*partic);
 			}
+			init();
 		}
 		ImGui::PopItemWidth();
 		ImGui::PopID();

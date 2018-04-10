@@ -402,6 +402,9 @@
     <ClInclude Include="ModuleScripts.h">
       <Filter>Core</Filter>
     </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -654,6 +657,9 @@
       <Filter>Components</Filter>
     </ClCompile>
     <ClCompile Include="ModuleScripts.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
       <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
