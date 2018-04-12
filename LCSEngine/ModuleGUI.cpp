@@ -263,10 +263,19 @@ void ModuleGUI::showMainWindow()
 		}
 		if (ImGui::BeginMenu("GameObject"))
 		{
-			if (ImGui::MenuItem("Create Empty"))
+			if (ImGui::BeginMenu("Create"))
 			{
-				App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
+				if (ImGui::MenuItem("Create Empty"))
+				{
+					App->sceneMain->currentObject->addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
+				}
+				if (ImGui::MenuItem("New Shader"))
+				{
+					
+				}
+				ImGui::EndMenu();
 			}
+			
 			ImGui::Separator();
 			if (ImGui::MenuItem("Cube"))
 			{

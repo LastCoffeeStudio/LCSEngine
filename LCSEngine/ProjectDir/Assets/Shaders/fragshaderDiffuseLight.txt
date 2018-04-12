@@ -1,0 +1,28 @@
+#version 330 core
+
+in vec2 UV;
+in vec3 col;
+in float diffuse;
+
+out vec4 color;
+
+uniform sampler2D text;
+uniform bool useText;
+
+void main()
+{
+	if (useText)
+	{
+		vec4 texture = texture(text,UV);
+		if (texture.a == 0.f)
+		{
+			discard;
+		}
+		color = vec4(texture.rgb * col * diffuse, texture.a);
+	}
+	else
+	{
+		color = vec4(col * diffuse, 1.0f);
+	}
+}
+

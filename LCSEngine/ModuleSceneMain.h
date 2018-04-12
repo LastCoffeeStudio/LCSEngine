@@ -12,6 +12,7 @@ class GameObject;
 class Component;
 class ElementGameUI;
 class QuadTree;
+typedef enum defaultShaders;
 
 class ModuleSceneMain : public Module
 {
@@ -63,5 +64,7 @@ public:
 
 private:
 	void drawAABB(const AABB& aabb);
+	void changeShaders();
+	void modifyShader(defaultShaders shader);
 };
 #endif //__MODULESCENEMAIN_H__

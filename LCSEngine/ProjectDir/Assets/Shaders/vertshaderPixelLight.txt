@@ -2,17 +2,24 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 textUV;
 layout (location = 2) in vec3 color;
+layout (location = 3) in vec3 normal;
 
 out vec2 UV;
 out vec3 col;
+out vec3 fragPosition;
+out vec3 fragNormal;
 
+uniform mat4 normal_matrix;
 uniform mat4 model_matrix;
 uniform mat4 view;
 uniform mat4 projection;
 
 void main()
 {
+	vec3 normalVec = (normal_matrix * vec4(normal, 1.0f)).xyz;
 	gl_Position = projection * view * model_matrix * vec4(position, 1.0f);
+	fragPosition = (model_matrix * vec4(position, 1.0f)).xyz;
+	fragNormal = normalize(normalVec);
 	UV = textUV;
 	col = color;
 }

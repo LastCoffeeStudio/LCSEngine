@@ -18,7 +18,7 @@ bool Shader::loadShaders(const char* vshaderFile, const char* fshaderFile, strin
 {
 	if (programs.find(name) != programs.end())
 	{
-		LOG("This shader name already exists");
+		LOG("Failed to create shader. This shader name already exists");
 		return false;
 	}
 	shaderInfo* info = new shaderInfo();
@@ -26,12 +26,12 @@ bool Shader::loadShaders(const char* vshaderFile, const char* fshaderFile, strin
 
 	if (!readShader(vshaderFile, GL_VERTEX_SHADER, info->vshaderID))
 	{
-		LOG("Couldn't read vertex shader");
+		LOG("Failed to create shader. Couldn't read vertex shader");
 		return false;
 	}
 	if (!readShader(fshaderFile, GL_FRAGMENT_SHADER, info->fshaderID))
 	{
-		LOG("Couldn't read fragment shader");
+		LOG("Failed to create shader. Couldn't read fragment shader");
 		return false;
 	}
 
@@ -117,6 +117,9 @@ void Shader::initDefaultShaders()
 {
 	loadShaders("Assets/Shaders/vertshader.txt", "Assets/Shaders/fragshader.txt", "Default shader");
 	loadShaders("Assets/Shaders/vertshader.txt", "Assets/Shaders/fragshaderZbuffer.txt", "ZBuffer shader");
+	loadShaders("Assets/Shaders/vertshaderDiffuseLight.txt", "Assets/Shaders/fragshaderDiffuseLight.txt", "Diffuse shader");
+	loadShaders("Assets/Shaders/vertshaderSpecularLight.txt", "Assets/Shaders/fragshaderSpecularLight.txt", "Specular shader");
+	loadShaders("Assets/Shaders/vertshaderPixelLight.txt","Assets/Shaders/fragshaderPixelLight.txt","Pixel Light shader");
 	glUseProgram(programs["Default shader"]);
 }
 

@@ -1,0 +1,30 @@
+#version 330 core
+
+in vec2 UV;
+in vec3 col;
+in float diffuse;
+in float specular;
+
+out vec4 color;
+
+uniform sampler2D text;
+uniform bool useText;
+
+void main()
+{
+	vec3 ambient = vec3(0.15f,0.15f,0.15f);
+	if (useText)
+	{
+		vec4 texture = texture(text,UV);
+		if (texture.a == 0.f)
+		{
+			discard;
+		}
+		color = vec4(texture.rgb * col * diffuse + specular + texture.rgb * ambient, texture.a);
+	}
+	else
+	{
+		color = vec4(col * diffuse + specular + ambient, 1.0f);
+	}
+}
+

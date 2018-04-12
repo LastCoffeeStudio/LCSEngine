@@ -17,6 +17,7 @@ struct SDL_Rect;
 struct renderData
 {
 	float4x4 id;
+	float4x4 normalId;
 	GLint idVertVBO;
 	GLuint sizeVertVBO;
 	GLint idNormalVBO;

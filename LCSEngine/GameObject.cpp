@@ -61,6 +61,7 @@ GameObject::~GameObject() {}
 void GameObject::preUpdate()
 {
 	id = (parent->parent != nullptr) ? parent->id : float4x4::identity;
+	normalId = (parent->parent != nullptr) ? parent->normalId : float4x4::identity;
 	aabb.SetNegativeInfinity();
 	obb.SetNegativeInfinity();
 
@@ -230,6 +231,8 @@ void GameObject::save(nlohmann::json& conf) {
 	nlohmann::json customJsont;
 	SaveLoadManager::convertFloat4x4ToMyJSON(id, customJsont);
 	conf["id"] = customJsont;
+	SaveLoadManager::convertFloat4x4ToMyJSON(normalId, customJsont);
+	conf["normalId"] = customJsont;
 	SaveLoadManager::convertFloat4x4ToMyJSON(idBone, customJsont);
 	conf["idBone"] = customJsont;
 	SaveLoadManager::convertFloat3ToMyJSON(aabb.maxPoint, customJsont);
@@ -268,6 +271,7 @@ void GameObject::load(nlohmann::json& conf) {
 	visible = conf.at("visible").get<bool>();
 	enable = conf.at("enable").get<bool>();
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["id"], id);
+	SaveLoadManager::convertMyJSONtoFloat4x4(conf["normalId"], normalId);
 	SaveLoadManager::convertMyJSONtoFloat4x4(conf["idBone"], idBone);
 	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMax"], aabb.maxPoint);
 	SaveLoadManager::convertMyJSONtoFloat3(conf["aabbMin"], aabb.minPoint);
@@ -484,6 +488,7 @@ void GameObject::draw()
 			{
 				renderData data;
 				data.id = id;
+				data.normalId = normalId;
 				data.idVertVBO = ((MeshComponent*)(*it))->idVertVBO;
 				data.sizeVertVBO = ((MeshComponent*)(*it))->verticesVBO.size() * 3;	//vertices contains float3, that's why we multiply by 3
 				data.idNormalVBO = ((MeshComponent*)(*it))->idNormVBO;
@@ -511,6 +516,7 @@ void GameObject::draw()
 		{
 			renderData data;
 			data.id = id;
+			data.normalId = normalId;
 			data.idVertVBO = ((BillboardGridComponent*)(*it))->idVertVBO;
 			data.sizeVertVBO = ((BillboardGridComponent*)(*it))->verticesVBO.size();
 			data.idIdxVAO = ((BillboardGridComponent*)(*it))->idIdxVAO;
@@ -527,6 +533,7 @@ void GameObject::draw()
 		{
 			renderData data;
 			data.id = id;
+			data.normalId = normalId;
 			data.idVertVBO = ((ParticleSystemComponent*)(*it))->idVertVBO;
 			data.sizeVertVBO = ((ParticleSystemComponent*)(*it))->verticesVBO.size();
 			data.idIdxVAO = ((ParticleSystemComponent*)(*it))->idIdxVAO;
@@ -835,7 +842,17 @@ void GameObject::updateVertices(const AnimationComponent* anim)
 					float4x4 transform = anim->joints.find((*it)->name)->second->idBone;
 					float4 finalPos = (*itW)->weight * (transform * (*it)->bind * float4(mesh->originalVertices[(*itW)->vertex], 1.f));
 					mesh->verticesVBO[(*itW)->vertex] += float3(finalPos.x,finalPos.y,finalPos.z);
+
+					float4x4 transformNorm = float4x4(transform.Col(0), transform.Col(1), transform.Col(2), float4(0.f, 0.f, 0.f, 1.f));
+					float4x4 bindNorm = float4x4((*it)->bind.Col(0), (*it)->bind.Col(1), (*it)->bind.Col(2), float4(0.f, 0.f, 0.f, 1.f));
+					float4 finalNorm = (*itW)->weight * (transformNorm * bindNorm * float4(mesh->originalNormals[(*itW)->vertex], 1.f));
+					mesh->normalsVBO[(*itW)->vertex] += float3(finalNorm.x, finalNorm.y, finalNorm.z);
 				}
+			}
+
+			for (unsigned int i = 0; i < mesh->normalsVBO.size(); ++i)
+			{
+				mesh->normalsVBO[i].Normalize();
 			}
 
 			mesh->updateVerticesBuffer();
@@ -878,10 +895,12 @@ void GameObject::updateComponents()
 				if (staticFlag)
 				{
 					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+					normalId = ((TransformComponent*)(*it))->matrixRotate.Transposed()*normalId;
 				}
 				else
 				{
 					id = ((TransformComponent*)(*it))->transform.Transposed()*id;
+					normalId = ((TransformComponent*)(*it))->matrixRotate.Transposed()*normalId;
 				}
 				break;
 			case MESH:

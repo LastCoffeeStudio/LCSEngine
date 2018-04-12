@@ -105,8 +105,9 @@ GameObject* SceneManager::createObject(GameObject* parent, aiNode* node)
 					mesh->bones.push_back(bone);
 				}
 
-				//Copy original vertices for skinning later
+				//Copy original vertices and normals for skinning and lighting later
 				mesh->originalVertices = mesh->verticesVBO;
+				mesh->originalNormals = mesh->normalsVBO;
 			}
         
 			mesh->generateIDs();

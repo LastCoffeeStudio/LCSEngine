@@ -1,0 +1,37 @@
+#version 330 core
+
+in vec2 UV;
+in vec3 col;
+in vec3 fragPosition;
+in vec3 fragNormal;
+
+out vec4 color;
+
+uniform sampler2D text;
+uniform bool useText;
+uniform vec3 lightPosition;
+uniform vec3 cameraPosition;
+
+void main()
+{
+	float shininess = 200.0f;
+	float diffuse = max(0.0f, dot(fragNormal, normalize(lightPosition - fragPosition)));
+	float specular = max(0.0f, dot(fragNormal, normalize((cameraPosition - fragPosition) + (lightPosition - fragPosition))));
+	specular = pow(specular,shininess);
+	vec3 ambient = vec3(0.15f,0.15f,0.15f);
+	
+	if (useText)
+	{
+		vec4 texture = texture(text,UV);
+		if (texture.a == 0.f)
+		{
+			discard;
+		}
+		color = vec4(texture.rgb * col * diffuse + specular + texture.rgb * ambient, texture.a);
+	}
+	else
+	{
+		color = vec4(col * diffuse + specular + ambient, 1.0f);
+	}
+}
+

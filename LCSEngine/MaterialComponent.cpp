@@ -10,7 +10,7 @@
 MaterialComponent::MaterialComponent(GameObject* gameObject, bool isEnable) : Component(gameObject, isEnable, true)
 {
 	typeComponent = MATERIAL;
-	shaderName = App->sceneMain->shader->defaultShaders[DEFAULTSHADER];
+	shaderName = App->sceneMain->shader->defaultShaders[DIFFUSESHADER];
 	program = App->sceneMain->shader->programs[shaderName];
 }
 
@@ -122,4 +122,11 @@ void MaterialComponent::save(nlohmann::json& conf)
 	conf["shaderName"] = shaderName;
 	SaveLoadManager::convertFloat3ToMyJSON(color, customJsont);
 	conf["color"] = customJsont;
+}
+
+void MaterialComponent::changeShader(std::string name)
+{
+	Shader* shader = App->sceneMain->shader;
+	shaderName = name;
+	program = shader->programs[shaderName];
 }

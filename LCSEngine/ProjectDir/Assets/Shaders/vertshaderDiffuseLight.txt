@@ -2,17 +2,26 @@
 layout (location = 0) in vec3 position;
 layout (location = 1) in vec2 textUV;
 layout (location = 2) in vec3 color;
+layout (location = 3) in vec3 normal;
 
 out vec2 UV;
 out vec3 col;
+out float diffuse;
 
+uniform mat4 normal_matrix;
 uniform mat4 model_matrix;
 uniform mat4 view;
 uniform mat4 projection;
+uniform vec3 lightPosition;
 
 void main()
 {
 	gl_Position = projection * view * model_matrix * vec4(position, 1.0f);
+
+	vec3 vertPos = (model_matrix * vec4(position, 1.0f)).xyz;
+	vec3 normalVec = (normal_matrix * vec4(normal, 1.0f)).xyz;
+
+	diffuse = max(0.0f, dot(normalize(normalVec), normalize(lightPosition - vertPos)));
 	UV = textUV;
 	col = color;
 }

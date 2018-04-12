@@ -14,6 +14,9 @@ enum defaultShaders
 {
 	DEFAULTSHADER,
 	ZBUFFERSHADER,
+	DIFFUSESHADER,
+	SPECULARSHADER,
+	PIXELLIGHTSHADER,
 
 	NUMSHADERS
 };
@@ -34,7 +37,7 @@ public:
 	void cleanUp();
 
 public:
-	string defaultShaders[NUMSHADERS] = { "Default shader", "ZBuffer shader" };
+	string defaultShaders[NUMSHADERS] = { "Default shader", "ZBuffer shader", "Diffuse shader", "Specular shader", "Pixel Light shader" };
 	vector<shaderInfo*> shaders;
 	map<string, GLuint> programs;
 

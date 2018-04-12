@@ -6,6 +6,7 @@
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
 #include "ModuleGameUI.h"
+#include "CameraComponent.h"
 #include "Shader.h"
 #include "SDL/include/SDL.h"
 #include "Glew/include/glew.h"
@@ -129,6 +130,30 @@ void ModuleRender::renderObjects()
 	Shader* shader = App->sceneMain->shader;
 	GLuint program = 0;
 
+	/*DEBUG*/
+	static float light1 = 0.6f;
+	static float light2 = 1.5f;
+	static float light3 = 1.f;
+	bool b = true;
+
+	if (ImGui::Begin("light", &b, ImGuiWindowFlags_NoResize | ImGuiWindowFlags_NoCollapse))
+	{
+		ImGui::PushID("light1");
+		ImGui::DragFloat("lightPos1", &light1, 0.01f);
+		ImGui::PopID();
+
+		ImGui::PushID("light2");
+		ImGui::DragFloat("lightPos2", &light2, 0.01f);
+		ImGui::PopID();
+
+		ImGui::PushID("light3");
+		ImGui::DragFloat("lightPos3", &light3, 0.01f);
+		ImGui::PopID();
+
+		ImGui::End();
+	}
+	/*DEBUG*/
+
 	for (std::multimap<GLuint, renderData>::iterator it = renderQueue.begin(); it != renderQueue.end(); ++it)
 	{
 		if ((*it).first != program)
@@ -145,6 +170,26 @@ void ModuleRender::renderObjects()
 
 		GLint projectLoc = glGetUniformLocation(program, "projection");
 		glUniformMatrix4fv(projectLoc, 1, GL_FALSE, App->camera->getProjectMatrix());
+
+		GLint normalLoc = glGetUniformLocation(program, "normal_matrix");
+		if (normalLoc != -1)
+		{
+			glUniformMatrix4fv(normalLoc, 1, GL_FALSE, &(*it).second.normalId[0][0]);
+		}
+
+		GLint lightPosLoc = glGetUniformLocation(program, "lightPosition");
+		if (lightPosLoc != -1)
+		{
+			glUniform3f(lightPosLoc, light1, light2, light3);
+		}
+
+		float3 cameraPosition = App->camera->currentCamera->frustum.pos;
+
+		GLint cameraPosLoc = glGetUniformLocation(program, "cameraPosition");
+		if (cameraPosLoc != -1)
+		{
+			glUniform3f(cameraPosLoc, cameraPosition.x, cameraPosition.y, cameraPosition.z);
+		}
 
 		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasTexture);
 
@@ -167,6 +212,10 @@ void ModuleRender::renderObjects()
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.colorID);
 		glEnableVertexAttribArray(2);
 		glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
+
+		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idNormalVBO);
+		glEnableVertexAttribArray(3);
+		glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
 
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, (*it).second.idIdxVAO);
 

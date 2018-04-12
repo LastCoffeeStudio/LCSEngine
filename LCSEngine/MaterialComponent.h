@@ -17,6 +17,7 @@ public:
 	void drawGUI();
 	void load(nlohmann::json& conf) override;
 	void save(nlohmann::json& conf) override;
+	void changeShader(std::string name);
 
 public:
 	GLuint program = 0;

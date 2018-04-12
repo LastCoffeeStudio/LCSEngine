@@ -56,6 +56,7 @@ public:
     unsigned int UUIDparent = NULL;
 	int nameNumber = 0;
 	float4x4 id = float4x4::identity;
+	float4x4 normalId = float4x4::identity;
 	float4x4 idBone = float4x4::identity;
 	AABB aabb;
 	OBB obb;

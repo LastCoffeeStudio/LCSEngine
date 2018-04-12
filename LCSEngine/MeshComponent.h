@@ -55,6 +55,7 @@ public:
 	std::vector<unsigned int> indicesVAO;
 	std::vector<Bone*> bones;
 	std::vector<float3> originalVertices;
+	std::vector<float3> originalNormals;
 	GLuint idVertVBO = 0;
 	GLuint idNormVBO = 0;
 	GLuint idIdxVAO = 0;

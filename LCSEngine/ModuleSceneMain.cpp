@@ -28,6 +28,8 @@
 #include "ElementGameUI.h"
 #include "SaveLoadManager.h"
 
+#include "MaterialComponent.h"
+
 using namespace std;
 
 #define COUNT_LINES_GRID 100.f
@@ -78,6 +80,9 @@ update_status ModuleSceneMain::preUpdate(float deltaTime)
 	clearGameObjects();
 	clearComponents();
 	clearElements();
+	/*DEBUG*/
+	changeShaders();
+	/*DEBUG*/
 	preUpdateGameObjects();
 	if (rebuildQuadTree)
 	{
@@ -524,4 +529,51 @@ void ModuleSceneMain::loadScene(std::string fileName)
 		saveLoadManager.loadScene("sceneJSON.json", root);
 	}
 	currentObject = root;
+}
+
+void ModuleSceneMain::changeShaders()
+{
+	if (App->input->getKey(SDL_SCANCODE_6) == KEY_DOWN)
+	{
+		modifyShader(DEFAULTSHADER);
+	}
+	if (App->input->getKey(SDL_SCANCODE_7) == KEY_DOWN)
+	{
+		modifyShader(DIFFUSESHADER);
+	}
+	if (App->input->getKey(SDL_SCANCODE_8) == KEY_DOWN)
+	{
+		modifyShader(SPECULARSHADER);
+	}
+	if (App->input->getKey(SDL_SCANCODE_9) == KEY_DOWN)
+	{
+		modifyShader(PIXELLIGHTSHADER);
+	}
+}
+
+void ModuleSceneMain::modifyShader(defaultShaders shaderType)
+{
+	queue<GameObject*> queue;
+
+	for (vector<GameObject*>::iterator it = root->children.begin(); it != root->children.end(); ++it)
+	{
+		queue.push((*it));
+	}
+
+	while (!queue.empty())
+	{
+		GameObject* gameObject = queue.front();
+		queue.pop();
+
+		MaterialComponent* mat = (MaterialComponent*)gameObject->getComponent(MATERIAL);
+		if (mat != nullptr)
+		{
+			mat->changeShader(shader->defaultShaders[shaderType]);
+		}
+
+		for (vector<GameObject*>::iterator it = gameObject->children.begin(); it != gameObject->children.end(); ++it)
+		{
+			queue.push((*it));
+		}
+	}
 }
