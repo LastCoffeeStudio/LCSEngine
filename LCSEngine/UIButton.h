@@ -31,6 +31,8 @@ private:
 	UIImage* hover = nullptr;
 	UIImage* pressed = nullptr;
 	UIImage* disabled = nullptr;
+	int paddingX = 0;
+	int paddingY = 0;
 };
 
 #endif //__UIBUTTON_H__

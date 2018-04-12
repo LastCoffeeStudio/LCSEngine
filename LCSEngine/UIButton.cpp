@@ -38,7 +38,6 @@ void UIButton::drawGUI()
 	
 	if (ImGui::CollapsingHeader("Button"))
 	{
-
 		ImGui::Checkbox("Visible", &visible);
 		ImGui::Checkbox("Enable", &enable);
 
@@ -49,14 +48,42 @@ void UIButton::drawGUI()
 
 		ImGui::Text("Position");
 		ImGui::PushID("position");
-		ImGui::DragInt("X", &rect.x, 1);
-		ImGui::DragInt("Y", &rect.y, 1);
+		if (ImGui::DragInt("X", &rect.x, 1))
+		{
+			label->rect.x = rect.x + paddingX;
+			label->update();
+			label->fillBufferData();
+		}
+		if (ImGui::DragInt("Y", &rect.y, 1))
+		{
+			label->rect.y = rect.y + paddingY;
+			label->update();
+			label->fillBufferData();
+		}
 		ImGui::PopID();
 
 		ImGui::Text("Size");
 		ImGui::PushID("size");
 		ImGui::DragInt("Height", &rect.h, 1);
 		ImGui::DragInt("Width", &rect.w, 1);
+		ImGui::PopID();
+
+		ImGui::Text("Padding");
+		ImGui::PushID("padding");
+		if (ImGui::DragInt("X", &paddingX, 1))
+		{
+			rect.w = label->rect.w + paddingX * 2;
+			label->rect.x = rect.x + paddingX;
+			label->update();
+			label->fillBufferData();
+		}
+		if (ImGui::DragInt("Y", &paddingY, 1))
+		{
+			rect.h = label->rect.h + paddingY * 2;
+			label->rect.y = rect.y + paddingY;
+			label->update();
+			label->fillBufferData();
+		}
 		ImGui::PopID();
 
 		label->fillGUI();
@@ -102,7 +129,6 @@ void UIButton::update()
 	pressed->rect = rect;
 	disabled->rect = rect;
 
-	label->rect = rect;
 	background->updateCoords();
 	hover->updateCoords();
 	pressed->updateCoords();
@@ -174,7 +200,30 @@ void UIButton::load(nlohmann::json& conf)
 	label->text = conf.at("text").get<std::string>();
 	label->fontPath = conf.at("fontPath").get<std::string>();
 	label->fontSize = conf.at("fontSize").get<int>();
+	
+	paddingX = conf.at("paddingX").get<int>();
+	paddingY = conf.at("paddingY").get<int>();
+
+	App->type->loadFont(label->fontPath.c_str(), label->fontSize);
+	
+	label->textColor[0] = conf.at("colorR").get<double>();
+	label->textColor[1] = conf.at("colorG").get<double>();
+	label->textColor[2] = conf.at("colorB").get<double>();
+	label->color.r = label->textColor[0] * 255;
+	label->color.g = label->textColor[1] * 255;
+	label->color.b = label->textColor[2] * 255;
+	label->color.a = label->textColor[3] * 255;
+	
 	label->fontData = App->type->renderFont(label->text.c_str(), label->fontPath.c_str(), label->color);
+	label->rect.w = label->fontData->width;
+	label->rect.h = label->fontData->height;
+
+	rect.w = label->rect.w + paddingX * 2;
+	label->rect.x = rect.x + paddingX;
+	rect.h = label->rect.h + paddingY * 2;
+	label->rect.y = rect.y + paddingY;
+
+	update();
 	label->fillBufferData();
 }
 
@@ -196,5 +245,11 @@ void UIButton::save(nlohmann::json& conf)
 	conf["text"] = label->text;
 	conf["fontPath"] = label->fontPath;
 	conf["fontSize"] = label->fontSize;
+	conf["colorR"] = label->textColor[0];
+	conf["colorG"] = label->textColor[1];
+	conf["colorB"] = label->textColor[2];
+
+	conf["paddingX"] = paddingX;
+	conf["paddingY"] = paddingY;
 }
 

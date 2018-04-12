@@ -28,6 +28,7 @@ public:
 	bool cleanUp();
     AkGameObjectID registerGameObj(const char* name);
     void setListener(AkGameObjectID listenerId);
+	void unsetListener(AkGameObjectID listenerId);
     void updatePositionListener(AkGameObjectID objectId, const math::float4x4& transform);
     void updatePositionAudioSource(AkGameObjectID objectId, const math::float4x4& transform);
 

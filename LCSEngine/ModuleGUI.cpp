@@ -25,6 +25,7 @@
 #include "ImGuizmo.h"
 #include "CameraComponent.h"
 #include "ModuleInput.h"
+#include "ModuleTime.h"
 
 ModuleGUI::ModuleGUI() {}
 
@@ -351,11 +352,13 @@ void ModuleGUI::showPlayPause()
 	if (ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/play_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE)))
 	{
 		App->sceneMain->isPlaying = true;
+		App->time->startGameTime();
 	}
 	ImGui::SameLine(0);
 	if(ImGui::ImageButton((ImTextureID)App->textures->textures["Assets/Images/GUI/stop_button.png"]->ID, ImVec2(PLAY_PAUSE_SIZE, PLAY_PAUSE_SIZE)))
 	{
 		App->sceneMain->isPlaying = false;
+		App->time->stopGameTime();
 	}
 	ImGui::End();
 }

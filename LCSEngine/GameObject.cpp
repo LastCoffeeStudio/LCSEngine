@@ -11,6 +11,7 @@
 #include "AudioListenerComponent.h"
 #include "AudioSourceComponent.h"
 #include "BillboardGridComponent.h"
+#include "ScriptComponent.h"
 #include "ComponentFactory.h"
 #include "ModuleSceneMain.h"
 #include "ModuleCamera.h"
@@ -39,7 +40,9 @@
 #include <queue>
 #include <json.hpp>
 #include "SaveLoadManager.h"
+
 #include "ParticleSystemComponent.h"
+#include "LightComponent.h"
 
 GameObject::GameObject() {}
 
@@ -132,6 +135,7 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 					break;
 
 				case MATERIAL:
+				{
 					program = App->sceneMain->shader->programs[App->sceneMain->shader->defaultShaders[DEFAULTSHADER]];
 					//hasMaterial = false;
 					hasTexture = false;
@@ -144,6 +148,11 @@ vector<Component*>::iterator GameObject::deleteComponent(Component* component)
 							App->textures->textures.erase(itMap);
 						}
 					}
+				}
+					break;
+				case AUDIOLISTENER:
+					AudioListenerComponent* audioListener = (AudioListenerComponent*)(*it);
+					App->audio->unsetListener(audioListener->idAudioGameObj);
 					break;
 			}
 
@@ -337,7 +346,15 @@ void GameObject::load(nlohmann::json& conf) {
 				billboardGridComponent->load(*it);
 				addComponent(billboardGridComponent);
 			}
-			break;
+				break;
+			case LIGHT:
+			{
+				LightComponent* lightComponent = new LightComponent(this);
+				lightComponent->typeComponent = LIGHT;
+				lightComponent->load(*it);
+				addComponent(lightComponent);
+			}
+				break;
 		}
 	}
 
@@ -454,6 +471,14 @@ void GameObject::drawComponentsElementsGui()
 		else if (ImGui::MenuItem("Billboard Grid"))
 		{
 			addComponent(factory->getComponent(BILLBOARDGRID, this));
+		}
+		else if (ImGui::MenuItem("Light"))
+		{
+			addComponent(factory->getComponent(LIGHT, this));
+		}
+		else if (ImGui::MenuItem("Script"))
+		{
+			addComponent(factory->getComponent(SCRIPT, this));
 		}
 		//Change all this and make same as components
 		else if (ImGui::MenuItem("UI Image"))
@@ -762,6 +787,11 @@ Component* GameObject::getComponent(TypeComponent type)
 	return nullptr;
 }
 
+void GameObject::instantiate()
+{
+	//addGameObject(new GameObject(App->sceneMain->currentObject, "GameObject", uuid()));
+}
+
 void GameObject::updateBones(const AnimationComponent* anim)
 {
 	GameObject* root = anim->rootBone;
@@ -870,18 +900,23 @@ void GameObject::updateComponents()
 {
 	for (vector<Component*>::iterator it = components.begin(); it != components.end(); ++it)
 	{
-		switch ((*it)->typeComponent)
+		if ((*it)->isEnable)
 		{
-		case ANIMATION:
-			if (((AnimationComponent*)(*it))->idAnim != 0)
+			switch ((*it)->typeComponent)
 			{
-				updateBones((AnimationComponent*)(*it));
-				updateTransformBones((AnimationComponent*)(*it));
-				updateVertices((AnimationComponent*)(*it));
+			case ANIMATION:
+				if (((AnimationComponent*)(*it))->idAnim != 0)
+				{
+					updateBones((AnimationComponent*)(*it));
+					updateTransformBones((AnimationComponent*)(*it));
+					updateVertices((AnimationComponent*)(*it));
+				}
+				break;
+			case SCRIPT:
+				((ScriptComponent*)(*it))->updateScript();
+			default:
+				break;
 			}
-			break;
-		default:
-			break;
 		}
 	}
 

@@ -28,6 +28,7 @@ public:
 	ParticleSystemComponent(GameObject* gameObject);
 	~ParticleSystemComponent();
 	void init();
+	void setTexture();
 	void drawGUI();
 	void calculateVertexs();
 	void updateBillboards();
@@ -38,12 +39,13 @@ public:
 	std::vector<Particle> particles;
 	std::list<Particle*> activeParticles;
 	std::list<Particle*> inactiveParticles;
-	unsigned int totalParticles = 0;
+	int totalParticles = 0;
 	float widthEmisor = 0.f;
 	float heightEmisor = 0.f;
-	float lifeTimeParticles = 10.f;
+	float lifeTimeParticles = 3.f;
 	float spawnTime = 0.f;
 	float spawnCountdown = 0.f;
+	float3 velocity = { 0.f, -50.f, 0.f };
 	GLuint sprite;
 	float radious = 10.f;
 	GLuint idVertVBO = 0;
@@ -56,10 +58,13 @@ public:
 	std::vector<float3> colorsVBO;
 	std::vector<float2> texCoordsVBO;
 	std::vector<unsigned int> indicesVBO;
+	char textureName[128] = "Assets/Images/rainSprite.tga";
 	
 private:
 	void updateActiveParticles(float deltaTime);
 	void spawnParticle(float deltaTime);
+
+private:
 
 };
 

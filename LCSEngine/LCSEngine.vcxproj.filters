@@ -393,6 +393,18 @@
     <ClInclude Include="ParticleSystemComponent.h">
       <Filter>Components</Filter>
     </ClInclude>
+    <ClInclude Include="LightComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptComponent.h">
+      <Filter>Components</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleScripts.h">
+      <Filter>Core</Filter>
+    </ClInclude>
+    <ClInclude Include="ModuleTime.h">
+      <Filter>Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Log.cpp">
@@ -637,6 +649,18 @@
     </ClCompile>
     <ClCompile Include="ParticleSystemComponent.cpp">
       <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LightComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ScriptComponent.cpp">
+      <Filter>Components</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleScripts.cpp">
+      <Filter>Core</Filter>
+    </ClCompile>
+    <ClCompile Include="ModuleTime.cpp">
+      <Filter>Core</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

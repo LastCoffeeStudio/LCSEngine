@@ -131,8 +131,6 @@ void ModuleGameUI::printGameUI()
 					glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, imageLabel->idIdxVAO);
 
 					glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
-					glEnable(GL_DEPTH_TEST);
-
 					break;
 				}
 				case EDITTEXT:

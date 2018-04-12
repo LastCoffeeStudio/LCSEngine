@@ -25,6 +25,7 @@ public:
 	bool visible;
 	bool enable;
     unsigned int UUIDparent = NULL;
+	unsigned int UUIDelement = -1;
 };
 
 #endif // __ELEMENTGAMEUI_H__

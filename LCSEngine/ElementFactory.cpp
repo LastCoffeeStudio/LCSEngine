@@ -24,21 +24,21 @@ ElementGameUI* ElementFactory::getComponent(TypeElemeneGametUI typeElement, Game
 {
 	switch (typeElement)
 	{
-	case TypeElemeneGametUI::BUTTON:
-		return new UIButton(parentObject, x, y, h, w, isVisible);
-		break;
-	case TypeElemeneGametUI::LABEL:
-		return new UILabel(parentObject, x, y, h, w, isVisible);
-		break;
-	case TypeElemeneGametUI::IMAGE:
-		return new UIImage(parentObject, x, y, h, w, isVisible);
-		break;
-	case TypeElemeneGametUI::EDITTEXT:
-		return new UIEditText(parentObject, x, y, h, w, isVisible);
-		break;
-	default:
-		return nullptr;
-		break;
+		case TypeElemeneGametUI::BUTTON:
+			return new UIButton(parentObject, x, y, h, w, isVisible);
+			break;
+		case TypeElemeneGametUI::LABEL:
+			return new UILabel(parentObject, x, y, h, w, isVisible);
+			break;
+		case TypeElemeneGametUI::IMAGE:
+			return new UIImage(parentObject, x, y, h, w, isVisible);
+			break;
+		case TypeElemeneGametUI::EDITTEXT:
+			return new UIEditText(parentObject, x, y, h, w, isVisible);
+			break;
+		default:
+			return nullptr;
+			break;
 	}
 }
 
