@@ -62,6 +62,9 @@ public:
 private:
 	float3 linearInterpolationPosition(const float3& iniPos, const float3& endPos, float time) const;
 	Quat linearInterpolationRotation(const Quat& iniRot, const Quat& endRot, float time) const;
+
+private:
+	float animationSpeed = 1.2f;
 };
 
 #endif //__MODULEANIMATION_H__

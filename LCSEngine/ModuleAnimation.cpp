@@ -48,7 +48,7 @@ update_status ModuleAnimation::update(float deltaTime)
 	{
 		if ((*it) != nullptr)
 		{
-			(*it)->localTime += unsigned int(deltaTime*1000);	//ms
+			(*it)->localTime += unsigned int(deltaTime * 2000);	//ms	//Speed time at 2x!!
 			while ((*it)->localTime > (*it)->animation->duration)
 			{
 				(*it)->localTime -= (*it)->animation->duration;
@@ -56,7 +56,6 @@ update_status ModuleAnimation::update(float deltaTime)
 
 			if ((*it)->blendingAnim != nullptr)
 			{
-				//Update also localTime from blending animation??
 				(*it)->blendingAnim->localTime += unsigned int(deltaTime*1000);
 				while ((*it)->blendingAnim->localTime > (*it)->blendingAnim->animation->duration)
 				{
