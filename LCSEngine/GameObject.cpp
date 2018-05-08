@@ -523,7 +523,9 @@ void GameObject::draw()
 				data.textureCoordsID = ((MeshComponent*)(*it))->idTexCoords;
 				data.colorID = ((MeshComponent*)(*it))->idColors;
 				data.hasTexture = hasTexture;
+				data.hasNormalMap = hasNormalMap;
 				data.textureID = texID;
+				data.normalMapID = normalMapID;
 				data.mode = GL_TRIANGLES;
 				App->renderer->renderQueue.insert(std::pair<GLuint, renderData>(program, data));
 			}
@@ -961,7 +963,7 @@ void GameObject::updateComponents()
 				//Normal Map
 				if (((MaterialComponent*)(*it))->normalMapChanged && ((MaterialComponent*)(*it))->normalMapName != normalMapPath)
 				{
-					updateNormalMap(normalMapPath, ((MaterialComponent*)(*it))->normalMapName, texID, hasTexture);
+					updateNormalMap(normalMapPath, ((MaterialComponent*)(*it))->normalMapName, normalMapID, hasNormalMap);
 					((MaterialComponent*)(*it))->normalMapChanged = false;
 				}
 
@@ -1088,7 +1090,7 @@ void GameObject::updateTexture(string& lastPath, const char* newPath, GLuint& id
 	}
 }
 
-void GameObject::updateNormalMap(string& lastPath, const char* newPath, GLuint& id, bool& hasText)
+void GameObject::updateNormalMap(string& lastPath, const char* newPath, GLuint& id, bool& hasNormalMap)
 {
 	map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(lastPath);
 	if (itTexture != App->textures->textures.end())
@@ -1105,17 +1107,17 @@ void GameObject::updateNormalMap(string& lastPath, const char* newPath, GLuint& 
 	if (itNewTexture != App->textures->textures.end())
 	{
 		id = (*itNewTexture).second->ID;
-		hasText = true;
+		hasNormalMap = true;
 		(*itNewTexture).second->numberUsages++;
 	}
 	else if (App->textures->loadTexture(lastPath.c_str()))
 	{
 		id = App->textures->textures[lastPath]->ID;
-		hasText = true;
+		hasNormalMap = true;
 	}
 	else
 	{
 		id = 0;
-		hasText = false;
+		hasNormalMap = false;
 	}
 }

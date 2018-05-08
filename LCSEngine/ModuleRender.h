@@ -25,9 +25,11 @@ struct renderData
 	GLuint sizeNormalVBO;
 	GLuint sizeIdxVAO;
 	GLuint textureID;	//This has to be a vector later, and meshComponent needs a map: for each mesh added to the verticesVBO, a reference to the textureID that needs
+	GLuint normalMapID;
 	GLuint textureCoordsID;
 	GLuint colorID;
 	bool hasMaterial;
+	bool hasNormalMap;
 	bool hasTexture;
 	GLenum mode;
 };
