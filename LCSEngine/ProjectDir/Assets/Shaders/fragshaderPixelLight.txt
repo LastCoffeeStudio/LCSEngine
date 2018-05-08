@@ -8,21 +8,32 @@ in vec3 fragNormal;
 out vec4 color;
 
 uniform sampler2D text;
+uniform sampler2D normalMap;
 uniform bool useText;
+uniform bool useNormal;
 uniform vec3 lightPosition;
 uniform vec3 cameraPosition;
 
 void main()
 {
+	vec3 normal = fragNormal;
+
+	if(useNormal)
+	{
+		normal = texture(normalMap,UV).rgb;
+		normal = normalize(normal*2.0-1.0);
+	}
+
 	float shininess = 200.0f;
-	float diffuse = max(0.0f, dot(fragNormal, normalize(lightPosition - fragPosition)));
-	float specular = max(0.0f, dot(fragNormal, normalize((cameraPosition - fragPosition) + (lightPosition - fragPosition))));
+	float diffuse = max(0.0f, dot(normal, normalize(lightPosition - fragPosition)));
+	float specular = max(0.0f, dot(normal, normalize((cameraPosition - fragPosition) + (lightPosition - fragPosition))));
 	specular = pow(specular,shininess);
 	vec3 ambient = vec3(0.15f,0.15f,0.15f);
-	
+
 	if (useText)
 	{
 		vec4 texture = texture(text,UV);
+		
 		if (texture.a == 0.f)
 		{
 			discard;

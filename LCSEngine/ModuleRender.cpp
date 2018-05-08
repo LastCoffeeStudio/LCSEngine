@@ -190,8 +190,9 @@ void ModuleRender::renderObjects()
 		{
 			glUniform3f(cameraPosLoc, cameraPosition.x, cameraPosition.y, cameraPosition.z);
 		}
-
+		
 		glUniform1i(glGetUniformLocation(program, "useText"), (*it).second.hasTexture);
+		glUniform1i(glGetUniformLocation(program, "useNormal"), (*it).second.hasNormalMap);
 
 		//Order matters!
 		if ((*it).second.hasTexture)
@@ -203,8 +204,19 @@ void ModuleRender::renderObjects()
 			glBindBuffer(GL_ARRAY_BUFFER, (*it).second.textureCoordsID);
 			glEnableVertexAttribArray(1);
 			glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
-		}
+		
+			if ((*it).second.hasNormalMap)
+			{
+				glActiveTexture(GL_TEXTURE1);
+				glBindTexture(GL_TEXTURE_2D, (*it).second.normalMapID);
+				glUniform1i(glGetUniformLocation(program, "normalMap"), 0);
 
+				glBindBuffer(GL_ARRAY_BUFFER, (*it).second.textureCoordsID);
+				glEnableVertexAttribArray(1);
+				glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(GLfloat), (GLvoid*)0);
+			}
+		}
+		
 		glBindBuffer(GL_ARRAY_BUFFER, (*it).second.idVertVBO);
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(GLfloat), (GLvoid*)0);
