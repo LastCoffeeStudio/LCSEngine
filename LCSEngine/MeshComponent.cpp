@@ -9,7 +9,7 @@
 #include "SaveLoadManager.h"
 
 static int selected_preset = 1;
-const char* presets[] = { "House", "Cube", "Sphere" };
+const char* presets[] = { "Plane", "Cube", "Sphere", "Model" };
 
 MeshComponent::MeshComponent(GameObject* gameObject, bool isEnable, bool isUnique) : Component(gameObject, isEnable, isUnique)
 {
@@ -33,9 +33,13 @@ void MeshComponent::setPreset(PresetType type)
 void MeshComponent::loadPreset()
 {
 	verticesVBO.clear();
-	currentPreset = MODEL;
 	switch (currentPreset)
 	{
+		case PLANE:
+		{
+			loadPlane();
+			break;
+		}
 		case CUBE:
 		{
 			loadCube();
@@ -124,20 +128,7 @@ void MeshComponent::drawGUI()
 				if (ImGui::Selectable(presets[i]))
 				{
 					selected_preset = i;
-					//Set Mesh of preset selected
-					if (i == 0)
-					{
-						currentPreset = PresetType::MODEL;
-					}
-					else if (i == 1)
-					{
-						currentPreset = PresetType::CUBE;
-					}
-					else if (i == 2)
-					{
-						currentPreset = PresetType::SPHERE;
-					}
-					loadPreset();
+					setPreset((PresetType)selected_preset);
 				}
 			}
 			ImGui::EndPopup();
@@ -235,6 +226,19 @@ void MeshComponent::loadCube()
 		5, 0, 1, 5, 4, 0,
 		2, 7, 6, 2, 3, 7,
 		4, 6, 7, 4, 5, 6 };
+}
+
+void MeshComponent::loadPlane()
+{
+	verticesVBO.reserve(4);
+	indicesVAO.reserve(6);
+	normalsVBO.reserve(4);
+	texCoordsVBO.reserve(4);
+	
+	verticesVBO = { float3(-0.5f, 0.5f, 0.f), float3(0.5f, 0.5f, 0.f), float3(0.5f, -0.5f, 0.f), float3(-0.5f, -0.5f, 0.f) };
+	indicesVAO = { 1, 3, 2, 1, 0, 3 };
+	normalsVBO = { float3(0.f, 0.f, 1.f), float3(0.f, 0.f, 1.f), float3(0.f, 0.f, 1.f), float3(0.f, 0.f, 1.f) };
+	texCoordsVBO = { float2(0.f, 0.f), float2(1.f, 0.f), float2(1.f, 1.f), float2(0.f, 1.f) };
 }
 
 void MeshComponent::loadModel()

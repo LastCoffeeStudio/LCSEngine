@@ -10,7 +10,7 @@
 
 enum PresetType
 {
-	TRIANGLE = 1,
+	PLANE,
 	CUBE,
 	SPHERE,
 	MODEL
@@ -71,6 +71,7 @@ private:
 	void loadModel();
 	void loadSphere();
 	void loadCube();
+	void loadPlane();
 };
 
 #endif //__MESHCOMPONENT_H__

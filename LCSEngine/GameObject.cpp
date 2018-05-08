@@ -991,9 +991,12 @@ void GameObject::updateComponents()
 		switch ((*it)->typeComponent)
 		{
 		case MESH:
-			aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
-			obb = aabb.ToOBB();
-			obb.Transform(id.Transposed());
+			if (((MeshComponent*)(*it))->validMesh)
+			{
+				aabb.Enclose(&((MeshComponent*)(*it))->verticesVBO[0], ((MeshComponent*)(*it))->verticesVBO.size());
+				obb = aabb.ToOBB();
+				obb.Transform(id.Transposed());
+			}
 			break;
 		case CAMERA:
 			((CameraComponent*)(*it))->frustum.pos = id.Transposed().TranslatePart();
