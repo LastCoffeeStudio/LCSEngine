@@ -73,6 +73,16 @@ void MaterialComponent::drawGUI()
 			textureChanged = true;
 		}
 		
+		ImGui::PushID("normalMap");
+		ImGui::Text("Normal Map:"); ImGui::SameLine(0);
+		ImGui::PopID();
+
+		ImGui::InputText("", &normalMapName[0], IM_ARRAYSIZE(normalMapName));
+		if (ImGui::Button("Set normal map"))
+		{
+			normalMapChanged = true;
+		}
+
 		ImGui::PushID("color");
 		if (ImGui::ColorEdit3("Color", &color[0]))
 		{

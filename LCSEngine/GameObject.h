@@ -71,12 +71,14 @@ private:
 	void updateComponents();
 	void updateElements();
 	void updateTexture(string& lastPath, const char* newPath, GLuint& id, bool& hasTexture);
+	void updateNormalMap(string& lastPath, const char* newPath, GLuint& id, bool& hasTexture);
 
 private:
 	string initialName;
 	GLuint program = 0;
 	GLuint texID = 0;
 	std::string texPath = "";
+	std::string normalMapPath = "";
 
 	bool staticHasChanged = false;
 	bool staticPreviousValue = false;

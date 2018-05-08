@@ -957,6 +957,14 @@ void GameObject::updateComponents()
 					}
 					((MaterialComponent*)(*it))->colorChanged = false;
 				}
+
+				//Normal Map
+				if (((MaterialComponent*)(*it))->normalMapChanged && ((MaterialComponent*)(*it))->normalMapName != normalMapPath)
+				{
+					updateNormalMap(normalMapPath, ((MaterialComponent*)(*it))->normalMapName, texID, hasTexture);
+					((MaterialComponent*)(*it))->normalMapChanged = false;
+				}
+
 				break;
 			case AUDIOLISTENER:
 				App->audio->updatePositionListener(((AudioListenerComponent*)(*it))->idAudioGameObj, id);
@@ -1049,6 +1057,38 @@ void GameObject::updateElements()
 }
 
 void GameObject::updateTexture(string& lastPath, const char* newPath, GLuint& id, bool& hasText)
+{
+	map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(lastPath);
+	if (itTexture != App->textures->textures.end())
+	{
+		(*itTexture).second->numberUsages--;
+		if ((*itTexture).second->numberUsages <= 0)
+		{
+			App->textures->textures.erase(itTexture);
+		}
+	}
+
+	lastPath = newPath;
+	map<std::string, AssetTexture*>::iterator itNewTexture = App->textures->textures.find(lastPath);
+	if (itNewTexture != App->textures->textures.end())
+	{
+		id = (*itNewTexture).second->ID;
+		hasText = true;
+		(*itNewTexture).second->numberUsages++;
+	}
+	else if (App->textures->loadTexture(lastPath.c_str()))
+	{
+		id = App->textures->textures[lastPath]->ID;
+		hasText = true;
+	}
+	else
+	{
+		id = 0;
+		hasText = false;
+	}
+}
+
+void GameObject::updateNormalMap(string& lastPath, const char* newPath, GLuint& id, bool& hasText)
 {
 	map<std::string, AssetTexture*>::iterator itTexture = App->textures->textures.find(lastPath);
 	if (itTexture != App->textures->textures.end())
