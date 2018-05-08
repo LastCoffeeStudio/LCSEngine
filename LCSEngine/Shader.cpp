@@ -101,10 +101,10 @@ bool Shader::linkShaders(shaderInfo* info)
 	glLinkProgram(shaderProgram);
 
 	GLint success;
-	GLchar infoLog;
+	GLchar infoLog[512];
 	glGetProgramiv(shaderProgram, GL_LINK_STATUS, &success);
 	if (!success) {
-		glGetProgramInfoLog(shaderProgram, 512, NULL, &infoLog);
+		glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
 		LOG("Shader link error: %s", infoLog);
 		return false;
 	}
