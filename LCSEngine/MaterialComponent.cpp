@@ -67,11 +67,13 @@ void MaterialComponent::drawGUI()
 		}*/
 		ImGui::PopID();
 
+		ImGui::PushID("Texture");
 		ImGui::InputText("", &textureName[0], IM_ARRAYSIZE(textureName));
 		if (ImGui::Button("Set texture"))
 		{
 			textureChanged = true;
 		}
+		ImGui::PopID();
 		
 		ImGui::PushID("normalMap");
 		ImGui::Text("Normal Map:"); ImGui::SameLine(0);
