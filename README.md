@@ -30,3 +30,9 @@ Right now, this engine is under construction. The latest release contains the fo
 * Create GameObjects
 * Create and delete Components to GameObjects
 * Activate/Deactivate GameObjects and Components
+
+## Pictures
+
+![Image](https://github.com/carlos2380/prueba/blob/master/1.jpeg)
+![Image](https://github.com/carlos2380/prueba/blob/master/2.jpeg)
+![Image](https://github.com/carlos2380/prueba/blob/master/3.jpeg)
